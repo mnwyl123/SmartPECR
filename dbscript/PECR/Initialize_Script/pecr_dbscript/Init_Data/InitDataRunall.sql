@@ -1,0 +1,11 @@
+@..\Initialize_Script\pecr_dbscript\Init_Data\SYSTEM_CODE_TYPE.sql; 
+@..\Initialize_Script\pecr_dbscript\Init_Data\SYSTEM_CODE_VALUE.sql;
+@..\Initialize_Script\pecr_dbscript\Init_Data\VALIDATE_ERROR_MESSAGE.sql;
+@..\Initialize_Script\pecr_dbscript\Init_Data\VALIDATE_MAPPING.sql;
+@..\Initialize_Script\pecr_dbscript\Init_Data\VALIDATE_PARAMETER.sql;
+@..\Initialize_Script\pecr_dbscript\Init_Data\VALIDATE_RULES.sql;
+@..\Initialize_Script\pecr_dbscript\Init_Data\VALIDATE_RULES_MANAGEMENT.sql;
+@..\Initialize_Script\pecr_dbscript\Init_Data\VALIDATE_TABLE.sql;
+@..\Initialize_Script\pecr_dbscript\Init_Data\VALIDATE_TEMPLATE.sql;
+@..\Initialize_Script\pecr_dbscript\Init_Data\LABLE_TABLE.sql;
+@..\Initialize_Script\pecr_dbscript\Init_Data\FEED_BACK_REPORT_CODE.sql;

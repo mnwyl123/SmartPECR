@@ -1,0 +1,9 @@
+DROP TABLE GG_FWZTXX CASCADE CONSTRAINTS;
+
+CREATE TABLE GG_FWZTXX
+(
+  PZBH  NVARCHAR2(400)                          NOT NULL,
+  XXSJ  NCLOB                                   NOT NULL,
+  SJBC  NUMBER,
+  XGSJ  DATE
+);
