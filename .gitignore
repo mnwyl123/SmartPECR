@@ -3,3 +3,4 @@
 
 # 忽略特定文件夹
 SmartPECR/WebRoot/WEB-INF/classes/
+/build/
