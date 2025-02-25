@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AccountchangeSeoMapper">
+    <resultMap type="com.dcits.supervise.pecr.indv.entity.Accountchange" id="accountChangelistResultMap">
+        <result column="PCW_IN_CTRCTID_CAGS_INF_ID" property="pk"/>
+        <result column="INF_REC_TYPE" property="infRecType"/>
+        <result column="ACCT_TYPE" property="acctType"/>
+        <result column="OD_BNES_CODE" property="odBnesCode"/>
+        <result column="NW_BNES_CODE" property="nwBnesCode"/>
+        <result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+        <result column="OPERATOR_USER" property="operatorUser"/>
+        <result column="ORG_NAME" property="orgName"/>
+        <result column="ORG_CODE" property="orgCode"/>
+        <result column="BUSINESS_STATES" property="businessStates"/>
+        <result column="REJECT_REASON" property="rejectReason"/>
+        <result column="IS_FILTER" property="isFilter"/>
+        <result column="REPORT_MESSAGE_ID" property="reportMessageId"/>
+        <result column="RPT_DATE" property="rptDate"/>
+        <result column="NAME" property="name"/>
+        <result column="ID_TYPE" property="idType"/>
+        <result column="ID_NUM" property="idNum"/>
+        <result column="PK" property="pk"/>
+        <result column="FLAG" property="flag"/>
+    </resultMap>
+    <select id="datalistPage" parameterType="page" resultType="pd">
+        SELECT
+        DISTINCT *
+        FROM
+        (
+        SELECT
+        OD_BNES_CODE,
+        NW_BNES_CODE,
+        COMPANY
+        FROM
+        I_IN_CTRCTID_CAGS_INF
+        UNION ALL
+        SELECT
+        OD_BNES_CODE,
+        NW_BNES_CODE,
+        COMPANY
+        FROM
+        I_IN_ACCT_ID_CAGS_INF
+        UNION ALL
+        SELECT
+        OD_BNES_CODE,
+        NW_BNES_CODE,
+        COMPANY
+        FROM
+        I_INSECACCTID_CAGSINF
+        UNION ALL
+        SELECT
+        OD_BNES_CODE,
+        NW_BNES_CODE,
+        COMPANY
+        FROM
+        I_IN_CTRCTID_CAGS_INF_HIST
+        UNION ALL
+        SELECT
+        OD_BNES_CODE,
+        NW_BNES_CODE,
+        COMPANY
+        FROM
+        I_IN_ACCT_ID_CAGS_INF_HIST
+        UNION ALL
+        SELECT
+        OD_BNES_CODE,
+        NW_BNES_CODE,
+        COMPANY
+        FROM
+        I_INSECACCTID_CAGSINF_HIST
+        ) a
+        where 1=1
+        <if test='pd.OD_BNES_CODE != null and pd.OD_BNES_CODE != ""'>
+            and a.OD_BNES_CODE like '%${pd.OD_BNES_CODE}%'
+        </if>
+        <if test='pd.NW_BNES_CODE != null and pd.NW_BNES_CODE != ""'>
+            and a.NW_BNES_CODE like '%${pd.NW_BNES_CODE}%'
+        </if>
+            and a.COMPANY = #{pd.COMPANY}
+    </select>
+    <select id="dataHistlistPage" parameterType="page" resultMap="accountChangelistResultMap">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        PCW_IN_CTRCTID_CAGS_INF_ID AS pk,
+        INF_REC_TYPE,
+        NULL AS ACCT_TYPE,
+        OD_BNES_CODE,
+        NW_BNES_CODE,
+        LAST_UPDATE_TIME,
+        OPERATOR_USER,
+        ORG_NAME,
+        ORG_CODE,
+        BUSINESS_STATES,
+        REJECT_REASON,
+        IS_FILTER,
+        REPORT_MESSAGE_ID,
+        RPT_DATE,
+        NAME,
+        ID_TYPE,
+        ID_NUM,
+        'new' FLAG,
+        COMPANY
+        FROM
+        I_IN_CTRCTID_CAGS_INF
+        where OD_BNES_CODE = #{pd.OD_BNES_CODE}
+        and NW_BNES_CODE = #{pd.NW_BNES_CODE}
+        UNION ALL
+        SELECT
+        PBW_IN_ACCT_ID_CAGS_INF_ID AS pk,
+        INF_REC_TYPE,
+        ACCT_TYPE,
+        OD_BNES_CODE,
+        NW_BNES_CODE,
+        LAST_UPDATE_TIME,
+        OPERATOR_USER,
+        ORG_NAME,
+        ORG_CODE,
+        BUSINESS_STATES,
+        REJECT_REASON,
+        IS_FILTER,
+        REPORT_MESSAGE_ID,
+        RPT_DATE,
+        NAME,
+        ID_TYPE,
+        ID_NUM,
+        'new' FLAG,
+        COMPANY
+        FROM
+        I_IN_ACCT_ID_CAGS_INF
+        where OD_BNES_CODE = #{pd.OD_BNES_CODE}
+        and NW_BNES_CODE = #{pd.NW_BNES_CODE}
+        UNION ALL
+        SELECT
+        PDW_INSECACCTID_CAGSINF_ID AS pk,
+        INF_REC_TYPE,
+        ACCT_TYPE,
+        OD_BNES_CODE,
+        NW_BNES_CODE,
+        LAST_UPDATE_TIME,
+        OPERATOR_USER,
+        ORG_NAME,
+        ORG_CODE,
+        BUSINESS_STATES,
+        REJECT_REASON,
+        IS_FILTER,
+        REPORT_MESSAGE_ID,
+        RPT_DATE,
+        NAME,
+        ID_TYPE,
+        ID_NUM,
+        'new' FLAG,
+        COMPANY
+        FROM
+        I_INSECACCTID_CAGSINF
+        where OD_BNES_CODE = #{pd.OD_BNES_CODE}
+        and NW_BNES_CODE = #{pd.NW_BNES_CODE}
+        UNION ALL
+        SELECT
+        PCW_IN_CTRCTID_CAGS_INF_ID AS pk,
+        INF_REC_TYPE,
+        NULL AS ACCT_TYPE,
+        OD_BNES_CODE,
+        NW_BNES_CODE,
+        LAST_UPDATE_TIME,
+        OPERATOR_USER,
+        ORG_NAME,
+        ORG_CODE,
+        BUSINESS_STATES,
+        REJECT_REASON,
+        IS_FILTER,
+        REPORT_MESSAGE_ID,
+        RPT_DATE,
+        NAME,
+        ID_TYPE,
+        ID_NUM,
+        'old' FLAG,
+        COMPANY
+        FROM
+        I_IN_CTRCTID_CAGS_INF_HIST
+        where OD_BNES_CODE = #{pd.OD_BNES_CODE}
+        and NW_BNES_CODE = #{pd.NW_BNES_CODE}
+        UNION ALL
+        SELECT
+        PBW_IN_ACCT_ID_CAGS_INF_ID AS pk,
+        INF_REC_TYPE,
+        ACCT_TYPE,
+        OD_BNES_CODE,
+        NW_BNES_CODE,
+        LAST_UPDATE_TIME,
+        OPERATOR_USER,
+        ORG_NAME,
+        ORG_CODE,
+        BUSINESS_STATES,
+        REJECT_REASON,
+        IS_FILTER,
+        REPORT_MESSAGE_ID,
+        RPT_DATE,
+        NAME,
+        ID_TYPE,
+        ID_NUM,
+        'old' FLAG,
+        COMPANY
+        FROM
+        I_IN_ACCT_ID_CAGS_INF_HIST
+        where OD_BNES_CODE = #{pd.OD_BNES_CODE}
+        and NW_BNES_CODE = #{pd.NW_BNES_CODE}
+        UNION ALL
+        SELECT
+        PDW_INSECACCTID_CAGSINF_ID AS pk,
+        INF_REC_TYPE,
+        ACCT_TYPE,
+        OD_BNES_CODE,
+        NW_BNES_CODE,
+        LAST_UPDATE_TIME,
+        OPERATOR_USER,
+        ORG_NAME,
+        ORG_CODE,
+        BUSINESS_STATES,
+        REJECT_REASON,
+        IS_FILTER,
+        REPORT_MESSAGE_ID,
+        RPT_DATE,
+        NAME,
+        ID_TYPE,
+        ID_NUM,
+        'old' FLAG,
+        COMPANY
+        FROM
+        I_INSECACCTID_CAGSINF_HIST
+        where OD_BNES_CODE = #{pd.OD_BNES_CODE}
+        and NW_BNES_CODE = #{pd.NW_BNES_CODE}
+        ) a
+        where 1=1
+        <if test='pd.RPT_DATE != null and pd.RPT_DATE != ""'>
+            and a.RPT_DATE = #{pd.RPT_DATE}
+        </if>
+            and a.COMPANY = #{pd.COMPANY}
+    </select>
+    <update id="updateStatus" parameterType="map">
+        update
+        <if test="infRecType == '221'">
+            I_IN_CTRCTID_CAGS_INF
+        </if>
+        <if test="infRecType == '211'">
+            I_IN_ACCT_ID_CAGS_INF
+        </if>
+        <if test="infRecType == '231'">
+            I_INSECACCTID_CAGSINF
+        </if>
+        <set>
+            BUSINESS_STATES = '11'
+        </set>
+        where
+        <if test="infRecType == '221'">
+            PCW_IN_CTRCTID_CAGS_INF_ID
+        </if>
+        <if test="infRecType == '211'">
+            PBW_IN_ACCT_ID_CAGS_INF_ID
+        </if>
+        <if test="infRecType == '231'">
+            PDW_INSECACCTID_CAGSINF_ID
+        </if>
+        = #{baseId}
+        and COMPANY = #{COMPANY}
+    </update>
+    <update id="backdate" parameterType="map">
+        update
+        <if test="infRecType == '221'">
+            I_IN_CTRCTID_CAGS_INF
+        </if>
+        <if test="infRecType == '211'">
+            I_IN_ACCT_ID_CAGS_INF
+        </if>
+        <if test="infRecType == '231'">
+            I_INSECACCTID_CAGSINF
+        </if>
+        <set>
+            BUSINESS_STATES = '30'
+        </set>
+        where REPORT_MESSAGE_ID = #{reportMessageId}
+          and COMPANY = #{COMPANY}
+    </update>
+    <delete id="deletedate" parameterType="map">
+		delete from report_message
+		 where REPORT_MESSAGE_FILE_NAME = #{reportMessageId}
+		   and COMPANY = #{COMPANY}
+</delete>
+</mapper>

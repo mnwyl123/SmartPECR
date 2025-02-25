@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="GenerateUUIDMapper">
+	<select id="generateUUID" parameterType="page" resultType="String">
+		<if test="_databaseId == 'oracle' ">
+		 select SYS_GUID() from dual
+		</if>
+		<if test="_databaseId == 'db2'">
+		SELECT concat (hex (RAND ()), hex (RAND ())) as uuid FROM SYSIBM.SYSDUMMY1
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    SELECT upper(replace(UUID(),'-',''))  as uuid 
+		</if>
+	</select>
+	
+	<insert id="insertXmlLog" parameterType="map">
+		<![CDATA[
+		insert into XML_LOG(
+					topid)
+		    values (
+					#{topid}
+				)
+		]]>
+	</insert>
+	
+	<select id="getXmlLog" parameterType="map" resultType="int">
+		select count(topid) from XML_LOG where topid=#{topid}
+	</select>
+</mapper>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InSpcEvtDscInfMapper">
+
+<sql id="TableName">
+		I_IN_SPC_EVT_DSC_INF
+</sql>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.InSpcEvtDscInf" id="listResultMap">
+		<result column="pbk_in_spc_evt_dsc_inf_id" property="pbkInSpcEvtDscInfId"/>
+		<result column="INF_REC_TYPE" property="infRecType"/>
+		<result column="NAME" property="name"/>
+		<result column="ID_TYPE" property="idType"/>
+		<result column="ID_NUM" property="idNum"/>
+		<result column="ACCT_TYPE" property="acctType"/>
+		<result column="ACCT_CODE" property="acctCode"/>
+		<result column="OPETN_TYPE" property="opetnType"/>
+		<result column="MONTH" property="month"/>
+		<result column="FLAG" property="flag"/>
+		<result column="RPT_DATE" property="rptDate"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="OPERATOR_USER" property="operatorUser"/>
+		<result column="ORG_NAME" property="orgName"/>
+		<result column="ORG_CODE" property="orgCode"/>
+		<result column="BUSINESS_STATES" property="businessStates"/>
+		<result column="REJECT_REASON" property="rejectReason"/>
+		<result column="IS_FILTER" property="isFilter"/>
+		<result column="REPORT_MESSAGE_ID" property="reportMessageId"/>
+</resultMap>
+<!-- 查询基本信息 -->
+<select id="datalistPage" parameterType="page" resultMap="listResultMap">
+		select 
+			pbk_in_spc_evt_dsc_inf_id 
+			,inf_rec_type 
+			,I_IN_SPC_EVT_DSC_INF.acct_type 
+			,acct_code 
+			,opetn_type 
+			,month 
+			,flag 
+			,rpt_date 
+			,last_update_time 
+			,operator_user 
+			,org_name 
+			,org_code 
+			,business_states 
+			,reject_reason 
+			,is_filter 
+			,report_message_id 
+			,name 
+			,id_type 
+			,id_num 
+			,COMPANY
+		  from <include refid="TableName"/>
+		  <if test="pd.managerId != null and pd.managerId != ''">
+			  LEFT JOIN PECR.sys_l_c_a_m_m M
+			  ON I_IN_SPC_EVT_DSC_INF.ACCT_TYPE = M.ACCT_TYPE
+			  AND ACCT_CODE = M.ACCT_NUM 
+		  </if>
+		  where   1=1 <!--   BUSINESS_STATES = '10'-->
+		 	<if test='pd.rptDate != null and pd.rptDate != ""'>
+				and rpt_date = #{pd.rptDate}
+			</if>
+			<if test='pd.acctCode != null and pd.acctCode != ""'>
+				and acct_code like '%${pd.acctCode}%'
+			</if>
+			<if test='pd.acctType != null and pd.acctType != ""'>
+				and I_IN_SPC_EVT_DSC_INF.acct_type = #{pd.acctType}
+			</if>
+			<if test='pd.businessStates != null and pd.businessStates != ""'>
+				and BUSINESS_STATES = #{pd.businessStates}
+			</if>
+			<if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != ''">
+				and M.MANAGER_ID = #{pd.managerId}
+				AND M.DATA_TYPE = '1'
+				AND M.DATA_LEVEL = '2'
+				AND M.END_DATE = '2099-12-31'
+			</if>
+			    and COMPANY = #{pd.COMPANY}
+</select>
+<!-- 修改 -->
+<update id="updateData" parameterType="pd">
+		update <include refid="TableName"/>
+		<set>
+			<if test='name != null and name != ""'>
+				name = #{name},
+			</if>
+			<if test='idType != null and idType != ""'>
+				id_type = #{idType},
+			</if>
+			<if test='idNum != null and idNum != ""'>
+				ID_NUM = #{idNum},
+			</if>
+			<if test='acctType1 != null and acctType1 != ""'>
+				acct_type = #{acctType1},
+			</if>
+			<if test='acctCode != null and acctCode != ""'>
+				ACCT_CODE = #{acctCode},
+			</if>
+			<if test='opetnType != null and opetnType != ""'>
+				OPETN_TYPE = #{opetnType},
+			</if>
+			<if test='month != null and month != ""'>
+				month = #{month},
+			</if>
+			<if test='flag != null and flag != ""'>
+				flag = #{flag},
+			</if>
+			<if test='rptDate != null and rptDate != ""'>
+				rpt_date = #{rptDate}
+			</if>
+		</set>
+		where pbk_in_spc_evt_dsc_inf_id = #{pbkInSpcEvtDscInfId}
+		  and COMPANY = #{COMPANY}
+</update>
+<!-- 更新数据状态 -->
+<update id="updatestatus" parameterType="pd">
+		update <include refid="TableName"/>
+		set BUSINESS_STATES = '20',
+		<if test="_databaseId == 'mysql'">
+		LAST_UPDATE_TIME = date_format(now(),'%Y-%m-%d')  ,
+		</if>
+		<if test="_databaseId == 'oracle' or _databaseId == 'mysql'">
+		LAST_UPDATE_TIME = to_char(SYSDATE,'yyyy-mm-dd')  ,
+		</if>
+		OPERATOR_USER = #{USERID}
+		where pbk_in_spc_evt_dsc_inf_id = #{pbkInSpcEvtDscInfId}
+</update>
+<!-- 新增 -->
+<insert id="addData" parameterType="pd">
+		insert into <include refid="TableName"/>
+		( pbk_in_spc_evt_dsc_inf_id 
+			,inf_rec_type 
+			,acct_type 
+			,acct_code 
+			,opetn_type 
+			,month 
+			,flag 
+			,rpt_date 
+			,last_update_time 
+			,operator_user 
+			,org_name 
+			,org_code 
+			,business_states 
+			,reject_reason 
+			,is_filter 
+			,report_message_id 
+			,name 
+			,id_type 
+			,id_num
+			,COMPANY ) values
+		(#{pbkInSpcEvtDscInfId}
+			,'215'
+			,#{acctType1}
+			,#{acctCode}
+			,#{opetnType}
+			,#{month}
+			,#{flag}
+			,#{rptDate}
+			<if test="_databaseId == 'mysql'">
+			,date_format(now(),'%Y-%m-%d')
+			</if>
+			<if test="_databaseId == 'oracle' or _databaseId == 'db2'">
+			,to_char(sysdate,'YYYY-MM-DD')
+			</if>
+			,#{operatorUser}
+			,#{orgName}
+			,#{orgCode}
+			,'11'
+			,#{rejectReason}
+			,#{isFilter}
+			,#{reportMessageId}
+			,#{name}
+			,#{idType}
+			,#{idNum}
+			,#{COMPANY})
+</insert>
+<!-- 删除 -->
+<delete id="deleteData" parameterType="pd">
+		delete from <include refid="TableName"/>
+		where pbk_in_spc_evt_dsc_inf_id = #{pbkInSpcEvtDscInfId}
+		  and COMPANY = #{COMPANY}
+</delete>
+</mapper>

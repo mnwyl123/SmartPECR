@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FeedbackMessageMapper">
+
+	<select id="getFeedbackMsglistPage" parameterType="page" resultType="java.util.HashMap">
+	    SELECT FEED_BACK_REPORT_ERROR_MESS_ID,
+	           FEED_BACK_REPORT_CODE_ID,
+	           ERROR_MESSAGE,
+	           RECORD_ID,
+	           A.REPORT_MESSAGE_ID,
+	           REPORT_MESSAGE_TYPE,
+	           CREATE_TIME,
+	           REPORT_MESSAGE_NAME,
+	           FEED_BACK_REPORT_NAME,
+	           FB_CODE,
+	           FB_TAG,
+	           A.COMPANY
+	            <if test='pd.infRecType != null and pd.infRecType == "110"'>
+	           		,B.ID_TYPE || '_' || B.ID_NUM AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "114"'>
+	           		,B.ID_TYPE || '_' || B.ID_NUM AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "120"'>
+	           		,B.ID_TYPE || '_' || B.ID_NUM AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "130"'>
+	           		,B.ID_TYPE || '_' || B.ID_NUM AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "134"'>
+	           		,B.ID_TYPE || '_' || B.ID_NUM AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "140"'>
+	           		,B.ID_TYPE || '_' || B.ID_NUM AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "210"'>
+	           		,B.ACCT_TYPE  || '_' || B.ACCT_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "211"'>
+	           		,B.OD_BNES_CODE AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "212"'>
+	           		,B.ACCT_TYPE  || '_' || B.ACCT_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "213"'>
+	           		,B.DEL_REC_CODE AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "214"'>
+	           		,B.DEL_REC_CODE AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "215"'>
+	           		,B.ACCT_CODE || '_' || B.OPETN_TYPE AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "220"'>
+	           		,B.CONTRACT_CODE AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "221"'>
+	           		,B.OD_BNES_CODE AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "222"'>
+	           		,B.CONTRACT_CODE AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "223"'>
+	           		,B.DEL_REC_CODE AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "224"'>
+	           		,B.DEL_REC_CODE AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "230"'>
+	           		,B.ACCT_TYPE  || '_' || B.ACCT_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "231"'>
+	           		,B.OD_BNES_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "232"'>
+	           		,B.ACCT_TYPE  || '_' || B.ACCT_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "233"'>
+	           		,B.DEL_REC_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "234"'>
+	           		,B.DEL_REC_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "310"'>
+	           		,B.ENT_CERT_TYPE  || '_' || B.ENT_CERT_NUM  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "340"'>
+	           		,B.ENT_CERT_TYPE  || '_' || B.ENT_CERT_NUM  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "314"'>
+	           		,B.ID_TYPE  || '_' || B.ID_NUM  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "350"'>
+	           		,B.ENT_CERT_TYPE  || '_' || B.ENT_CERT_NUM  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "410"'>
+	           		,B.ACCT_TYPE  || '_' || B.ACCT_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "411"'>
+	           		,B.OD_BNES_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "412"'>
+	           		,B.ACCT_TYPE  || '_' || B.ACCT_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "413"'>
+	           		,B.DEL_REC_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "414"'>
+	           		,B.DEL_REC_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "420"'>
+	           		,B.CONTRACT_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "421"'>
+	           		,B.OD_BNES_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "422"'>
+	           		,B.CONTRACT_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "423"'>
+	           		,B.DEL_REC_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "424"'>
+	           		,B.DEL_REC_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "440"'>
+	           		,B.ACCT_TYPE  || '_' || B.ACCT_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "441"'>
+	           		,B.OD_BNES_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "442"'>
+	           		,B.ACCT_TYPE  || '_' || B.ACCT_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "443"'>
+	           		,B.DEL_REC_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "444"'>
+	           		,B.DEL_REC_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "510"'>
+	           		,B.CC_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "511"'>
+	           		,B.OD_BNES_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "514"'>
+	           		,B.DEL_REC_CODE  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "610"'>
+	           		,B.ENT_CERT_TYPE  || '_' || B.ENT_CERT_NUM  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "614"'>
+	           		,B.ID_TYPE  || '_' || B.ID_NUM  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "620"'>
+	           		,B.ENT_CERT_TYPE  || '_' || B.ENT_CERT_NUM  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "624"'>
+	           		,B.ID_TYPE  || '_' || B.ID_NUM  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "630"'>
+	           		,B.ENT_CERT_TYPE  || '_' || B.ENT_CERT_NUM  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "634"'>
+	           		,B.ID_TYPE  || '_' || B.ID_NUM  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "640"'>
+	           		,B.ENT_CERT_TYPE  || '_' || B.ENT_CERT_NUM  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "644"'>
+	           		,B.ID_TYPE  || '_' || B.ID_NUM  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "650"'>
+	           		,B.ENT_CERT_TYPE  || '_' || B.ENT_CERT_NUM  AS BUSINESS_ID
+	           	</if>
+	           	<if test='pd.infRecType != null and pd.infRecType == "654"'>
+	           		,B.ID_TYPE  || '_' || B.ID_NUM  AS BUSINESS_ID
+	           	</if>
+	      FROM FEED_BACK_REPORT_ERR_MESSAGE A
+	      	<if test='pd.infRecType != null and pd.infRecType == "110"'>
+	     		INNER JOIN I_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PAA_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '110'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC1
+					ON B.NAME = LC1.CUST_NAME AND B.ID_TYPE = LC1.CUST_ID_TYPE AND B.ID_NUM = LC1.CUST_ID_NUM
+			</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "114"'>
+	     		INNER JOIN I_IN_BS_INF_DLT B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PAY_IN_BS_INF_DLT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10') 
+	     	</if>  
+	     	<if test='pd.infRecType != null and pd.infRecType == "120"'>
+	     		INNER JOIN I_IN_FAL_MMBS_INF B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PAJ_IN_FAL_MMBS_INF_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "130"'>
+	     		INNER JOIN I_IN_ID_EFCT_INF B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PAK_IN_ID_EFCT_INF_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "134"'>
+	     		INNER JOIN I_IN_ID_EFCT_INF_DLT B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PAZ_IN_ID_EFCT_INF_DLT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "140"'>
+	     		INNER JOIN I_IN_CTF_ITG_INF B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PAL_IN_CTF_ITG_INF_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "210"'>
+	     		INNER JOIN I_ACCT_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PBA_ACCT_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '210'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC2
+					ON B.ACCT_TYPE = LC2.ACCT_TYPE AND B.ACCT_CODE = LC2.ACCT_NUM
+			</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "211"'>
+	     		INNER JOIN I_IN_ACCT_ID_CAGS_INF B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PBW_IN_ACCT_ID_CAGS_INF_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "212"'>
+	     		INNER JOIN I_ACCT_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PBA_ACCT_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '212'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC3
+					ON B.ACCT_TYPE = LC3.ACCT_TYPE AND B.ACCT_CODE = LC3.ACCT_NUM
+			</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "213"'>
+	     		INNER JOIN I_IN_ACCT_DEL B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PBY_IN_ACCT_DEL_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "214"'>
+	     		INNER JOIN I_IN_ACCT_ENT_DEL B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PBZ_IN_ACCT_ENT_DEL_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "215"'>
+	     		INNER JOIN I_IN_SPC_EVT_DSC_INF B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PBK_IN_SPC_EVT_DSC_INF_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "220"'>
+	     		INNER JOIN I_CTRCT_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PCA_CTRCT_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '220'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC4
+					ON B.CONTRACT_CODE = LC4.ACCT_NUM
+			</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "221"'>
+	     		INNER JOIN I_IN_CTRCTID_CAGS_INF B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PCW_IN_CTRCTID_CAGS_INF_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "222"'>
+	     		INNER JOIN I_CTRCT_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PCA_CTRCT_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '222'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC5
+					ON B.CONTRACT_CODE = LC5.ACCT_NUM
+			</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "223"'>
+	     		INNER JOIN I_IN_CTRCT_DEL B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PCY_IN_CTRCT_DEL_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "224"'>
+	     		INNER JOIN I_IN_CTRCT_ENT_DEL B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PCZ_IN_CTRCT_ENT_DEL_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "230"'>
+	     		INNER JOIN I_GUAR_ACCT_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PDA_GUAR_ACCT_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '230'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC6
+					ON B.NAME = LC6.CUST_NAME AND B.ID_TYPE = LC6.CUST_ID_TYPE AND B.ID_NUM = LC6.CUST_ID_NUM
+			</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "231"'>
+	     		INNER JOIN I_INSECACCTID_CAGSINF B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PDW_INSECACCTID_CAGSINF_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "232"'>
+	     		INNER JOIN I_GUAR_ACCT_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PDA_GUAR_ACCT_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '232'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC7
+					ON B.NAME = LC7.CUST_NAME AND B.ID_TYPE = LC7.CUST_ID_TYPE AND B.ID_NUM = LC7.CUST_ID_NUM
+			</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "233"'>
+	     		INNER JOIN I_IN_SEC_ACCT_DEL B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PDY_IN_SEC_ACCT_DEL_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "234"'>
+	     		INNER JOIN I_IN_SEC_ACCT_ENT_DEL B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.PDZ_IN_SEC_ACCT_ENT_DEL_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "310"'>
+	     		INNER JOIN E_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EAA_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '310'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC8
+					ON B.ENT_NAME = LC8.CUST_NAME AND B.ENT_CERT_TYPE = LC8.CUST_ID_TYPE AND B.ENT_CERT_NUM = LC8.CUST_ID_NUM
+			</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "340"'>
+	     		INNER JOIN E_CTFITG_INF B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EBA_EN_CTFITG_INF_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "314"'>
+	     		INNER JOIN E_BS_INF_DLT B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EAZ_EN_BS_INF_DLT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "350"'>
+	     		INNER JOIN E_ICDN_RLTP_INF B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.ECA_EN_ICDN_RLTP_INF_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "410"'>
+	     		INNER JOIN E_ACCT_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EDA_ACCT_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '410'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC9
+					ON B.ACCT_TYPE = LC9.ACCT_TYPE AND B.ACCT_CODE = LC9.ACCT_NUM
+			</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "411"'>
+	     		INNER JOIN E_ACCT_INF_ID_CAGS_INF B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EDW_EN_ACCT_INF_ID_CAGS_INF_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "412"'>
+	     		INNER JOIN E_ACCT_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EDA_ACCT_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '412'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC10
+					ON B.ACCT_TYPE = LC10.ACCT_TYPE AND B.ACCT_CODE = LC10.ACCT_NUM
+			</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "413"'>
+	     		INNER JOIN E_ACCT_INF_DEL B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EDY_EN_ACCT_INF_DEL_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+	     	</if>
+	     	<if test='pd.infRecType != null and pd.infRecType == "414"'>
+	     		INNER JOIN E_ACCT_INF_ENT_DEL B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EDZ_EN_ACCT_INF_ENT_DEL_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "420"'>
+				INNER JOIN E_CTRCT_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EGA_CTRCT_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '420'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC11
+					ON B.CONTRACT_CODE = LC11.ACCT_NUM
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "421"'>
+				INNER JOIN E_CR_ACCT_ID_CAGS_INF B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EGW_EN_ACCT_INF_ID_CAGS_INF_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "422"'>
+				INNER JOIN E_CTRCT_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EGA_CTRCT_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '422'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC12
+					ON B.CONTRACT_CODE = LC12.ACCT_NUM
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "423"'>
+				INNER JOIN E_CTRCT_INF_DEL B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EGY_EN_CTRCT_INF_DEL_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "424"'>
+				INNER JOIN E_CTRCT_INF_ENT_DEL B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EGZ_EN_CTRCT_INF_ENT_DEL_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "440"'>
+				INNER JOIN E_GUAR_ACCT_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EEA_GUAR_ACCT_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '440'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC13
+					ON B.ACCT_TYPE = LC13.ACCT_TYPE AND B.ACCT_CODE = LC13.ACCT_NUM
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "441"'>
+				INNER JOIN E_SEC_ACCT_ID_CAGS_INF B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EEW_EN_SEC_ACCT_ID_CAGS_INF_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "442"'>
+				INNER JOIN E_GUAR_ACCT_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EEA_GUAR_ACCT_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '442'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC14
+					ON B.ACCT_TYPE = LC14.ACCT_TYPE AND B.ACCT_CODE = LC14.ACCT_NUM
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "443"'>
+				INNER JOIN E_SEC_ACCT_DEL B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EEY_EN_SEC_ACCT_DEL_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "444"'>
+				INNER JOIN E_SEC_ACCT_ENT_DEL B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EEZ_EN_SEC_ACCT_ENT_DEL_SG_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "510"'>
+				INNER JOIN MOTGA_CLTAL_CTRCT_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EFA_MOTGA_CLTAL_CTRCT_BS_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '510'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC15
+					ON B.CC_CODE = LC15.ACCT_NUM
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "511"'>
+				INNER JOIN MOC_ID_CAGS_INF B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EFW_MOC_ID_CAGS_INF_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "514"'>
+				INNER JOIN MOC_ENT_DEL B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EFZ_MOC_ENT_DEL_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "610"'>
+				INNER JOIN E_BALANCE_SHEET_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EHA_BALANCE_SHEET_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '610'">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC16
+					ON B.ENT_NAME = LC16.CUST_NAME AND B.ENT_CERT_TYPE = LC16.CUST_ID_TYPE AND B.ENT_CERT_NUM = LC16.CUST_ID_NUM
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "614"'>
+				INNER JOIN E_BALANCE_SHEET_DLT B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EMZ_BALANCE_SHEET_DLT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "620"'>
+				INNER JOIN E_INCOME_STATEMENT B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EIA_INCOME_STATEMENT_PROFIT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '620'">
+				LEFT JOIN PECR.sys_l_c_a_m_m LC17
+				ON B.ENT_NAME = LC17.CUST_NAME AND B.ENT_CERT_TYPE = LC17.CUST_ID_TYPE AND B.ENT_CERT_NUM = LC17.CUST_ID_NUM
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "624"'>
+				INNER JOIN E_BALANCE_SHEET_DLT B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EMZ_BALANCE_SHEET_DLT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "630"'>
+				INNER JOIN E_CASH_FLOWS_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EJA_CASH_FLOWS_BS_SGMT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '630'">
+				LEFT JOIN PECR.sys_l_c_a_m_m LC18
+				ON B.ENT_NAME = LC18.CUST_NAME AND B.ENT_CERT_TYPE = LC18.CUST_ID_TYPE AND B.ENT_CERT_NUM = LC18.CUST_ID_NUM
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "634"'>
+				INNER JOIN E_BALANCE_SHEET_DLT B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EMZ_BALANCE_SHEET_DLT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "640"'>
+				INNER JOIN E_INSTITU_BALANCE_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EKA_INSTITUTION_BALANCE_SHT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '640'">
+				LEFT JOIN PECR.sys_l_c_a_m_m LC19
+				ON B.ENT_NAME = LC19.CUST_NAME AND B.ENT_CERT_TYPE = LC19.CUST_ID_TYPE AND B.ENT_CERT_NUM = LC19.CUST_ID_NUM
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "644"'>
+				INNER JOIN E_BALANCE_SHEET_DLT B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EMZ_BALANCE_SHEET_DLT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "650"'>
+				INNER JOIN E_INCOME_EXPENSE_BS B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.ELA_INCOME_AND_EXPENSE_STAT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '650'">
+				LEFT JOIN PECR.sys_l_c_a_m_m LC20
+				ON B.ENT_NAME = LC20.CUST_NAME AND B.ENT_CERT_TYPE = LC20.CUST_ID_TYPE AND B.ENT_CERT_NUM = LC20.CUST_ID_NUM
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType == "654"'>
+				INNER JOIN E_BALANCE_SHEET_DLT B ON A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID AND A.RECORD_ID = B.EMZ_BALANCE_SHEET_DLT_ID AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE AND B.BUSINESS_STATES IN ('80', '110', '10')
+			</if>
+		WHERE 1=1 
+		<if test="pd.reportFile != null and pd.reportFile != ''">
+			and REPORT_MESSAGE_NAME = #{pd.reportFile}
+		</if>
+		<if test="pd.infRecType != null and pd.infRecType != ''">
+			and REPORT_MESSAGE_TYPE = #{pd.infRecType} 
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '110'">
+			and LC1.MANAGER_ID = #{pd.managerId} AND LC1.DATA_TYPE = '1' AND LC1.DATA_LEVEL = '1' AND LC1.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '210'">
+			and LC2.MANAGER_ID = #{pd.managerId} AND LC2.DATA_TYPE = '1' AND LC2.DATA_LEVEL = '2' AND LC2.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '212'">
+			and LC3.MANAGER_ID = #{pd.managerId} AND LC3.DATA_TYPE = '1' AND LC3.DATA_LEVEL = '2' AND LC3.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '220'">
+			and LC4.MANAGER_ID = #{pd.managerId} AND LC4.DATA_TYPE = '1' AND LC4.DATA_LEVEL = '4' AND LC4.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '222'">
+			and LC5.MANAGER_ID = #{pd.managerId} AND LC5.DATA_TYPE = '1' AND LC5.DATA_LEVEL = '4' AND LC5.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '230'">
+			and LC6.MANAGER_ID = #{pd.managerId} AND LC6.DATA_TYPE = '1' AND LC6.DATA_LEVEL = '3' AND LC6.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '232'">
+			and LC7.MANAGER_ID = #{pd.managerId} AND LC7.DATA_TYPE = '1' AND LC7.DATA_LEVEL = '3' AND LC7.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '310'">
+			and LC8.MANAGER_ID = #{pd.managerId} AND LC8.DATA_TYPE = '2' AND LC8.DATA_LEVEL = '1' AND LC8.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '410'">
+			and LC9.MANAGER_ID = #{pd.managerId} AND LC9.DATA_TYPE = '2' AND LC9.DATA_LEVEL = '2' AND LC9.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '412'">
+			and LC10.MANAGER_ID = #{pd.managerId} AND LC10.DATA_TYPE = '2' AND LC10.DATA_LEVEL = '2' AND LC10.END_DATE = '2099-12-31'
+		</if>
+			<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '420'">
+			and LC11.MANAGER_ID = #{pd.managerId} AND LC11.DATA_TYPE = '2' AND LC11.DATA_LEVEL = '4' AND LC11.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '422'">
+			and LC12.MANAGER_ID = #{pd.managerId} AND LC12.DATA_TYPE = '2' AND LC12.DATA_LEVEL = '4' AND LC12.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '440'">
+			and LC13.MANAGER_ID = #{pd.managerId} AND LC13.DATA_TYPE = '2' AND LC13.DATA_LEVEL = '3' AND LC13.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '442'">
+			and LC14.MANAGER_ID = #{pd.managerId} AND LC14.DATA_TYPE = '2' AND LC14.DATA_LEVEL = '3' AND LC14.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '510'">
+			and LC15.MANAGER_ID = #{pd.managerId} AND LC15.DATA_TYPE = '2' AND LC15.DATA_LEVEL = '5' AND LC15.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '610'">
+			and LC16.MANAGER_ID = #{pd.managerId} AND LC16.DATA_TYPE = '2' AND LC16.DATA_LEVEL = '6' AND LC16.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '620'">
+			and LC17.MANAGER_ID = #{pd.managerId} AND LC17.DATA_TYPE = '2' AND LC17.DATA_LEVEL = '6' AND LC17.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '630'">
+			and LC18.MANAGER_ID = #{pd.managerId} AND LC18.DATA_TYPE = '2' AND LC18.DATA_LEVEL = '6' AND LC18.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '640'"> 
+			and LC19.MANAGER_ID = #{pd.managerId} AND LC19.DATA_TYPE = '2' AND LC19.DATA_LEVEL = '6' AND LC19.END_DATE = '2099-12-31'
+		</if>
+		<if test="pd.managerId != null and pd.managerId != '' and pd.infRecType == '650'"> 
+			and LC20.MANAGER_ID = #{pd.managerId} AND LC20.DATA_TYPE = '2' AND LC20.DATA_LEVEL = '6' AND LC20.END_DATE = '2099-12-31'
+		</if>
+		    and A.COMPANY = #{pd.COMPANY}
+	</select>
+	
+	
+	
+	<select id="getFeedbackReportNamelistPage" parameterType="page" resultType="java.util.HashMap">
+		SELECT A.REPORT_MESSAGE_ID,
+		       A.REPORT_MESSAGE_TYPE,
+		       A.REPORT_MESSAGE_NAME,
+		       A.FEED_BACK_REPORT_NAME,
+		       A.IS_CHECK,
+		       B.FEEDBACK_MESSAGE_FILE_PATH
+		  FROM (SELECT REPORT_MESSAGE_ID,
+		               REPORT_MESSAGE_TYPE,
+		               REPORT_MESSAGE_NAME,
+		               FEED_BACK_REPORT_NAME,
+		               IS_CHECK
+		          FROM FEED_BACK_REPORT_ERR_MESSAGE
+		         WHERE IS_EDIT = '0' and COMPANY = #{pd.COMPANY}
+					  	<if test="pd.reportFile != null and pd.reportFile != ''">
+							and report_message_name = #{pd.reportFile}
+						</if>
+						<if test="pd.infRecType != null and pd.infRecType != ''">
+							and report_message_type = #{pd.infRecType} 
+						</if>
+						<if test="pd.isCheck != null and pd.isCheck != ''">
+							and IS_CHECK = #{pd.isCheck} 
+						</if>
+		         GROUP BY REPORT_MESSAGE_ID,
+		                  REPORT_MESSAGE_TYPE,
+		                  REPORT_MESSAGE_NAME,
+		                  FEED_BACK_REPORT_NAME,
+		                  IS_CHECK) A
+		  LEFT JOIN REPORT_MESSAGE B
+		    ON A.REPORT_MESSAGE_ID = B.REPORT_MESSAGE_ID
+		 ORDER BY A.REPORT_MESSAGE_NAME DESC
+		
+	</select>
+</mapper>

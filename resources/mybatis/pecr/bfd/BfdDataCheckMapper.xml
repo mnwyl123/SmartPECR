@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http#{//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 元数据 -->
+<mapper namespace="bfdDataCheck">
+
+    <select id="execDataCheckProcedure" statementType="CALLABLE" parameterType="map">
+        {call BFD_SP_DQ_CHECK_RESULT_ALL(
+        #{P_DATA_DATE, mode=IN, jdbcType=VARCHAR},
+        #{P_CHK_TABLE, mode=IN, jdbcType=VARCHAR},
+        #{P_O_RESULT, mode=OUT, jdbcType=VARCHAR}
+        )}
+    </select>
+
+    <select id="getCheckResult" parameterType="page" resultType="map">
+        select
+        ID,
+        DATA_DATE,
+        ORG_CODE,
+        TAB_NAME,
+        TAB_DESC,
+        PK_NAME,
+        PK_VALUE,
+        COL_NAME,
+        COL_VALUE,
+        RULE_ID,
+        EXCEPT_DESC,
+        REMARKS
+        from BFD_DQ_CHECK_RESULT
+        WHERE 1=1
+        <if test="pd.DATA_DATE != null and pd.DATA_DATE != ''">
+            AND DATA_DATE = #{pd.DATA_DATE}
+        </if>
+        <if test="pd.TAB_NAME != null and pd.TAB_NAME != ''">
+            AND TAB_NAME = #{pd.TAB_NAME}
+        </if>
+    </select>
+
+    <select id="getCheckResultById" parameterType="page" resultType="map">
+        select
+        ID,
+        DATA_DATE,
+        TAB_NAME,
+        COL_NAME,
+        COL_VALUE,
+        EXCEPT_DESC,
+        REMARKS
+        from BFD_DQ_CHECK_RESULT
+        WHERE 1=1
+        <if test="pd.ID != null and pd.ID != ''">
+            AND ID = #{pd.ID}
+        </if>
+    </select>
+
+    <update id="updateCheckResultById" parameterType="pd" >
+        update BFD_DQ_CHECK_RESULT
+        set REMARKS = #{REMARKS}
+        where ID = #{ID}
+    </update>
+
+    <delete id="deleteCheckResultById" parameterType="pd">
+        delete from BFD_DQ_CHECK_RESULT
+        where ID = #{ID}
+    </delete>
+
+</mapper>                                                                                                          

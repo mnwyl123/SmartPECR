@@ -1,0 +1,1693 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LoanAcctInfoManager">
+	<resultMap type="com.dcits.supervise.pecr.indv.entity.LoanAcctBsSgmt" id="loanAcctInfoResultMap">
+		<result column="PBA_ACCT_BS_SGMT_ID" property="pbaAcctBsSgmtId" />
+		<result column="ACCT_TYPE" property="acctType" />
+		<result column="ACCT_CODE" property="acctCode" />
+		<result column="RPT_DATE" property="rptDate" />
+		<result column="RPT_DATE_CODE" property="rptDateCode" />
+		<result column="NAME" property="name" />
+		<result column="ID_TYPE" property="idType" />
+		<result column="ID_NUM" property="idNum" />
+		<result column="MNGMT_ORG_CODE" property="mngmtOrgCode" />
+		<result column="BUSINESS_STATES" property="businessStates" />
+		<result column="REJECT_REASON" property="rejectReason" />
+		<result column="MDFC_SGMT_CODE" property="mdfcSgmtCode" />
+	</resultMap>
+
+	<resultMap type="com.dcits.supervise.pecr.indv.entity.LoanAcctRltInfSgmt" id="loanAcctRltInfMap">
+		<result column="PBC_RLT_REPYMT_INF_SGMT_ID" property="pbcRltRepymtInfSgmtId" />
+		<result column="INFO_ID_TYPE" property="infoIdType" />
+		<result column="ARLP_NAME" property="arlpName" />
+		<result column="ARLP_CERT_TYPE" property="arlpCertType" />
+		<result column="ARLP_CERT_NUM" property="arlpCertNum" />
+		<result column="ARLP_TYPE" property="arlpType" />
+		<result column="ARLP_AMT" property="arlpAmt" />
+		<result column="WARTY_SIGN" property="wartySign" />
+		<result column="MAX_GUAR_MCC" property="maxGuarMcc" />
+	</resultMap>
+
+	<!-- 借贷信息 基础段 -->
+	<select id="loanAcctInfolistPage" parameterType="page" resultMap="loanAcctInfoResultMap">
+		select
+			 pba_acct_bs_sgmt_id,
+			 I_ACCT_BS.acct_type,
+			 acct_code,
+			 rpt_date,
+			 rpt_date_code,
+			 name,
+			 id_type,
+			 id_num,
+			 mngmt_org_code,
+			 business_states,
+			 reject_reason,
+			 MDFC_SGMT_CODE,
+			 COMPANY
+		from I_ACCT_BS
+		<if test="pd.managerId != null and pd.managerId != ''">
+			LEFT JOIN PECR.sys_l_c_a_m_m M
+	        ON I_ACCT_BS.ACCT_TYPE = M.ACCT_TYPE
+			AND I_ACCT_BS.ACCT_CODE = M.ACCT_NUM
+		</if>
+		<where>
+			<if test='pd.rptDate != null and pd.rptDate != ""'>
+				and rpt_date = #{pd.rptDate}
+			</if>
+			<if test='pd.acctCode != null and pd.acctCode != ""'>
+				and acct_code like '%${pd.acctCode}%'
+			</if>
+			<if test='pd.acctType != null and pd.acctType != ""'>
+				and I_ACCT_BS.acct_type = #{pd.acctType}
+			</if>
+			<if test='pd.name != null and pd.name != ""'>
+		   	  	and name like '%${pd.name}%'
+		   	</if>
+		   	<if test='pd.idNum != null and pd.idNum != ""'>
+		   	  	and id_num like '%${pd.idNum}%'
+		   	</if> 
+			<if test='pd.businessStates != null and pd.businessStates != ""'>
+				and business_states = #{pd.businessStates}
+			</if>
+			<if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != ''">
+				and M.MANAGER_ID = #{pd.managerId}
+				AND M.DATA_TYPE = '1'
+				AND M.DATA_LEVEL = '2'
+				AND M.END_DATE = '2099-12-31'
+			</if>
+				and COMPANY = #{pd.COMPANY}
+				and INF_REC_TYPE = '210'
+		</where>
+	</select>
+	 <!-- 个人借贷账户按段更正 获取基础段历史表中的主键-->
+	<select id="getPbaAcctBsSgmtId" parameterType="page" resultType="String">
+		select
+			 pba_acct_bs_sgmt_id
+		from I_ACCT_BS_HIST
+		where name = #{pd.name}
+		  and id_type = #{pd.idType}
+		  and id_num = #{pd.idNum}
+		  and acct_type = #{pd.acctType}
+		  and business_states = '70'
+		  and company = #{pd.COMPANY}
+		  and INF_REC_TYPE = '210'
+    </select>
+	
+    <!-- 借贷信息按段更正 基础段 -->
+	<select id="loanAcctUpdatelistPage" parameterType="page" resultMap="loanAcctInfoResultMap">
+		select
+			 pba_acct_bs_sgmt_id,
+			 acct_type,
+			 acct_code,
+			 rpt_date,
+			 rpt_date_code,
+			 name,
+			 id_type,
+			 id_num,
+			 mngmt_org_code,
+			 business_states,
+			 reject_reason,
+			 MDFC_SGMT_CODE,
+			 COMPANY
+		  from I_ACCT_BS  
+		 <if test="pd.managerId != null and pd.managerId != ''">
+			LEFT JOIN PECR.sys_l_c_a_m_m M
+	        ON I_ACCT_BS.ACCT_TYPE = M.ACCT_TYPE
+			AND I_ACCT_BS.ACCT_CODE = M.ACCT_NUM
+		 </if>
+		  where 1=1 
+			<if test='pd.rptDate != null and pd.rptDate != ""'>
+				and rpt_date = #{pd.rptDate}
+			</if>
+			<if test='pd.idCode != null and pd.idCode != ""'>
+				and id_num like '%${pd.idCode}%'
+			</if>
+			<if test='pd.idType != null and pd.idType != ""'>
+				and id_type = #{pd.idType}
+			</if>
+			<if test='pd.acctType != null and pd.acctType != ""'>
+				and acct_type = #{pd.acctType}
+			</if>
+			<if test='pd.acctCode != null and pd.acctCode != ""'>
+				and acct_code = #{pd.acctCode}
+			</if>
+			<if test='pd.businessStates != null and pd.businessStates != ""'>
+				and business_states = #{pd.businessStates}
+			</if>
+			<if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != ''">
+				and M.MANAGER_ID = #{pd.managerId}
+				AND M.DATA_TYPE = '1'
+				AND M.DATA_LEVEL = '2'
+			</if>
+			    and INF_REC_TYPE = '212'
+			    and COMPANY = #{pd.COMPANY}
+		
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 基础段 -->
+	<select id="getAcctBsSgmtById" parameterType="pd" resultType="map">
+		 select PBA_ACCT_BS_SGMT_ID,
+				INF_REC_TYPE,
+				ACCT_TYPE,
+				ACCT_CODE,
+				RPT_DATE,
+				RPT_DATE_CODE,
+				NAME,
+				ID_TYPE,
+				ID_NUM,
+				MNGMT_ORG_CODE,
+				LAST_UPDATE_TIME,
+				OPERATOR_USER,
+				ORG_NAME,
+				ORG_CODE,
+				BUSINESS_STATES,
+				IS_FILTER,
+				REJECT_REASON,
+				REPORT_MESSAGE_ID,
+				MDFC_SGMT_CODE,
+				COMPANY
+		   from I_ACCT_BS
+		  where PBA_ACCT_BS_SGMT_ID = #{pbaAcctBsSgmtId}
+		  and COMPANY = #{COMPANY}
+	</select>
+	<select id="getAcctBsSgmtByIdType" parameterType="pd" resultType="map">
+		 select PBA_ACCT_BS_SGMT_ID,
+				INF_REC_TYPE,
+				ACCT_TYPE,
+				ACCT_CODE,
+				RPT_DATE,
+				RPT_DATE_CODE,
+				NAME,
+				ID_TYPE,
+				ID_NUM,
+				MNGMT_ORG_CODE,
+				LAST_UPDATE_TIME,
+				OPERATOR_USER,
+				ORG_NAME,
+				ORG_CODE,
+				BUSINESS_STATES,
+				IS_FILTER,
+				REJECT_REASON,
+				REPORT_MESSAGE_ID,
+				MDFC_SGMT_CODE,
+				COMPANY
+		  from I_ACCT_BS
+		  where name = #{name}
+		    and id_type = #{idType}
+		    and id_num = #{idNum}
+		    and acct_type = #{acctType}
+		    and inf_rec_type = '212' 
+		    and mdfc_sgmt_code = #{mdfcSgmtCode}
+		    and COMPANY = #{COMPANY}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 基本信息段 -->
+	<select id="getAcctBsInfSgmtById" parameterType="pd" resultType="pd">
+		 select PBB_ACCT_BS_INF_SGMT_ID,
+				BUSI_LINES,
+				BUSI_DTL_LINES,
+				OPEN_DATE,
+				CY,
+				ACCT_CRED_LINE,
+				LOAN_AMT,
+				FLAG,
+				DUE_DATE,
+				REPAY_MODE,
+				REPAY_FREQCY,
+				REPAY_PRD,
+				APPLY_BUSI_DIST,
+				GUAR_MODE,
+				OTH_REPY_GUAR_WAY,
+				ASSET_TRAND_FLAG,
+				FUND_SOU,
+				LOAN_FORM,
+				CREDIT_ID,
+				COMPANY,
+				LOAN_CON_CODE,
+				FIRST_HOU_LOAN_FLAG
+		   from I_ACCT_BS_INF
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 相关还款责任人段 -->
+	<select id="getLoanRltSgmtByIdlistPage" parameterType="page" resultMap="loanAcctRltInfMap">
+		 select pbc_rlt_repymt_inf_sgmt_id,
+				info_id_type,
+				arlp_name,
+				arlp_cert_type,
+				arlp_cert_num,
+				arlp_type,
+				arlp_amt,
+				warty_sign,
+				max_guar_mcc,
+				COMPANY
+		   from I_LOAN_RLT_REPYMT_INF
+		  where pba_acct_bs_sgmt_id = #{pd.pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 抵质押物信息段 -->
+	<select id="getMccInfoSgmtByIdlistPage" parameterType="page" resultType="pd">
+		select PBD_MCC_INF_SGMT_ID,
+		       CCC,
+		       COMPANY
+		  from I_MCC_INF
+		 where pba_acct_bs_sgmt_id = #{pd.pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 授信额度信息段 -->
+	<select id="getAcctCredSgmtById" parameterType="pd" resultType="pd">
+		select PBE_ACCT_CRED_SGMT_ID,
+		       MCC,
+		       COMPANY
+		from I_ACCT_CRED
+		where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 初始债权说明段 -->
+	<select id="getOcInfoSgmtById" parameterType="pd" resultType="pd">
+		 select PBF_OC_INF_SGMT_ID,
+				INIT_CRED_NAME,
+				INIT_CRED_ORG_NM,
+				ORIG_DBT_CATE,
+				INIT_RPY_STS,
+				COMPANY 
+		   from I_OC_INF
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 月度表现信息段 -->
+	<select id="getAmblgInfoSgmtById" parameterType="pd" resultType="pd">
+		select PBG_AMBLG_INF_SGMT_ID,
+				MONTH,
+				SETT_DATE,
+				ACCT_STATUS,
+				ACCT_BAL,
+				PRID_ACCT_BAL,
+				USED_AMT,
+				NOT_ISU_BAL,
+				REM_REP_PRD,
+				FIVE_CATE,
+				FIVE_CATE_ADJ_DATE,
+				RPY_STATUS,
+				RPY_PRCT,
+				OVERD_PRD,
+				TOT_OVERD,
+				OVERD_PRINC,
+				OVED31_60_PRINC,
+				OVED61_90_PRINC,
+				OVED91_180_PRINC,
+				OVED_PRINC180,
+				OVEDRAW_BA_OVE180,
+				CUR_RPY_AMT,
+				ACT_RPY_AMT,
+				LAT_RPY_DATE,
+				CLOSE_DATE,
+				COMPANY
+		  from I_AMBLG_INF
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 大额专项分期信息段 -->
+	<select id="getSpecPrdSgmtById" parameterType="pd" resultType="pd">
+		 select PBH_SPEC_PRD_SGMT_ID,
+				SPEC_LINE,
+				SPEC_EFCT_DATE,
+				SPEC_END_DATE,
+				USED_INST_AMT,
+				COMPANY
+		   from I_SPEC_PRD
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 非月度表现信息段 -->
+	<select id="getAcctDbtInfSgmtById" parameterType="pd" resultType="pd">
+		 select PBI_ACCT_DBT_INF_SGMT_ID,
+				NOMONTH_ACCT_STATUS,
+				NOMONTH_ACCT_BAL,
+				NOMONTH_FIVE_CATE,
+				NOMONTH_FIVE_CATE_ADJ_DATE,
+				NOMONTH_REM_REP_PRD,
+				NOMONTH_RPY_STATUS,
+				NOMONTH_OVERD_PRD,
+				NOMONTH_TOT_OVERD,
+				NOMONTH_LAT_RPY_AMT,
+				NOMONTH_LAT_RPY_DATE,
+				NOMONTH_CLOSE_DATE,
+				COMPANY
+		   from I_ACCT_DBT_INF
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 特殊交易说明段 -->
+	<select id="getTrstDspnSgmtByIdlistPage" parameterType="page" resultType="pd">
+		 select PBJ_AS_TRST_DSPN_SGMT_ID,
+				CHAN_TRAN_TYPE,
+				TRAN_DATE,
+				TRAN_AMT,
+				DUE_TRAN_MON,
+				DET_INFO,
+				COMPANY
+		   from I_AS_TRST_DSPN
+		  where pba_acct_bs_sgmt_id = #{pd.pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 查询 基础段 主键是否存在 -->
+	<select id="getAcctBsSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from I_ACCT_BS
+	     where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</select>
+	<!-- 新增    个人借贷账户按段更正基础段 -->
+	<insert id="saveAcctBsSgmt" parameterType="map" useGeneratedKeys="false" >
+		insert into I_ACCT_BS(
+					pba_acct_bs_sgmt_id,
+					inf_rec_type,
+					acct_type,
+					acct_code,
+					rpt_date,
+					RPT_DATE_CODE,
+					name,
+					id_type,
+					id_num,
+					mngmt_org_code,
+					LAST_UPDATE_TIME,
+					operator_user,
+					org_code,
+					business_states,
+					is_filter,
+					MDFC_SGMT_CODE,
+					COMPANY)
+		    select #{pbaAcctBsSgmtId},
+					'212',
+					acct_type,
+					acct_code,
+					rpt_date,
+					RPT_DATE_CODE,
+					name,
+					id_type,
+					id_num,
+					mngmt_org_code,
+					<if test="_databaseId == 'mysql'">
+					date_format(now(),'%Y-%m-%d'),
+					</if>
+					<if test="_databaseId == 'oracle' or _databaseId == 'db2'">
+					to_char(sysdate,'YYYY-MM-DD'),
+					</if>
+					#{operator_user},
+					org_code,
+					'11',
+					is_filter,
+					#{mdfcSgmtCode},
+					company
+			from I_ACCT_BS_HIST
+			where pba_acct_bs_sgmt_id = #{oldPbaAcctBsSgmtId}
+			  and company = #{COMPANY}
+	</insert>
+	<!-- 新增    基础段 -->
+	<insert id="insertAcctBsSgmt" parameterType="map">
+		<![CDATA[
+		insert into I_ACCT_BS(
+					pba_acct_bs_sgmt_id,
+					inf_rec_type,
+					acct_type,
+					acct_code,
+					rpt_date,
+					rpt_date_code,
+					name,
+					id_type,
+					id_num,
+					mngmt_org_code,
+					operator_user,
+					org_code,
+					business_states,
+					is_filter,
+					MDFC_SGMT_CODE,
+					COMPANY)
+		    values (#{pbaAcctBsSgmtId},
+					#{infRecType},
+					#{acctType},
+					#{acctCode},
+					#{rptDate},
+					#{rptDateCode},
+					#{name},
+					#{idType},
+					#{idNum},
+					#{mngmtOrgCode},
+					#{operationUser},
+					#{orgCode},
+					'11',
+					#{isFilter},
+					#{mdfcSgmtCode},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+
+	<!-- 更新    基础段 -->
+	<update id="updateAcctBsSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update I_ACCT_BS
+			set inf_rec_type = #{infRecType, jdbcType=VARCHAR},
+				acct_type = #{acctType, jdbcType=VARCHAR},
+				acct_code = #{acctCode, jdbcType=VARCHAR},
+				rpt_date = #{rptDate, jdbcType=VARCHAR},
+				rpt_date_code = #{rptDateCode, jdbcType=VARCHAR},
+				name = #{name, jdbcType=VARCHAR},
+				id_type = #{idType, jdbcType=VARCHAR},
+				id_num = #{idNum, jdbcType=VARCHAR},
+				mngmt_org_code = #{mngmtOrgCode, jdbcType=VARCHAR},
+				operator_user = #{operationUser, jdbcType=VARCHAR},
+				org_code = #{orgCode, jdbcType=VARCHAR},
+				business_states = '20',
+				MDFC_SGMT_CODE = #{mdfcSgmtCode, jdbcType=VARCHAR},
+				is_filter = #{isFilter, jdbcType=VARCHAR}
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+		    and COMPANY = #{COMPANY}
+			
+		  ]]>
+		  <!-- AND business_states = '10' -->
+	</update>
+
+	<!-- 删除基础段 -->
+	<delete id="delAcctBsSgmtById" parameterType="map">
+		delete from I_ACCT_BS
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+		  and COMPANY = #{COMPANY}
+	</delete>
+
+		<!-- 删除 基本信息段 -->
+	<delete id="delAcctBsInfSgmtById" parameterType="map">
+		delete from I_ACCT_BS_INF
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 相关还款责任人段 -->
+	<delete id="delLoanRltSgmtById" parameterType="map">
+		delete from I_LOAN_RLT_REPYMT_INF
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 抵质押物信息段 -->
+	<delete id="delMccInfoSgmtById" parameterType="map">
+		delete from I_MCC_INF
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 授信额度信息段 -->
+	<delete id="delAcctCredSgmtById" parameterType="map">
+		delete from I_ACCT_CRED
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 初始债权说明段 -->
+	<delete id="delOcInfoSgmtById" parameterType="map">
+		delete from I_OC_INF
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 月度表现信息段 -->
+	<delete id="delAmblgInfoSgmtById" parameterType="map">
+		delete from I_AMBLG_INF
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 大额专项分期信息段 -->
+	<delete id="delSpecPrdSgmtById" parameterType="map">
+		delete from I_SPEC_PRD
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 非月度表现信息段 -->
+	<delete id="delAcctDbtInfSgmtById" parameterType="map">
+		delete from I_ACCT_DBT_INF
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 特殊交易说明段 -->
+	<delete id="delTrstDspnSgmtById" parameterType="map">
+		delete from I_AS_TRST_DSPN
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</delete>
+
+	<!-- 查询 基本信息段 主键是否存在 -->
+	<select id="getAcctBsInfoSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from I_ACCT_BS_INF
+	     where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+	       and pbb_acct_bs_inf_sgmt_id = #{pbbAcctBsInfSgmtId}
+	</select>
+	<!-- 新增 个人借贷账户按段更正基本信息段 -->
+	<insert id="saveAcctBsInfoSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into I_ACCT_BS_INF(
+					pbb_acct_bs_inf_sgmt_id,
+					busi_lines,
+					busi_dtl_lines,
+					open_date,
+					cy,
+					acct_cred_line,
+					loan_amt,
+					flag,
+					due_date,
+					repay_mode,
+					repay_freqcy,
+					repay_prd,
+					apply_busi_dist,
+					guar_mode,
+					oth_repy_guar_way,
+					asset_trand_flag,
+					fund_sou,
+					loan_form,
+					credit_id,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		    select  <if test="_databaseId == 'oracle' ">
+					sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					<if test="_databaseId == 'mysql'">
+					upper(replace(uuid(),'-','')),
+					</if>
+					busi_lines,
+					busi_dtl_lines,
+					open_date,
+					cy,
+					acct_cred_line,
+					loan_amt,
+					flag,
+					due_date,
+					repay_mode,
+					repay_freqcy,
+					repay_prd,
+					apply_busi_dist,
+					guar_mode,
+					oth_repy_guar_way,
+					asset_trand_flag,
+					fund_sou,
+					loan_form,
+					credit_id,
+					#{pbaAcctBsSgmtId},
+					company
+			from I_ACCT_BS_INF_HIST
+			where pba_acct_bs_sgmt_id = #{oldPbaAcctBsSgmtId}
+	</insert>
+	<!-- 新增  基本信息段 -->
+	<insert id="insertAcctBsInfoSgmt" parameterType="map">
+		<![CDATA[
+		insert into I_ACCT_BS_INF(
+					pbb_acct_bs_inf_sgmt_id,
+					busi_lines,
+					busi_dtl_lines,
+					open_date,
+					cy,
+					acct_cred_line,
+					loan_amt,
+					flag,
+					due_date,
+					repay_mode,
+					repay_freqcy,
+					repay_prd,
+					apply_busi_dist,
+					guar_mode,
+					oth_repy_guar_way,
+					asset_trand_flag,
+					fund_sou,
+					loan_form,
+					credit_id,
+					pba_acct_bs_sgmt_id,
+					COMPANY,
+					LOAN_CON_CODE,
+					FIRST_HOU_LOAN_FLAG
+					)
+		    values (#{pbbAcctBsInfSgmtId},
+					#{busiLines},
+					#{busiDtlLines},
+					#{openDate},
+					#{cy},
+					#{acctCredLine},
+					#{loanAmt},
+					#{flag, jdbcType=VARCHAR},
+					#{dueDate},
+					#{repayMode},
+					#{repayFreqcy},
+					#{repayPrd}, 
+					#{applyBusiDist},
+					#{guarMode},
+					#{othRepyGuarWay},
+					#{assetTrandFlag},
+					#{fundSou},
+					#{loanForm},
+					#{creditId},
+					#{pbaAcctBsSgmtId},
+					#{COMPANY},
+					#{loanConCode},
+					#{firstHouLoanFlag}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新   基本信息段 -->
+	<update id="updateAcctBsInfoSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update I_ACCT_BS_INF
+			set busi_lines = #{busiLines, jdbcType=VARCHAR},
+				busi_dtl_lines = #{busiDtlLines, jdbcType=VARCHAR},
+				open_date = #{openDate},
+				cy = #{cy, jdbcType=VARCHAR},
+				loan_amt = #{loanAmt}, 
+				flag = #{flag, jdbcType=VARCHAR},
+				due_date = #{dueDate},
+				repay_mode = #{repayMode, jdbcType=VARCHAR},
+				repay_freqcy = #{repayFreqcy, jdbcType=VARCHAR},
+				repay_prd = #{repayPrd},
+				apply_busi_dist = #{applyBusiDist, jdbcType=VARCHAR},
+				guar_mode = #{guarMode, jdbcType=VARCHAR},
+				oth_repy_guar_way = #{othRepyGuarWay, jdbcType=VARCHAR},
+				asset_trand_flag = #{assetTrandFlag, jdbcType=VARCHAR},
+				fund_sou = #{fundSou, jdbcType=VARCHAR},
+				loan_form = #{loanForm, jdbcType=VARCHAR},
+				credit_id = #{creditId, jdbcType=VARCHAR},
+				LOAN_CON_CODE = #{loanConCode, jdbcType=VARCHAR},
+				FIRST_HOU_LOAN_FLAG = #{firstHouLoanFlag, jdbcType=VARCHAR}
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+			and pbb_acct_bs_inf_sgmt_id = #{pbbAcctBsInfSgmtId}
+		  ]]>
+	</update>
+	
+	<!-- 删除  基本信息段 -->
+	<delete id="delAcctBsInfoSgmt" parameterType="map">
+		delete from I_ACCT_BS_INF
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+		   and pbb_acct_bs_inf_sgmt_id = #{pbbAcctBsInfSgmtId}
+	</delete>
+	<!-- 新增   相关还款责任人段 -->
+	<insert id="saveRltRepymtInf" parameterType="map" useGeneratedKeys="false">
+		insert into I_LOAN_RLT_REPYMT_INF(
+					pbc_rlt_repymt_inf_sgmt_id,
+					info_id_type,
+					arlp_name,
+					arlp_cert_type,
+					arlp_cert_num,
+					arlp_type,
+					arlp_amt,
+					warty_sign,
+					max_guar_mcc,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		   select   <if test="_databaseId == 'oracle' ">
+					sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					<if test="_databaseId == 'mysql'">
+					upper(replace(uuid(),'-','')),
+					</if>
+					info_id_type,
+					arlp_name,
+					arlp_cert_type,
+					arlp_cert_num,
+					arlp_type,
+					arlp_amt,
+					warty_sign,
+					max_guar_mcc,
+					#{pbaAcctBsSgmtId},
+					company
+				from I_LOAN_RLT_REPYMT_INF_HIST
+				where pba_acct_bs_sgmt_id = #{oldPbaAcctBsSgmtId}
+	</insert>
+	<!-- 新增   相关还款责任人段 -->
+	<insert id="insertRltRepymtInf" parameterType="map">
+		<![CDATA[
+		insert into I_LOAN_RLT_REPYMT_INF(
+					pbc_rlt_repymt_inf_sgmt_id,
+					info_id_type,
+					arlp_name,
+					arlp_cert_type,
+					arlp_cert_num,
+					arlp_type,
+					arlp_amt,
+					warty_sign,
+					max_guar_mcc,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		   values (#{pbcRltRepymtInfSgmtId},
+					#{infoIdType},
+					#{arlpName},
+					#{arlpCertType},
+					#{arlpCertNum},
+					#{arlpType},
+					#{arlpAmt},
+					#{wartySign},
+					#{maxGuarMcc},
+					#{pbaAcctBsSgmtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新  相关还款责任人段  -->
+	<update id="updateRltRepymtInf" parameterType="map">
+		update I_LOAN_RLT_REPYMT_INF
+		   <set>
+		   	  	info_id_type = #{infoIdType, jdbcType=VARCHAR},
+		   	  	arlp_name = #{arlpName, jdbcType=VARCHAR},
+		   	  	arlp_cert_type = #{arlpCertType, jdbcType=VARCHAR},
+		   	  	arlp_cert_num = #{arlpCertNum, jdbcType=VARCHAR},
+		   	  	arlp_type = #{arlpType, jdbcType=VARCHAR},
+		   	  	arlp_amt = #{arlpAmt, jdbcType=VARCHAR},
+		   	  	warty_sign = #{wartySign, jdbcType=VARCHAR},
+		   	  	max_guar_mcc = #{maxGuarMcc, jdbcType=VARCHAR},
+		   </set>
+		   where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	         and pbc_rlt_repymt_inf_sgmt_id = #{pbcRltRepymtInfSgmtId}
+	</update>
+	
+	<!-- 删除 相关还款责任人段 -->
+	<delete id="delrltRepymtInf" parameterType="map">
+		delete from I_LOAN_RLT_REPYMT_INF
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+		   and pbc_rlt_repymt_inf_sgmt_id = #{pbcRltRepymtInfSgmtId}
+	</delete>
+		<!-- 查询 抵质押物信息段 主键是否存在 -->
+	<select id="getMccInfKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from I_MCC_INF
+	     where pbd_mcc_inf_sgmt_id = #{pbdMccInfSgmtId}
+	</select>
+	<!-- 新增  按段更正抵质押物信息段 -->
+	<insert id="saveMccInf" parameterType="map" useGeneratedKeys="false">
+		insert into I_MCC_INF(
+					pbd_mcc_inf_sgmt_id,
+					CCC,
+					PBA_ACCT_BS_SGMT_ID,
+					COMPANY)
+		  select    <if test="_databaseId == 'oracle' ">
+					sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					<if test="_databaseId == 'mysql'">
+					upper(replace(uuid(),'-','')),
+					</if>
+					CCC,
+					#{pbaAcctBsSgmtId},
+					company
+		  from I_MCC_INF_HIST
+		  where PBA_ACCT_BS_SGMT_ID = #{oldPbaAcctBsSgmtId}
+	</insert>
+	<!-- 新增  抵质押物信息段 -->
+	<insert id="insertMccInf" parameterType="map">
+		<![CDATA[
+		insert into I_MCC_INF(
+					pbd_mcc_inf_sgmt_id,
+					CCC,
+					PBA_ACCT_BS_SGMT_ID,
+					COMPANY)
+		  values (#{pbdMccInfSgmtId},
+					#{mccNum},
+					#{pbaAcctBsSgmtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新  抵质押物信息段 -->
+	<update id="updateMccInf" parameterType="map">
+		update I_MCC_INF
+		   <set>
+		   	  <if test='mccNum != null and mccNum != ""'>
+		   	  	CCC = #{mccNum, jdbcType=VARCHAR},
+		   	  </if>
+		   </set>
+		   where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	         and pbd_mcc_inf_sgmt_id = #{pbdMccInfSgmtId}
+	</update>
+	
+	<!-- 删除 抵质押物信息段 -->
+	<delete id="delMccInf" parameterType="map">
+		delete from I_MCC_INF
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+		   and pbd_mcc_inf_sgmt_id = #{pbdMccInfSgmtId}
+	</delete>
+	
+	<!-- 查询  授信额度信息段 主键是否存在 -->
+	<select id="getAcctCredSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from I_ACCT_CRED
+	     where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+	       and pbe_acct_cred_sgmt_id = #{pbeAcctCredSgmtId}
+	</select>
+	<!-- 获取新的主键 -->
+	<select id="getUUid" parameterType="map" resultType="String">
+		<if test="_databaseId == 'oracle' ">
+		select SYS_GUID() from dual
+		</if>
+		<if test="_databaseId == 'db2'">
+		SELECT concat (hex (RAND ()), hex (RAND ())) as uuid FROM SYSIBM.SYSDUMMY1
+		</if>
+		<if test="_databaseId == 'mysql'">
+		select upper(replace(uuid(),'-','')),
+		</if>
+	</select>
+<!-- 查询  相关还款责任人 主键是否存在 -->
+	<select id="getrltRepymtInfKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from I_LOAN_RLT_REPYMT_INF
+	     where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+	       and PBC_RLT_REPYMT_INF_SGMT_ID = #{pbcRltRepymtInfSgmtId}
+	</select>
+	<!-- 新增  个人借贷账户按段更正授信额度信息段 -->
+	<insert id="saveAcctCredSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into I_ACCT_CRED(
+					pbe_acct_cred_sgmt_id,
+					mcc,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		    select  <if test="_databaseId == 'oracle' ">
+					sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					<if test="_databaseId == 'mysql'">
+					upper(replace(uuid(),'-','')),
+					</if>
+		            mcc,
+		            #{pbaAcctBsSgmtId},
+		            company
+			from I_ACCT_CRED_HIST
+			where pba_acct_bs_sgmt_id = #{oldPbaAcctBsSgmtId}
+	</insert>
+	<!-- 新增  授信额度信息段 -->
+	<insert id="insertAcctCredSgmt" parameterType="map">
+		<![CDATA[
+		insert into I_ACCT_CRED(
+					pbe_acct_cred_sgmt_id,
+					mcc,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{pbeAcctCredSgmtId, jdbcType=CHAR},
+		            #{mcc, jdbcType=VARCHAR},
+		            #{pbaAcctBsSgmtId, jdbcType=CHAR},
+		            #{COMPANY}
+				    )
+		    ]]>
+	</insert>
+	
+	<!-- 更新  授信额度信息段 -->
+	<update id="updateAcctCredSgmt" parameterType="map">
+		update I_ACCT_CRED
+		   <set>
+		   	  <if test='mcc != null and mcc != ""'>
+		   	  	mcc = #{mcc, jdbcType=VARCHAR}
+		   	  </if>
+		   </set>
+		   where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	         and pbe_acct_cred_sgmt_id = #{pbeAcctCredSgmtId}
+	</update>
+	
+	<!-- 删除  授信额度信息段  -->
+	<delete id="delAcctCredSgmt" parameterType="map">
+		delete from I_ACCT_CRED
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+		   and pbe_acct_cred_sgmt_id = #{pbeAcctCredSgmtId}
+	</delete>
+	
+	<!-- 查询  月度表现信息段 主键是否存在 -->
+	<select id="getAmblgInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from I_AMBLG_INF
+	     where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+	       and pbg_amblg_inf_sgmt_id = #{pbgAmblgInfSgmtId}
+	</select>
+	<!-- 新增  个人借贷账户按段更正月度表现信息段 -->
+	<insert id="saveAmblgInfSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into I_AMBLG_INF(
+					pbg_amblg_inf_sgmt_id,
+					month,
+					sett_date,
+					acct_status,
+					acct_bal,
+					prid_acct_bal,
+					used_amt,
+					not_isu_bal,
+					rem_rep_prd,
+					five_cate,
+					five_cate_adj_date,
+					rpy_status,
+					rpy_prct,
+					overd_prd,
+					tot_overd,
+					overd_princ,
+					oved31_60_princ,
+					oved61_90_princ,
+					oved91_180_princ,
+					oved_princ180,
+					ovedraw_ba_ove180,
+					cur_rpy_amt,
+					act_rpy_amt,
+					lat_rpy_date,
+					close_date,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		    select  <if test="_databaseId == 'oracle' ">
+					sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					<if test="_databaseId == 'mysql'">
+					upper(replace(uuid(),'-','')),
+					</if>
+		            month,
+					sett_date,
+					acct_status,
+					acct_bal,
+					prid_acct_bal,
+					used_amt,
+					not_isu_bal,
+					rem_rep_prd,
+					five_cate,
+					five_cate_adj_date,
+					rpy_status,
+					rpy_prct,
+					overd_prd,
+					tot_overd,
+					overd_princ,
+					oved31_60_princ,
+					oved61_90_princ,
+					oved91_180_princ,
+					oved_princ180,
+					ovedraw_ba_ove180,
+					cur_rpy_amt,
+					act_rpy_amt,
+					lat_rpy_date,
+					close_date,
+		            #{pbaAcctBsSgmtId},
+		            company
+			from I_AMBLG_INF_HIST
+			where pba_acct_bs_sgmt_id = #{oldPbaAcctBsSgmtId}
+	</insert>
+	<!-- 新增  月度表现信息段 -->
+	<insert id="insertAmblgInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into I_AMBLG_INF(
+					pbg_amblg_inf_sgmt_id,
+					month,
+					sett_date,
+					acct_status,
+					acct_bal,
+					prid_acct_bal,
+					used_amt,
+					not_isu_bal,
+					rem_rep_prd,
+					five_cate,
+					five_cate_adj_date,
+					rpy_status,
+					rpy_prct,
+					overd_prd,
+					tot_overd,
+					overd_princ,
+					oved31_60_princ,
+					oved61_90_princ,
+					oved91_180_princ,
+					oved_princ180,
+					ovedraw_ba_ove180,
+					cur_rpy_amt,
+					act_rpy_amt,
+					lat_rpy_date,
+					close_date,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{pbgAmblgInfSgmtId, jdbcType=CHAR},
+		            #{month, jdbcType=VARCHAR},
+		            #{settDate},
+		            #{acctStatus, jdbcType=CHAR},
+		            #{acctBal}, 
+		            #{pridAcctBal}, 
+				    #{usedAmt},
+		            #{notIsuBal},
+		            #{remRepPrd}, 
+		            #{fiveCate, jdbcType=VARCHAR},
+		            #{fiveCateAdjDate},
+		            #{rpyStatus, jdbcType=VARCHAR},
+		            #{rpyPrct},
+				   #{overdPrd}, 
+			       #{totOverd},
+				   #{overdPrinc},
+				    #{oved3160Princ},
+			        #{oved6190Princ},
+					#{oved91180Princ}, 
+			        #{ovedPrinc180},
+				    #{ovedrawBaOve180},
+				    #{curRpyAmt},
+			       #{actRpyAmt},
+		              #{latRpyDate},
+		                #{closeDate},
+		            #{pbaAcctBsSgmtId},
+		            #{COMPANY}
+				    )
+		    ]]>
+	</insert>
+	
+	<!-- 更新   月度表现信息段-->
+	<update id="updateAmblgInfSgmt" parameterType="map">
+		 update I_AMBLG_INF
+		 	<set>
+			   	  	month = #{month},
+			   	  	sett_date =  #{settDate},
+			   	  	acct_status = #{acctStatus},
+			   	  	acct_bal = #{acctBal},
+			   	  	prid_acct_bal = #{pridAcctBal},
+			   	  	used_amt = #{usedAmt},
+			   	  	not_isu_bal = #{notIsuBal},
+			   	  	rem_rep_prd =#{remRepPrd}, 
+			   	  	five_cate = #{fiveCate},
+			   	  	five_cate_adj_date =   #{fiveCateAdjDate},
+			   	  	rpy_status = #{rpyStatus},
+			   	  	rpy_prct = #{rpyPrct}, 
+			   	  	overd_prd = #{overdPrd},
+			   	  	tot_overd = #{totOverd},
+			   	  	overd_princ =#{overdPrinc},
+			   	  	oved31_60_princ =#{oved3160Princ},
+			   	  	oved61_90_princ = #{oved6190Princ},
+			   	  	oved91_180_princ =#{oved91180Princ}, 
+			   	  	oved_princ180 = #{ovedPrinc180}, 
+			   	  	ovedraw_ba_ove180 = #{ovedrawBaOve180},
+			   	  	cur_rpy_amt =#{curRpyAmt}, 
+			   	  	act_rpy_amt = #{actRpyAmt},
+			   	  	lat_rpy_date = #{latRpyDate},
+			   	  	close_date = #{closeDate}
+		   </set>
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+			and pbg_amblg_inf_sgmt_id = #{pbgAmblgInfSgmtId}
+	</update>
+	
+	<!-- 删除  月度表现信息段 -->
+	<delete id="delAmblgInfSgmt" parameterType="map">
+		delete from I_AMBLG_INF
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+		   and pbg_amblg_inf_sgmt_id = #{pbgAmblgInfSgmtId}
+	</delete>
+	
+	<!-- 查询 非月度表现信息段 主键是否存在 -->
+	<select id="getAcctDbtInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from I_ACCT_DBT_INF
+	     where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+	       and pbi_acct_dbt_inf_sgmt_id = #{pbiAcctDbtInfSgmtId}
+	</select>
+	<!-- 新增  个人借贷按段更正非月度表现信息段 -->
+	<insert id="saveAcctDbtInfSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into I_ACCT_DBT_INF(
+					pbi_acct_dbt_inf_sgmt_id,
+					nomonth_acct_status,
+					nomonth_acct_bal,
+					nomonth_five_cate,
+					nomonth_five_cate_adj_date,
+					nomonth_rem_rep_prd,
+					nomonth_rpy_status,
+					nomonth_overd_prd,
+					nomonth_tot_overd,
+					nomonth_lat_rpy_amt,
+					nomonth_lat_rpy_date,
+					nomonth_close_date,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		    select  <if test="_databaseId == 'oracle' ">
+					sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					<if test="_databaseId == 'mysql'">
+					upper(replace(uuid(),'-','')),
+					</if>
+					nomonth_acct_status,
+					nomonth_acct_bal,
+					nomonth_five_cate,
+					nomonth_five_cate_adj_date,
+					nomonth_rem_rep_prd,
+					nomonth_rpy_status,
+					nomonth_overd_prd,
+					nomonth_tot_overd,
+					nomonth_lat_rpy_amt,
+					nomonth_lat_rpy_date,
+					nomonth_close_date,
+					#{pbaAcctBsSgmtId},
+					company
+			from I_ACCT_DBT_INF_HIST
+			where pba_acct_bs_sgmt_id = #{oldPbaAcctBsSgmtId}
+	</insert>
+	<!-- 新增  非月度表现信息段 -->
+	<insert id="insertAcctDbtInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into I_ACCT_DBT_INF(
+					pbi_acct_dbt_inf_sgmt_id,
+					nomonth_acct_status,
+					nomonth_acct_bal,
+					nomonth_five_cate,
+					nomonth_five_cate_adj_date,
+					nomonth_rem_rep_prd,
+					nomonth_rpy_status,
+					nomonth_overd_prd,
+					nomonth_tot_overd,
+					nomonth_lat_rpy_amt,
+					nomonth_lat_rpy_date,
+					nomonth_close_date,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{pbiAcctDbtInfSgmtId},
+					#{nomonthAcctStatus},
+					#{nomonthAcctBal},
+					#{nomonthFiveCate, jdbcType=VARCHAR},
+		            #{nomonthFiveCateAdjDate},
+					#{nomonthRemRepPrd},
+					#{nomonthRpyStatus, jdbcType=VARCHAR},
+					#{nomonthOverdPrd},
+					#{nomonthTotOverd},
+					#{nomonthLatRpyAmt}, 
+					#{nomonthLatRpyDate},
+					#{nomonthCloseDate},
+					#{pbaAcctBsSgmtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新   非月度表现信息段-->
+	<update id="updateAcctDbtInfSgmt" parameterType="map">
+		 update I_ACCT_DBT_INF
+		 	<set>
+		   	  	<if test='nomonthAcctStatus != null and nomonthAcctStatus != ""'>
+			   	  	nomonth_acct_status = #{nomonthAcctStatus},
+			   	</if>
+				<if test='nomonthAcctBal != null and nomonthAcctBal != ""'>
+			   	  	nomonth_acct_bal = #{nomonthAcctBal},
+			   	</if>
+				<if test='nomonthFiveCate != null and nomonthFiveCate != ""'>
+			   	  	nomonth_five_cate = #{nomonthFiveCate},
+			   	</if>
+				<if test='nomonthFiveCateAdjDate != null and nomonthFiveCateAdjDate != ""'>
+			   	  	nomonth_five_cate_adj_date = #{nomonthFiveCateAdjDate},
+			   	</if>
+				<if test='nomonthRemRepPrd != null and nomonthRemRepPrd != ""'>
+			   	  	nomonth_rem_rep_prd = #{nomonthRemRepPrd},
+			   	</if>
+				<if test='nomonthRpyStatus != null and nomonthRpyStatus != ""'>
+			   	  	nomonth_rpy_status = #{nomonthRpyStatus},
+			   	</if>
+				<if test='nomonthOverdPrd != null and nomonthOverdPrd != ""'>
+			   	  	nomonth_overd_prd =#{nomonthOverdPrd},
+			   	</if>
+				<if test='nomonthTotOverd != null and nomonthTotOverd != ""'>
+			   	  	nomonth_tot_overd = #{nomonthTotOverd}, 
+			   	</if>
+				<if test='nomonthLatRpyAmt != null and nomonthLatRpyAmt != ""'>
+			   	  	nomonth_lat_rpy_amt =#{nomonthLatRpyAmt},
+			   	</if>
+				<if test='nomonthLatRpyDate != null and nomonthLatRpyDate != ""'>
+			   	  	nomonth_lat_rpy_date = #{nomonthLatRpyDate},
+			   	</if>
+				<if test='nomonthCloseDate != null and nomonthCloseDate != ""'>
+			   	  	nomonth_close_date = #{nomonthCloseDate}
+			   	</if>
+		   </set>
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+			and pbi_acct_dbt_inf_sgmt_id = #{pbiAcctDbtInfSgmtId}
+	</update>
+	
+	<!-- 删除  非月度表现信息段 -->
+	<delete id="delAcctDbtInfSgmt" parameterType="map">
+		delete from I_ACCT_DBT_INF
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+		   and pbi_acct_dbt_inf_sgmt_id = #{pbiAcctDbtInfSgmtId}
+	</delete>
+	
+	<!-- 查询 大额专项分期信息段  主键是否存在 -->
+	<select id="getSpecPrdSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from I_SPEC_PRD
+	     where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+	       and pbh_spec_prd_sgmt_id = #{pbhSpecPrdSgmtId}
+	</select>
+	<!-- 新增  大额专项分期信息段 -->
+	<insert id="saveSpecPrdSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into I_SPEC_PRD(
+					pbh_spec_prd_sgmt_id,
+					spec_line,
+					spec_efct_date,
+					spec_end_date,
+					used_inst_amt,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		    select  <if test="_databaseId == 'oracle' ">
+					sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					<if test="_databaseId == 'mysql'">
+					upper(replace(uuid(),'-','')),
+					</if>
+		    		spec_line,
+					spec_efct_date,
+					spec_end_date,
+					used_inst_amt,
+					#{pbaAcctBsSgmtId},
+					company
+			from I_SPEC_PRD_HIST
+			where pba_acct_bs_sgmt_id = #{oldPbaAcctBsSgmtId}
+	</insert>
+	<!-- 新增  大额专项分期信息段 -->
+	<insert id="insertSpecPrdSgmt" parameterType="map">
+		insert into I_SPEC_PRD(
+					pbh_spec_prd_sgmt_id,
+					spec_line,
+					spec_efct_date,
+					spec_end_date,
+					used_inst_amt,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{pbhSpecPrdSgmtId, jdbcType=CHAR},
+		    		#{specLine}, 
+		    		<if test="_databaseId == 'mysql'">
+					date_format(#{specEfctDate},'%Y-%m-%d'),
+					date_format(#{specEndDate},'%Y-%m-%d'),
+					</if>
+					<if test="_databaseId == 'oracle' or _databaseId == 'db2'">
+					to_date(#{specEfctDate},'YYYY-MM-DD'),
+					to_date(#{specEndDate},'YYYY-MM-DD'),
+					</if>
+					#{usedInstAmt}, 
+					#{pbaAcctBsSgmtId, jdbcType=CHAR},
+					#{COMPANY}
+				   )
+	</insert>
+	
+	<!-- 更新   大额专项分期信息段-->
+	<update id="updateSpecPrdSgmt" parameterType="map">
+		 update I_SPEC_PRD
+		 	<set>
+				<if test='specLine != null and specLine != ""'>
+			   	  	spec_line =#{specLine}, 
+			   	</if>
+				<if test='specEfctDate != null and specEfctDate != ""'>
+			   	  	spec_efct_date = #{specEfctDate},
+			   	</if>
+				<if test='specEndDate != null and specEndDate != ""'>
+			   	  	spec_end_date = #{specEndDate},
+			   	</if>
+				<if test='usedInstAmt != null and usedInstAmt != ""'>
+			   	  	used_inst_amt = #{usedInstAmt}
+			   	</if>
+		   </set>
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+			and pbh_spec_prd_sgmt_id = #{pbhSpecPrdSgmtId}
+	</update>
+	
+	<!-- 删除  大额专项分期信息段 -->
+	<delete id="delSpecPrdSgmt" parameterType="map">
+		delete from I_SPEC_PRD
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+		   and pbh_spec_prd_sgmt_id = #{pbhSpecPrdSgmtId}
+	</delete>
+	<!-- 新增  按段更正特殊交易说明段 -->
+	<insert id="saveTrstDspn" parameterType="map" useGeneratedKeys="false">
+		insert into I_AS_TRST_DSPN(
+					pbj_as_trst_dspn_sgmt_id,
+					chan_tran_type,
+					tran_date,
+					tran_amt,
+					due_tran_mon,
+					det_info,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		 	 select <if test="_databaseId == 'oracle' ">
+					sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					<if test="_databaseId == 'mysql'">
+					upper(replace(uuid(),'-','')),
+					</if>
+					chan_tran_type,
+					tran_date,
+					tran_amt,
+					due_tran_mon,
+					det_info,
+					#{pbaAcctBsSgmtId},
+					company
+			from I_AS_TRST_DSPN_HIST
+			where pba_acct_bs_sgmt_id = #{oldPbaAcctBsSgmtId}
+	</insert>
+	<!-- 新增  特殊交易说明段 -->
+	<insert id="insertTrstDspn" parameterType="map">
+		<![CDATA[
+		insert into I_AS_TRST_DSPN(
+					pbj_as_trst_dspn_sgmt_id,
+					chan_tran_type,
+					tran_date,
+					tran_amt,
+					due_tran_mon,
+					det_info,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		 	    values (#{pbjAsTrstDspnSgmtId},
+					#{chanTranType},
+					#{tranDate},
+					#{tranAmt}, 
+					#{dueTranMon}, 
+					#{detInfo},
+					#{pbaAcctBsSgmtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新  特殊交易说明段 -->
+	<update id="updateTrstDspn" parameterType="map">
+		update I_AS_TRST_DSPN
+		   <set>
+		   	  <if test='chanTranType != null and chanTranType != ""'>
+		   	  	chan_tran_type = #{chanTranType},
+		   	  </if>
+		   	  <if test='tranDate != null and tranDate != ""'>
+		   	  	tran_date = #{tranDate},
+		   	  </if>
+		   	  <if test='tranAmt != null and tranAmt != ""'>
+		   	  	tran_amt =#{tranAmt}, 
+		   	  </if>
+		   	  <if test='dueTranMon != null and dueTranMon != ""'>
+		   	  	due_tran_mon = #{dueTranMon},
+		   	  </if>
+		   	  <if test='detInfo != null and detInfo != ""'>
+		   	  	det_info = #{detInfo}
+		   	  </if>
+		   </set>
+		   where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	         and pbj_as_trst_dspn_sgmt_id = #{pbjAsTrstDspnSgmtId}
+	</update>
+	<!-- 查询  相关还款责任人 主键是否存在 -->
+	<select id="getTrstDspnKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from I_AS_TRST_DSPN
+	     where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+	       and pbj_as_trst_dspn_sgmt_id = #{pbjAsTrstDspnSgmtId}
+	</select>
+	<!-- 删除 特殊交易说明段 -->
+	<delete id="delTrstDspn" parameterType="map">
+		delete from I_AS_TRST_DSPN
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+		   and pbj_as_trst_dspn_sgmt_id = #{pbjAsTrstDspnSgmtId}
+	</delete>
+	
+	<!-- 查询  初始债权说明段 主键是否存在 -->
+	<select id="getOcInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from I_OC_INF
+	     where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+	       and pbf_oc_inf_sgmt_id = #{pbfOcInfSgmtId}
+	</select>
+	<!-- 新增  个人借贷账户按段更正初始债权说明段 -->
+	<insert id="saveOcInfSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into I_OC_INF(
+					pbf_oc_inf_sgmt_id,
+					init_cred_name,
+					init_cred_org_nm,
+					orig_dbt_cate,
+					init_rpy_sts,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		    select  <if test="_databaseId == 'oracle' ">
+					sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					<if test="_databaseId == 'mysql'">
+					upper(replace(uuid(),'-','')),
+					</if>
+		            init_cred_name,
+					init_cred_org_nm,
+					orig_dbt_cate,
+					init_rpy_sts,
+		            #{pbaAcctBsSgmtId},
+		            company
+			from I_OC_INF_HIST
+			where pba_acct_bs_sgmt_id = #{oldPbaAcctBsSgmtId}
+	</insert>
+	<!-- 新增  初始债权说明段 -->
+	<insert id="insertOcInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into I_OC_INF(
+					pbf_oc_inf_sgmt_id,
+					init_cred_name,
+					init_cred_org_nm,
+					orig_dbt_cate,
+					init_rpy_sts,
+					pba_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{pbfOcInfSgmtId, jdbcType=CHAR},
+		            #{initCredName, jdbcType=VARCHAR},
+		            #{initCredOrgNm, jdbcType=VARCHAR},
+		            #{origDbtCate, jdbcType=VARCHAR},
+		            #{initRpySts, jdbcType=VARCHAR},
+		            #{pbaAcctBsSgmtId, jdbcType=CHAR},
+		            #{COMPANY}
+				    )
+		    ]]>
+	</insert>
+	
+	<!-- 更新  初始债权说明段 -->
+	<update id="updateOcInfSgmt" parameterType="map">
+		update I_OC_INF
+		   <set>
+		   	  <if test='initCredName != null and initCredName != ""'>
+		   	  	init_cred_name = #{initCredName},
+		   	  </if>
+		   	  <if test='initCredOrgNm != null and initCredOrgNm != ""'>
+		   	  	init_cred_org_nm = #{initCredOrgNm},
+		   	  </if>
+		   	  <if test='origDbtCate != null and origDbtCate != ""'>
+		   	  	orig_dbt_cate = #{origDbtCate},
+		   	  </if>
+		   	  <if test='initRpySts != null and initRpySts != ""'>
+		   	  	init_rpy_sts = #{initRpySts}
+		   	  </if>
+		   </set>
+		   where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	         and pbf_oc_inf_sgmt_id = #{pbfOcInfSgmtId}
+	</update>
+	
+	<!-- 删除  初始债权说明段  -->
+	<delete id="delOcInfSgmt" parameterType="map">
+		delete from I_OC_INF
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId} 
+		   and pbf_oc_inf_sgmt_id = #{pbfOcInfSgmtId}
+	</delete>
+	
+	<!-- 插入Excel批量导入信息 -->
+	<insert id="saveAmblgChangeListInfo" parameterType="list" useGeneratedKeys="false">
+		insert into I_AMBLG_INF_LIST(
+					ACCT_CODE,
+					MONTH,
+					STATUS,
+					COMPANY,
+					INS_TIME)
+		  <foreach collection="list" item="item" separator="union">
+					SELECT
+						#{item.ACCT_CODE},
+						#{item.MONTH},
+						'0',
+						#{item.COMPANY},
+						<if test="_databaseId == 'mysql'">
+						date_format(now(),'%Y-%m-%d %H:%i:%s')
+						</if>
+						<if test="_databaseId == 'oracle' or _databaseId == 'db2'">
+						TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi:ss')
+						</if>
+						
+					FROM DUAL
+		 </foreach>
+	</insert>
+	
+	<insert id="saveAcctBsByAmblgChange" parameterType="pd" useGeneratedKeys="false">
+		INSERT INTO I_ACCT_BS
+		  SELECT <if test="_databaseId == 'oracle' ">
+				sys_guid()  AS PBA_ACCT_BS_SGMT_ID,
+				</if>
+				<if test="_databaseId == 'db2'">
+				concat (hex (RAND ()), hex (RAND ()))  AS PBA_ACCT_BS_SGMT_ID,
+				</if>
+				<if test="_databaseId == 'mysql'">
+				upper(replace(uuid(),'-','')),
+				</if>
+		         '212' AS INF_REC_TYPE,
+		         D.ACCT_TYPE,
+		         D.ACCT_CODE,
+		         D.RPT_DATE,
+		         D.RPT_DATE_CODE,
+		         D.NAME,
+		         D.ID_TYPE,
+		         D.ID_NUM,
+		         D.MNGMT_ORG_CODE,
+		         <if test="_databaseId == 'mysql'">
+				date_format(now(),'%Y-%m-%d %H:%i:%s') AS LAST_UPDATE_TIME,
+				</if>
+				<if test="_databaseId == 'oracle' or _databaseId == 'db2'">
+				TO_CHAR(SYSDATE,'yyyy-mm-dd') AS LAST_UPDATE_TIME,
+				</if>
+		         D.OPERATOR_USER,
+		         D.ORG_NAME,
+		         D.ORG_CODE,
+		         '20' AS BUSINESS_STATES,
+		         '' AS REJECT_REASON,
+		         D.IS_FILTER,
+		         D.REPORT_MESSAGE_ID,
+		         'H' AS MDFC_SGMT_CODE,
+		         D.EXTEND1,
+		         D.EXTEND2,
+		         D.EXTEND3,
+		         D.COMPANY,
+		         '' AS REPORT_FILE_COLNUM
+		    FROM (SELECT ACCT_TYPE,
+		                 B.ACCT_CODE,
+		                 B.RPT_DATE,
+		                 RPT_DATE_CODE,
+		                 NAME,
+		                 ID_TYPE,
+		                 ID_NUM,
+		                 MNGMT_ORG_CODE,
+		                 OPERATOR_USER,
+		                 ORG_NAME,
+		                 ORG_CODE,
+		                 IS_FILTER,
+		                 REPORT_MESSAGE_ID,
+		                 B.EXTEND1,
+		                 B.EXTEND2,
+		                 B.EXTEND3,
+		                 B.COMPANY,
+		                 rank() over(partition by B.ACCT_CODE order by B.RPT_DATE desc, B.LAST_UPDATE_TIME DESC, B.REPORT_MESSAGE_ID DESC) as RANKNUM
+		            FROM I_AMBLG_INF_LIST A
+		           INNER JOIN I_ACCT_BS_HIST B
+		              ON A.ACCT_CODE = B.ACCT_CODE
+		             AND A.COMPANY = B.COMPANY
+		           INNER JOIN I_AMBLG_INF_HIST C
+		              ON B.PBA_ACCT_BS_SGMT_ID = C.PBA_ACCT_BS_SGMT_ID
+		             AND A.MONTH = C.MONTH
+		           WHERE A.STATUS = '0'
+		             AND A.COMPANY = #{COMPANY}) D
+		   WHERE D.RANKNUM = '1'
+		
+	</insert>
+	
+	<insert id="saveAmblgInfoByAmblgChange" parameterType="pd" useGeneratedKeys="false">
+		INSERT INTO I_AMBLG_INF
+		  SELECT <if test="_databaseId == 'oracle' ">
+				sys_guid()  AS PBG_AMBLG_INF_SGMT_ID,
+				</if>
+				<if test="_databaseId == 'db2'">
+				concat (hex (RAND ()), hex (RAND ()))   AS PBG_AMBLG_INF_SGMT_ID,
+				</if>
+				<if test="_databaseId == 'mysql'">
+				upper(replace(uuid(),'-','')),
+				</if>
+		         D.MONTH,
+		         D.SETT_DATE,
+		         '1' AS ACCT_STATUS,
+		         D.ACCT_BAL,
+		         D.PRID_ACCT_BAL,
+		         D.USED_AMT,
+		         D.NOT_ISU_BAL,
+		         D.REM_REP_PRD,
+		         D.FIVE_CATE,
+		         D.FIVE_CATE_ADJ_DATE,
+		         'N' AS RPY_STATUS,
+		         D.RPY_PRCT,
+		         0 AS OVERD_PRD,
+		         0 AS TOT_OVERD,
+		         0 AS OVERD_PRINC,
+		         0 AS OVED31_60_PRINC,
+		         0 AS OVED61_90_PRINC,
+		         0 AS OVED91_180_PRINC,
+		         0 AS OVED_PRINC180,
+		         D.OVEDRAW_BA_OVE180,
+		         D.CUR_RPY_AMT,
+		         D.ACT_RPY_AMT,
+		         D.LAT_RPY_DATE,
+		         D.CLOSE_DATE,
+		         E.PBA_ACCT_BS_SGMT_ID,
+		         D.AMBLG_RPT_DATE,
+		         D.EXTEND1,
+		         D.EXTEND2,
+		         D.EXTEND3,
+		         D.AMBLG_COMPANY
+		    FROM (SELECT B.ACCT_CODE,
+		                 B.RPT_DATE,
+		                 B.COMPANY,
+		                 C.MONTH,
+		                 SETT_DATE,
+		                 ACCT_BAL,
+		                 PRID_ACCT_BAL,
+		                 USED_AMT,
+		                 NOT_ISU_BAL,
+		                 REM_REP_PRD,
+		                 FIVE_CATE,
+		                 FIVE_CATE_ADJ_DATE,
+		                 RPY_PRCT,
+		                 OVEDRAW_BA_OVE180,
+		                 CUR_RPY_AMT,
+		                 ACT_RPY_AMT,
+		                 LAT_RPY_DATE,
+		                 CLOSE_DATE,
+		                 C.RPT_DATE AS AMBLG_RPT_DATE,
+		                 C.EXTEND1,
+		                 C.EXTEND2,
+		                 C.EXTEND3,
+		                 C.COMPANY AS AMBLG_COMPANY,
+		                 rank() over(partition by B.ACCT_CODE order by B.RPT_DATE desc, B.LAST_UPDATE_TIME DESC, B.REPORT_MESSAGE_ID DESC) as RANKNUM
+		            FROM I_AMBLG_INF_LIST A
+		           INNER JOIN I_ACCT_BS_HIST B
+		              ON A.ACCT_CODE = B.ACCT_CODE
+		             AND A.COMPANY = B.COMPANY
+		           INNER JOIN I_AMBLG_INF_HIST C
+		              ON B.PBA_ACCT_BS_SGMT_ID = C.PBA_ACCT_BS_SGMT_ID
+		             AND A.MONTH = C.MONTH
+		           WHERE A.STATUS = '0'
+		             AND A.COMPANY = #{COMPANY}) D
+		   INNER JOIN I_ACCT_BS E
+		      ON D.ACCT_CODE = E.ACCT_CODE
+		     AND D.RPT_DATE = E.RPT_DATE
+		     AND D.COMPANY = E.COMPANY
+		   WHERE D.RANKNUM = '1'
+		     AND E.INF_REC_TYPE = '212'
+		     AND E.MDFC_SGMT_CODE = 'H'
+	</insert>
+	
+	<update id="updateAmblgChangeListStatus" parameterType="pd">
+		UPDATE I_AMBLG_INF_LIST
+		   <set>
+		   	  STATUS = '1'
+		   </set>
+		   WHERE STATUS = '0' AND COMPANY = #{COMPANY}
+		   	AND ACCT_CODE IN (SELECT ACCT_CODE  FROM  I_ACCT_BS  WHERE INF_REC_TYPE = '212' AND MDFC_SGMT_CODE = 'H')
+	</update>
+	
+</mapper>

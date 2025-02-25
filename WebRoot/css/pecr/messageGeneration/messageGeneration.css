@@ -1,0 +1,26 @@
+.multi dl dd:hover,
+.multi dl dd.layui-this{
+    background-color: #fff;
+}
+
+.layui-form-checkbox[lay-skin=primary] span{
+    float: left;
+    padding-left: 25px;
+}
+.layui-form-checkbox[lay-skin=primary] i{
+    position: absolute;
+    left: 0;
+}
+
+.layui-form-select dl{
+    top: 34px !important;
+    bottom: auto;
+}
+
+.layui-form-select dl dd[lay-value='0']{
+    text-indent: 20px;
+    color: #666 !important;
+}
+.layui-form-select dl dd[lay-value='0'] div{
+    display: none;
+}

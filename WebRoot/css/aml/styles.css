@@ -1,0 +1,267 @@
+.panel-heading {
+	padding: 0px 5px 0px !important;
+	font-size: 16px;
+	font-family: Microsoft Yahei !important;
+	color: #848484;
+	margin: 5px 0px !important;
+	background-color: #ffffff !important;
+	line-height: 29px;
+}
+
+.panel-heading-wuXian {
+	padding: 0px 5px 0px !important;
+	font-size: 16px;
+	font-family: Microsoft Yahei !important;
+	color: #848484;
+	margin: 5px 0px 0px 0px !important;
+	line-height: 29px;
+}
+
+.panel {
+	margin-bottom: 0px !important;
+	background-color: #ffffff;
+	border: 0px solid transparent;
+	border-radius: 0px;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
+}
+
+.panel-body {
+	padding: 0px 5px !important;
+}
+
+.panel-body-wuXian{
+	margin-bottom:30px;
+}
+input {
+	line-height: normal;
+	border-radius: 0px !important;
+	color: #303030 !important;
+	width: 70%;
+	height: 28px;
+}
+
+.select {
+	margin: 0px !important;
+	padding: 0px !important;
+	width: 70%;
+	height: 28px;
+	color: #303030;
+	border-radius: 0px !important;
+}
+
+.divSelect {
+	width: 100%;
+	border-radius: 0px !important;
+	height: 28px;
+}
+
+label {
+	margin-bottom: 0px !important;
+	padding-left: 8px;
+}
+
+body {
+	font-family: Microsoft Yahei !important;
+}
+
+.row {
+	line-height: 30px !important;
+	color:#333333!important;
+	margin-top:4px;
+}
+
+.row1 {
+	line-height: 29px !important;
+}
+
+.row2{
+	line-height: 30px !important;
+	padding: 0px 33px !important;
+}
+
+/*弹出层按钮*/
+.center>.btn-default:hover, .btn-default:focus {
+    background-color: #a5a5a5 !important;
+}
+
+/*弹出层按钮*/
+.center>.btn-default, .btn-default {
+    background-color: #8e8e8e !important;
+}
+
+.btn-orange:hover,.btn-orange:focus{
+	background-color: #fb9741 !important;
+}
+
+
+/*步骤按钮*/
+.btn-prev:hover,.btn-prev:focus{
+	 background-color: #a5a5a5 !important;
+	}
+
+.btn-prev:hover,.btn-prev:focus{
+	  background-color: #8e8e8e !important;
+	}
+.btn-next:hover,.btn-next:focus{
+	background-color: #fb9741 !important;
+}
+
+
+
+
+
+.center>.btn-size1 {
+    width: 102px !important;
+    border-radius: 3px !important;
+}
+
+
+
+.modal-footer {
+    border-top: 0px solid #e5e5e5 !important;
+}
+
+.spanXing {
+	position: relative;
+    color: red;
+    font-size: 16px;
+    padding-left: 3px;
+    line-height: 28px;
+    top: 3px;
+}
+
+.button {
+	width: 102px;
+	height: 30px;
+	color: white !important;
+	background: #fa7d11 !important;
+	border-radius: 3px !important;
+	border-style: none;
+	margin: 30px 50px 30px 50px;
+}
+
+}
+.buchong {
+	font-size: 14px;
+	color: #595959;
+}
+
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2,
+	.col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3,
+	.col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5,
+	.col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6,
+	.col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8,
+	.col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9,
+	.col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11,
+	.col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12
+	{
+	padding-left: 0px !important;
+}
+
+.panel-default>.panel-heading {
+	color: #42a9f8 !important;
+}
+
+.spanzhushi {
+	color: #848484 !important;
+	font-size: 14px !important;
+	height:28px;
+}
+
+.zhaiyao {
+	color: #848484 !important;
+	font-size: 14px !important;
+}
+
+.btn-primary, .btn-primary:focus {
+	background-color: #303030 !important;
+	border-color: #303030;
+}
+
+.btn-primary.active {
+	background-color: #2291e4 !important;
+	border-color: #2291e4;
+}
+
+textarea, input[type="text"], input[type="password"], input[type="datetime"],
+	input[type="datetime-local"], input[type="date"], input[type="month"],
+	input[type="time"], input[type="week"], input[type="number"], input[type="email"],
+	input[type="url"], input[type="search"], input[type="tel"], input[type="color"]
+	{
+	border-radius: 0px !important;
+}
+
+.glyphicon-edit:before {
+    margin:0px 6px;
+}
+
+
+.btn-small {
+    padding: 0px 5px !important;
+    border-width: 3px !important;
+    font-size: 12px !important;
+    width: 27px !important;
+    height: 27px !important;
+    border-radius: 3px !important;
+}
+
+
+
+#Form .modal-footer{
+	padding-top:15px;
+	margin-bottom:15px;
+	border-top:0px !important;
+	}
+.table-ll td>input{
+	border:1px solid #cccccc;
+	}	
+	
+	
+.test td>input{
+        border:none;
+		color:#39F !important;
+      }
+.test td>select{
+        border:none;
+		color:#39F !important;
+      }
+.test{
+	   margin:0px 20px 10px 20px;
+	}
+
+/*步骤背景颜色*/
+.steps li.active:before, .steps li.complete:before, .steps li.active .step, .steps li.complete .step {
+    border-color: #77d23c !important;
+}
+
+/*表格部分*/
+.table > thead > tr {
+  color: #ffffff !important;
+  font-weight: normal;
+  background-image:url(../../images/icons/menu7.png);  
+  background-repeat:repeat;
+}
+
+.table2 > thead > tr {
+  color: #ffffff !important;
+  font-weight: normal;
+  background-image:url(../../images/icons/menu7.png);  
+  background-repeat:repeat;
+}
+
+.scroll>table>tbody>tr{
+	border-bottom: 1px solid #e6e6e6 !important;	
+}
+
+.table-bordered {
+    border: 0px solid #cccccc !important;
+}
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+    border-top: 0px solid #f0f2f4 !important;
+	border-bottom:1px solid #e6e6e6 !important;
+	border-left: 1px solid #e6e6e6 !important;
+	border-right: 1px solid #e6e6e6 !important;
+	padding: 4px !important;
+}
+

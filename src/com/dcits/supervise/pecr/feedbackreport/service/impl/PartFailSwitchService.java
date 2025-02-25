@@ -1,0 +1,180 @@
+package com.dcits.supervise.pecr.feedbackreport.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import com.dcits.supervise.pecr.feedbackreport.mapper.ReportFeedBackMessageMapper;
+
+@Service
+public class PartFailSwitchService {
+
+	private FeedBackReportPartFailService feedBackReportPartFailService;
+	
+	
+	public FeedBackReportPartFailService getPartFailService(String reportType,ReportFeedBackMessageMapper reportFeedBackMessageMapper){
+		switch (reportType) {
+	    case "110":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail110(reportFeedBackMessageMapper);
+	      return feedBackReportPartFailService; 
+	    case "114":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail114(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "120":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail120(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "130":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail130(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "134":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail134(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "140":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail140(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "210":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail210(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "211":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail211(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "212":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail212(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "213":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail213(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "214":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail214(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "215":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail215(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "220":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail220(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "221":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail221(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "222":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail222(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "223":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail223(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "224":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail224(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "230":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail230(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "231":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail231(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "232":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail232(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "233":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail233(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "234":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail234(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "310":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail310(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "340":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail340(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "314":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail314(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "350":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail350(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "410":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail410(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "411":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail411(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "412":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail412(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "413":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail413(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "414":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail414(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "420":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail420(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "421":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail421(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "422":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail422(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "423":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail423(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "424":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail424(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "440":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail440(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "441":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail441(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "442":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail442(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "443":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail443(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "444":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail444(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "510":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail510(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "511":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail511(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "514":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail514(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "610":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail610(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "614":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail614(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "620":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail620(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "624":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail624(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "630":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail630(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "634":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail634(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "640":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail640(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "644":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail644(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "650":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail650(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    case "654":
+	    	feedBackReportPartFailService=new FeedBackReportPartFail654(reportFeedBackMessageMapper);
+		      return feedBackReportPartFailService;
+	    }
+	    return null;
+	  }
+}

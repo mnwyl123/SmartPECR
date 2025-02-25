@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+		"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="IndvTextMsgInformMapper">
+
+	<resultMap id="sendBody-ResultMap" type="com.dcits.supervise.pecr.indv.entity.SendInform">
+		<result property="reportFileName"			column="REPORT_MESSAGE_NAME" />
+		<result property="dueDate"			        column="SETT_DATE" />
+		<result property="loanKey"			        column="ACCT_CODE" />
+		<result property="indentType"			    column="ID_TYPE" />
+		<result property="indentNum"			    column="ID_NUM" />
+		<result property="clientName"			    column="NAME" />
+		<result property="mobileTel"			    column="CELL_PHONE" />
+		<result property="delinquencyTerm"			column="OVERD_PRD" />
+		<result property="delinquencyTermAmt"		column="TOT_OVERD" />
+		<result property="globalSerialNo"           column="GLOBAL_SERIAL_NO" />
+	</resultMap>
+
+
+
+	<select id="selectInformCount" parameterType="map" resultType="int">
+		<![CDATA[
+			SELECT COUNT(REPORT_MESSAGE_NAME) AS COUNT FROM PECR_TEXT_MSG_INFORM
+   			
+  		]]>
+		<where>
+			<if test="REPORT_MESSAGE_NAME != null and REPORT_MESSAGE_NAME != ''">
+				AND REPORT_MESSAGE_NAME = '${REPORT_MESSAGE_NAME}'
+			</if>
+		</where>
+	</select>
+
+	<delete id="deleteSendTextInfo" parameterType="map">
+		<![CDATA[ 
+			DELETE FROM PECR_TEXT_MSG_INFORM
+		]]>
+		<where>
+			<if test="REPORT_MESSAGE_NAME != null and REPORT_MESSAGE_NAME != ''">
+				AND REPORT_MESSAGE_NAME = '${REPORT_MESSAGE_NAME}'
+			</if>
+		</where>
+	</delete>
+
+
+	<select id="selectSendViewCount" parameterType="map" resultType="int">
+		<![CDATA[
+			SELECT COUNT(1) FROM V_PECR_SEND_INFORM_INFO
+  		]]>
+		<where>
+			
+			<if test="REPORT_MESSAGE_NAME != null and REPORT_MESSAGE_NAME != ''">
+				AND REPORT_MESSAGE_NAME = '${REPORT_MESSAGE_NAME}'
+			</if>
+		</where>
+	</select>
+
+	<!--查询符合条件的数据条数-->
+	<select id="selectInformInfoCount" parameterType="map" resultType="int">
+		<![CDATA[
+			SELECT count(1) FROM PECR_TEXT_MSG_INFORM 
+  		]]>
+		<where>
+			
+			<if test="pd.REPORT_MESSAGE_NAME != null and pd.REPORT_MESSAGE_NAME != ''">
+				AND REPORT_MESSAGE_NAME LIKE '%${pd.REPORT_MESSAGE_NAME}%'
+			</if>
+			<if test="pd.REPORT_MESSAGE_NAME_QJ != null and pd.REPORT_MESSAGE_NAME_QJ != ''">
+				AND REPORT_MESSAGE_NAME LIKE '%${pd.REPORT_MESSAGE_NAME_QJ}%'
+			</if>
+			<if test="pd.SEND_FEEDBACK_STATE != null and pd.SEND_FEEDBACK_STATE != ''">
+				AND SEND_FEEDBACK_STATE = #{pd.SEND_FEEDBACK_STATE}
+			</if>
+			<if test="pd.ACCT_CODE != null and pd.ACCT_CODE != ''">
+				AND ACCT_CODE LIKE '%${pd.ACCT_CODE}%'
+			</if>
+			<if test="pd.ID_TYPE != null and pd.ID_TYPE != ''">
+				AND ID_TYPE = #{pd.ID_TYPE}
+			</if>
+			<if test="pd.ID_NUM != null and pd.ID_NUM != ''">
+				AND ID_NUM LIKE '%${pd.ID_NUM}%'
+			</if>
+			<if test="pd.NAME != null and pd.NAME != ''">
+				AND NAME LIKE '%${pd.NAME}%'
+			</if>
+			<if test="pd.CELL_PHONE != null and pd.CELL_PHONE != ''">
+				AND CELL_PHONE LIKE '%${pd.CELL_PHONE}%'
+			</if>
+		</where>
+	</select>
+
+	<!--查询多条数据-->
+	<select id="selectInformInfo" parameterType="map" resultType="map">
+		<![CDATA[
+			SELECT REPORT_MESSAGE_NAME,
+					SETT_DATE,
+					ACCT_CODE,
+					ID_TYPE,
+					ID_NUM,
+					NAME,
+					CELL_PHONE,
+					OVERD_PRD,
+					TOT_OVERD,
+					SEND_FEEDBACK_STATE,
+					INFORM_TIME,
+					GLOBAL_SERIAL_NO,
+					SEND_TEXT,
+					COMPANY
+			 FROM PECR_TEXT_MSG_INFORM 
+  		]]>
+		<where>
+			
+			<if test="pd.REPORT_MESSAGE_NAME != null and pd.REPORT_MESSAGE_NAME != ''">
+				AND REPORT_MESSAGE_NAME LIKE '%${pd.REPORT_MESSAGE_NAME}%'
+			</if>
+			<if test="pd.REPORT_MESSAGE_NAME_QJ != null and pd.REPORT_MESSAGE_NAME_QJ != ''">
+				AND REPORT_MESSAGE_NAME LIKE '%${pd.REPORT_MESSAGE_NAME_QJ}%'
+			</if>
+			<if test="pd.SEND_FEEDBACK_STATE != null and pd.SEND_FEEDBACK_STATE != ''">
+				AND SEND_FEEDBACK_STATE = #{pd.SEND_FEEDBACK_STATE}
+			</if>
+			<if test="pd.ACCT_CODE != null and pd.ACCT_CODE != ''">
+				AND ACCT_CODE LIKE '%${pd.ACCT_CODE}%'
+			</if>
+			<if test="pd.ID_TYPE != null and pd.ID_TYPE != ''">
+				AND ID_TYPE = #{pd.ID_TYPE}
+			</if>
+			<if test="pd.ID_NUM != null and pd.ID_NUM != ''">
+				AND ID_NUM LIKE '%${pd.ID_NUM}%'
+			</if>
+			<if test="pd.NAME != null and pd.NAME != ''">
+				AND NAME LIKE '%${pd.NAME}%'
+			</if>
+			<if test="pd.CELL_PHONE != null and pd.CELL_PHONE != ''">
+				AND CELL_PHONE LIKE '%${pd.CELL_PHONE}%'
+			</if>
+			    and COMPANY = #{pd.COMPANY}
+			
+		</where>
+		ORDER BY INFORM_TIME DESC
+	</select>
+
+	<select id="getPecrSendMsgPmt" parameterType="map" resultType="map">
+		<![CDATA[
+			SELECT ARG_KEY,ARG_VALUE FROM PECR_SYSTEM_ARG WHERE PECR_ARG_TYPE='${VISE_TYPE}'
+   			
+  		]]>
+	</select>
+
+	<select id="selectSendCount" parameterType="map" resultType="int">
+		<![CDATA[
+			SELECT COUNT(1) FROM V_PECR_SEND_INFORM_INFO 
+  		]]>
+		<where>
+			
+			<if test="REPORT_MESSAGE_NAME != null and REPORT_MESSAGE_NAME != ''">
+				AND REPORT_MESSAGE_NAME = '${REPORT_MESSAGE_NAME}'
+			</if>
+		</where>
+	</select>
+
+
+
+
+
+
+	<insert id="insertSendMsgInformInfo" parameterType="map">
+		<![CDATA[
+		INSERT INTO PECR_TEXT_MSG_INFORM 
+		SELECT
+			S.REPORT_MESSAGE_NAME,
+			S.SETT_DATE,
+			S.ACCT_CODE,
+			S.ID_TYPE,
+			S.ID_NUM,
+			S.NAME,
+			S.CELL_PHONE,
+			S.OVERD_PRD,
+			S.TOT_OVERD,
+			'N' AS SEND_FEEDBACK_STATE,
+			'${INFORM_TIME}' AS INFORM_TIME,
+			CONCAT('${sourSPN}','${sourSystemId}','${INFORM_TIME}',SUBSTRING('${REPORT_MESSAGE_NAME}',19,4),SUBSTRING('${REPORT_MESSAGE_NAME}',27,3),LPAD (CEIL(S.RN / 100), 5, '0')) AS GLOBAL_SERIAL_NO,
+			REPLACE(REPLACE('${SEND_TEXT}','[ACCT_CODE]',SUBSTRING(S.ACCT_CODE,-4)),'[SETT_DATE]',SETT_DATE) AS SEND_TEXT
+		FROM
+			(
+				SELECT
+					(@ROWNUM := @ROWNUM + 1) AS RN,
+					REPORT_MESSAGE_NAME,
+					SETT_DATE,
+					ACCT_CODE,
+					ID_TYPE,
+					ID_NUM,
+					NAME,
+					CELL_PHONE,
+					OVERD_PRD,
+					TOT_OVERD
+				FROM
+					V_PECR_SEND_INFORM_INFO,(SELECT @ROWNUM := 0) RN
+				WHERE
+					REPORT_MESSAGE_NAME = '${REPORT_MESSAGE_NAME}' 
+				ORDER BY
+					ACCT_CODE,
+					SETT_DATE
+			) S
+		]]>
+	</insert>
+	
+	<update id="updateGlobalNo" parameterType="map">
+		<![CDATA[
+			UPDATE PECR_TEXT_MSG_INFORM SET SEND_FEEDBACK_STATE='${SEND_FEEDBACK_STATE}' 
+				WHERE REPORT_MESSAGE_NAME='${REPORT_MESSAGE_NAME}' 
+					AND GLOBAL_SERIAL_NO IN ${GLOBAL_SERIAL_NO}
+				
+		]]>
+	</update>
+
+	<select id="selectsendListCon" parameterType="map" resultMap="sendBody-ResultMap">
+		<![CDATA[
+			SELECT
+				REPORT_MESSAGE_NAME,
+				SETT_DATE,
+				SUBSTRING(ACCT_CODE,-4) AS ACCT_CODE,
+				ID_TYPE,
+				ID_NUM,
+				NAME,
+				CELL_PHONE,
+				OVERD_PRD,
+				TOT_OVERD,
+				GLOBAL_SERIAL_NO
+			FROM
+				PECR_TEXT_MSG_INFORM
+			WHERE
+				REPORT_MESSAGE_NAME = '${REPORT_MESSAGE_NAME}'
+			ORDER BY
+				GLOBAL_SERIAL_NO,
+				ACCT_CODE
+			LIMIT ${limitNum},${limitCount}
+  		]]>
+
+	</select>
+
+
+	<select id="getMessageCountList" parameterType="map" resultType="map">
+		<![CDATA[
+			SELECT SEND_FEEDBACK_STATE AS STATUS,COUNT(SEND_FEEDBACK_STATE) AS COUNT FROM PECR_TEXT_MSG_INFORM
+				WHERE REPORT_MESSAGE_NAME='${REPORT_MESSAGE_NAME}'
+					
+				GROUP BY SEND_FEEDBACK_STATE
+   			
+  		]]>
+	</select>
+
+	<select id="selectInformStateCount" parameterType="map" resultType="int">
+		<![CDATA[
+			SELECT COUNT(SEND_FEEDBACK_STATE) AS COUNT FROM PECR_TEXT_MSG_INFORM
+   			
+  		]]>
+		<where>
+			<if test="REPORT_MESSAGE_NAME != null and REPORT_MESSAGE_NAME != ''">
+				AND REPORT_MESSAGE_NAME = '${REPORT_MESSAGE_NAME}'
+			</if>
+			<if test="SEND_FEEDBACK_STATE != null and SEND_FEEDBACK_STATE != ''">
+				AND SEND_FEEDBACK_STATE IN ${SEND_FEEDBACK_STATE}
+			</if>
+			
+		</where>
+	</select>
+
+
+	<select id="getGivenStatusGlobal" parameterType="map" resultType="map">
+		<![CDATA[
+			SELECT DISTINCT GLOBAL_SERIAL_NO FROM PECR_TEXT_MSG_INFORM
+   			
+  		]]>
+		<where>
+			<if test="REPORT_MESSAGE_NAME != null and REPORT_MESSAGE_NAME != ''">
+				AND REPORT_MESSAGE_NAME = '${REPORT_MESSAGE_NAME}'
+			</if>
+			<if test="STATE_VALUE != null and STATE_VALUE != ''">
+				AND SEND_FEEDBACK_STATE IN ${SEND_FEEDBACK_STATE}
+			</if>
+		</where>
+		ORDER BY GLOBAL_SERIAL_NO
+	</select>
+
+
+	<update id="updateGlobalStatusFalse" parameterType="map">
+		<![CDATA[
+			UPDATE PECR_TEXT_MSG_INFORM SET SEND_FEEDBACK_STATE='N',
+				GLOBAL_SERIAL_NO=CONCAT(SUBSTRING(GLOBAL_SERIAL_NO,1,5),'${INFORM_TIME}',SUBSTRING(GLOBAL_SERIAL_NO,20)),
+				INFORM_TIME=DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+				 
+				WHERE REPORT_MESSAGE_NAME='${REPORT_MESSAGE_NAME}' 
+					AND SEND_FEEDBACK_STATE IN ${SEND_FEEDBACK_STATE}
+					
+		]]>
+	</update>
+
+	<select id="selectsendListGivenStatus" parameterType="map" resultMap="sendBody-ResultMap">
+		<![CDATA[
+			SELECT
+				REPORT_MESSAGE_NAME,
+				SETT_DATE,
+				SUBSTRING(ACCT_CODE,-4) AS ACCT_CODE,
+				ID_TYPE,
+				ID_NUM,
+				NAME,
+				CELL_PHONE,
+				OVERD_PRD,
+				TOT_OVERD,
+				GLOBAL_SERIAL_NO
+			FROM
+				PECR_TEXT_MSG_INFORM
+				WHERE  REPORT_MESSAGE_NAME = '${REPORT_MESSAGE_NAME}' 
+					AND GLOBAL_SERIAL_NO IN ${GLOBAL_SERIAL_NO_STRS} 
+  		]]>
+
+	</select>
+
+
+
+	<select id="selectInformCountGivenStatus" parameterType="map" resultType="map">
+		<![CDATA[
+			SELECT SEND_FEEDBACK_STATE AS STATUS,COUNT(SEND_FEEDBACK_STATE) AS COUNT 
+			FROM PECR_TEXT_MSG_INFORM
+				WHERE REPORT_MESSAGE_NAME='${REPORT_MESSAGE_NAME}'
+					AND GLOBAL_SERIAL_NO IN ${GLOBAL_SERIAL_NO_STRS} 
+					
+				GROUP BY SEND_FEEDBACK_STATE
+   			
+  		]]>
+	</select>
+
+	<!--查询单条数据-->
+	<select id="findOneTextMsgInfo" parameterType="pd" resultType="map">
+		<![CDATA[
+			SELECT REPORT_MESSAGE_NAME,
+					SETT_DATE,
+					ACCT_CODE,
+					ID_TYPE,
+					ID_NUM,
+					NAME,
+					CELL_PHONE,
+					OVERD_PRD,
+					TOT_OVERD,
+					SEND_FEEDBACK_STATE,
+					INFORM_TIME,
+					GLOBAL_SERIAL_NO,
+					SEND_TEXT
+			 FROM PECR_TEXT_MSG_INFORM 
+  		]]>
+		<where>
+			
+			<if test="GLOBAL_SERIAL_NO != null and GLOBAL_SERIAL_NO != ''">
+				AND GLOBAL_SERIAL_NO = '${GLOBAL_SERIAL_NO}'
+			</if>
+			<if test="ACCT_CODE != null and ACCT_CODE != ''">
+				AND ACCT_CODE = #{ACCT_CODE}
+			</if>
+		</where>
+	</select>
+
+</mapper>
+
+
+
+
+
+
+

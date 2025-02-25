@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MotgaNormalMessageMapper">
+
+	<select id="getNormalMessagelistPage" parameterType="pd" resultType="java.util.HashMap">
+		select * from 
+		    ( SELECT
+		      RPT_DATE as RPTDATE,
+		      INF_REC_TYPE as INFRECTYPE,
+		      COMPANY,
+		      COUNT(*) as RECODENUM,
+		      COUNT(CASE WHEN BUSINESS_STATES='30' OR BUSINESS_STATES IS NULL THEN '1' END) AS RIGHTRECODENUM,
+		      COUNT(CASE WHEN BUSINESS_STATES='40' OR BUSINESS_STATES IS NULL THEN '1' END) AS WRONGRECODENUM
+		    FROM
+		      MOTGA_CLTAL_CTRCT_BS  a
+		      GROUP BY RPT_DATE,INF_REC_TYPE,COMPANY
+		      ) h
+    where  h.RIGHTRECODENUM &gt; 0
+		   	<if test='pd.rptDate != null and pd.rptDate != ""'>
+				and h.RPTDATE &gt;= substr(#{pd.rptDate},1,10) 
+				and h.RPTDATE &lt;= substr(#{pd.rptDate},14,10) 
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType != ""'>
+				and h.INFRECTYPE = #{pd.infRecType}
+			</if>
+			    and h.COMPANY = #{pd.COMPANY}
+			order by INFRECTYPE,RPTDATE DESC
+	</select>
+	
+	<select id="autoNormalMessagelistPage" parameterType="pd" resultType="java.util.HashMap">
+		select * from 
+		    ( SELECT
+		      RPT_DATE as RPTDATE,
+		      INF_REC_TYPE as INFRECTYPE,
+		      COMPANY,
+		      EXTEND1,
+		      COUNT(*) as RECODENUM,
+		      COUNT(CASE WHEN BUSINESS_STATES='30' OR BUSINESS_STATES IS NULL THEN '1' END) AS RIGHTRECODENUM,
+		      COUNT(CASE WHEN BUSINESS_STATES='40' OR BUSINESS_STATES IS NULL THEN '1' END) AS WRONGRECODENUM
+		    FROM
+		      MOTGA_CLTAL_CTRCT_BS  a
+		      GROUP BY RPT_DATE,INF_REC_TYPE,COMPANY,EXTEND1
+		      ) h
+    where  h.RIGHTRECODENUM &gt; 0
+		   	<if test='pd.rptDate != null and pd.rptDate != ""'>
+				and h.EXTEND1 &gt;= substr(#{pd.rptDate},1,10) 
+				and h.EXTEND1 &lt;= substr(#{pd.rptDate},14,10) 
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType != ""'>
+				and h.INFRECTYPE = #{pd.infRecType}
+			</if>
+			    and h.COMPANY = #{pd.COMPANY}
+			order by INFRECTYPE,RPTDATE DESC
+	</select>
+	
+	<select id="getAbnormalMessagelistPage" parameterType="pd" resultType="java.util.HashMap">
+		SELECT * from (
+				  SELECT  
+				      RPT_DATE as RPTDATE,
+				      INF_REC_TYPE as INFRECTYPE,
+				      COMPANY,
+				      COUNT(*) as RECODENUM,
+				      COUNT(CASE WHEN BUSINESS_STATES='30' OR BUSINESS_STATES IS NULL THEN '1' END) AS RIGHTRECODENUM,
+				      COUNT(CASE WHEN BUSINESS_STATES='40' OR BUSINESS_STATES IS NULL THEN '1' END) AS WRONGRECODENUM
+				  FROM
+				      MOC_ENT_DEL  a
+				 WHERE COMPANY = #{pd.COMPANY}
+						<if test='pd.rptDate != null and pd.rptDate != ""'>
+							and RPT_DATE   &gt;= SUBSTR(#{pd.rptDate},1,10)   
+							and RPT_DATE   &lt;= SUBSTR(#{pd.rptDate},14,10)  
+						</if>
+				      group by INF_REC_TYPE,RPT_DATE,COMPANY
+				      union all
+				  SELECT  
+				      RPT_DATE as RPTDATE,
+				      INF_REC_TYPE as INFRECTYPE,
+				      COMPANY,
+				      COUNT(*) as RECODENUM,
+				      COUNT(CASE WHEN BUSINESS_STATES='30' OR BUSINESS_STATES IS NULL THEN '1' END) AS RIGHTRECODENUM,
+				      COUNT(CASE WHEN BUSINESS_STATES='40' OR BUSINESS_STATES IS NULL THEN '1' END) AS WRONGRECODENUM
+				 FROM
+				      MOC_ID_CAGS_INF  a
+				 WHERE COMPANY = #{pd.COMPANY}
+						<if test='pd.rptDate != null and pd.rptDate != ""'>
+							 and RPT_DATE   &gt;= SUBSTR(#{pd.rptDate},1,10)   
+							and RPT_DATE   &lt;= SUBSTR(#{pd.rptDate},14,10) 
+						</if>
+				      group by INF_REC_TYPE,RPT_DATE,COMPANY
+				      ) h
+  			where h.RIGHTRECODENUM &gt; 0
+			<if test='pd.rptDate != null and pd.rptDate != ""'>
+				and h.RPTDATE &gt;= substr(#{pd.rptDate},1,10) 
+				and h.RPTDATE &lt;= substr(#{pd.rptDate},14,10) 
+			</if>
+			<if test='pd.infRecType != null and pd.infRecType != ""'>
+				and h.INFRECTYPE = #{pd.infRecType}
+			</if>
+			    and h.COMPANY = #{pd.COMPANY}
+			order by INFRECTYPE,RPTDATE DESC
+	</select>
+	
+</mapper>

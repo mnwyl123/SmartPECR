@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CashFlowsSeoMapper">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.CashFlows" id="cashFlowsResultMap">
+		<result column="eja_cash_flows_bs_sgmt_id" property="ejaCashFlowsBsSgmtId" />
+		<result column="inf_rec_type" property="infRecType" />
+		<result column="ent_name" property="entName" />
+		<result column="ent_cert_type" property="entCertType" />
+		<result column="ent_cert_num" property="entCertNum" />
+		<result column="rpt_date" property="rptDate" />
+		<result column="sheet_year" property="sheetYear" />
+		<result column="sheet_type" property="sheetType" />
+		<result column="sheet_type_divide" property="sheetTypeDivide" />
+		<result column="audit_firm_name" property="auditFirmName" />
+		<result column="auditor_name" property="auditorName" />
+		<result column="audit_time" property="auditTime" />
+		<result column="cimoc" property="cimoc" />
+		<result column="rpt_date_code" property="rptDateCode" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="operator_user" property="operatorUser" />
+		<result column="org_name" property="orgName" />
+		<result column="org_code" property="orgCode" />
+		<result column="business_states" property="businessStates" />
+		<result column="reject_reason" property="rejectReason" />
+		<result column="is_filter" property="isFilter" />
+		<result column="report_message_id" property="reportMessageId" />
+		<result column="FLAG" property="flag" />
+	</resultMap>
+<select id="datalistPage" parameterType="page" resultType="pd">
+		  select 
+			 ENT_CERT_TYPE,ENT_CERT_NUM,COMPANY
+		  from E_CASH_FLOWS_BS_MIDDLE
+		  <if test="pd.managerId != null and pd.managerId != ''">
+				LEFT JOIN PECR.sys_l_c_a_m_m M
+		        ON E_CASH_FLOWS_BS_MIDDLE.ENT_CERT_TYPE = M.CUST_ID_TYPE
+				AND E_CASH_FLOWS_BS_MIDDLE.ENT_CERT_NUM = M.CUST_ID_NUM
+		  </if>
+		  where 1=1		
+		   	  <if test='pd.ENT_CERT_TYPE != null and pd.ENT_CERT_TYPE != ""'>
+		   	  	and ENT_CERT_TYPE = #{pd.ENT_CERT_TYPE}
+		   	  </if>
+		   	  <if test='pd.ENT_CERT_NUM != null and pd.ENT_CERT_NUM != ""'>
+		   	  	and ENT_CERT_NUM like '%${pd.ENT_CERT_NUM}%'
+		   	  </if>
+		   	  <if test="pd.managerId != null and pd.managerId != ''">
+					and M.MANAGER_ID = #{pd.managerId}
+					AND M.DATA_TYPE = '2'
+					AND M.DATA_LEVEL = '6'
+		   		    AND M.END_DATE = '2099-12-31'
+			  </if>
+		   	    and COMPANY = #{pd.COMPANY}
+	</select>
+	<!-- 授信协议信息  数据列表 -->
+	<select id="dataHistlistPage" parameterType="page" resultMap="cashFlowsResultMap">
+	select * from (
+		 select eja_cash_flows_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,rpt_date 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,audit_firm_name 
+			  ,auditor_name 
+			  ,audit_time 
+			  ,cimoc 
+			  ,rpt_date_code 
+			  ,last_update_time 
+			  ,operator_user 
+			  ,org_name 
+			  ,org_code 
+			  ,business_states 
+			  ,reject_reason 
+			  ,is_filter 
+			  ,report_message_id  
+			  ,'new' FLAG
+			  ,COMPANY
+		   from E_CASH_FLOWS_BS
+	where ent_cert_type = #{pd.ENT_CERT_TYPE}  and     ent_cert_num = #{pd.ENT_CERT_NUM}
+		union all
+		select eja_cash_flows_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,rpt_date 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,audit_firm_name 
+			  ,auditor_name 
+			  ,audit_time 
+			  ,cimoc 
+			  ,rpt_date_code 
+			  ,last_update_time 
+			  ,operator_user 
+			  ,org_name 
+			  ,org_code 
+			  ,business_states 
+			  ,reject_reason 
+			  ,is_filter 
+			  ,report_message_id  
+			  ,'old' FLAG
+			  ,COMPANY
+		   from E_CASH_FLOWS_BS_HIST
+	where ent_cert_type = #{pd.ENT_CERT_TYPE}  and     ent_cert_num = #{pd.ENT_CERT_NUM}) a
+	where 1=1
+			  <if test='pd.RPT_DATE != null and pd.RPT_DATE != ""'>
+		   	  	and a.RPT_DATE = #{pd.RPT_DATE}
+		   	  </if>
+		   	    and a.COMPANY = #{pd.COMPANY}
+	</select>
+	
+	<update id="updateStatus" parameterType="map">
+		update E_CASH_FLOWS_BS
+		   <set>
+		   	  	BUSINESS_STATES = '11'
+		   </set>
+		   where eja_cash_flows_bs_sgmt_id = #{baseId}
+		     and COMPANY = #{COMPANY}
+</update>
+<update id="backdate" parameterType="map">
+		update E_CASH_FLOWS_BS
+		   <set>
+		   	  	BUSINESS_STATES = '30'
+		   </set>
+		   where REPORT_MESSAGE_ID = #{reportMessageId}
+		     and COMPANY = #{COMPANY}
+</update>
+<delete id="deletedate" parameterType="map" >
+		delete from report_message
+		 where REPORT_MESSAGE_FILE_NAME = #{reportMessageId}
+		   and COMPANY = #{COMPANY}
+</delete>
+
+
+
+	<!-- 详情或者修改 查询指定记录 基础段 -->
+	<select id="getCashFlowsBsSgmtById" parameterType="pd" resultType="map">
+		 select
+			  eja_cash_flows_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,rpt_date 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,audit_firm_name 
+			  ,auditor_name 
+			  ,audit_time 
+			  ,cimoc 
+			  ,rpt_date_code 
+			  ,last_update_time 
+			  ,operator_user 
+			  ,org_name 
+			  ,org_code 
+			  ,business_states 
+			  ,reject_reason 
+			  ,is_filter 
+			  ,report_message_id 
+			  ,COMPANY 
+		from E_CASH_FLOWS_BS_HIST
+		  where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId}
+		    and COMPANY = #{COMPANY}
+	</select>
+	
+	<!-- 企业现金流量表02现金流量表段 -->
+	<select id="getCashFlows2002SgmtById" parameterType="pd" resultType="pd">
+		 select   ejb_cash_flows2002_sgmt_id 
+				  ,cash_received_from_sales_of_go 
+				  ,tax_refunds 
+				  ,other_cash_received_relating_t 
+				  ,total_cash_inflows_from_operat 
+				  ,cash_paid_for_goods_and_servic 
+				  ,cash_paid_to_and_on_behalf_of_ 
+				  ,payments_of_all_types_of_taxes 
+				  ,other_cash_payments_from_opera 
+				  ,total_cash_outflows_from_opera 
+				  ,net_cash_flows_from_operating 
+				  ,cash_received_from_return_of_i 
+				  ,cash_received_from_onvestments 
+				  ,net_cash_received_from_disposa 
+				  ,cash_received_relating_to_othe 
+				  ,total_cash_inflows_from_invest 
+				  ,cash_paid_to_acquire_fixed_ass 
+				  ,cash_payments_for_investments 
+				  ,cash_payments_related_to_oth_t 
+				  ,total_cash_outflows_from_inves 
+				  ,net_cash_flows_from_investing_ 
+				  ,cash_received_from_investors 
+				  ,cash_from_borrowings 
+				  ,other_cash_received_relating_c 
+				  ,total_cash_inflows_from_financ 
+				  ,cash_repayments_for_debts 
+				  ,cash_payments_for_distribution 
+				  ,cash_payments_related_to_oth_c 
+				  ,total_cash_outflows_from_finan 
+				  ,net_cash_flows_from_financing_ 
+				  ,effect_of_exchang_rate_changes 
+				  ,net_increasein_cash_and_cash_e 
+				  ,net_profit 
+				  ,provision_for_assets 
+				  ,depreciation_of_fixed_assets 
+				  ,amortisation_of_intangible_ass 
+				  ,long_term_deferred_expenses_am 
+				  ,decrease_of_deffered_expenses 
+				  ,addition_of_accued_expense 
+				  ,losses_on_disposal_of_fixed_as 
+				  ,losses_on_scrapping_of_fixed_a 
+				  ,finance_expense 
+				  ,losses_arsing_from_investment 
+				  ,deferred_tax_credit 
+				  ,decrease_in_inventories 
+				  ,decreasein_operating_receivabl 
+				  ,increasein_operating_receivabl 
+				  ,others 
+				  ,net_cash_flows_from_operating2 
+				  ,debts_transfer_to_capital 
+				  ,one_year_due_convertible_bonds 
+				  ,financing_rent_to_the_fixed_as 
+				  ,non_cash_others 
+				  ,cash_at_the_end_of_period 
+				  ,cash_at_the_beginning_of_the_p 
+				  ,cash_equivalents_at_the_end_of 
+				  ,cash_rquivalents_at_the_beginn 
+				  ,net_increase_in_cash_and_cash_ 
+				  ,eja_cash_flows_bs_sgmt_id 
+				  ,rpt_date 
+				  ,COMPANY
+		   from E_CASH_FLOWS2002_HIST
+		  where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId}
+	</select>
+	
+	<!-- 企业现金流量表07现金流量表段 -->
+	<select id="getCashFlows2007SgmtById" parameterType="pd" resultType="pd">
+		 select   ejc_cash_flows2007_sgmt_id
+				  ,cash_received_from_sales_of_go 
+				  ,tax_refunds 
+				  ,other_cash_received_relating_j 
+				  ,total_cash_inflows_from_operat 
+				  ,cash_paid_for_goods_and_servic 
+				  ,cash_paid_to_and_on_beha_lf_of 
+				  ,payments_of_all_types_of_taxes 
+				  ,other_cash_payments_from_opera 
+				  ,total_cash_outflows_from_opera 
+				  ,net_cash_flows_from_operating 
+				  ,cash_received_from_return_of_i 
+				  ,cash_received_from_onvestments 
+				  ,net_cash_received_from_disposa 
+				  ,net_cash_inflows_of_disposal_o 
+				  ,cash_received_relating_to_othe 
+				  ,total_cash_inflows_from_invest 
+				  ,cash_paid_to_acquire_fixed_ass 
+				  ,cash_payments_for_investments 
+				  ,net_cash_outflows_of_procureme 
+				  ,cash_payments_related_to_oth_t 
+				  ,sub_total_of_cash_outflows 
+				  ,net_cash_flows_from_investing_ 
+				  ,cash_received_from_investors 
+				  ,cash_from_borrowings 
+				  ,other_cash_received_relating_c 
+				  ,total_cash_inflows_from_financ 
+				  ,cash_repayments_for_debts 
+				  ,cash_payments_for_distribution 
+				  ,cash_payments_related_to_oth_c 
+				  ,total_cash_outflows_from_finan 
+				  ,net_cash_flows_from_financing_ 
+				  ,effect_of_exchang_rate_changes 
+				  ,netincreasein_cash_and_cash_eq 
+				  ,initial_cash_and_cash_equivale 
+				  ,the_final_cash_and_cash_equiva 
+				  ,net_profit 
+				  ,provision_for_asset_impairment 
+				  ,depreciation_of_fixed_assets 
+				  ,amortisation_of_intangible_ass 
+				  ,amortisation_of_long_term_deff 
+				  ,decrease_of_deffered_expenses 
+				  ,addition_of_accued_expense 
+				  ,losses_on_disposal_of_fixed_as 
+				  ,losses_on_scrapping_of_fixed_a 
+				  ,profit_or_loss_from_changes_in 
+				  ,finance_expense 
+				  ,losses_arsing_from_investment 
+				  ,deferred_income_tax_assets 
+				  ,deferred_income_tax_liabilitie 
+				  ,decreasein_inventories 
+				  ,decreasein_operating_receivabl 
+				  ,increase_in_operating_receivab 
+				  ,others 
+				  ,net_cash_flows_from_operating2 
+				  ,debts_transfer_to_capital 
+				  ,one_year_due_convertible_bonds 
+				  ,financing_rent_to_the_fixed_as 
+				  ,non_cash_others 
+				  ,cash_at_the_end_of_period 
+				  ,cash_at_the_beginning_of_the_p 
+				  ,cash_equivalents_at_the_end_of 
+				  ,cash_equivalents_at_the_beginn 
+				  ,netincreasein_cash_and_cash_e2 
+				  ,eja_cash_flows_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY
+		   from E_CASH_FLOWS2007_HIST
+		  where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId}
+	</select>
+	
+	
+</mapper>

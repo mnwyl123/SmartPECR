@@ -1,0 +1,797 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IndvBasicsInfoMapper">
+
+	<sql id="validBusinessStates">
+		'20'
+	</sql>
+	
+	
+	<sql id="pecrIndvBsSgmtTableName">
+			I_BS
+	</sql>
+	<sql id="pecrIndvIdSgmtTableName">
+			I_ID
+	</sql>
+	<sql id="pecrIndvFcsInfSgmtTableName">
+			I_FCS_INF
+	</sql>
+	<sql id="pecrIndvEduInfSgmtTableName">
+			I_EDU_INF
+	</sql>
+	<sql id="pecrIndvOctpnInfSgmtTableName">
+			I_OCTPN_INF
+	</sql>
+	<sql id="pecrIndvRedncInfSgmtTableName">
+			i_rednc_inf
+	</sql>
+	<sql id="pecrIndvMlgInfSgmtTableName">
+			I_MLG_INF
+	</sql>
+	<sql id="pecrIndvSpsInfSgmtTableName">
+			I_SPS_INF
+	</sql>
+	<sql id="pecrIndvIncInfSgmtTableName">
+			I_INC_INF
+	</sql>
+	
+	<sql id="pecrIndvBsSgmtFields">
+		PAA_BS_SGMT_ID   ,
+		INF_REC_TYPE     ,
+		NAME             ,
+		ID_TYPE          ,
+		ID_NUM           ,
+		INF_SURC_CODE    ,
+		RPT_DATE         ,
+		RPT_DATE_CODE    ,
+		CIMOC            ,
+		CUSTOMER_TYPE    ,
+		LAST_UPDATE_TIME ,
+		OPERATOR_USER    ,
+		ORG_NAME         ,
+		ORG_CODE         ,
+		BUSINESS_STATES  ,
+		REJECT_REASON    ,
+		IS_FILTER        ,
+		REPORT_MESSAGE_ID,
+		COMPANY
+	</sql>
+	<sql id="pecrIndvIdSgmtFields">
+		PAB_ID_SGMT_ID    ,
+		ALIAS             ,
+		OTH_ID_TYPE       ,
+		OTH_ID_NUM        ,
+		ID_INFO_UP_DATE   ,
+		PAA_BS_SGMT_ID    ,
+		RPT_DATE,
+		COMPANY
+	</sql>
+	<sql id="pecrIndvFcsInfSgmtFields">
+		PAC_FCS_INF_SGMT_ID,
+		SEX                ,
+		D_O_B              ,
+		NATION             ,
+		HOUSE_ADD          ,
+		HH_DIST            ,
+		CELL_PHONE         ,
+		EMAIL              ,
+		FCS_INFO_UP_DATE   ,
+		PAA_BS_SGMT_ID     ,
+		RPT_DATE,
+		COMPANY
+	</sql>
+	<sql id="pecrIndvEduInfSgmtFields">
+		PAD_EDU_INF_SGMT_ID,
+		EDU_LEVEL          ,
+		ACA_DEGREE         ,
+		EDU_INFO_UP_DATE   ,
+		PAA_BS_SGMT_ID     ,
+		RPT_DATE,
+		COMPANY
+	</sql>
+	<sql id="pecrIndvOctpnInfSgmtFields">
+		PAE_OCTPN_INF_SGMT_ID,
+		EMP_STATUS           ,
+		CPN_NAME             ,
+		CPN_TYPE             ,
+		INDUSTRY             ,
+		CPN_ADDR             ,
+		CPN_PC               ,
+		CPN_DIST             ,
+		CPN_T_E_L            ,
+		OCCUPATION           ,
+		TITLE                ,
+		TECH_TITLE           ,
+		WORK_START_DATE      ,
+		OCTPN_INFO_UP_DATE   ,
+		PAA_BS_SGMT_ID       ,
+		RPT_DATE,
+		COMPANY
+	</sql>
+	<sql id="pecrIndvRedncInfSgmtFields">
+		PAF_REDNC_INF_SGMT_ID,
+		RESI_STATUS          ,
+		RESI_ADDR            ,
+		RESI_PC              ,
+		RESI_DIST            ,
+		HOME_TEL             ,
+		RESI_INFO_UP_DATE    ,
+		PAA_BS_SGMT_ID       ,
+		RPT_DATE,
+		COMPANY
+	</sql>
+	<sql id="pecrIndvMlgInfSgmtFields">
+		PAG_MLG_INF_SGMT_ID,
+		MAIL_ADDR          ,
+		MAIL_PC            ,
+		MAIL_DIST          ,
+		MLG_INFO_UP_DATE   ,
+		PAA_BS_SGMT_ID     ,
+		RPT_DATE ,
+		COMPANY
+	</sql>
+	<sql id="pecrIndvSpsInfSgmtFields">
+		PAH_SPS_INF_SGMT_ID,
+		MARI_STATUS        ,
+		SPO_NAME           ,
+		SPO_ID_TYPE        ,
+		SPO_ID_NUM         ,
+		SPO_TEL            ,
+		SPS_CMPY_NM        ,
+		SPS_INFO_UP_DATE     ,
+		PAA_BS_SGMT_ID       ,
+		RPT_DATE    ,
+		COMPANY
+	</sql>
+	<sql id="pecrIndvIncInfSgmtFields">
+		PAI_INC_INF_SGMT_ID,
+		ANNL_INC           ,
+		TAX_INCOME         ,
+		INC_INFO_UP_DATE   ,
+		PAA_BS_SGMT_ID     ,
+		RPT_DATE  ,
+		COMPANY
+	</sql>
+	
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvBsSgmt" id="bsSgmtlistResultMap">
+		<result column="PAA_BS_SGMT_ID" property="paaBsSmgtId"/> 
+		<result column="INF_REC_TYPE" property="infRecType"/> 
+		<result column="NAME" property="name"/> 
+		<result column="ID_TYPE" property="idType"/> 
+		<result column="ID_NUM" property="idNum"/> 
+		<result column="INF_SURC_CODE" property="infSurcCode"/> 
+		<result column="RPT_DATE" property="rptDate"/> 
+		<result column="RPT_DATE_CODE" property="rptDateCode"/> 
+		<result column="CIMOC" property="cimoc"/> 
+		<result column="CUSTOMER_TYPE" property="customerType"/> 
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/> 
+		<result column="OPERATOR_USER" property="operatorUser"/> 
+		<result column="ORG_NAME" property="orgName"/> 
+		<result column="ORG_CODE" property="orgCode"/> 
+		<result column="BUSINESS_STATES" property="businessStates"/> 
+		<result column="REJECT_REASON" property="rejectReason"/> 
+		<result column="IS_FILTER" property="isFilter"/> 
+		<result column="REPORT_MESSAGE_ID" property="reportMessageId"/> 
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvIdSgmt" id="idSgmtlistResultMap">
+	<result column="PAB_ID_SGMT_ID" property="pabIdSgmtId"/>  
+	<result column="ALIAS" property="alias"/>        
+	<result column="OTH_ID_TYPE" property="othIdType"/>    
+	<result column="OTH_ID_NUM" property="othIdNum"/>     
+	<result column="ID_INFO_UP_DATE" property="idInfoUpDate"/> 
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>  
+	<result column="RPT_DATE" property="rptDate"/>      
+</resultMap>	
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvFcsInfSgmt" id="fcsInfSgmtlistResultMap">
+	<result column="PAC_FCS_INF_SGMT_ID" property="pacFcsInfSgmtId"/>       
+	<result column="SEX" property="sex"/>                   
+	<result column="D_O_B" property="dOB"/>                   
+	<result column="NATION" property="nation"/>                
+	<result column="HOUSE_ADD" property="houseAdd"/>              
+	<result column="HH_DIST" property="hhDist"/>                
+	<result column="CELL_PHONE" property="cellPhone"/>             
+	<result column="EMAIL" property="email"/>                 
+	<result column="FCS_INFO_UP_DATE" property="fcsInfoUpDate"/>         
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>           
+	<result column="RPT_DATE" property="rptDate"/>               
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvEduInfSgmt" id="eduInfSgmtlistResultMap">
+	<result column="PAD_EDU_INF_SGMT_ID" property="padEduInfSgmtId"/>
+	<result column="EDU_LEVEL" property="eduLevel"/>       
+	<result column="ACA_DEGREE" property="acaDegree"/>      
+	<result column="EDU_INFO_UP_DATE" property="eduInfoUpDate"/>  
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>    
+	<result column="RPT_DATE" property="rptDate"/>        
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvOctpnInfSgmt" id="octpnInfSgmtlistResultMap">
+	<result column="PAE_OCTPN_INF_SGMT_ID" property="paeOctpnInfSgmtId"/>
+	<result column="EMP_STATUS" property="empStatus"/>        
+	<result column="CPN_NAME" property="cpnName"/>          
+	<result column="CPN_TYPE" property="cpnType"/>          
+	<result column="INDUSTRY" property="industry"/>         
+	<result column="CPN_ADDR" property="cpnAddr"/>          
+	<result column="CPN_PC" property="cpnPc"/>            
+	<result column="CPN_DIST" property="cpnDist"/>          
+	<result column="CPN_T_E_L" property="cpnTEL"/>           
+	<result column="OCCUPATION" property="occupation"/>       
+	<result column="TITLE" property="title"/>            
+	<result column="TECH_TITLE" property="techTitle"/>        
+	<result column="WORK_START_DATE" property="workStartDate"/>    
+	<result column="OCTPN_INFO_UP_DATE" property="octpnInfoUpDa"/>    
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>      
+	<result column="RPT_DATE" property="rptDate"/>          
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvRedncInfSgmt" id="redncInfSgmtlistResultMap">
+	<result column="PAF_REDNC_INF_SGMT_ID" property="pafRedncInfSgmtId"/>        
+	<result column="RESI_STATUS" property="resiStatus"/>      
+	<result column="RESI_ADDR" property="resiAddr"/> 	
+	<result column="RESI_PC" property="resiPc"/>        
+	<result column="RESI_DIST" property="resiDist"/>      
+	<result column="HOME_TEL" property="homeTel"/>       
+	<result column="RESI_INFO_UP_DATE" property="resiInfoUpDate"/>
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>   
+	<result column="RPT_DATE" property="rptDate"/>       
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvMlgInfSgmt" id="mlgInfSgmtlistResultMap">
+	<result column="PAG_MLG_INF_SGMT_ID" property="pagMlgInfSgmtId"/>
+	<result column="MAIL_ADDR" property="mailAddr"/>       
+	<result column="MAIL_PC" property="mailPc"/>         
+	<result column="MAIL_DIST" property="mailDist"/>       
+	<result column="MLG_INFO_UP_DATE" property="mlgInfoUpDate"/>  
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>    
+	<result column="RPT_DATE" property="rptDate"/>        
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvSpsInfSgmt" id="spsInfSgmtlistResultMap">
+	<result column="PAH_SPS_INF_SGMT_ID" property="pahSpsInfSgmtId"/>    
+	<result column="MARI_STATUS" property="mariStatus"/>     
+	<result column="SPO_NAME" property="spoName"/>           
+	<result column="SPO_ID_TYPE" property="spoIdType"/>         
+	<result column="SPO_ID_NUM" property="spoIdNum"/>          
+	<result column="SPO_TEL" property="spoTel"/>    
+	<result column="SPS_CMPY_NM" property="spsCmpyNm"/>        
+	<result column="SPS_INFO_UP_DATE" property="spsInfoUpDate"/>    
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>          
+	<result column="RPT_DATE" property="rptDate"/>  
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvIncInfSgmt" id="incInfSgmtlistResultMap">
+	<result column="PAI_INC_INF_SGMT_ID" property="paiIncInfSgmtId"/>
+	<result column="ANNL_INC" property="annlInc"/>        
+	<result column="TAX_INCOME" property="taxIncome"/>      
+	<result column="INC_INFO_UP_DATE" property="incInfoUpDate"/>  
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>    
+	<result column="RPT_DATE" property="rptDate"/>        
+</resultMap>
+<select id="dataBsSgmtlistPage" parameterType="page" resultMap="bsSgmtlistResultMap">
+		select 
+			 <include refid="pecrIndvBsSgmtFields"/>
+		  from <include refid="pecrIndvBsSgmtTableName"/>
+		  <if test="pd.managerId != null and pd.managerId != ''">
+			  LEFT JOIN PECR.sys_l_c_a_m_m M
+	          ON NAME = M.CUST_NAME
+			  AND ID_TYPE = M.CUST_ID_TYPE
+			  AND ID_NUM = M.CUST_ID_NUM
+		  </if>		  
+		  where 1=1	and COMPANY = #{pd.COMPANY}
+		  	  <if test='pd.rptDate != null and pd.rptDate != ""'>
+		   	  	and RPT_DATE = #{pd.rptDate}
+		   	  </if>
+		   	  <if test='pd.businessStates != null and pd.businessStates != ""'>
+		   	  	and BUSINESS_STATES = #{pd.businessStates}
+		   	  </if>
+		   	  <if test='pd.name != null and pd.name != ""'>
+		   	  	and name like '%${pd.name}%'
+		   	  </if>
+		   	  <if test='pd.idType != null and pd.idType != ""'>
+		   	  	and id_type = #{pd.idType}
+		   	  </if>
+		   	  <if test='pd.idNum != null and pd.idNum != ""'>
+		   	  	and id_num like '%${pd.idNum}%'
+		   	  </if>  
+		   	  <if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			 </if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != ''">
+				and M.MANAGER_ID = #{pd.managerId}
+				AND M.DATA_TYPE = '1'
+				AND M.DATA_LEVEL = '1'
+				AND M.END_DATE = '2099-12-31'
+			</if>
+</select>
+<select id="getPcBasBsSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvBsSgmtFields"></include>
+		  from <include refid="pecrIndvBsSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId} and COMPANY = #{COMPANY}
+</select>
+<select id="getPecrIndvIdSgmtByIdlistPage" parameterType="page" resultMap="idSgmtlistResultMap">
+		select <include refid="pecrIndvIdSgmtFields"></include>
+		  from <include refid="pecrIndvIdSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{pd.paaBsSmgtId}
+</select>
+<select id="getPecrIndvIdSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvIdSgmtFields"></include>
+		  from <include refid="pecrIndvIdSgmtTableName"></include>
+		 where PAB_ID_SGMT_ID = #{pabIdSgmtId}
+</select>
+
+<select id="getPecrIndvIdSgmtCKey" parameterType="pd" resultType="int">
+		select   count(*)  
+		  from  I_ID
+		 where PAB_ID_SGMT_ID = #{pabIdSgmtId}
+</select>
+<select id="getPcBasFcsInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvFcsInfSgmtFields"></include>
+		  from <include refid="pecrIndvFcsInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+</select>
+<select id="getPcBasEduInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvEduInfSgmtFields"></include>
+		  from <include refid="pecrIndvEduInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId} 
+</select>
+<select id="getPcBasOctpnInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvOctpnInfSgmtFields"></include>
+		  from <include refid="pecrIndvOctpnInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId} 
+</select>
+<select id="getPcBasRedncInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvRedncInfSgmtFields"></include>
+		  from <include refid="pecrIndvRedncInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId} 
+</select>
+<select id="getPcBasMlgInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvMlgInfSgmtFields"></include>
+		  from <include refid="pecrIndvMlgInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId} 
+</select>
+<select id="getPcBasSpsInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvSpsInfSgmtFields"></include>
+		  from <include refid="pecrIndvSpsInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId} 
+</select>
+<select id="getPcBasIncInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvIncInfSgmtFields"></include>
+		  from <include refid="pecrIndvIncInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId} 
+</select>
+
+
+<delete id="delPcBasBsSgmtById" parameterType="pd" >
+		delete  from <include refid="pecrIndvBsSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId} and COMPANY = #{COMPANY}
+</delete>
+<delete id="delPecrIndvIdSgmtById" parameterType="pd" >
+		delete  from <include refid="pecrIndvIdSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId} 
+</delete>
+<delete id="delPcBasFcsInfSgmtById" parameterType="map">
+		delete  from <include refid="pecrIndvFcsInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+</delete>
+
+
+<update id="updatePcBasBsSgmt" parameterType="map">
+		update <include refid="pecrIndvBsSgmtTableName" />
+		   <set>
+		   	  	rpt_date = #{rptDate},
+		   	  	inf_rec_type = #{infRecType},
+		   	  	name = #{name},
+		   	  	id_type = #{idType},
+		   	  	id_num = #{idNum},
+		   	  	inf_surc_code = #{infSurcCode},
+		   	  	rpt_date_code = #{rptDateCode},
+		   	  	cimoc = #{cimoc},
+		   	  	customer_type = #{customerType},
+		   	  	BUSINESS_STATES = <include refid="validBusinessStates" />
+		   	  	,operator_user = #{operationUser , jdbcType=VARCHAR}
+		   	  	,org_name = #{orgName, jdbcType=VARCHAR}
+		   	  	,org_code = #{orgCode, jdbcType=VARCHAR}
+		   </set>
+		   where PAA_BS_SGMT_ID = #{paaBsSmgtId} and COMPANY = #{COMPANY}
+	</update>
+	<insert id="insertPcBasBsSgmt" parameterType="map">
+		insert into <include refid="pecrIndvBsSgmtTableName"></include>
+			(PAA_BS_SGMT_ID   ,
+		INF_REC_TYPE     ,
+		NAME             ,
+		ID_TYPE          ,
+		ID_NUM           ,
+		INF_SURC_CODE    ,
+		RPT_DATE         ,
+		RPT_DATE_CODE    ,
+		CIMOC            ,
+		CUSTOMER_TYPE    ,
+		ORG_CODE         ,
+		BUSINESS_STATES  ,
+		IS_FILTER        ,
+		REPORT_MESSAGE_ID,
+		COMPANY)
+	     values(
+	        #{paaBsSmgtId},
+	        '110',          
+			#{name},        
+			#{idType},      
+			#{idNum},       
+			#{infSurcCode}, 
+			#{rptDate},     
+			#{rptDateCode}, 
+			#{cimoc},       
+			#{customerType},
+			#{orgCode},             
+			'11',           
+			#{isFilter},             
+			'',
+			#{COMPANY}
+	     	)
+	</insert>
+	<insert id="insertPcBasIdSgmt" parameterType="map">
+		insert into <include refid="pecrIndvIdSgmtTableName"></include>
+			(PAB_ID_SGMT_ID    ,
+		ALIAS             ,
+		OTH_ID_TYPE       ,
+		OTH_ID_NUM        ,
+		ID_INFO_UP_DATE   ,
+		PAA_BS_SGMT_ID    ,
+		RPT_DATE,
+		COMPANY)
+	     values(
+	        #{pabIdSgmtId},
+	         #{alias}, 
+	         #{othIdType},
+	          #{othIdNum},
+	           #{idInfoUpDate},
+	            #{paaBsSmgtId},
+	     	  #{rptDate},
+	     	  #{COMPANY}
+	     	)
+	</insert>
+	<delete id="deletePcBasIdSgmt" parameterType="map">
+		delete from <include refid="pecrIndvIdSgmtTableName"></include>
+		 where PAB_ID_SGMT_ID = #{pabIdSgmtId}
+	</delete>
+	<update id="updatePcBasIdSgmt" parameterType="map">
+		update <include refid="pecrIndvIdSgmtTableName" />
+		  <set>
+		  		ID_INFO_UP_DATE = #{idInfoUpDate},
+		  		ALIAS = #{alias},
+		  		OTH_ID_TYPE = #{othIdType},
+		  		OTH_ID_NUM = #{othIdNum},
+		   	  	rpt_date = #{rptDate}
+		  </set>
+		 where PAB_ID_SGMT_ID = #{pabIdSgmtId}
+</update>
+<select id="getPcBasFcsInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from <include refid="pecrIndvFcsInfSgmtTableName"></include>
+	     where PAA_BS_SGMT_ID = #{paaBsSmgtId} 
+</select>
+<insert id="insertPcBasFcsInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into I_FCS_INF(
+					PAC_FCS_INF_SGMT_ID,
+					SEX,
+					D_O_B,
+					NATION,
+					HOUSE_ADD,
+					HH_DIST,
+					CELL_PHONE,
+					EMAIL,
+					FCS_INFO_UP_DATE,
+					PAA_BS_SGMT_ID,
+					RPT_DATE,
+					COMPANY)
+		    values (#{pacFcsInfSgmtId},
+					#{sex},
+					#{dob},
+					#{nation},
+					#{houseAdd},
+					#{hhDist},
+					#{cellPhone},
+					#{email},
+					#{fcsInfoUpDate},
+					#{paaBsSmgtId},
+					#{rptDate},
+					#{COMPANY}
+				)
+		]]>
+</insert>
+<update id="updatePcBasFcsInfSgmt" parameterType="map">
+		update <include refid="pecrIndvFcsInfSgmtTableName"></include>
+		<set>
+				FCS_INFO_UP_DATE = #{fcsInfoUpDate, jdbcType=VARCHAR},
+				SEX = #{sex, jdbcType=VARCHAR},
+				D_O_B = #{dob, jdbcType=VARCHAR},
+				NATION = #{nation, jdbcType=VARCHAR},
+				HOUSE_ADD = #{houseAdd, jdbcType=VARCHAR},
+				HH_DIST = #{hhDist,jdbcType=VARCHAR},
+				CELL_PHONE = #{cellPhone, jdbcType=VARCHAR},
+				EMAIL = #{email, jdbcType=VARCHAR},
+		   	  	rpt_date = #{rptDate, jdbcType=VARCHAR}
+		</set>
+		where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</update>
+	
+	<select id="getPcBasEduInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from <include refid="pecrIndvEduInfSgmtTableName"></include>
+	     where PAA_BS_SGMT_ID = #{paaBsSmgtId} 
+	</select>
+	<insert id="insertPcBasEduInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into I_EDU_INF(
+					PAD_EDU_INF_SGMT_ID,
+					EDU_LEVEL,
+					ACA_DEGREE,
+					EDU_INFO_UP_DATE,
+					PAA_BS_SGMT_ID,
+					COMPANY)
+		    values (#{padEduInfSgmtId},
+					#{eduLevel},
+					#{acaDegree},
+					#{eduInfoUpDate},
+					#{paaBsSmgtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	<update id="updatePcBasEduInfSgmt" parameterType="map">
+		update <include refid="pecrIndvEduInfSgmtTableName"></include>
+		<set>
+				EDU_INFO_UP_DATE = #{eduInfoUpDate, jdbcType=VARCHAR},
+				EDU_LEVEL = #{eduLevel, jdbcType=VARCHAR},
+				ACA_DEGREE = #{acaDegree, jdbcType=VARCHAR},
+		   	  	rpt_date = #{rptDate, jdbcType=VARCHAR}
+		</set>
+		where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</update>
+	<delete id="delPcBasEduInfSgmtById" parameterType="map" >
+		delete   from <include refid="pecrIndvEduInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</delete>
+
+	<select id="getPcBasOctpnInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from <include refid="pecrIndvOctpnInfSgmtTableName"></include>
+	     where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</select>
+	<insert id="insertPcBasOctpnInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into I_OCTPN_INF(
+					PAE_OCTPN_INF_SGMT_ID,
+					EMP_STATUS,
+					CPN_NAME,
+					CPN_TYPE,
+					INDUSTRY,
+					CPN_ADDR,
+					CPN_PC,
+					CPN_DIST,
+					CPN_T_E_L,
+					OCCUPATION,
+					TITLE,
+					TECH_TITLE,
+					WORK_START_DATE,
+					OCTPN_INFO_UP_DATE,
+					PAA_BS_SGMT_ID,
+					COMPANY)
+		    values (#{paeOctpnInfSgmtId},
+					#{empStatus},
+					#{cpnName},
+					#{cpnType},
+					#{industry},
+					#{cpnAddr},
+					#{cpnPc},
+					#{cpnDist},
+					#{cpnTEL},
+					#{occupation},
+					#{title},
+					#{techTitle},
+					#{workStartDate},
+					#{octpnInfoUpDate},
+					#{paaBsSmgtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	<update id="updatePcBasOctpnInfSgmt" parameterType="map">
+		update <include refid="pecrIndvOctpnInfSgmtTableName"></include>
+		<set>
+				OCTPN_INFO_UP_DATE = #{octpnInfoUpDate, jdbcType=VARCHAR},
+				EMP_STATUS = #{empStatus, jdbcType=VARCHAR},
+				CPN_NAME = #{cpnName, jdbcType=VARCHAR},
+				CPN_TYPE = #{cpnType, jdbcType=VARCHAR},
+				INDUSTRY = #{industry, jdbcType=VARCHAR},
+				CPN_ADDR = #{cpnAddr, jdbcType=VARCHAR},
+				CPN_PC = #{cpnPc, jdbcType=VARCHAR},
+				CPN_DIST = #{cpnDist, jdbcType=VARCHAR},
+				CPN_T_E_L = #{cpnTEL, jdbcType=VARCHAR},
+				OCCUPATION = #{occupation, jdbcType=VARCHAR},
+				TITLE = #{title, jdbcType=VARCHAR},
+				TECH_TITLE = #{techTitle, jdbcType=VARCHAR},
+				WORK_START_DATE = #{workStartDate, jdbcType=VARCHAR},
+		   	  	rpt_date = #{rptDate, jdbcType=VARCHAR}
+		</set>
+		where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</update>
+	<delete id="delPcBasOctpnInfSgmtById" parameterType="map">
+		delete   from <include refid="pecrIndvOctpnInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</delete>
+
+	<select id="getPcBasRedncInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from <include refid="pecrIndvRedncInfSgmtTableName"></include>
+	     where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</select>
+	<insert id="insertPcBasRedncInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into i_rednc_inf(
+					PAF_REDNC_INF_SGMT_ID,
+					RESI_STATUS,
+					RESI_ADDR,
+					RESI_PC,
+					RESI_DIST,
+					HOME_TEL,
+					RESI_INFO_UP_DATE,
+					PAA_BS_SGMT_ID,
+					COMPANY)
+		    values (#{pafRedncInfSgmtId},
+					#{resiStatus},
+					#{resiAddr},
+					#{resiPc},
+					#{resiDist},
+					#{homeTel},
+					#{resiInfoUpDate},
+					#{paaBsSmgtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	<update id="updatePcBasRedncInfSgmt" parameterType="map">
+		update <include refid="pecrIndvRedncInfSgmtTableName"></include>
+		<set>
+				RESI_INFO_UP_DATE = #{resiInfoUpDate, jdbcType=VARCHAR},
+				RESI_STATUS = #{resiStatus, jdbcType=VARCHAR},
+				RESI_ADDR = #{resiAddr, jdbcType=VARCHAR},
+				RESI_PC = #{resiPc, jdbcType=VARCHAR},
+				RESI_DIST = #{resiDist, jdbcType=VARCHAR},
+				HOME_TEL = #{homeTel, jdbcType=VARCHAR},
+		   	  	rpt_date = #{rptDate, jdbcType=VARCHAR},
+		</set>
+		where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</update>
+	<delete id="delPcBasRedncInfSgmtById" parameterType="map" >
+		delete   from <include refid="pecrIndvRedncInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</delete>
+	
+	<select id="getPcBasMlgInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from <include refid="pecrIndvMlgInfSgmtTableName"></include>
+	     where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</select>
+	<insert id="insertPcBasMlgInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into I_MLG_INF(
+					PAG_MLG_INF_SGMT_ID,
+					MAIL_ADDR,
+					MAIL_PC,
+					MAIL_DIST,
+					MLG_INFO_UP_DATE,
+					PAA_BS_SGMT_ID,
+					COMPANY)
+		    values (#{pagMlgInfSgmtId},
+					#{mailAddr},
+					#{mailPc},
+					#{mailDist},
+					#{mlgInfoUpDate},
+					#{paaBsSmgtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	<update id="updatePcBasMlgInfSgmt" parameterType="map">
+		update <include refid="pecrIndvMlgInfSgmtTableName"></include>
+		<set>
+				MLG_INFO_UP_DATE = #{mlgInfoUpDate, jdbcType=VARCHAR},
+				MAIL_ADDR = #{mailAddr, jdbcType=VARCHAR},
+				MAIL_PC = #{mailPc, jdbcType=VARCHAR},
+				MAIL_DIST = #{mailDist, jdbcType=VARCHAR},
+		   	  	rpt_date = #{rptDate, jdbcType=VARCHAR}
+		</set>
+		where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</update>  
+	<delete id="delPcBasMlgInfSgmtById" parameterType="map" >
+		delete  from <include refid="pecrIndvMlgInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</delete> 
+	
+	<select id="getPcBasSpsInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from <include refid="pecrIndvSpsInfSgmtTableName"></include>
+	     where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</select>
+	<insert id="insertPcBasSpsInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into I_SPS_INF(
+					PAH_SPS_INF_SGMT_ID,
+					MARI_STATUS,
+					SPO_NAME,
+					SPO_ID_TYPE,
+					SPO_ID_NUM,
+					SPO_TEL,
+					SPS_CMPY_NM,
+					SPS_INFO_UP_DATE,
+					PAA_BS_SGMT_ID,
+					COMPANY)
+		    values (#{pahSpsInfSgmtId},
+					#{mariStatus},
+					#{spoName},
+					#{spoIdType},
+					#{spoIdNum},
+					#{spoTel},
+					#{spsCmpyNm},
+					#{spsInfoUpDate},
+					#{paaBsSmgtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	<update id="updatePcBasSpsInfSgmt" parameterType="map">
+		update <include refid="pecrIndvSpsInfSgmtTableName"></include>
+		<set>
+				SPS_INFO_UP_DATE = #{spsInfoUpDate, jdbcType=VARCHAR},
+				MARI_STATUS = #{mariStatus, jdbcType=VARCHAR},
+				SPO_NAME = #{spoName, jdbcType=VARCHAR},
+				SPO_ID_TYPE = #{spoIdType, jdbcType=VARCHAR},
+				SPO_ID_NUM = #{spoIdNum, jdbcType=VARCHAR},
+				SPO_TEL = #{spoTel, jdbcType=VARCHAR},
+				SPS_CMPY_NM = #{spsCmpyNm, jdbcType=VARCHAR},
+		   	  	rpt_date = #{rptDate, jdbcType=VARCHAR}
+		</set>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</update>
+	<delete id="delPcBasSpsInfSgmtById" parameterType="map" >
+		delete   from <include refid="pecrIndvSpsInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</delete>
+
+	<select id="getPcBasIncInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from <include refid="pecrIndvIncInfSgmtTableName"></include>
+	     where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</select>
+	<insert id="insertPcBasIncInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into I_INC_INF(
+					PAI_INC_INF_SGMT_ID,
+					ANNL_INC,
+					TAX_INCOME,
+					INC_INFO_UP_DATE,
+					PAA_BS_SGMT_ID,
+					COMPANY)
+		    values (#{paiIncInfSgmtId},
+					#{annlInc},
+					#{taxIncome},
+					#{incInfoUpDate},
+					#{paaBsSmgtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	<update id="updatePcBasIncInfSgmt" parameterType="map">
+		update <include refid="pecrIndvIncInfSgmtTableName"></include>
+		<set>
+				INC_INFO_UP_DATE = #{incInfoUpDate, jdbcType=VARCHAR},
+				ANNL_INC = #{annlInc, jdbcType=VARCHAR},
+				TAX_INCOME = #{taxIncome, jdbcType=VARCHAR},
+		   	  	rpt_date = #{rptDate, jdbcType=VARCHAR}
+		</set>
+		where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</update>
+	<delete id="delPcBasIncInfSgmtById" parameterType="map">
+		delete from <include refid="pecrIndvIncInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+	</delete>
+</mapper>

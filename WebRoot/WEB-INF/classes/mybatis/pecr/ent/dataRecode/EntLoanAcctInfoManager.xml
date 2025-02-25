@@ -1,0 +1,1274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EntLoanAcctInfoManager">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EntAcctBsSgmt" id="entAcctInfoResultMap">
+		<result column="EDA_ACCT_BS_SGMT_ID" property="edaAcctBsSgmtId" />
+		<result column="INF_REC_TYPE" property="infRecType" />
+		<result column="ACCT_TYPE" property="acctType" />
+		<result column="ACCT_CODE" property="acctCode" />
+		<result column="RPT_DATE" property="rptDate" />
+		<result column="RPT_DATE_CODE" property="rptDateCode" />
+		<result column="NAME" property="name" />
+		<result column="ID_TYPE" property="idType" />
+		<result column="ID_NUM" property="idNum" />
+		<result column="MNGMT_ORG_CODE" property="mngmtOrgCode" />
+		<result column="BUSINESS_STATES" property="businessStates" />
+		<result column="REJECT_REASON" property="rejectReason" />
+		<result column="MDFC_SGMT_CODE" property="mdfcSgmtCode" />
+	</resultMap>
+
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EntRltRepymtSgmt" id="entAcctRltInfoMap">
+		<result column="EDC_RLT_REPYMT_INF_SGMT_ID" property="edcRltRepymtInfSgmtId" />
+		<result column="ARLP_ID_TYPE" property="arlpIdType" />
+		<result column="ARLP_NAME" property="arlpName" />
+		<result column="ARLP_CERT_TYPE" property="arlpCertType" />
+		<result column="ARLP_CERT_NUM" property="arlpCertNum" />
+		<result column="ARLP_TYPE" property="arlpType" />
+		<result column="ARLP_AMT" property="arlpAmt" />
+		<result column="WARTY_SIGN" property="wartySign" />
+		<result column="MAX_GUAR_MCC" property="maxGuarMcc" />
+	</resultMap>
+
+	<!-- 借贷信息 基础段 -->
+	<select id="loanAcctInfolistPage" parameterType="page" resultMap="entAcctInfoResultMap">
+		 select eda_acct_bs_sgmt_id,
+				inf_rec_type,
+				E_ACCT_BS.acct_type,
+				E_ACCT_BS.acct_code,
+				rpt_date,
+				rpt_date_code,
+				name,
+				id_type,
+				id_num,
+				mngmt_org_code,
+				business_states,
+			    reject_reason,
+			    COMPANY
+		   from E_ACCT_BS
+		   <if test="pd.managerId != null and pd.managerId != ''">
+			   LEFT JOIN PECR.sys_l_c_a_m_m M
+			   ON E_ACCT_BS.ACCT_TYPE = M.ACCT_TYPE
+			   AND E_ACCT_BS.ACCT_CODE = M.ACCT_NUM
+		   </if> 
+		   <where>
+		   	<if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+			<if test="pd.name != null and pd.name != ''">
+		         and name like '%${pd.name}%'
+		    </if>
+		    <if test="pd.idNum != null and pd.idNum != ''">
+		         and id_num like '%${pd.idNum}%'
+		    </if>
+			<if test="pd.rptDate != null and pd.rptDate != ''">
+		         and rpt_date = #{pd.rptDate}
+		    </if>
+		    <if test="pd.acctType != null and pd.acctType != ''">
+		   	  	and E_ACCT_BS.ACCT_TYPE = #{pd.acctType}
+		   	</if>
+		   	<if test="pd.acctCode != null and pd.acctCode != ''">
+		   	  	and E_ACCT_BS.ACCT_CODE = #{pd.acctCode}
+		   	</if>
+		   	<if test="pd.businessStates != null and pd.businessStates != ''">
+		   	  	and business_states = #{pd.businessStates}
+		   	</if>
+		   	<if test="pd.managerId != null and pd.managerId != ''">
+		   	  	and M.MANAGER_ID = #{pd.managerId}
+		   		AND M.DATA_TYPE = '2'
+		   		AND M.DATA_LEVEL = '2'
+		   		AND M.END_DATE = '2099-12-31'
+		   	</if>
+		   	  	and COMPANY = #{pd.COMPANY}
+		   	  	and inf_rec_type = '410'
+		</where>
+	
+			<!-- 	and business_states = '10' -->
+			
+	</select>
+	<!--企业借贷按段更正 获取基础段历史表的主键信息  -->
+	<select id="getEdaAcctBsSgmtId" parameterType="page" resultType="String">
+		 select eda_acct_bs_sgmt_id
+		 from E_ACCT_BS
+		 where name = #{pd.name}
+		   and id_num = #{pd.idNum}
+		   and id_type = #{pd.idType}
+		   and acct_type = #{pd.acctType}
+		  <!--  and business_states = #{pd.businessStates} --> <!-- 在上线的时候放开 -->
+		   and company = #{pd.COMPANY}
+	</select>
+<!-- 借贷信息 基础段 -->
+	<select id="loanAcctUpdatelistPage" parameterType="page" resultMap="entAcctInfoResultMap">
+		 select eda_acct_bs_sgmt_id,
+				inf_rec_type,
+				E_ACCT_BS.acct_type,
+				E_ACCT_BS.acct_code,
+				rpt_date,
+				rpt_date_code,
+				name,
+				id_type,
+				id_num,
+				mngmt_org_code,
+				business_states,
+			    reject_reason,
+			    MDFC_SGMT_CODE,
+			    COMPANY
+		   from E_ACCT_BS 
+		   <where>
+			<if test="pd.rptDate != null and pd.rptDate != ''">
+		         and rpt_date = #{pd.rptDate}
+		    </if>
+		    <if test="pd.acctType != null and pd.acctType != ''">
+		   	  	and E_ACCT_BS.ACCT_TYPE = #{pd.acctType}
+		   	</if>
+		   	<if test="pd.acctCode != null and pd.acctCode != ''">
+		   	  	and E_ACCT_BS.ACCT_CODE = #{pd.acctCode}
+		   	</if>
+		   	<if test="pd.businessStates != null and pd.businessStates != ''">
+		   	  	and business_states = #{pd.businessStates}
+		   	</if>
+		   	<if test="pd.name != null and pd.name != ''">
+		   	  	and name = #{pd.name}
+		   	</if>
+		   	<if test="pd.idNum != null and pd.idNum != ''">
+		   	  	and id_num = #{pd.idNum}
+		   	</if>
+		   	<if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+		   		and COMPANY = #{pd.COMPANY}
+		   		and INF_REC_TYPE = '412'
+		</where>
+	
+			
+	</select>
+	<!-- 查询企业按段更正所需要的信息 基础段 -->
+	<select id="getAcctBsSgmtByIdType" parameterType="pd" resultType="map">
+		 select eda_acct_bs_sgmt_id,
+				inf_rec_type,
+				acct_type,
+				acct_code,
+				rpt_date,
+				rpt_date_code,
+				name,
+				id_type,
+				id_num,
+				mngmt_org_code,
+				mdfc_sgmt_code,
+				last_update_time,
+				operator_user,
+				org_name,
+				org_code,
+				business_states,
+				is_filter,
+				reject_reason,
+				COMPANY
+		   from E_ACCT_BS
+		   where acct_code = #{acctCode}
+		  	and COMPANY = #{COMPANY}
+		  	and inf_rec_type = '412'
+		  	and mdfc_sgmt_code = #{mdfcSgmtCode}
+	</select>
+	<!-- 详情或者修改 查询指定记录 基础段 -->
+	<select id="getAcctBsSgmtById" parameterType="pd" resultType="map">
+		 select eda_acct_bs_sgmt_id,
+				inf_rec_type,
+				acct_type,
+				acct_code,
+				rpt_date,
+				rpt_date_code,
+				name,
+				id_type,
+				id_num,
+				mngmt_org_code,
+				mdfc_sgmt_code,
+				last_update_time,
+				operator_user,
+				org_name,
+				org_code,
+				business_states,
+				is_filter,
+				reject_reason,
+				COMPANY
+		   from E_ACCT_BS
+		  where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+		  	and COMPANY = #{COMPANY}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 基本信息段 -->
+	<select id="getAcctBsInfSgmtById" parameterType="pd" resultType="pd">
+		 select edb_acct_bs_inf_sgmt_id,
+				busi_lines,
+				busi_dtl_lines,
+				open_date,
+				cy,
+				acct_cred_line,
+				loan_amt,
+				flag,
+				due_date,
+				repay_mode,
+				repay_freqcy,
+				apply_busi_dist,
+				guar_mode,
+				oth_repy_guar_way,
+				loan_time_lim_cat,
+				loa_frm,
+				act_invest,
+				fund_sou,
+				asset_trand_flag,
+				COMPANY
+		   from E_ACCT_BS_INF
+		  where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	</select>
+	
+	<!-- 详情或者修改 查询指定记录 授信额度信息段 -->
+	<select id="getAcctCredSgmtById" parameterType="pd" resultType="pd">
+		select ede_acct_cred_sgmt_id,
+		       mcc,
+		       COMPANY
+		  from E_ACCT_CRED
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	</select>
+	
+	<!-- 详情或者修改 查询指定记录 初始债权说明段 -->
+	<select id="getCreditorInfSgmtById" parameterType="pd" resultType="pd">
+		 select edf_orig_creditor_inf_sgmt_id,
+				init_cred_name,
+				init_ced_org_code,
+				orig_dbt_cate,
+				init_rpy_sts,
+				COMPANY
+		   from E_ORIG_CREDITOR_INF
+		  where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	</select>
+	
+	<!-- 详情或者修改 查询指定记录 还款表现信息段 -->
+	<select id="getLbltyInfSgmtById" parameterType="pd" resultType="pd">
+		 select edg_act_lblty_inf_sgmt_id,
+				acct_status,
+				acct_bal,
+				bal_chg_date,
+				five_cate,
+				five_cate_adj_date,
+				pymt_prd,
+				tot_overd,
+				overd_princ,
+				overd_dy,
+				lat_rpy_date,
+				lat_rpy_amt,
+				lat_rpy_princ_amt,
+				rpmt_type,
+				lat_agrr_rpy_date,
+				lat_agrr_rpy_amt,
+				nxt_agrr_rpy_date,
+				close_date,
+				COMPANY
+		   from  E_ACT_LBLTY_INF
+		  where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 相关还款责任人段 -->
+	<select id="getLoanRltSgmtByIdlistPage" parameterType="page" resultMap="entAcctRltInfoMap">
+		 select edc_rlt_repymt_inf_sgmt_id,
+				arlp_id_type,
+				arlp_name,
+				arlp_cert_type,
+				arlp_cert_num,
+				arlp_type,
+				arlp_amt,
+				warty_sign,
+				max_guar_mcc,
+				COMPANY
+		   from E_RLT_REPYMT_INF
+		  where eda_acct_bs_sgmt_id = #{pd.edaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 抵质押物信息段 -->
+	<select id="getMccInfoSgmtByIdlistPage" parameterType="page" resultType="pd">
+		select edd_motga_cltal_ctrct_inf_id,
+		       ccc,
+		       COMPANY
+		  from E_MOTGA_CLTAL_CTRCT_INF
+		 where eda_acct_bs_sgmt_id = #{pd.edaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 特殊交易说明段 -->
+	<select id="getTrstDspnSgmtByIdlistPage" parameterType="page" resultType="pd">
+		 select edh_acct_spec_trst_dspn_sg_id,
+				chan_tran_type,
+				tran_date,
+				tran_amt,
+				due_tran_mon,
+				det_info,
+				COMPANY
+		   from E_ACCT_SPEC_TRST
+		  where eda_acct_bs_sgmt_id = #{pd.edaAcctBsSgmtId}
+	</select>
+
+	<!-- 查询 基础段 主键是否存在 -->
+	<select id="getAcctBsSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_ACCT_BS
+	     where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	</select>
+	<!-- 新增    企业借贷账户按段更正基础段 -->
+	<insert id="saveAcctBsSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into E_ACCT_BS(
+					eda_acct_bs_sgmt_id,
+					inf_rec_type,
+					acct_type,
+					acct_code,
+					rpt_date_code,
+					rpt_date,
+					name,
+					id_type,
+					id_num,
+					mngmt_org_code,
+					mdfc_sgmt_code,
+					operator_user,
+					org_name,
+					org_code,
+					business_states,
+					is_filter,
+					COMPANY)
+		    select #{edaAcctBsSgmtId},
+					'412',
+					acct_type,
+					acct_code,
+					rpt_date_code,
+					rpt_date,
+					name,
+					id_type,
+					id_num,
+					mngmt_org_code,
+					#{mdfcSgmtCode},
+					#{operator_user},
+					org_name,
+					org_code,
+					'11',
+					is_filter,
+					COMPANY
+			from E_ACCT_BS_HIST
+			where eda_acct_bs_sgmt_id = #{oldEdaAcctBsSgmtId}
+			  and company = #{COMPANY}
+	</insert>
+	<!-- 新增    基础段 -->
+	<insert id="insertAcctBsSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_ACCT_BS(
+					eda_acct_bs_sgmt_id,
+					inf_rec_type,
+					acct_type,
+					acct_code,
+					rpt_date,
+					rpt_date_code,
+					name,
+					id_type,
+					id_num,
+					mngmt_org_code,
+					mdfc_sgmt_code,
+					operator_user,
+					org_code,
+					business_states,
+					is_filter,
+					COMPANY)
+		    values (#{edaAcctBsSgmtId},
+					#{infRecType},
+					#{acctType},
+					#{acctCode},
+					#{rptDate},
+					#{rptDateCode},
+					#{name},
+					#{idType},
+					#{idNum},
+					#{mngmtOrgCode},
+					#{mdfcSgmtCode},
+					#{operationUser},
+					#{orgCode},
+					'11',
+					#{isFilter},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+
+	<!-- 更新    基础段 -->
+	<update id="updateAcctBsSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_ACCT_BS
+			set inf_rec_type = #{infRecType, jdbcType=VARCHAR},
+				acct_type = #{acctType, jdbcType=VARCHAR},
+				acct_code = #{acctCode, jdbcType=VARCHAR},
+				rpt_date = #{rptDate, jdbcType=VARCHAR},
+				rpt_date_code = #{rptDateCode, jdbcType=VARCHAR},
+				name = #{name, jdbcType=VARCHAR},
+				id_type = #{idType, jdbcType=VARCHAR},
+				id_num = #{idNum, jdbcType=VARCHAR},
+				mngmt_org_code = #{mngmtOrgCode, jdbcType=VARCHAR},
+				operator_user = #{operationUser, jdbcType=VARCHAR},
+				org_code = #{orgCode, jdbcType=VARCHAR},
+				mdfc_sgmt_code = #{mdfcSgmtCode, jdbcType=VARCHAR},
+				business_states = '20',
+				is_filter = #{isFilter, jdbcType=VARCHAR}
+		  WHERE eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+		  	and COMPANY = #{COMPANY}
+			
+		  ]]>
+		  <!-- AND business_states = '10' -->
+	</update>
+
+	<!-- 删除基础段 -->
+	<delete id="delAcctBsSgmtById" parameterType="map">
+		delete from E_ACCT_BS
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+		 and COMPANY = #{COMPANY}
+	</delete>
+
+	<!-- 删除 基本信息段 -->
+	<delete id="delAcctBsInfSgmtById" parameterType="map">
+		delete from E_ACCT_BS_INF
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 授信额度信息段 -->
+	<delete id="delAcctCredSgmtById" parameterType="map">
+		delete from E_ACCT_CRED
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 初始债权说明段 -->
+	<delete id="delCreditorInfSgmtById" parameterType="map">
+		delete from E_ORIG_CREDITOR_INF
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 还款表现信息段 -->
+	<delete id="delLbltyInfSgmtById" parameterType="map">
+		delete from E_ACT_LBLTY_INF
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 相关还款责任人段 -->
+	<delete id="delLoanRltSgmtById" parameterType="map">
+		delete from E_RLT_REPYMT_INF
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 抵质押物信息段 -->
+	<delete id="delMccInfoSgmtById" parameterType="map">
+		delete from E_MOTGA_CLTAL_CTRCT_INF
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 特殊交易说明段 -->
+	<delete id="delTrstDspnSgmtById" parameterType="map">
+		delete from E_ACCT_SPEC_TRST
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	</delete>
+
+	<!-- 查询 基本信息段 主键是否存在 -->
+	<select id="getAcctBsInfoSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_ACCT_BS_INF
+	     where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId} 
+	       and edb_acct_bs_inf_sgmt_id = #{edbAcctBsInfSgmtId}
+	</select>
+	<!-- 新增  企业借贷账户按段更正基本信息段 -->
+	<insert id="saveAcctBsInfoSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into E_ACCT_BS_INF(
+					edb_acct_bs_inf_sgmt_id,
+					busi_lines,
+					busi_dtl_lines,
+					open_date,
+					cy,
+					acct_cred_line,
+					loan_amt,
+					flag,
+					due_date,
+					repay_mode,
+					repay_freqcy,
+					apply_busi_dist,
+					guar_mode,
+					oth_repy_guar_way,
+					loan_time_lim_cat,
+					loa_frm,
+					act_invest,
+					fund_sou,
+					asset_trand_flag,
+					eda_acct_bs_sgmt_id,
+					COMPANY)
+		    select <if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					busi_lines,
+					busi_dtl_lines,
+					open_date,
+					cy,
+					acct_cred_line,
+					loan_amt,
+					flag,
+					due_date,
+					repay_mode,
+					repay_freqcy,
+					apply_busi_dist,
+					guar_mode,
+					oth_repy_guar_way,
+					loan_time_lim_cat,
+					loa_frm,
+					act_invest,
+					fund_sou,
+					asset_trand_flag,
+					#{edaAcctBsSgmtId},
+					COMPANY
+		     from E_ACCT_BS_INF_HIST
+		     where eda_acct_bs_sgmt_id = #{oldEdaAcctBsSgmtId}
+	</insert>
+	<!-- 新增  基本信息段 -->
+	<insert id="insertAcctBsInfoSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_ACCT_BS_INF(
+					edb_acct_bs_inf_sgmt_id,
+					busi_lines,
+					busi_dtl_lines,
+					open_date,
+					cy,
+					acct_cred_line,
+					loan_amt,
+					flag,
+					due_date,
+					repay_mode,
+					repay_freqcy,
+					apply_busi_dist,
+					guar_mode,
+					oth_repy_guar_way,
+					loan_time_lim_cat,
+					loa_frm,
+					act_invest,
+					fund_sou,
+					asset_trand_flag,
+					eda_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{edbAcctBsInfSgmtId, jdbcType=VARCHAR},
+					#{busiLines, jdbcType=VARCHAR},
+					#{busiDtlLines, jdbcType=VARCHAR},
+					#{openDate, jdbcType=VARCHAR},
+					#{cy},
+					#{acctCredLine},
+					#{loanAmt},
+					#{flag, jdbcType=VARCHAR},
+					#{dueDate, jdbcType=VARCHAR},
+					#{repayMode, jdbcType=VARCHAR},
+					#{repayFreqcy, jdbcType=VARCHAR},
+					#{applyBusiDist, jdbcType=VARCHAR},
+					#{guarMode, jdbcType=VARCHAR},
+					#{othRepyGuarWay, jdbcType=VARCHAR},
+					#{loanTimeLimCat, jdbcType=VARCHAR},
+					#{loaFrm, jdbcType=VARCHAR},
+					#{actInvest, jdbcType=VARCHAR},
+					#{fundSou, jdbcType=VARCHAR},
+					#{assetTrandFlag, jdbcType=VARCHAR},
+					#{edaAcctBsSgmtId, jdbcType=VARCHAR},
+					#{COMPANY}
+				   )
+		]]>
+	</insert>
+	
+	<!-- 更新   基本信息段 -->
+	<update id="updateAcctBsInfoSgmt" parameterType="map">
+		 update E_ACCT_BS_INF
+		 	 <set>
+		   	  <if test='busiLines != null and busiLines != ""'>
+		   	  	busi_lines = #{busiLines},
+		   	  </if>
+		   	  <if test='busiDtlLines != null and busiDtlLines != ""'>
+		   	  	busi_dtl_lines = #{busiDtlLines},
+		   	  </if>
+		   	  <if test='openDate != null and openDate != ""'>
+		   	  	open_date = #{openDate},
+		   	  </if>
+		   	  <if test='cy != null and cy != ""'>
+		   	  	cy = #{cy},
+		   	  </if>
+		   	  <if test='acctCredLine != null and acctCredLine != ""'>
+		   	  	acct_cred_line = #{acctCredLine},
+		   	  </if>
+		   	  <if test='loanAmt != null and loanAmt != ""'>
+		   	  	loan_amt = #{loanAmt},
+		   	  </if>
+		   	  <if test='flag != null and flag != ""'>
+		   	  	flag = #{flag},
+		   	  </if>
+		   	  <if test='dueDate != null and dueDate != ""'>
+		   	  	due_date = #{dueDate},
+		   	  </if>
+		   	  <if test='repayMode != null and repayMode != ""'>
+		   	  	repay_mode = #{repayMode},
+		   	  </if>
+		   	  <if test='repayFreqcy != null and repayFreqcy != ""'>
+		   	  	repay_freqcy = #{repayFreqcy},
+		   	  </if>
+		   	  <if test='applyBusiDist != null and applyBusiDist != ""'>
+		   	  	apply_busi_dist = #{applyBusiDist},
+		   	  </if>
+		   	  <if test='guarMode != null and guarMode != ""'>
+		   	  	guar_mode = #{guarMode},
+		   	  </if>
+		   	  <if test='othRepyGuarWay != null and othRepyGuarWay != ""'>
+		   	  	oth_repy_guar_way = #{othRepyGuarWay},
+		   	  </if>
+		   	  <if test='loanTimeLimCat != null and loanTimeLimCat != ""'>
+		   	  	loan_time_lim_cat = #{loanTimeLimCat},
+		   	  </if>
+		   	  <if test='loaFrm != null and loaFrm != ""'>
+		   	  	loa_frm = #{loaFrm},
+		   	  </if>
+		   	  <if test='actInvest != null and actInvest != ""'>
+		   	  	act_invest = #{actInvest},
+		   	  </if>
+		   	   <if test='fundSou != null and fundSou != ""'>
+		   	  	fund_sou = #{fundSou},
+		   	  </if>
+		   	  <if test='assetTrandFlag != null and assetTrandFlag != ""'>
+		   	  	asset_trand_flag = #{assetTrandFlag}
+		   	  </if>
+		   </set>
+		  where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+			and edb_acct_bs_inf_sgmt_id = #{edbAcctBsInfSgmtId}
+	</update>
+	
+	<!-- 删除  基本信息段 -->
+	<delete id="delAcctBsInfoSgmt" parameterType="map">
+		delete from E_ACCT_BS_INF
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId} 
+		   and edb_acct_bs_inf_sgmt_id = #{edbAcctBsInfSgmtId}
+	</delete>
+	<!-- 新增  企业借贷按段更正相关还款责任人段 -->
+	<insert id="saveRltRepymtInf" parameterType="map" useGeneratedKeys="false">
+		insert into E_RLT_REPYMT_INF(
+					edc_rlt_repymt_inf_sgmt_id,
+					arlp_id_type,
+					arlp_name,
+					arlp_cert_type,
+					arlp_cert_num,
+					arlp_type,
+					arlp_amt,
+					warty_sign,
+					max_guar_mcc,
+					eda_acct_bs_sgmt_id,
+					COMPANY)
+		    select <if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					arlp_id_type,
+					arlp_name,
+					arlp_cert_type,
+					arlp_cert_num,
+					arlp_type,
+					arlp_amt,
+					warty_sign,
+					max_guar_mcc,
+					#{edaAcctBsSgmtId},
+					COMPANY
+			from E_RLT_REPYMT_INF_HIST
+			where eda_acct_bs_sgmt_id = #{oldEdaAcctBsSgmtId}
+	</insert>
+	<!-- 新增   相关还款责任人段 -->
+	<insert id="insertRltRepymtInf" parameterType="map">
+		<![CDATA[
+		insert into E_RLT_REPYMT_INF(
+					edc_rlt_repymt_inf_sgmt_id,
+					arlp_id_type,
+					arlp_name,
+					arlp_cert_type,
+					arlp_cert_num,
+					arlp_type,
+					arlp_amt,
+					warty_sign,
+					max_guar_mcc,
+					eda_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{edcRltRepymtInfSgmtId, jdbcType=VARCHAR},
+					#{arlpIdType, jdbcType=VARCHAR},
+					#{arlpName, jdbcType=VARCHAR},
+					#{arlpCertType, jdbcType=VARCHAR},
+					#{arlpCertNum, jdbcType=VARCHAR},
+					#{arlpType, jdbcType=VARCHAR},
+					#{arlpAmt},
+					#{wartySign, jdbcType=VARCHAR},
+					#{maxGuarMcc, jdbcType=VARCHAR},
+					#{edaAcctBsSgmtId, jdbcType=VARCHAR},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新  相关还款责任人段  -->
+	<update id="updateRltRepymtInf" parameterType="map">
+		update E_RLT_REPYMT_INF
+		   <set>
+		   	  <if test='arlpIdType != null'>
+		   	  	arlp_id_type = #{arlpIdType},
+		   	  </if>
+		   	  <if test='arlpName != null'>
+		   	  	arlp_name = #{arlpName},
+		   	  </if>
+		   	  <if test='arlpCertType != null'>
+		   	  	arlp_cert_type = #{arlpCertType},
+		   	  </if>
+		   	  <if test='arlpCertNum != null'>
+		   	  	arlp_cert_num = #{arlpCertNum},
+		   	  </if>
+		   	  <if test='arlpType != null'>
+		   	  	arlp_type = #{arlpType},
+		   	  </if>
+		   	  <if test='arlpAmt != null'>
+		   	  	arlp_amt = #{arlpAmt},
+		   	  </if>
+		   	  <if test='wartySign != null'>
+		   	  	warty_sign = #{wartySign},
+		   	  </if>
+		   	  <if test='maxGuarMcc != null'>
+		   	  	max_guar_mcc = #{maxGuarMcc}
+		   	  </if>
+		   </set>
+		   where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	         and edc_rlt_repymt_inf_sgmt_id = #{edcRltRepymtInfSgmtId}
+	</update>
+	
+	<!-- 删除 相关还款责任人段 -->
+	<delete id="delRltRepymtInf" parameterType="map">
+		delete from E_RLT_REPYMT_INF
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId} 
+		   and edc_rlt_repymt_inf_sgmt_id = #{edcRltRepymtInfSgmtId}
+	</delete>
+	
+	<!-- 查询 还款表现信息段 主键是否存在 -->
+	<select id="getLbltyInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_ACT_LBLTY_INF
+	     where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId} 
+		   and edg_act_lblty_inf_sgmt_id = #{edgActLbltyInfSgmtId}
+	</select>
+	<!-- 新增  还款表现信息段 -->
+	<insert id="saveLbltyInfSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into E_ACT_LBLTY_INF(
+					edg_act_lblty_inf_sgmt_id,
+					acct_status,
+					acct_bal,
+					bal_chg_date,
+					five_cate,
+					five_cate_adj_date,
+					pymt_prd,
+					tot_overd,
+					overd_princ,
+					overd_dy,
+					lat_rpy_date,
+					lat_rpy_amt,
+					lat_rpy_princ_amt,
+					rpmt_type,
+					lat_agrr_rpy_date,
+					lat_agrr_rpy_amt,
+					nxt_agrr_rpy_date,
+					close_date,
+					eda_acct_bs_sgmt_id,
+					COMPANY)
+		    select <if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+				    acct_status,
+					acct_bal,
+					bal_chg_date,
+					five_cate,
+					five_cate_adj_date,
+					pymt_prd,
+					tot_overd,
+					overd_princ,
+					overd_dy,
+					lat_rpy_date,
+					lat_rpy_amt,
+					lat_rpy_princ_amt,
+					rpmt_type,
+					lat_agrr_rpy_date,
+					lat_agrr_rpy_amt,
+					nxt_agrr_rpy_date,
+					close_date,			 				 
+		            #{edaAcctBsSgmtId},
+		            COMPANY
+			from E_ACT_LBLTY_INF_HIST
+			where eda_acct_bs_sgmt_id = #{oldEdaAcctBsSgmtId}
+	</insert>
+	<!-- 新增  还款表现信息段 -->
+	<insert id="insertLbltyInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_ACT_LBLTY_INF(
+					edg_act_lblty_inf_sgmt_id,
+					acct_status,
+					acct_bal,
+					bal_chg_date,
+					five_cate,
+					five_cate_adj_date,
+					pymt_prd,
+					tot_overd,
+					overd_princ,
+					overd_dy,
+					lat_rpy_date,
+					lat_rpy_amt,
+					lat_rpy_princ_amt,
+					rpmt_type,
+					lat_agrr_rpy_date,
+					lat_agrr_rpy_amt,
+					nxt_agrr_rpy_date,
+					close_date,
+					eda_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{edgActLbltyInfSgmtId, jdbcType=CHAR},
+				    #{acctStatus, jdbcType=VARCHAR},
+				    #{acctBal},
+				    #{balChgDate},
+		    		#{fiveCate, jdbcType=VARCHAR},
+		    		#{fiveCateAdjDate},
+		    		#{pymtPrd},
+					#{totOverd},
+					#{overdPrinc},
+					#{overdDy},
+					#{latRpyDate},
+		    		#{latRpyAmt},
+					#{latRpyPrincAmt},
+					#{rpmtType, jdbcType=VARCHAR},
+				    #{latAgrrRpyDate},
+					#{latAgrrRpyAmt}, 
+				   #{nxtAgrrRpyDate},	
+				   #{closeDate},			 				 
+		            #{edaAcctBsSgmtId, jdbcType=CHAR},
+		            #{COMPANY}
+				    )
+		    ]]>
+	</insert>
+	
+	<!-- 更新  还款表现信息段 -->
+	<update id="updateLbltyInfSgmt" parameterType="map">
+		update E_ACT_LBLTY_INF
+		   <set>
+		   	  <if test='acctStatus != null'>
+		   	  	acct_status = #{acctStatus},
+		   	  </if>
+		   	  <if test='acctBal != null'>
+		   	  	acct_bal = #{acctBal},
+		   	  </if>
+		   	  <if test='balChgDate != null'>
+		   	  	bal_chg_date = #{balChgDate},
+		   	  </if>
+		   	  <if test='fiveCate != null'>
+		   	  	five_cate = #{fiveCate},
+		   	  </if>
+		   	  <if test='fiveCateAdjDate != null'>
+		   	  	five_cate_adj_date = #{fiveCateAdjDate},
+		   	  </if>
+		   	  <if test='pymtPrd != null'>
+		   	  	pymt_prd = #{pymtPrd},
+		   	  </if>
+		   	  <if test='totOverd != null'>
+		   	  	tot_overd = #{totOverd},
+		   	  </if>
+		   	  <if test='overdPrinc != null'>
+		   	  	overd_princ = #{overdPrinc},
+		   	  </if>
+		   	  <if test='overdDy != null'>
+		   	  	overd_dy = #{overdDy},
+		   	  </if>
+		   	  <if test='latRpyDate != null'>
+		   	  	lat_rpy_date = #{latRpyDate},
+		   	  </if>
+		   	  <if test='latRpyAmt != null'>
+		   	  	lat_rpy_amt = #{latRpyAmt},
+		   	  </if>
+		   	  <if test='latRpyPrincAmt != null'>
+		   	  	lat_rpy_princ_amt = #{latRpyPrincAmt},
+		   	  </if>
+		   	  <if test='rpmtType != null'>
+		   	  	rpmt_type = #{rpmtType},
+		   	  </if>
+		   	  <if test='latAgrrRpyDate != null'>
+		   	  	lat_agrr_rpy_date = #{latAgrrRpyDate},
+		   	  </if>
+		   	  <if test='latAgrrRpyAmt != null'>
+		   	  	lat_agrr_rpy_amt = #{latAgrrRpyAmt},
+		   	  </if>
+		   	  <if test='nxtAgrrRpyDate != null'>
+		   	  	nxt_agrr_rpy_date = #{nxtAgrrRpyDate},
+		   	  </if>
+		   	  <if test='closeDate != null'>
+		   	  	close_date = #{closeDate}
+		   	  </if>
+		   </set>
+		   where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	         and edg_act_lblty_inf_sgmt_id = #{edgActLbltyInfSgmtId}
+	</update>
+	
+	<!-- 删除  还款表现信息段  -->
+	<delete id="delLbltyInfSgmt" parameterType="map">
+		delete from E_ACT_LBLTY_INF
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId} 
+		   and edg_act_lblty_inf_sgmt_id = #{edgActLbltyInfSgmtId}
+	</delete>
+	<!-- 新增  按段更正抵质押物信息段 -->
+	<insert id="saveMccInf" parameterType="map" useGeneratedKeys="false">
+		insert into E_MOTGA_CLTAL_CTRCT_INF(
+					edd_motga_cltal_ctrct_inf_id,
+					ccc,
+					eda_acct_bs_sgmt_id,
+					COMPANY)
+		    select  <if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					ccc,
+					#{edaAcctBsSgmtId},
+					COMPANY
+			   from E_MOTGA_CLTAL_CTRCT_INF_HIST
+			   where eda_acct_bs_sgmt_id = #{oldEdaAcctBsSgmtId}
+	</insert>
+	<!-- 新增  抵质押物信息段 -->
+	<insert id="insertMccInf" parameterType="map">
+		<![CDATA[
+		insert into E_MOTGA_CLTAL_CTRCT_INF(
+					edd_motga_cltal_ctrct_inf_id,
+					ccc,
+					eda_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{eddMotgaCltalCtrctInfId},
+					#{ccc},
+					#{edaAcctBsSgmtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新  抵质押物信息段 -->
+	<update id="updateMccInf" parameterType="map">
+		update E_MOTGA_CLTAL_CTRCT_INF
+		   <set>
+		   	  <if test='ccc != null and ccc != ""'>
+		   	  	ccc = #{ccc, jdbcType=VARCHAR}
+		   	  </if>
+		   </set>
+		   where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	         and edd_motga_cltal_ctrct_inf_id = #{eddMotgaCltalCtrctInfId}
+	</update>
+	
+	<!-- 删除 抵质押物信息段 -->
+	<delete id="delMccInf" parameterType="map">
+		delete from E_MOTGA_CLTAL_CTRCT_INF
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	       and edd_motga_cltal_ctrct_inf_id = #{eddMotgaCltalCtrctInfId}
+	</delete>
+	
+	<!-- 查询  授信额度信息段 主键是否存在 -->
+	<select id="getAcctCredSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_ACCT_CRED
+	     where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId} 
+	       and ede_acct_cred_sgmt_id = #{edeAcctCredSgmtId}
+	</select>
+	
+	<!-- 新增  企业借贷账户按段更正授信额度信息段 -->
+	<insert id="saveAcctCredSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into E_ACCT_CRED(
+					ede_acct_cred_sgmt_id,
+					mcc,
+					eda_acct_bs_sgmt_id,
+					COMPANY
+					)
+		    select  <if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+		            mcc,
+		            #{edaAcctBsSgmtId},
+		            COMPANY
+			from E_ACCT_CRED_HIST
+			where eda_acct_bs_sgmt_id = #{oldEdaAcctBsSgmtId}
+	</insert>
+	
+	<!-- 新增  授信额度信息段 -->
+	<insert id="insertAcctCredSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_ACCT_CRED(
+					ede_acct_cred_sgmt_id,
+					mcc,
+					eda_acct_bs_sgmt_id,
+					COMPANY
+					)
+		    values (#{edeAcctCredSgmtId, jdbcType=CHAR},
+		            #{mcc, jdbcType=VARCHAR},
+		            #{edaAcctBsSgmtId, jdbcType=CHAR},
+		            #{COMPANY}
+				    )
+		    ]]>
+	</insert>
+	
+	<!-- 更新  授信额度信息段 -->
+	<update id="updateAcctCredSgmt" parameterType="map">
+		update E_ACCT_CRED
+		   <set>
+		   	  <if test='mcc != null and mcc != ""'>
+		   	  	mcc = #{mcc, jdbcType=VARCHAR}
+		   	  </if>
+		   </set>
+		   where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId} 
+	         and ede_acct_cred_sgmt_id = #{edeAcctCredSgmtId}
+	</update>
+	
+	<!-- 删除  授信额度信息段  -->
+	<delete id="delAcctCredSgmt" parameterType="map">
+		delete from E_ACCT_CRED
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId} 
+	       and ede_acct_cred_sgmt_id = #{edeAcctCredSgmtId}
+	</delete>
+	<!-- 新增  按段更正特殊交易说明段 -->
+	<insert id="saveTrstDspn" parameterType="map" useGeneratedKeys="false">
+		insert into E_ACCT_SPEC_TRST(
+					edh_acct_spec_trst_dspn_sg_id,
+					chan_tran_type,
+					tran_date,
+					tran_amt,
+					due_tran_mon,
+					det_info,
+					eda_acct_bs_sgmt_id,
+					COMPANY)
+		    select <if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+				   chan_tran_type,
+					tran_date,
+					tran_amt,
+					due_tran_mon,
+					det_info,
+					#{edaAcctBsSgmtId},
+					COMPANY
+			from E_ACCT_SPEC_TRST_HIST
+			where eda_acct_bs_sgmt_id = #{oldEdaAcctBsSgmtId}
+	</insert>
+	<!-- 新增  特殊交易说明段 -->
+	<insert id="insertTrstDspn" parameterType="map">
+		<![CDATA[
+		insert into E_ACCT_SPEC_TRST(
+					edh_acct_spec_trst_dspn_sg_id,
+					chan_tran_type,
+					tran_date,
+					tran_amt,
+					due_tran_mon,
+					det_info,
+					eda_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{edhAcctSpecTrstDspnSgId},
+					#{chanTranType, jdbcType=VARCHAR},
+				    #{tranDate},
+					#{tranAmt},
+					#{dueTranMon},
+					#{detInfo, jdbcType=VARCHAR},
+					#{edaAcctBsSgmtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新  特殊交易说明段 -->
+	<update id="updateTrstDspn" parameterType="map">
+		update E_ACCT_SPEC_TRST
+		   <set>
+		   	  <if test='chanTranType != null and chanTranType != ""'>
+		   	  	chan_tran_type = #{chanTranType},
+		   	  </if>
+		   	  <if test='tranDate != null and tranDate != ""'>
+		   	  	tran_date = #{tranDate},
+		   	  </if>
+		   	  <if test='tranAmt != null and tranAmt != ""'>
+		   	  	tran_amt = #{tranAmt},
+		   	  </if>
+		   	  <if test='dueTranMon != null and dueTranMon != ""'>
+		   	  	due_tran_mon = #{dueTranMon},
+		   	  </if>
+		   	  <if test='detInfo != null and detInfo != ""'>
+		   	  	det_info = #{detInfo}
+		   	  </if>
+		   </set>
+		   where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	         and edh_acct_spec_trst_dspn_sg_id = #{edhAcctSpecTrstDspnSgId}
+	</update>
+	
+	<!-- 删除 特殊交易说明段 -->
+	<delete id="delTrstDspn" parameterType="map">
+		delete from E_ACCT_SPEC_TRST
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	       and edh_acct_spec_trst_dspn_sg_id = #{edhAcctSpecTrstDspnSgId}
+	</delete>
+	
+	<!-- 查询  初始债权说明段 主键是否存在 -->
+	<select id="getOcInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_ORIG_CREDITOR_INF
+	     where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId} 
+		   and edf_orig_creditor_inf_sgmt_id = #{edfOrigCreditorInfSgmtId}
+	</select>
+	<!-- 新增  初始债权说明段 -->
+	<insert id="saveOcInfSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into E_ORIG_CREDITOR_INF(
+					edf_orig_creditor_inf_sgmt_id,
+					init_cred_name,
+					init_ced_org_code,
+					orig_dbt_cate,
+					init_rpy_sts,
+					eda_acct_bs_sgmt_id,
+					COMPANY)
+		    select  <if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+		            init_cred_name,
+					init_ced_org_code,
+					orig_dbt_cate,
+					init_rpy_sts,
+		            #{edaAcctBsSgmtId},
+		            company
+			from E_ORIG_CREDITOR_INF_HIST
+			where eda_acct_bs_sgmt_id = #{oldEdaAcctBsSgmtId}
+	</insert>
+	<!-- 新增  初始债权说明段 -->
+	<insert id="insertOcInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_ORIG_CREDITOR_INF(
+					edf_orig_creditor_inf_sgmt_id,
+					init_cred_name,
+					init_ced_org_code,
+					orig_dbt_cate,
+					init_rpy_sts,
+					eda_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{edfOrigCreditorInfSgmtId, jdbcType=CHAR},
+		            #{initCredName, jdbcType=VARCHAR},
+		            #{initCedOrgCode, jdbcType=VARCHAR},
+		            #{origDbtCate, jdbcType=VARCHAR},
+		            #{initRpySts, jdbcType=VARCHAR},
+		            #{edaAcctBsSgmtId, jdbcType=CHAR},
+		            #{COMPANY}
+				    )
+		    ]]>
+	</insert>
+	
+	<!-- 更新  初始债权说明段 -->
+	<update id="updateOcInfSgmt" parameterType="map">
+		update E_ORIG_CREDITOR_INF
+		   <set>
+		   	  <if test='initCredName != null and initCredName != ""'>
+		   	  	init_cred_name = #{initCredName},
+		   	  </if>
+		   	  <if test='initCedOrgCode != null and initCedOrgCode != ""'>
+		   	  	init_ced_org_code = #{initCedOrgCode},
+		   	  </if>
+		   	  <if test='origDbtCate != null and origDbtCate != ""'>
+		   	  	orig_dbt_cate = #{origDbtCate},
+		   	  </if>
+		   	  <if test='initRpySts != null and initRpySts != ""'>
+		   	  	init_rpy_sts = #{initRpySts}
+		   	  </if>
+		   </set>
+		   where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId} 
+		     and edf_orig_creditor_inf_sgmt_id = #{edfOrigCreditorInfSgmtId}
+	</update>
+	
+	<!-- 删除  初始债权说明段  -->
+	<delete id="delOcInfSgmt" parameterType="map">
+		delete from E_ORIG_CREDITOR_INF
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId} 
+		   and edf_orig_creditor_inf_sgmt_id = #{edfOrigCreditorInfSgmtId}
+	</delete>
+	<select id="getTrstDspnSgmtKey" parameterType="map" resultType="int">
+        select count(1)
+        from E_ACCT_SPEC_TRST
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	       and edh_acct_spec_trst_dspn_sg_id = #{edhAcctSpecTrstDspnSgId}
+    </select>
+    <select id="getRltRepymtInfKey" parameterType="map" resultType="int">
+        select count(1)
+        from E_RLT_REPYMT_INF
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId} 
+		   and edc_rlt_repymt_inf_sgmt_id = #{edcRltRepymtInfSgmtId}
+    </select>
+    <select id="getmccInfKey" parameterType="map" resultType="int">
+        select count(1)
+        from E_MOTGA_CLTAL_CTRCT_INF
+		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
+	       and edd_motga_cltal_ctrct_inf_id = #{eddMotgaCltalCtrctInfId}
+    </select>
+    
+    <!--
+    B-基础段
+	C-基本信息段
+	D-相关还款责任人段
+	E-抵质押物信息段
+	F-授信额度信息段
+	G-初始债权说明段
+	H-还款表现信息段
+	I-特定交易说明段  -->
+    <select id="findHistEntAcctlistPage" parameterType="page" resultType="pd">
+		SELECT DISTINCT A.EDA_ACCT_BS_SGMT_ID,A.INF_REC_TYPE,A.ACCT_TYPE,A.ACCT_CODE,
+			A.RPT_DATE,A.RPT_DATE_CODE,A.NAME,A.ID_TYPE,A.ID_NUM,A.BUSINESS_STATES,A.LAST_UPDATE_TIME
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode != "" '>
+				,'${pd.mdfcSgmtCode}' AS MDFC_SGMT_CODE 
+			</if>
+			FROM  E_ACCT_BS_HIST A 
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "C" '>
+				INNER JOIN E_ACCT_BS_INF_HIST B ON A.EDA_ACCT_BS_SGMT_ID = B.EDA_ACCT_BS_SGMT_ID
+			</if>
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "D" '>
+				INNER JOIN E_RLT_REPYMT_INF_HIST B ON A.EDA_ACCT_BS_SGMT_ID = B.EDA_ACCT_BS_SGMT_ID
+			</if>
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "E" '>
+				INNER JOIN E_MOTGA_CLTAL_CTRCT_INF_HIST B ON A.EDA_ACCT_BS_SGMT_ID = B.EDA_ACCT_BS_SGMT_ID
+			</if>
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "F" '>
+				INNER JOIN E_ACCT_CRED_HIST B ON A.EDA_ACCT_BS_SGMT_ID = B.EDA_ACCT_BS_SGMT_ID
+			</if>
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "G" '>
+				INNER JOIN E_ORIG_CREDITOR_INF_HIST B ON A.EDA_ACCT_BS_SGMT_ID = B.EDA_ACCT_BS_SGMT_ID
+			</if>
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "H" '>
+				INNER JOIN E_ACT_LBLTY_INF_HIST B ON A.EDA_ACCT_BS_SGMT_ID = B.EDA_ACCT_BS_SGMT_ID
+			</if>
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "I" '>
+				INNER JOIN E_ACCT_SPEC_TRST_HIST B ON A.EDA_ACCT_BS_SGMT_ID = B.EDA_ACCT_BS_SGMT_ID
+			</if>
+		WHERE  A.COMPANY = #{pd.COMPANY}
+		<if test='pd.mdfcSgmtCode == "" '>
+		  AND 1 = 2
+		</if>
+		<if test='pd.acctCode != null and pd.acctCode != "" '>
+		  AND A.ACCT_CODE = #{pd.acctCode}
+		</if>
+	    ORDER BY A.RPT_DATE DESC
+	</select>
+</mapper>

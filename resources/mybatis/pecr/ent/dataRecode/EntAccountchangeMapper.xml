@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EntAccountchangeMapper">
+<resultMap type="com.dcits.supervise.pecr.indv.entity.Accountchange" 
+            id="accountChangelistResultMap">
+		<result column="EEW_EN_SEC_ACCT_ID_CAGS_INF_ID" property="pdwInsecacctidCagsinfId"/> 
+		<result column="INF_REC_TYPE" property="infRecType"/> 
+		<result column="ACCT_TYPE" property="acctType"/> 
+		<result column="OD_BNES_CODE" property="odBnesCode"/> 
+		<result column="NW_BNES_CODE" property="nwBnesCode"/> 
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/> 
+		<result column="OPERATOR_USER" property="operatorUser"/> 
+		<result column="ORG_NAME" property="orgName"/> 
+		<result column="ORG_CODE" property="orgCode"/> 
+		<result column="BUSINESS_STATES" property="businessStates"/> 
+		<result column="REJECT_REASON" property="rejectReason"/> 
+		<result column="IS_FILTER" property="isFilter"/> 
+		<result column="REPORT_MESSAGE_ID" property="reportMessageId"/> 
+		<result column="RPT_DATE" property="rptDate"/> 
+		<result column="NAME" property="name"/> 
+		<result column="ID_TYPE" property="idType"/> 
+		<result column="ID_NUM" property="idNum"/>
+		<result column="PK" property="pk"/>
+</resultMap>
+	<select id="accountlistPage" parameterType="page" resultMap="accountChangelistResultMap" >
+		select * from (SELECT EGW_EN_ACCT_INF_ID_CAGS_INF_ID AS pk,
+  			INF_REC_TYPE,
+ 			null as ACCT_TYPE,
+ 			OD_BNES_CODE,
+		    NW_BNES_CODE,
+			LAST_UPDATE_TIME,
+			OPERATOR_USER,
+		    ORG_NAME,
+			ORG_CODE,
+		    BUSINESS_STATES,
+		    REJECT_REASON,
+			IS_FILTER,
+			REPORT_MESSAGE_ID,
+		    RPT_DATE,
+			NAME,
+			ID_TYPE,
+ 			ID_NUM ,
+ 		    COMPANY
+ 			from E_CR_ACCT_ID_CAGS_INF <!-- 企业授信协议标识符变更 -->
+ 			union all
+  			SELECT EDW_EN_ACCT_INF_ID_CAGS_INF_ID AS pk,
+  			INF_REC_TYPE,
+ 			ACCT_TYPE,
+ 			OD_BNES_CODE,
+			NW_BNES_CODE,
+			LAST_UPDATE_TIME,
+		    OPERATOR_USER,
+ 		    ORG_NAME,
+			ORG_CODE,
+ 			BUSINESS_STATES,
+			REJECT_REASON,
+			IS_FILTER,
+ 			REPORT_MESSAGE_ID,
+			RPT_DATE,
+			NAME,
+			ID_TYPE,
+  			ID_NUM,
+  			COMPANY from E_ACCT_INF_ID_CAGS_INF <!-- 企业借贷账户标识变更类请求记录 -->
+  			union all
+  			SELECT EEW_EN_SEC_ACCT_ID_CAGS_INF_ID AS pk,
+  			INF_REC_TYPE,
+ 			ACCT_TYPE,
+ 			OD_BNES_CODE,
+			NW_BNES_CODE,
+			LAST_UPDATE_TIME,
+			OPERATOR_USER,
+ 		    ORG_NAME,
+			ORG_CODE,
+ 		    BUSINESS_STATES,
+		    REJECT_REASON,
+			IS_FILTER,
+ 		    REPORT_MESSAGE_ID,
+			RPT_DATE,
+			NAME,
+			ID_TYPE,
+  			ID_NUM,
+  			COMPANY from E_SEC_ACCT_ID_CAGS_INF ) a where 1=1 <!-- 企业但担保账户标识变更 -->
+  			<if test='pd.rptDate != null and pd.rptDate != ""'>
+				and a.RPT_DATE = #{pd.rptDate}
+			</if>
+			<if test='pd.infrectype != null and pd.infrectype != ""'>
+				and a.INF_REC_TYPE = #{pd.infrectype}
+			</if>
+			<if test='pd.businessStates != null and pd.businessStates != ""'>
+				and a.BUSINESS_STATES = #{pd.businessStates}
+			</if>	
+			<if test='pd.acctCode != null and pd.acctCode != ""'>
+				and a.OD_BNES_CODE = #{pd.acctCode}
+			</if>
+  			<if test='pd.queryType == "APPLY"'>
+		        and	a.business_states in ('11','10','80','110','20','40')
+		    </if>
+		    <if test='pd.queryType == "CHECK"'>
+				and a.business_states in ('20')
+			</if>
+  				and a.COMPANY = #{pd.COMPANY}
+  						
+	</select>
+	<!-- 授信新增 -->
+ <insert id="proAccountChange" parameterType="pd">
+	 
+    insert into E_CR_ACCT_ID_CAGS_INF
+       (EGW_EN_ACCT_INF_ID_CAGS_INF_ID,
+		  INF_REC_TYPE,
+		  OD_BNES_CODE,
+		  NW_BNES_CODE,
+		  LAST_UPDATE_TIME,
+		  OPERATOR_USER,
+		  ORG_NAME,
+		  ORG_CODE,
+		  BUSINESS_STATES,
+		  REJECT_REASON,
+		  IS_FILTER,
+		  REPORT_MESSAGE_ID,
+		  RPT_DATE,
+		  NAME,
+		  ID_TYPE,
+		  ID_NUM,
+		  COMPANY
+		)
+		     values
+		(	#{pk},
+			  #{infRecType},
+			 #{odBnesCode}, 
+			 #{nwBnesCode} ,
+			 #{lastUpdateTime},
+			 #{operatorUser},
+			 #{orgName},
+			 #{orgCode},
+			 '11',
+			 #{rejectReason},
+			 #{isFilter},
+			 #{reportMessageId},
+			 #{rptDate},
+			 #{name},
+			 #{idType},
+			 #{idNum},
+			 #{COMPANY} 
+		)	
+	</insert>
+	<!-- 借贷新增 -->
+	 <insert id="loanAccountChange" parameterType="pd">
+	 
+    insert into E_ACCT_INF_ID_CAGS_INF
+       (EDW_EN_ACCT_INF_ID_CAGS_INF_ID,
+			  INF_REC_TYPE,
+			  ACCT_TYPE,
+			  OD_BNES_CODE,
+			  NW_BNES_CODE,
+			  LAST_UPDATE_TIME,
+			  OPERATOR_USER,
+			  ORG_NAME,
+			  ORG_CODE,
+			  BUSINESS_STATES,
+			  REJECT_REASON,
+			  IS_FILTER,
+			  REPORT_MESSAGE_ID,
+			  RPT_DATE,
+			  NAME,
+			  ID_TYPE,
+			  ID_NUM,
+			  COMPANY
+			)
+			     values
+			( #{pk},
+			  #{infRecType},
+			 #{acctType}, 
+			 #{odBnesCode}, 
+			 #{nwBnesCode} ,
+			 #{lastUpdateTime},
+			 #{operatorUser},
+			 #{orgName},
+			 #{orgCode},
+			  '11',
+			 #{rejectReason},
+			 #{isFilter},
+			 #{reportMessageId},
+			 #{rptDate},
+			 #{name},
+			 #{idType},
+			 #{idNum},
+			 #{COMPANY} 
+			)	
+	</insert>
+	<!-- 担保新增 -->
+	 <insert id="guaAccountChange" parameterType="pd">
+	 
+    insert into E_SEC_ACCT_ID_CAGS_INF
+       (EEW_EN_SEC_ACCT_ID_CAGS_INF_ID,
+			  INF_REC_TYPE,
+			  ACCT_TYPE,
+			  OD_BNES_CODE,
+			  NW_BNES_CODE,
+			  LAST_UPDATE_TIME,
+			  OPERATOR_USER,
+			  ORG_NAME,
+			  ORG_CODE,
+			  BUSINESS_STATES,
+			  REJECT_REASON,
+			  IS_FILTER,
+			  REPORT_MESSAGE_ID,
+			  RPT_DATE,
+			  NAME,
+			  ID_TYPE,
+			  ID_NUM,
+			  COMPANY
+			)
+			     values
+			( #{pk},
+			  #{infRecType},
+			 #{acctType}, 
+			 #{odBnesCode}, 
+			 #{nwBnesCode} ,
+			 #{lastUpdateTime},
+			 #{operatorUser},
+			 #{orgName},
+			 #{orgCode},
+			 '11',
+			 #{rejectReason},
+			 #{isFilter},
+			 #{reportMessageId},
+			 #{rptDate},
+			 #{name},
+			 #{idType},
+			 #{idNum},
+			 #{COMPANY} 
+			)	
+	</insert>
+	<!-- 授信修改 -->
+	<update id="updatePro" parameterType="pd">
+	 
+      	update E_CR_ACCT_ID_CAGS_INF SET
+        <if test="lastUpdateTime != null">
+		 	LAST_UPDATE_TIME = #{lastUpdateTime} ,
+		 	RPT_DATE = #{lastUpdateTime} ,
+		</if>
+		<if test="businessStates != null and businessStates != ''">
+			BUSINESS_STATES = #{businessStates} ,
+		</if>
+		<if test="nwBnesCode != null and nwBnesCode!= ''">
+			NW_BNES_CODE = #{nwBnesCode} ,
+		</if>
+		<if test="odBnesCode != null and odBnesCode != ''">
+			OD_BNES_CODE = #{odBnesCode}
+		</if>
+         where EGW_EN_ACCT_INF_ID_CAGS_INF_ID =  #{pk}
+           and COMPANY = #{COMPANY}
+	</update>
+	<!-- 借贷修改-->
+	<update id="updateLoan" parameterType="pd">
+	 update E_ACCT_INF_ID_CAGS_INF SET
+        <if test="lastUpdateTime != null">
+		 	LAST_UPDATE_TIME = #{lastUpdateTime} ,
+		 	RPT_DATE = #{lastUpdateTime} ,
+		</if>
+		<if test="businessStates != null and businessStates != ''">
+			BUSINESS_STATES = #{businessStates} ,
+		</if>
+		<if test="nwBnesCode != null and nwBnesCode!= ''">
+			NW_BNES_CODE = #{nwBnesCode} ,
+		</if>
+		<if test="odBnesCode != null and odBnesCode != ''">
+			OD_BNES_CODE = #{odBnesCode}
+		</if>
+         where EDW_EN_ACCT_INF_ID_CAGS_INF_ID =  #{pk}
+           and COMPANY = #{COMPANY}
+	</update>
+	<!-- 担保修改 -->
+		<update id="updateGua" parameterType="pd">
+	 update E_SEC_ACCT_ID_CAGS_INF SET
+        <if test="lastUpdateTime != null">
+		 	LAST_UPDATE_TIME = #{lastUpdateTime} ,
+		 	RPT_DATE = #{lastUpdateTime} ,
+		</if>
+		<if test="nwBnesCode != null and nwBnesCode!= ''">
+			NW_BNES_CODE = #{nwBnesCode} ,
+		</if>
+		<if test="odBnesCode != null and odBnesCode != ''">
+			OD_BNES_CODE = #{odBnesCode}
+		</if>
+         where EEW_EN_SEC_ACCT_ID_CAGS_INF_ID =  #{pk}
+           and COMPANY = #{COMPANY}
+	</update>
+	<!-- 授信删除 -->
+	<delete id='deletePro' parameterType="pd">
+		delete from E_CR_ACCT_ID_CAGS_INF where EGW_EN_ACCT_INF_ID_CAGS_INF_ID = #{pk}
+		and COMPANY = #{COMPANY}
+	</delete>
+	<!-- 借贷删除 -->
+	<delete id='deleteLoan' parameterType="pd">
+		delete from E_ACCT_INF_ID_CAGS_INF where EDW_EN_ACCT_INF_ID_CAGS_INF_ID = #{pk}
+		and COMPANY = #{COMPANY}
+	</delete>
+	<!-- 担保删除 -->
+	
+	<delete id='deleteGua' parameterType="pd">
+		delete from E_SEC_ACCT_ID_CAGS_INF where EEW_EN_SEC_ACCT_ID_CAGS_INF_ID = #{pk}
+		and COMPANY = #{COMPANY}
+	</delete>
+</mapper>

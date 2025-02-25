@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MonthReportMapper">
+
+    <resultMap id="listCustomerIntercept" type="com.dcits.supervise.pecr.indv.entity.CustomerInterceptEntity">
+        <result column="ID" property="id"></result>
+        <result column="REPORT_DATE" property="reportDate"></result>
+        <result column="CHANNEL_NAME" property="channelName"></result>
+        <result column="PRODUCT_NAME" property="productName"></result>
+        <result column="MESSAGE_TYPE" property="messageType"></result>
+        <result column="LASTMON_OUTSTANDING_CUSTNUM" property="lastMonOutstandingCustNum"></result>
+        <result column="CURRMON_ADD_CUSTNUM" property="currMonAddCustNum"></result>
+        <result column="CURRMON_INTERCEPT_CUSTNUM" property="currMonInterceptCustNum"></result>
+        <result column="CURRMON_CLOSED_CUSTNUM" property="currMonClosedCustNum"></result>
+        <result column="CURRMON_NORMAL_REPNUM" property="currMonNormalRepNum"></result>
+        <result column="NOTREPORT_CUSTNUM" property="notReportCustNum"></result>
+    </resultMap>
+
+    <resultMap id="listIOUIntercept" type="com.dcits.supervise.pecr.indv.entity.IOUInterceptEntity">
+        <result column="ID" property="id"></result>
+        <result column="REPORT_DATE" property="reportDate"></result>
+        <result column="CHANNEL_NAME" property="channelName"></result>
+        <result column="PRODUCT_NAME" property="productName"></result>
+        <result column="MESSAGE_TYPE" property="messageType"></result>
+        <result column="LASTMON_OUTSTANDING_IOUNUM" property="lastMonOutstandingIouNum"></result>
+        <result column="CURRMON_ADD_IOUNUM" property="currMonAddIouNum"></result>
+        <result column="CURRMON_INTERCEPT_IOUNUM" property="currMonInterceptIouNum"></result>
+        <result column="CURRMON_CLOSED_IOUNUM" property="currMonClosedIouNum"></result>
+        <result column="CURRMON_NORMALREP_IOUNUM" property="currMonNormalRepIouNum"></result>
+        <result column="NOTREPORT_IOUNUM" property="notReportIouNum"></result>
+    </resultMap>
+
+    <resultMap id="listIOUInterceptStatistics" type="com.dcits.supervise.pecr.indv.entity.IOUInterceptStatisticsEntity">
+        <result column="ID" property="id"></result>
+        <result column="REPORT_DATE" property="reportDate"></result>
+        <result column="CHANNEL_NAME" property="channelName"></result>
+        <result column="PRODUCT_NAME" property="productName"></result>
+        <result column="WHITELIST_TYPE" property="whiteListType"></result>
+        <result column="CURRMON_INTERCEPT_IOUNUM" property="currMonInterceptIouNum"></result>
+        <result column="TWOMON_INTERCEPT_IOUNUM" property="twoMonInterceptIouNum"></result>
+        <result column="THREEMON_INTERCEPT_IOUNUM" property="threeMonInterceptIouNum"></result>
+    </resultMap>
+
+    <!--获取客户拦截明细表数据列表-->
+    <select id="getCustomerlistPage" parameterType="page" resultMap="listCustomerIntercept">
+        select ID,
+        REPORT_DATE,
+        CHANNEL_NAME,
+        PRODUCT_NAME,
+        MESSAGE_TYPE,
+        LASTMON_OUTSTANDING_CUSTNUM,
+        CURRMON_ADD_CUSTNUM,
+        CURRMON_INTERCEPT_CUSTNUM,
+        CURRMON_CLOSED_CUSTNUM,
+        CURRMON_NORMAL_REPNUM,
+        NOTREPORT_CUSTNUM
+        from CUST_INTERCEPT_DETAIL where 1=1
+        <if test="pd.REPORT_DATE != null and pd.REPORT_DATE != ''">
+            AND REPORT_DATE = #{pd.REPORT_DATE}
+        </if>
+        <if test="pd.CHANNEL_NAME != null and pd.CHANNEL_NAME != ''">
+            AND CHANNEL_NAME = #{pd.CHANNEL_NAME}
+        </if>
+        <if test="pd.PRODUCT_NAME != null and pd.PRODUCT_NAME != ''">
+            AND PRODUCT_NAME = #{pd.PRODUCT_NAME}
+        </if>
+        <if test="pd.MESSAGE_TYPE != null and pd.MESSAGE_TYPE != ''">
+            AND MESSAGE_TYPE = #{pd.MESSAGE_TYPE}
+        </if>order by REPORT_DATE desc
+    </select>
+
+    <!--获取借据拦截明细月报表数据列表-->
+    <select id="getIOUlistPage" parameterType="page" resultMap="listIOUIntercept">
+        select ID,
+        REPORT_DATE,
+        CHANNEL_NAME,
+        PRODUCT_NAME,
+        MESSAGE_TYPE,
+        LASTMON_OUTSTANDING_IOUNUM,
+        CURRMON_ADD_IOUNUM,
+        CURRMON_INTERCEPT_IOUNUM,
+        CURRMON_CLOSED_IOUNUM,
+        CURRMON_NORMALREP_IOUNUM,
+        NOTREPORT_IOUNUM
+        from IOU_INTERCEPT_DETAIL where 1=1
+        <if test="pd.REPORT_DATE != null and pd.REPORT_DATE != ''">
+            AND REPORT_DATE = #{pd.REPORT_DATE}
+        </if>
+        <if test="pd.CHANNEL_NAME != null and pd.CHANNEL_NAME != ''">
+            AND CHANNEL_NAME = #{pd.CHANNEL_NAME}
+        </if>
+        <if test="pd.PRODUCT_NAME != null and pd.PRODUCT_NAME != ''">
+            AND PRODUCT_NAME = #{pd.PRODUCT_NAME}
+        </if>
+        <if test="pd.MESSAGE_TYPE != null and pd.MESSAGE_TYPE != ''">
+            AND MESSAGE_TYPE = #{pd.MESSAGE_TYPE}
+        </if>
+        order by REPORT_DATE desc
+    </select>
+
+    <!--获取借据拦截统计月报表数据列表-->
+    <select id="getIOUStatisticslistPage" parameterType="page" resultMap="listIOUInterceptStatistics">
+        select ID,
+        REPORT_DATE,
+        CHANNEL_NAME,
+        PRODUCT_NAME,
+        WHITELIST_TYPE,
+        CURRMON_INTERCEPT_IOUNUM,
+        TWOMON_INTERCEPT_IOUNUM,
+        THREEMON_INTERCEPT_IOUNUM
+        from IOU_INTERCEPT_STATISTICS where 1=1
+        <if test="pd.REPORT_DATE != null and pd.REPORT_DATE != ''">
+            AND REPORT_DATE = #{pd.REPORT_DATE}
+        </if>
+        <if test="pd.CHANNEL_NAME != null and pd.CHANNEL_NAME != ''">
+            AND CHANNEL_NAME = #{pd.CHANNEL_NAME}
+        </if>
+        <if test="pd.PRODUCT_NAME != null and pd.PRODUCT_NAME != ''">
+            AND PRODUCT_NAME = #{pd.PRODUCT_NAME}
+        </if>
+        <if test="pd.WHITELIST_TYPE != null and pd.WHITELIST_TYPE != ''">
+            AND WHITELIST_TYPE = #{pd.WHITELIST_TYPE}
+        </if>order by REPORT_DATE desc
+    </select>
+</mapper>

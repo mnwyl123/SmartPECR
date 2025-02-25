@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EnBasInfMapper">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EnBasInf" id="enBasInfResultMap">
+		<result column="eaa_bs_sgmt_id" property="eaaBsSgmtId"/>
+		<result column="inf_rec_type" property="infRecType"/> 
+		<result column="ent_name" property="entName"/> 
+		<result column="ent_cert_type" property="entCertType"/>
+		<result column="ent_cert_num" property="entCertNum"/> 
+		<result column="rpt_date" property="rptDate"/> 
+		<result column="rpt_date_code" property="rptDateCode"/> 
+		<result column="inf_surc_code" property="infSurcCode"/>
+		<result column="cimoc" property="cimoc"/> 
+		<result column="customer_type" property="customerType"/> 
+		<result column="etp_sts" property="etpSts"/>
+		<result column="org_type" property="orgType"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="operator_user" property="operatorUser"/>
+		<result column="org_name" property="orgName"/>
+		<result column="org_code" property="orgCode"/>
+		<result column="business_states" property="businessStates"/>
+		<result column="reject_reason" property="rejectReason"/>
+		<result column="is_filter" property="isFilter"/>
+		<result column="report_message_id" property="reportMessageId"/>
+	</resultMap>
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EntIdSgmt" id="entIdSgmtResultMap">
+		<result column="eab_id_sgmt_id" property="eabIdSgmtId"/>
+		<result column="oth_ent_cert_type" property="othEntCertType"/> 
+		<result column="oth_ent_cert_num" property="othEntCertNum"/> 
+		<result column="id_info_up_date" property="idInfoUpDate"/>
+		<result column="eaa_bs_sgmt_id" property="eaaBsSgmtId"/> 
+		<result column="rpt_date" property="rptDate"/> 
+	</resultMap>
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EntFcsInfSgmt" id="entFcsInfSgmtResultMap">
+		<result column="eac_fcs_inf_sgmt_id" property="eacFcsInfSgmtId"/>
+		<result column="nationality" property="nationality"/> 
+		<result column="reg_add" property="regAdd"/> 
+		<result column="adm_div_of_reg" property="admDivOfReg"/>
+		<result column="establish_date" property="establishDate"/> 
+		<result column="biz_end_date" property="bizEndDate"/> 
+		<result column="biz_range" property="bizRange"/> 
+		<result column="eco_indus_cate" property="ecoIndusCate"/>
+		<result column="eco_type" property="ecoType"/> 
+		<result column="ent_scale" property="entScale"/> 
+		<result column="fcs_info_up_date" property="fcsInfoUpDate"/>
+		<result column="eaa_bs_sgmt_id" property="eaaBsSgmtId"/>
+		<result column="rpt_date" property="rptDate"/>
+	</resultMap>
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EntMnMmbInfSgmt" id="entMnMmbInfSgmtResultMap">
+		<result column="ead_mn_mmb_inf_sgmt_id" property="eadMnMmbInfSgmtId"/>
+		<result column="mmb_alias" property="mmbAlias"/> 
+		<result column="mmb_id_type" property="mmbIdType"/> 
+		<result column="mmb_id_num" property="mmbIdNum"/>
+		<result column="mmb_pstn" property="mmbPstn"/> 
+		<result column="mn_mmb_info_update" property="mnMmbInfoUpdate"/> 
+		<result column="eaa_bs_sgmt_id" property="eaaBsSgmtId"/> 
+		<result column="rpt_date" property="rptDate"/>
+	</resultMap>
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EntMnShaHodInfSgmt" id="entMnShaHodInfSgmtResultMap">
+		<result column="eae_mn_sha_hod_inf_sgmt_id" property="eaeMnShaHodInfSgmtId"/>
+		<result column="reg_cap_currency" property="regCapCurrency"/> 
+		<result column="reg_cap" property="regCap"/> 
+		<result column="shar_hod_type" property="sharHodType"/>
+		<result column="shar_hod_cert_type" property="sharHodCertType"/> 
+		<result column="shar_hod_name" property="sharHodName"/> 
+		<result column="shar_hod_id_type" property="sharHodIdType"/> 
+		<result column="shar_hod_id_num" property="sharHodIdNum"/>
+		<result column="inv_ratio" property="invRatio"/> 
+		<result column="mn_sha_hod_info_up_date" property="mnShaHodInfoUpDate"/> 
+		<result column="eaa_bs_sgmt_id" property="eaaBsSgmtId"/>
+		<result column="rpt_date" property="rptDate"/>
+	</resultMap>
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EntActuCotrlInfSgmt" id="entActuCotrlInfSgmtResultMap">
+		<result column="eaf_actu_cotrl_inf_sgmt_id" property="eafActuCotrlInfSgmtId"/>
+		<result column="actu_cotrl_cert_type" property="actuCotrlCertType"/> 
+		<result column="actu_cotrl_name" property="actuCotrlName"/> 
+		<result column="actu_cotrl_id_type" property="actuCotrlIdType"/>
+		<result column="actu_cotrl_id_num" property="actuCotrlIdNum"/> 
+		<result column="actu_cotrl_info_update" property="actuCotrlInfoUpdate"/> 
+		<result column="eaa_bs_sgmt_id" property="eaaBsSgmtId"/> 
+		<result column="rpt_date" property="rptDate"/>
+	</resultMap>
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EntSpvsgAthrtyInfSgmt" id="entSpvsgAthrtyInfSgmtResultMap">
+		<result column="eag_spvsg_athrty_inf_sgmt_id" property="eagSpvsgAthrtyInfSgmtId"/>
+		<result column="sup_org_type" property="supOrgType"/> 
+		<result column="sup_org_name" property="supOrgName"/> 
+		<result column="sup_org_cert_type" property="supOrgCertType"/>
+		<result column="sup_org_cert_num" property="supOrgCertNum"/> 
+		<result column="sup_org_info_up_date" property="supOrgInfoUpDate"/> 
+		<result column="eaa_bs_sgmt_id" property="eaaBsSgmtId"/> 
+		<result column="rpt_date" property="rptDate"/>
+	</resultMap>
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EntCotaInfSgmt" id="entCotaInfSgmtResultMap">
+		<result column="eah_cota_inf_sgmt_id" property="eahCotaInfSgmtId"/>
+		<result column="con_add_district_code" property="conAddDistrictCcode"/> 
+		<result column="con_add" property="conAdd"/> 
+		<result column="con_phone" property="conPhone"/>
+		<result column="fin_con_phone" property="finConPhone"/> 
+		<result column="cota_info_up_date" property="cotaInfoUpDate"/> 
+		<result column="eaa_bs_sgmt_id" property="eaaBsSgmtId"/> 
+		<result column="rpt_date" property="rptDate"/>
+	</resultMap>
+	<!-- 借贷信息 基础段 -->
+	<select id="enBasInflistPage" parameterType="page" resultMap="enBasInfResultMap">
+		select eaa_bs_sgmt_id ,
+				inf_rec_type ,
+				ent_name ,
+				ent_cert_type ,
+				ent_cert_num ,
+				rpt_date ,
+				rpt_date_code ,
+		        inf_surc_code ,
+		        cimoc ,
+		        customer_type ,
+		        etp_sts ,
+		        org_type ,
+		        last_update_time ,
+		        operator_user ,
+		        org_name ,
+		        org_code ,
+		        business_states ,
+		        reject_reason ,
+		        is_filter ,
+		        report_message_id ,
+		        COMPANY 
+        from E_BS
+        <if test="pd.managerId != null and pd.managerId != ''">
+		   	  	LEFT JOIN PECR.sys_l_c_a_m_m M
+				ON ENT_NAME = M.CUST_NAME
+				AND ENT_CERT_TYPE = M.CUST_ID_TYPE
+				AND ENT_CERT_NUM = M.CUST_ID_NUM
+		</if> 
+		<where>
+			<if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+			<if test="pd.rptDate != null and pd.rptDate != ''">
+		         and rpt_date = #{pd.rptDate}
+		    </if>
+		    <if test="pd.entName != null and pd.entName != ''">
+		   	  	and ent_name like '%${pd.entName}%'
+		   	</if>
+		   	<if test="pd.entCertType != null and pd.entCertType != ''">
+		   	  	and ent_cert_type = #{pd.entCertType}
+		   	</if>
+		   	<if test="pd.entCertNum != null and pd.entCertNum != ''">
+		   	  	and ent_cert_num like '%${pd.entCertNum}%'
+		   	</if>
+		   	<if test="pd.businessStates != null and pd.businessStates != ''">
+		   	  	and business_states = #{pd.businessStates}
+		   	</if>
+		   	<if test="pd.managerId != null and pd.managerId != ''">
+		   	  	and M.MANAGER_ID = #{pd.managerId}
+		   	  	AND M.DATA_TYPE = '2'
+		   		AND M.DATA_LEVEL = '1'
+		   		AND M.END_DATE = '2099-12-31'
+		   	</if>
+		   	  	and COMPANY = #{pd.COMPANY}
+		</where>
+	</select>
+	<!-- 详情或者修改  查询指定记录  基础段-->
+	<select id="getentBsSgmt" parameterType="pd" resultType="map">
+		 select   eaa_bs_sgmt_id 
+				  ,inf_rec_type 
+				  ,ent_name 
+				  ,ent_cert_type 
+				  ,ent_cert_num 
+				  ,rpt_date 
+				  ,rpt_date_code 
+				  ,inf_surc_code 
+				  ,cimoc 
+				  ,customer_type 
+				  ,etp_sts 
+				  ,org_type 
+				  ,last_update_time 
+				  ,operator_user 
+				  ,org_name 
+				  ,org_code 
+				  ,business_states 
+				  ,reject_reason 
+				  ,is_filter 
+				  ,report_message_id
+				  ,COMPANY 
+		   from E_BS
+		   where eaa_bs_sgmt_id = #{eaaBsSgmtId}
+		   and COMPANY= #{COMPANY}
+	</select>
+	<!--获取主要出资人主键  -->
+	<select id="getentMnShaHodInfSgmt" parameterType="pd" resultType="pd">
+		select eae_mn_sha_hod_inf_sgmt_id
+		from E_MN_SHA_HOD_INF
+		  where eaa_bs_sgmt_id = #{eaaBsSgmtId}
+	</select>
+	<!-- 详情或者修改  查询指定记录  其他标识信息段-->
+	<select id="getentIdSgmtById" parameterType="pd" resultMap="entIdSgmtResultMap">
+		 select   eab_id_sgmt_id 
+				  ,oth_ent_cert_type 
+				  ,oth_ent_cert_num 
+				  ,id_info_up_date 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY
+		  from E_ID
+		  where eaa_bs_sgmt_id = #{eaaBsSgmtId}
+	</select>
+	<!-- 详情或者修改  查询指定记录  基本概况信息段-->
+	<select id="getentFcsInfSgmtById" parameterType="pd" resultType="pd">
+		 select   eac_fcs_inf_sgmt_id 
+				  ,nationality 
+				  ,reg_add 
+				  ,adm_div_of_reg 
+				  ,establish_date
+				  ,biz_end_date
+				  ,biz_range 
+				  ,eco_indus_cate 
+				  ,eco_type 
+				  ,ent_scale 
+				  ,fcs_info_up_date 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY 
+		   from E_FCS_INF
+		  where eaa_bs_sgmt_id = #{eaaBsSgmtId}
+	</select>
+	<!-- 详情或者修改  查询指定记录  主要组成人员段-->
+	<select id="getentMnMmbInfSgmtById" parameterType="pd" resultMap="entMnMmbInfSgmtResultMap">
+		 select   ead_mn_mmb_inf_sgmt_id 
+				  ,mmb_alias 
+				  ,mmb_id_type 
+				  ,mmb_id_num 
+				  ,mmb_pstn 
+				  ,mn_mmb_info_update 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY
+		   from E_MN_MMB_INF
+		  where eaa_bs_sgmt_id = #{eaaBsSgmtId}
+	</select>
+	<!-- 详情或者修改  查询指定记录  注册资本及主要出资人段-->
+	<select id="getentMnShaHodInfSgmtById" parameterType="pd" resultMap="entMnShaHodInfSgmtResultMap">
+		 select   eae_mn_sha_hod_inf_sgmt_id 
+				  ,reg_cap_currency 
+				  ,reg_cap 
+				  ,shar_hod_type 
+				  ,shar_hod_cert_type 
+				  ,shar_hod_name 
+				  ,shar_hod_id_type 
+				  ,shar_hod_id_num 
+				  ,inv_ratio 
+				  ,mn_sha_hod_info_up_date 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY
+		   from E_MN_SHA_HOD_INF
+		  where eaa_bs_sgmt_id = #{eaaBsSgmtId}
+	</select>
+	<!-- 详情或者修改  查询指定记录  实际控制人段-->
+	<select id="getentActuCotrlInfSgmtById" parameterType="pd" resultMap="entActuCotrlInfSgmtResultMap">
+		 select   eaf_actu_cotrl_inf_sgmt_id 
+				  ,actu_cotrl_cert_type 
+				  ,actu_cotrl_name 
+				  ,actu_cotrl_id_type 
+				  ,actu_cotrl_id_num 
+				  ,actu_cotrl_info_update 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY
+		   from E_ACTU_COTRL_INF
+		  where eaa_bs_sgmt_id = #{eaaBsSgmtId}
+	</select>
+	<!-- 详情或者修改  查询指定记录  上级机构段-->
+	<select id="getentSpvsgAthrtyInfSgmtById" parameterType="pd" resultType="pd">
+		 select   eag_spvsg_athrty_inf_sgmt_id 
+				  ,sup_org_type 
+				  ,sup_org_name 
+				  ,sup_org_cert_type 
+				  ,sup_org_cert_num 
+				  ,sup_org_info_up_date 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date 
+				  ,COMPANY
+		   from E_SPVSG_ATHRTY_INF
+		  where eaa_bs_sgmt_id = #{eaaBsSgmtId}
+	</select>
+	<!-- 详情或者修改  查询指定记录  联系方式段-->
+	<select id="getentCotaInfSgmtById" parameterType="pd" resultType="pd">
+		 select   eah_cota_inf_sgmt_id 
+				  ,con_add_district_code 
+				  ,con_add 
+				  ,con_phone 
+				  ,fin_con_phone 
+				  ,cota_info_up_date 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY
+		   from E_COTA_INF
+		  where eaa_bs_sgmt_id = #{eaaBsSgmtId}
+	</select>
+	<!-- 新增    基础段 -->
+	<insert id="insertEntBsSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_BS(
+					eaa_bs_sgmt_id 
+				  ,inf_rec_type 
+				  ,ent_name 
+				  ,ent_cert_type 
+				  ,ent_cert_num 
+				  ,rpt_date 
+				  ,rpt_date_code 
+				  ,inf_surc_code 
+				  ,cimoc 
+				  ,customer_type 
+				  ,etp_sts 
+				  ,org_type 
+				  ,last_update_time 
+				  ,operator_user 
+				  ,org_name 
+				  ,org_code 
+				  ,business_states 
+				  ,reject_reason 
+				  ,is_filter 
+				  ,report_message_id
+				  ,COMPANY)
+		    values (#{eaaBsSgmtId},
+					'310',
+					#{entName},
+					#{entCertType},
+					#{entCertNum},
+					#{rptDate},
+					#{rptDateCode},
+					#{infSurcCode},
+					#{cimoc},
+					#{customerType},
+					#{etpSts},
+					#{orgType},
+					#{lastUpdateTime},
+					#{operatorUser},
+					#{orgName},
+					#{orgCode},
+					'11',
+					#{rejectReason},
+					#{isFilter},
+					#{reportMessageId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	<!-- 新增  企业基本信息其他标识信息段 -->
+	<insert id="insertEntIdSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_ID(
+					eab_id_sgmt_id 
+				  ,oth_ent_cert_type 
+				  ,oth_ent_cert_num 
+				  ,id_info_up_date 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY)
+		    values (#{eabIdSgmtId},
+					#{othEntCertType},
+					#{othEntCertNum},
+					#{idInfoUpDate},
+					#{eaaBsSgmtId},
+					#{rptDate},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	<!-- 新增   企业基本信息基本概况信息段 -->
+	<insert id="insertEntFcsInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_FCS_INF(
+					eac_fcs_inf_sgmt_id 
+				  ,nationality 
+				  ,reg_add 
+				  ,adm_div_of_reg 
+				  ,establish_date 
+				  ,biz_end_date 
+				  ,biz_range 
+				  ,eco_indus_cate 
+				  ,eco_type 
+				  ,ent_scale 
+				  ,fcs_info_up_date 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY)
+		    values (#{eacFcsInfSgmtId},
+					#{nationality},
+					#{regAdd},
+					#{admDivOfReg},
+					#{establishDate},
+					#{bizEndDate},
+					#{bizRange},
+					#{ecoIndusCate},
+					#{ecoType},
+					#{entScale},
+					#{fcsInfoUpDate},
+					#{eaaBsSgmtId},
+					#{rptDate},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	<!-- 新增   企业基本信息主要组成人员段 -->
+	<insert id="insertEntMnMmbInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_MN_MMB_INF(
+					ead_mn_mmb_inf_sgmt_id 
+				  ,mmb_alias 
+				  ,mmb_id_type 
+				  ,mmb_id_num 
+				  ,mmb_pstn 
+				  ,mn_mmb_info_update 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY )
+		    values (#{eadMnMmbInfSgmtId},
+					#{mmbAlias},
+					#{mmbIdType},
+					#{mmbIdNum},
+					#{mmbPstn},
+					#{mnMmbInfoUpdate},
+					#{eaaBsSgmtId},
+					#{rptDate},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	<!-- 新增    企业基本信息注册资本及主要出资人段 -->
+	<insert id="insertEntMnShaHodInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_MN_SHA_HOD_INF(
+					eae_mn_sha_hod_inf_sgmt_id 
+				  ,reg_cap_currency 
+				  ,reg_cap 
+				  ,shar_hod_type 
+				  ,shar_hod_cert_type 
+				  ,shar_hod_name 
+				  ,shar_hod_id_type 
+				  ,shar_hod_id_num 
+				  ,inv_ratio 
+				  ,mn_sha_hod_info_up_date 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY)
+		    values (#{eaeMnShaHodInfSgmtId},
+					#{regCapCurrency},
+					#{regCap},
+					#{sharHodType},
+					#{sharHodCertType},
+					#{sharHodName},
+					#{sharHodIdType},
+					#{sharHodIdNum},
+					#{invRatio},
+					#{mnShaHodInfoUpDate},
+					#{eaaBsSgmtId},
+					#{rptDate},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	<!-- 新增    企业基本信息实际控制人 -->
+	<insert id="insertEntActuCotrlInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_ACTU_COTRL_INF(
+					eaf_actu_cotrl_inf_sgmt_id 
+				  ,actu_cotrl_cert_type 
+				  ,actu_cotrl_name 
+				  ,actu_cotrl_id_type 
+				  ,actu_cotrl_id_num 
+				  ,actu_cotrl_info_update 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY)
+		    values (#{eafActuCotrlInfSgmtId},
+					#{actuCotrlCertType},
+					#{actuCotrlName},
+					#{actuCotrlIdType},
+					#{actuCotrlIdNum},
+					#{actuCotrlInfoUpdate},
+					#{eaaBsSgmtId},
+					#{rptDate},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	<!-- 新增    企业基本信息上级机构段 -->
+	<insert id="insertEntSpvsgAthrtyInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_SPVSG_ATHRTY_INF(
+					eag_spvsg_athrty_inf_sgmt_id 
+				  ,sup_org_type 
+				  ,sup_org_name 
+				  ,sup_org_cert_type 
+				  ,sup_org_cert_num 
+				  ,sup_org_info_up_date 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY )
+		    values (#{eagSpvsgAthrtyInfSgmtId},
+					#{supOrgType},
+					#{supOrgName},
+					#{supOrgCertType},
+					#{supOrgCertNum},
+					#{supOrgInfoUpDate},
+					#{eaaBsSgmtId},
+					#{rptDate},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	<!-- 新增  企业基本信息联系方式段-->
+	<insert id="insertEntCotaInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_COTA_INF(
+					eah_cota_inf_sgmt_id 
+				  ,con_add_district_code 
+				  ,con_add 
+				  ,con_phone 
+				  ,fin_con_phone 
+				  ,cota_info_up_date 
+				  ,eaa_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY)
+		    values (#{eahCotaInfSgmtId},
+					#{conAddDistrictCcode},
+					#{conAdd},
+					#{conPhone},
+					#{finConPhone},
+					#{cotaInfoUpDate},
+					#{eaaBsSgmtId},
+					#{rptDate},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新    基础段 -->
+	<update id="updateEntBsSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_BS
+			set ent_name = #{entName, jdbcType=VARCHAR},
+				ent_cert_type = #{entCertType, jdbcType=VARCHAR},
+				ent_cert_num = #{entCertNum, jdbcType=VARCHAR},
+				rpt_date = #{rptDate, jdbcType=CHAR},
+				rpt_date_code = #{rptDateCode, jdbcType=VARCHAR},
+				inf_surc_code = #{infSurcCode, jdbcType=VARCHAR},
+				cimoc = #{cimoc, jdbcType=VARCHAR},
+				customer_type = #{customerType, jdbcType=VARCHAR},
+				etp_sts = #{etpSts, jdbcType=VARCHAR},
+				org_type = #{orgType, jdbcType=VARCHAR},
+				org_code = #{orgCode, jdbcType=VARCHAR},
+				business_states = '20',
+				is_filter = #{isFilter, jdbcType=VARCHAR}
+		  WHERE eaa_bs_sgmt_id = #{eaaBsSgmtId}
+		  	and COMPANY = #{COMPANY}
+		  ]]>
+	</update>
+	<!-- 更新    企业基本信息其他标识信息段 -->
+	<update id="updateEntIdSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_ID
+			set oth_ent_cert_type = #{othEntCertType, jdbcType=VARCHAR},
+				oth_ent_cert_num = #{othEntCertNum, jdbcType=VARCHAR},
+				id_info_up_date = #{idInfoUpDate, jdbcType=VARCHAR},
+				eaa_bs_sgmt_id = #{eaaBsSgmtId, jdbcType=CHAR},
+				rpt_date = #{rptDate, jdbcType=VARCHAR}
+		  WHERE eaa_bs_sgmt_id = #{eaaBsSgmtId} and eab_id_sgmt_id = #{eabIdSgmtId} 
+		  ]]>
+	</update>
+	<!-- 更新   企业基本信息基本概况信息段 -->
+	<update id="updateEntFcsInfSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_FCS_INF
+			set 
+				nationality = #{nationality, jdbcType=VARCHAR},
+				reg_add = #{regAdd, jdbcType=VARCHAR},
+				adm_div_of_reg = #{admDivOfReg, jdbcType=CHAR},
+				establish_date = #{establishDate, jdbcType=VARCHAR},
+				biz_end_date = #{bizEndDate, jdbcType=VARCHAR},
+				biz_range = #{bizRange, jdbcType=VARCHAR},
+				eco_indus_cate = #{ecoIndusCate, jdbcType=VARCHAR},
+				eco_type = #{ecoType, jdbcType=VARCHAR},
+				ent_scale = #{entScale, jdbcType=VARCHAR},
+				fcs_info_up_date = #{fcsInfoUpDate, jdbcType=VARCHAR},
+				eaa_bs_sgmt_id = #{eaaBsSgmtId, jdbcType=VARCHAR},
+				rpt_date = #{rptDate, jdbcType=VARCHAR}
+		  WHERE eaa_bs_sgmt_id = #{eaaBsSgmtId} and EAC_FCS_INF_SGMT_ID = #{eacFcsInfSgmtId}
+		  ]]>
+	</update>
+	<!-- 更新    企业基本信息主要组成人员段 -->
+	<update id="updateEntMnMmbInfSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_MN_MMB_INF
+			set mmb_alias = #{mmbAlias, jdbcType=VARCHAR},
+				mmb_id_type = #{mmbIdType, jdbcType=VARCHAR},
+				mmb_id_num = #{mmbIdNum, jdbcType=VARCHAR},
+				mmb_pstn = #{mmbPstn, jdbcType=CHAR},
+				mn_mmb_info_update = #{mnMmbInfoUpdate, jdbcType=VARCHAR},
+				eaa_bs_sgmt_id = #{eaaBsSgmtId, jdbcType=VARCHAR},
+				rpt_date = #{rptDate, jdbcType=VARCHAR}
+		  WHERE eaa_bs_sgmt_id = #{eaaBsSgmtId} and EAD_MN_MMB_INF_SGMT_ID = #{eadMnMmbInfSgmtId}
+		  ]]>
+	</update>
+	<!-- 更新    企业基本信息注册资本及主要出资人段 -->
+	<update id="updateEntMnShaHodInfSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_MN_SHA_HOD_INF
+			set reg_cap_currency = #{regCapCurrency, jdbcType=VARCHAR},
+				reg_cap = #{regCap, jdbcType=VARCHAR},
+				shar_hod_type = #{sharHodType, jdbcType=VARCHAR},
+				shar_hod_cert_type = #{sharHodCertType, jdbcType=CHAR},
+				shar_hod_name = #{sharHodName, jdbcType=VARCHAR},
+				shar_hod_id_type = #{sharHodIdType, jdbcType=VARCHAR},
+				shar_hod_id_num = #{sharHodIdNum, jdbcType=VARCHAR},
+				inv_ratio = #{invRatio, jdbcType=VARCHAR},
+				mn_sha_hod_info_up_date = #{mnShaHodInfoUpDate, jdbcType=VARCHAR},
+				eaa_bs_sgmt_id = #{eaaBsSgmtId, jdbcType=VARCHAR},
+				rpt_date = #{rptDate, jdbcType=VARCHAR}
+		  WHERE eaa_bs_sgmt_id = #{eaaBsSgmtId} and EAE_MN_SHA_HOD_INF_SGMT_ID = #{eaeMnShaHodInfSgmtId}
+		  ]]>
+	</update>
+	<!-- 更新    企业基本信息实际控制人 -->
+	<update id="updateEntActuCotrlInfSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_ACTU_COTRL_INF
+			set actu_cotrl_cert_type = #{actuCotrlCertType, jdbcType=VARCHAR},
+				actu_cotrl_name = #{actuCotrlName, jdbcType=VARCHAR},
+				actu_cotrl_id_type = #{actuCotrlIdType, jdbcType=VARCHAR},
+				actu_cotrl_id_num = #{actuCotrlIdNum, jdbcType=CHAR},
+				actu_cotrl_info_update = #{actuCotrlInfoUpdate, jdbcType=VARCHAR},
+				eaa_bs_sgmt_id = #{eaaBsSgmtId, jdbcType=VARCHAR},
+				rpt_date = #{rptDate, jdbcType=VARCHAR}
+		  WHERE eaa_bs_sgmt_id = #{eaaBsSgmtId} and eaf_actu_cotrl_inf_sgmt_id = #{eafActuCotrlInfSgmtId}
+		  ]]>
+	</update>
+	<!-- 更新    企业基本信息上级机构段 -->
+	<update id="updateEntSpvsgAthrtyInfSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_SPVSG_ATHRTY_INF
+			set sup_org_type = #{supOrgType, jdbcType=VARCHAR},
+				sup_org_name = #{supOrgName, jdbcType=VARCHAR},
+				sup_org_cert_type = #{supOrgCertType, jdbcType=VARCHAR},
+				sup_org_cert_num = #{supOrgCertNum, jdbcType=CHAR},
+				sup_org_info_up_date = #{supOrgInfoUpDate, jdbcType=VARCHAR},
+				eaa_bs_sgmt_id = #{eaaBsSgmtId, jdbcType=VARCHAR}
+		  WHERE eaa_bs_sgmt_id = #{eaaBsSgmtId} 
+		  and eag_spvsg_athrty_inf_sgmt_id = #{eagSpvsgAthrtyInfSgmtId}
+		  ]]>
+	</update>
+	<!-- 更新    企业基本信息联系方式段 -->
+	<update id="updateEntCotaInfSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_COTA_INF
+			set con_add_district_code = #{conAddDistrictCcode, jdbcType=VARCHAR},
+				con_add = #{conAdd, jdbcType=VARCHAR},
+				con_phone = #{conPhone, jdbcType=VARCHAR},
+				fin_con_phone = #{finConPhone, jdbcType=CHAR},
+				cota_info_up_date = #{cotaInfoUpDate, jdbcType=VARCHAR},
+				eaa_bs_sgmt_id = #{eaaBsSgmtId, jdbcType=VARCHAR},
+				rpt_date = #{rptDate, jdbcType=VARCHAR}
+		  WHERE eaa_bs_sgmt_id = #{eaaBsSgmtId} and eah_cota_inf_sgmt_id = #{eahCotaInfSgmtId}
+		  ]]>
+	</update>
+
+	<!-- 删除基础段 -->
+	<delete id="deleteEntBsSgmt" parameterType="map">
+		delete from E_BS
+		 where eaa_bs_sgmt_id = #{eaaBsSgmtId}
+		 and COMPANY = #{COMPANY}
+	</delete>
+	<!-- 删除企业基本信息其他标识信息段 -->
+	<delete id="deleteEntIdSgmt" parameterType="map">
+		delete from E_ID
+		 where eaa_bs_sgmt_id = #{eaaBsSgmtId} 
+	</delete>
+	<!-- 删除企业基本信息基本概况信息段 -->
+	<delete id="deleteEntFcsInfSgmt" parameterType="map">
+		delete from E_FCS_INF
+		 where eaa_bs_sgmt_id = #{eaaBsSgmtId} 
+	</delete>
+	<!-- 删除企业基本信息主要组成人员段 -->
+	<delete id="deleteEntMnMmbInfSgmt" parameterType="map">
+		delete from E_MN_MMB_INF
+		 where eaa_bs_sgmt_id = #{eaaBsSgmtId} 
+	</delete>
+	<!-- 删除企业基本信息注册资本及主要出资人段 -->
+	<delete id="deleteEntMnShaHodInfSgmt" parameterType="map">
+		delete from E_MN_SHA_HOD_INF
+		 where eaa_bs_sgmt_id = #{eaaBsSgmtId} 
+	</delete>
+	<!-- 删除企业基本信息实际控制人 -->
+	<delete id="deleteEntActuCotrlInfSgmt" parameterType="map">
+		delete from E_ACTU_COTRL_INF
+		 where eaa_bs_sgmt_id = #{eaaBsSgmtId} 
+	</delete>
+	<!-- 删除企业基本信息上级机构段 -->
+	<delete id="deleteEntSpvsgAthrtyInfSgmt" parameterType="map">
+		delete from E_SPVSG_ATHRTY_INF
+		 where eaa_bs_sgmt_id = #{eaaBsSgmtId} 
+	</delete>
+	<!-- 删除企业基本信息联系方式段 -->
+	<delete id="deleteEntCotaInfSgmt" parameterType="map">
+		delete from E_COTA_INF
+		 where eaa_bs_sgmt_id = #{eaaBsSgmtId} 
+	</delete>
+	<!-- 查询  其他标识信息段  主键是否存在 -->
+    <select id="getEntIdSgmtKey" parameterType="map" resultType="int">
+        select count(1)
+        from E_ID
+        where eaa_bs_sgmt_id = #{eaaBsSgmtId} and eab_id_sgmt_id = #{eabIdSgmtId}
+    </select>
+    <select id="getEntMnMmbInfSgmtKey" parameterType="map" resultType="int">
+        select count(1)
+        from E_MN_MMB_INF
+		 where eaa_bs_sgmt_id = #{eaaBsSgmtId} and EAD_MN_MMB_INF_SGMT_ID = #{eadMnMmbInfSgmtId}
+    </select>
+    <select id="getEntMnShaHodInfSgmtKey" parameterType="map" resultType="int">
+        select count(1)
+        from E_MN_SHA_HOD_INF
+		 where eaa_bs_sgmt_id = #{eaaBsSgmtId} and EAE_MN_SHA_HOD_INF_SGMT_ID = #{eaeMnShaHodInfSgmtId}
+    </select>
+    <select id="getEntActuCotrlInfSgmtKey" parameterType="map" resultType="int">
+        select count(1)
+        from E_ACTU_COTRL_INF
+		 where eaa_bs_sgmt_id = #{eaaBsSgmtId} and eaf_actu_cotrl_inf_sgmt_id = #{eafActuCotrlInfSgmtId}
+    </select>
+</mapper>

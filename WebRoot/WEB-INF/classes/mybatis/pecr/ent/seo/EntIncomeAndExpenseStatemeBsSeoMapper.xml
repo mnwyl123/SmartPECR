@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EntIncomeAndExpenseStatemeBsSeoMapper">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EntIncomeAndExpenseStatemeBs" id="guarAcctInfoResultMap">
+		<result column="ELA_INCOME_AND_EXPENSE_STAT_ID" property="elaIncomeAndExpenseStatId" />
+		<result column="INF_REC_TYPE" property="infRecType" />
+		<result column="ENT_NAME" property="entName" />
+		<result column="ENT_CERT_TYPE" property="entCertType" />
+		<result column="ENT_CERT_NUM" property="entCertNum" />
+		<result column="RPT_DATE" property="rptDate" />
+		<result column="SHEET_YEAR" property="sheetYear" />
+		<result column="SHEET_TYPE" property="sheetType" />
+		<result column="SHEET_TYPE_DIVIDE" property="sheetTypeDivide" />
+		<result column="AUDIT_FIRM_NAME" property="auditFirmName" />
+		<result column="AUDITOR_NAME" property="auditorName" />
+		<result column="AUDIT_TIME" property="auditTime" />
+		<result column="CIMOC" property="cimoc" />
+		<result column="RPT_DATE_CODE" property="rptDateCode" />
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" />
+		<result column="OPERATOR_USER" property="operatorUser" />
+		<result column="ORG_NAME" property="orgName" />
+		<result column="ORG_CODE" property="orgCode" />
+		<result column="BUSINESS_STATES" property="businessStates" />
+		<result column="REJECT_REASON" property="rejectReason" />
+		<result column="IS_FILTER" property="isFilter" />
+		<result column="REPORT_MESSAGE_ID" property="reportMessageId" />
+		<result column="FLAG" property="flag" />
+	</resultMap>
+	
+	
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		  select 
+			 ENT_CERT_TYPE,ENT_CERT_NUM,COMPANY
+		  from E_INCOME_EXPENSE_BS_MIDDLE
+		  <if test="pd.managerId != null and pd.managerId != ''">
+				LEFT JOIN PECR.sys_l_c_a_m_m M
+				ON ENT_CERT_TYPE = M.CUST_ID_TYPE
+				AND ENT_CERT_NUM = M.CUST_ID_NUM
+		  </if>
+		  where 1=1		
+		   	  <if test='pd.ENT_CERT_NUM != null and pd.ENT_CERT_NUM != ""'>
+		   	  	and ENT_CERT_NUM like '%${pd.ENT_CERT_NUM}%'
+		   	  </if>
+		   	  <if test='pd.ENT_CERT_TYPE != null and pd.ENT_CERT_TYPE != ""'>
+		   	  	and ENT_CERT_TYPE = #{pd.ENT_CERT_TYPE}
+		   	  </if>
+		   	  <if test="pd.managerId != null and pd.managerId != ''">
+					and M.MANAGER_ID = #{pd.managerId}
+					AND M.DATA_TYPE = '2'
+					AND M.DATA_LEVEL = '6'
+		   			AND M.END_DATE = '2099-12-31'
+			  </if>
+		   	   and COMPANY = #{pd.COMPANY}
+	</select>
+	
+	<!-- 授信协议信息  数据列表 -->
+	<select id="dataHistlistPage" parameterType="page" resultMap="guarAcctInfoResultMap">
+	select * from (
+		 select
+			 ELA_INCOME_AND_EXPENSE_STAT_ID 
+			  ,INF_REC_TYPE 
+			  ,ENT_NAME 
+			  ,ENT_CERT_TYPE 
+			  ,ENT_CERT_NUM 
+			  ,RPT_DATE 
+			  ,SHEET_YEAR 
+			  ,SHEET_TYPE 
+			  ,SHEET_TYPE_DIVIDE 
+			  ,AUDIT_FIRM_NAME 
+			  ,AUDITOR_NAME 
+			  ,AUDIT_TIME 
+			  ,CIMOC 
+			  ,RPT_DATE_CODE 
+			  ,LAST_UPDATE_TIME 
+			  ,OPERATOR_USER 
+			  ,ORG_NAME 
+			  ,ORG_CODE 
+			  ,BUSINESS_STATES 
+			  ,REJECT_REASON 
+			  ,IS_FILTER 
+			  ,REPORT_MESSAGE_ID
+			  ,'new' FLAG
+			  ,COMPANY
+		   from E_INCOME_EXPENSE_BS
+		where ent_cert_type = #{pd.ENT_CERT_TYPE}  and     ent_cert_num = #{pd.ENT_CERT_NUM}
+		union all
+		select
+			 ELA_INCOME_AND_EXPENSE_STAT_ID 
+			  ,INF_REC_TYPE 
+			  ,ENT_NAME 
+			  ,ENT_CERT_TYPE 
+			  ,ENT_CERT_NUM 
+			  ,RPT_DATE 
+			  ,SHEET_YEAR 
+			  ,SHEET_TYPE 
+			  ,SHEET_TYPE_DIVIDE 
+			  ,AUDIT_FIRM_NAME 
+			  ,AUDITOR_NAME 
+			  ,AUDIT_TIME 
+			  ,CIMOC 
+			  ,RPT_DATE_CODE 
+			  ,LAST_UPDATE_TIME 
+			  ,OPERATOR_USER 
+			  ,ORG_NAME 
+			  ,ORG_CODE 
+			  ,BUSINESS_STATES 
+			  ,REJECT_REASON 
+			  ,IS_FILTER 
+			  ,REPORT_MESSAGE_ID
+			  ,'old' FLAG
+			  ,COMPANY
+		   from E_INCOME_EXPENSE_BS_HIST
+		where ent_cert_type = #{pd.ENT_CERT_TYPE}  and     ent_cert_num = #{pd.ENT_CERT_NUM}) a
+		where 1=1
+       		  <if test='pd.RPT_DATE != null and pd.RPT_DATE != ""'>
+		   	  	and a.RPT_DATE = #{pd.RPT_DATE}
+		   	  </if>
+		   	    and a.COMPANY = #{pd.COMPANY}
+	</select>
+	<!--基础段 -->
+	<select id="getlistPage" parameterType="page" resultMap="guarAcctInfoResultMap">
+		select
+			 ELA_INCOME_AND_EXPENSE_STAT_ID 
+			  ,INF_REC_TYPE 
+			  ,ENT_NAME 
+			  ,ENT_CERT_TYPE 
+			  ,ENT_CERT_NUM 
+			  ,RPT_DATE 
+			  ,SHEET_YEAR 
+			  ,SHEET_TYPE 
+			  ,SHEET_TYPE_DIVIDE 
+			  ,AUDIT_FIRM_NAME 
+			  ,AUDITOR_NAME 
+			  ,AUDIT_TIME 
+			  ,CIMOC 
+			  ,RPT_DATE_CODE 
+			  ,LAST_UPDATE_TIME 
+			  ,OPERATOR_USER 
+			  ,ORG_NAME 
+			  ,ORG_CODE 
+			  ,BUSINESS_STATES 
+			  ,REJECT_REASON 
+			  ,IS_FILTER 
+			  ,REPORT_MESSAGE_ID
+		from E_INCOME_EXPENSE_BS_HIST
+		
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 基本信息段 -->
+	<select id="getAcctInfSgmtById" parameterType="pd" resultType="pd">
+	select
+		 ELA_INCOME_AND_EXPENSE_STAT_ID 
+			  ,INF_REC_TYPE 
+			  ,ENT_NAME 
+			  ,ENT_CERT_TYPE 
+			  ,ENT_CERT_NUM 
+			  ,RPT_DATE 
+			  ,SHEET_YEAR 
+			  ,SHEET_TYPE 
+			  ,SHEET_TYPE_DIVIDE 
+			  ,AUDIT_FIRM_NAME 
+			  ,AUDITOR_NAME 
+			  ,AUDIT_TIME 
+			  ,CIMOC 
+			  ,RPT_DATE_CODE 
+			  ,LAST_UPDATE_TIME 
+			  ,OPERATOR_USER 
+			  ,ORG_NAME 
+			  ,ORG_CODE 
+			  ,BUSINESS_STATES 
+			  ,REJECT_REASON 
+			  ,IS_FILTER 
+			  ,REPORT_MESSAGE_ID
+			  ,COMPANY
+		from E_INCOME_EXPENSE_BS_HIST
+		  where ELA_INCOME_AND_EXPENSE_STAT_ID = #{elaIncomeAndExpenseStatId}
+		    and COMPANY = #{COMPANY}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 相关还款责任人段 -->
+	<select id="getRepymtInfSgmtById" parameterType="pd" resultType="pd">
+		 select ELB_INCOME_AND_EXPENSE_STAT_ID
+				,CURRENT_FINANCIAL_SUBSIDY_CARR
+				,FINANCIAL_SUBSIDY_REVENUE
+				,UNDERTAKINGS_EXPENDITURE_FINAN
+				,CURRENT_UNDERTAKINGS_CARRIED_O
+				,UNDERTAKINGS_CLASS_REVENUE
+				,UNDERTAKINGS_REVENUE
+				,SUPERIOR_SUBSIDY_REVENUE
+				,REVENUE_TURNED_OVER_BY_SUBSIDI
+				,OTHER_REVENUE
+				,DONATION_INCOME
+				,UNDERTAKINGS_CLASS_EXPENDITURE
+				,UNDERTAKINGS_EXPENDITURE_NON_F
+				,PAYMENT_TO_THE_HIGHER_AUTHORIT
+				,GRANT_TO_THE_AUXILIARY_ORGANIZ
+				,OTHER_EXPENDITURE
+				,CURRENT_OPERATING_BALANCE
+				,OPERATING_REVENUE
+				,OPERATING_EXPENDITURE
+				,OPERATING_BALANCE_MADE_UP_FOR_
+				,NON_FINANCIAL_SUBSIDY_CARRIED_
+				,NON_FINANCIAL_AID_CARRIED_OVER
+				,NON_FINANCIAL_AID_BALANCE_THIS
+				,ENTERPRISEINCOME_TAX_PAYABLE
+				,SPECIAL_FUNDS_TO_EXTRACT
+				,PUBLIC_FUND_TURNED_INTO
+				,ELA_INCOME_AND_EXPENSE_STAT_ID
+				,COMPANY
+		   from E_INCOME_EXPENSE_HIST
+		  where ELA_INCOME_AND_EXPENSE_STAT_ID = #{elaIncomeAndExpenseStatId}
+	</select>
+<update id="updateStatus" parameterType="map">
+		update E_INCOME_EXPENSE_BS
+		   <set>
+		   	  	BUSINESS_STATES = '11'
+		   </set>
+		   where ELA_INCOME_AND_EXPENSE_STAT_ID = #{baseId}
+		     and COMPANY = #{COMPANY}
+</update>
+<update id="backdate" parameterType="map">
+		update E_INCOME_EXPENSE_BS
+		   <set>
+		   	  	BUSINESS_STATES = '30'
+		   </set>
+		   where REPORT_MESSAGE_ID = #{reportMessageId}
+		     and COMPANY = #{COMPANY}
+</update>
+<delete id="deletedate" parameterType="map" >
+		delete from report_message
+		 where REPORT_MESSAGE_FILE_NAME = #{reportMessageId}
+		   and COMPANY = #{COMPANY}
+</delete>
+	
+</mapper>

@@ -1,0 +1,23 @@
+/**
+ * 公共样式表
+ * 网页布局
+ */
+.layui-card-header{
+    border-bottom: none;
+}
+.layui-card{
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+.layui-card-body{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+.layui-card-body p{
+    height: 60px;
+    line-height: 60px;
+    font-size: 18px;
+    color: #333;
+}

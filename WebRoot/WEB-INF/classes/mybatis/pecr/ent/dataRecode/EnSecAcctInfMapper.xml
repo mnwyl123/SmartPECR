@@ -1,0 +1,909 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EnSecAcctInfMapper">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EnSecAcctInf" id="enSecAcctInfResultMap">
+		<result column="eea_guar_acct_bs_sgmt_id" property="eeaGuarAcctBsSgmtId" />
+		<result column="inf_rec_type" property="infRecType" />
+		<result column="acct_type" property="acctType" />
+		<result column="acct_code" property="acctCode" />
+		<result column="rpt_date" property="rptDate" />
+		<result column="rpt_date_code" property="rptDateCode" />
+		<result column="name" property="name" />
+		<result column="id_type" property="idType" />
+		<result column="id_num" property="idNum" />
+		<result column="mngmt_org_code" property="mngmtOrgCode" />
+		<result column="business_states" property="businessStates" />
+		<result column="is_filter" property="isFilter" />
+		<result column="reject_reason" property="rejectReason" />
+		<result column="report_message_id" property="reportMessageId" />
+		<result column="mdfc_sgmt_code" property="mdfcSgmtCode" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="operator_user" property="operatorUser" />
+		<result column="org_name" property="orgName" />
+		<result column="org_code" property="orgCode" />
+	</resultMap>
+
+	<!-- 担保基础段 基础段 -->
+	<select id="enSecAcctInflistPage" parameterType="page" resultMap="enSecAcctInfResultMap">
+		select
+			 eea_guar_acct_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,E_GUAR_ACCT_BS.acct_type 
+			  ,E_GUAR_ACCT_BS.acct_code 
+			  ,rpt_date 
+			  ,rpt_date_code 
+			  ,name 
+			  ,id_type 
+			  ,id_num 
+			  ,mngmt_org_code 
+			  ,last_update_time 
+			  ,operator_user 
+			  ,org_name 
+			  ,org_code 
+			  ,business_states 
+			  ,reject_reason 
+			  ,is_filter 
+			  ,report_message_id 
+			  ,mdfc_sgmt_code 
+			  ,COMPANY
+		from E_GUAR_ACCT_BS
+		<if test="pd.managerId != null and pd.managerId != ''">
+			LEFT JOIN PECR.sys_l_c_a_m_m M
+			ON E_GUAR_ACCT_BS.ACCT_TYPE = M.ACCT_TYPE
+			AND E_GUAR_ACCT_BS.ACCT_CODE = M.ACCT_NUM
+	   	</if>
+		<where>
+			<if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+			<if test="pd.name != null and pd.name != ''">
+		         and name like '%${pd.name}%'
+		    </if>
+		    <if test="pd.idNum != null and pd.idNum!= ''">
+		         and id_num like '%${pd.idNum}%'
+		    </if>
+			<if test="pd.rptDate != null and pd.rptDate != ''">
+		         and rpt_date = #{pd.rptDate}
+		    </if>
+		    <if test="pd.acctType != null and pd.acctType != ''">
+		   	  	and E_GUAR_ACCT_BS.ACCT_TYPE = #{pd.acctType}
+		   	</if>
+			<if test="pd.acctCode != null and pd.acctCode != ''">
+		   	  	and E_GUAR_ACCT_BS.ACCT_CODE like '%${pd.acctCode}%'
+		   	</if>
+		   	<if test="pd.businessStates != null and pd.businessStates != ''">
+		   	  	and business_states = #{pd.businessStates}
+		   	</if>
+		   	<if test="pd.managerId != null and pd.managerId != ''">
+		   	  	and M.MANAGER_ID = #{pd.managerId}
+		   	  	AND M.DATA_TYPE = '2'
+		   		AND M.DATA_LEVEL = '3'
+		   		AND M.END_DATE = '2099-12-31'
+		   	</if>
+		   	  	and COMPANY = #{pd.COMPANY}
+		   	  	and inf_rec_type = '440'
+		</where>
+	</select>
+	
+	<!-- 企业担保账户按段更正 获取基础段历史表中的主键 -->
+	<select id="getEeaGuarAcctBsSgmtId" parameterType="page" resultType="String">
+		select
+			 eea_guar_acct_bs_sgmt_id 
+	    from E_GUAR_ACCT_BS
+	    where name = #{pd.name}
+	      and id_type = #{pd.idType}
+	      and id_num = #{pd.idNum}
+	      and acct_type = #{pd.acctType}
+	      <!-- and business_states = #{pd.businessStates} --> <!-- 在上线之后放开，并把表转换为历史表 -->
+	      and company = #{pd.COMPANY}
+    </select>
+
+<!-- 担保按段更正基础段 基础段 -->
+	<select id="enInflistPage" parameterType="page" resultMap="enSecAcctInfResultMap">
+		select
+			 eea_guar_acct_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,acct_type 
+			  ,acct_code 
+			  ,rpt_date 
+			  ,rpt_date_code 
+			  ,name 
+			  ,id_type 
+			  ,id_num 
+			  ,mngmt_org_code 
+			  ,last_update_time 
+			  ,operator_user 
+			  ,org_name 
+			  ,org_code 
+			  ,business_states 
+			  ,reject_reason 
+			  ,is_filter 
+			  ,report_message_id 
+			  ,mdfc_sgmt_code 
+			  ,COMPANY
+		from E_GUAR_ACCT_BS
+		where 1=1 and inf_rec_type = '442'
+			<if test="pd.idNum != null and pd.idNum != ''">
+				and id_num like '%${pd.idNum}%'
+			</if>
+			<if test="pd.name != null and pd.name != ''">
+				and name like '%${pd.name}%'
+			</if>
+			<if test='pd.rptDate != null and pd.rptDate!= ""'>
+				and rpt_Date = #{pd.rptDate}
+			</if>
+			<if test='pd.acctType != null and pd.acctType != ""'>
+				and acct_type = #{pd.acctType}
+			</if>
+			<if test='pd.acctCode != null and pd.acctCode != ""'>
+				and acct_code = #{pd.acctCode}
+			</if>
+			<if test='pd.businessStates != null and pd.businessStates != ""'>
+				and business_states = #{pd.businessStates}
+			</if>
+			<if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+				and COMPANY = #{pd.COMPANY}
+	</select>
+	<!-- 企业担保账户按段更正 基础段 -->
+	<select id="getenSecAcctInfByIdType" parameterType="pd" resultType="map">
+		 select
+			 eea_guar_acct_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,acct_type 
+			  ,acct_code 
+			  ,rpt_date 
+			  ,rpt_date_code 
+			  ,name 
+			  ,id_type 
+			  ,id_num 
+			  ,mngmt_org_code 
+			  ,last_update_time 
+			  ,operator_user 
+			  ,org_name 
+			  ,org_code 
+			  ,business_states 
+			  ,reject_reason 
+			  ,is_filter 
+			  ,report_message_id 
+			  ,mdfc_sgmt_code
+			  ,COMPANY 
+		from E_GUAR_ACCT_BS
+		  where name = #{name}
+		    and id_type = #{idType}
+		    and id_num = #{idNum}
+		    and acct_type = #{acctType}
+		  	and COMPANY = #{COMPANY}
+		  	and inf_rec_type = '442'
+		  	and mdfc_sgmt_code = #{mdfcSgmtCode}
+	</select>
+	
+	<!-- 详情或者修改 查询指定记录 基础段 -->
+	<select id="getenSecAcctInfById" parameterType="pd" resultType="map">
+		 select
+			 eea_guar_acct_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,acct_type 
+			  ,acct_code 
+			  ,rpt_date 
+			  ,rpt_date_code 
+			  ,name 
+			  ,id_type 
+			  ,id_num 
+			  ,mngmt_org_code 
+			  ,last_update_time 
+			  ,operator_user 
+			  ,org_name 
+			  ,org_code 
+			  ,business_states 
+			  ,reject_reason 
+			  ,is_filter 
+			  ,report_message_id 
+			  ,mdfc_sgmt_code
+			  ,COMPANY 
+		from E_GUAR_ACCT_BS
+		  where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+		  	and COMPANY = #{COMPANY}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 基本信息段 -->
+	<select id="getGuarAcctBsInfSgmtById" parameterType="pd" resultType="pd">
+		 select   eeb_guar_acct_bs_inf_sgmt_id 
+				  ,busi_lines 
+				  ,busi_dtil_lines 
+				  ,open_date 
+				  ,guar_amt 
+				  ,cy 
+				  ,due_date 
+				  ,guar_mode 
+				  ,oth_repy_guarway 
+				  ,sec_dep 
+				  ,ctrct_txt_code 
+				  ,eea_guar_acct_bs_sgmt_id 
+				  ,rpt_date 
+				  ,COMPANY
+		   from E_GUAR_ACCT_BS_INF
+		  where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 相关还款责任人段 -->
+	<select id="getRltInflistPage" parameterType="page" resultType="pd">
+		 select   EEC_RLT_REPYMT_INF_SGMT_ID eecRltRepymtInfSgmtId,
+				  INFO_ID_TYPE infoIdType,
+				  arlp_name arlpName,
+				  arlp_cert_type arlpCertType,
+				  arlp_cert_num arlpCertNum,
+				  arlp_type arlpType,
+				  arlp_amt arlpAmt,
+				  warty_sign wartySign,
+				  max_guar_mcc maxGuarMcc,
+				  EEA_GUAR_ACCT_BS_SGMT_ID eeaGuarAcctBsSgmtId,
+				  rpt_date,
+				  COMPANY
+		   from E_SEC_RLT_REPYMT_INF
+		  where EEA_GUAR_ACCT_BS_SGMT_ID = #{pd.eeaGuarAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 抵质押物信息段 -->
+	<select id="getMccInflistPage" parameterType="page" resultType="pd">
+		select eed_guar_motga_cltal_inf_id,
+		       ccc,
+		       COMPANY
+		  from E_GUAR_MOTGA_CLTAL_INF
+		 where eea_guar_acct_bs_sgmt_id = #{pd.eeaGuarAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 账户信息授信额度信息段 -->
+	<select id="getacctCredSgmtById" parameterType="pd" resultType="pd">
+		 select   eee_guar_acct_cred_sgmt_id 
+				  ,mcc 
+				  ,eea_guar_acct_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY
+		   from E_GUAR_ACCT_CRED
+		  where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	</select>
+	
+	<!-- 详情或者修改 查询指定记录 在保责任信息段 -->
+	<select id="getRepymtInfSgmtById" parameterType="pd" resultType="pd">
+		 select   eef_guar_rlt_repymt_inf_sg_id 
+				  ,acct_status 
+				  ,loan_amt 
+				  ,repay_prd 
+				  ,five_cate 
+				  ,five_cate_adj_date 
+				  ,ri_ex 
+				  ,comp_adv_flag 
+				  ,close_date 
+				  ,eea_guar_acct_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY
+		   from E_GUAR_INSURANCE_INF
+		  where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	</select>
+
+	<!-- 查询 基础段 主键是否存在 -->
+	<select id="getEnSecAcctInfKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_GUAR_ACCT_BS
+	     where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	</select>
+	
+	<!-- 新增    企业担保账户按段更正基础段 -->
+	<insert id="saveEnSecAcctInf" parameterType="map" useGeneratedKeys="false">
+		insert into E_GUAR_ACCT_BS(
+					eea_guar_acct_bs_sgmt_id,
+					inf_rec_type,
+					acct_type,
+					acct_code,
+					rpt_date,
+					RPT_DATE_CODE,
+					name,
+					id_type,
+					id_num,
+					mngmt_org_code,
+					operator_user,
+					org_code,
+					business_states,
+					is_filter,
+					mdfc_sgmt_code,
+					COMPANY
+					)
+		    select #{eeaGuarAcctBsSgmtId},
+					'442',
+					acct_type,
+					acct_code,
+					rpt_date,
+					RPT_DATE_CODE,
+					name,
+					id_type,
+					id_num,
+					mngmt_org_code,
+					#{operator_user},
+					org_code,
+					'11',
+					is_filter,
+					#{mdfcSgmtCode},
+					COMPANY
+			from E_GUAR_ACCT_BS_HIST
+			where eea_guar_acct_bs_sgmt_id = #{oldEeaGuarAcctBsSgmtId}
+			  and company = #{COMPANY}
+	</insert>
+	
+	<!-- 新增    基础段 -->
+	<insert id="insertEnSecAcctInf" parameterType="map">
+		<![CDATA[
+		insert into E_GUAR_ACCT_BS(
+					eea_guar_acct_bs_sgmt_id,
+					inf_rec_type,
+					acct_type,
+					acct_code,
+					rpt_date,
+					rpt_date_code,
+					name,
+					id_type,
+					id_num,
+					mngmt_org_code,
+					operator_user,
+					org_code,
+					business_states,
+					is_filter,
+					mdfc_sgmt_code,
+					COMPANY
+					)
+		    values (#{eeaGuarAcctBsSgmtId},
+					#{infRecType},
+					#{acctType},
+					#{acctCode},
+					#{rptDate},
+					#{rptDateCode},
+					#{name},
+					#{idType},
+					#{idNum},
+					#{mngmtOrgCode},
+					#{operationUser},
+					#{orgCode},
+					'11',
+					#{isFilter},
+					#{mdfcSgmtCode},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+
+	<!-- 更新    基础段 -->
+	<update id="updateEnSecAcctInf" parameterType="map">
+		 <![CDATA[ 
+		 update E_GUAR_ACCT_BS
+			set inf_rec_type = #{infRecType, jdbcType=VARCHAR},
+				acct_type = #{acctType, jdbcType=VARCHAR},
+				acct_code = #{acctCode, jdbcType=VARCHAR},
+				rpt_date = #{rptDate, jdbcType=CHAR},
+				rpt_date_code = #{rptDateCode, jdbcType=VARCHAR},
+				name = #{name, jdbcType=VARCHAR},
+				id_type = #{idType, jdbcType=VARCHAR},
+				id_num = #{idNum, jdbcType=VARCHAR},
+				mngmt_org_code = #{mngmtOrgCode, jdbcType=VARCHAR},
+				operator_user = #{operationUser, jdbcType=VARCHAR},
+				org_code = #{orgCode, jdbcType=VARCHAR},
+				business_states = '11',
+				mdfc_sgmt_code = #{mdfcSgmtCode, jdbcType=VARCHAR},
+				is_filter = #{isFilter, jdbcType=VARCHAR}
+		  WHERE eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+		  	and COMPANY = #{COMPANY}
+		  ]]>
+	</update>
+
+	<!-- 删除基础段 -->
+	<delete id="delEnSecAcctInfById" parameterType="map">
+		delete from E_GUAR_ACCT_BS
+		 where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+		   and COMPANY = #{COMPANY}
+	</delete>
+
+	<!-- 删除 基本信息段 -->
+	<delete id="delAcctInfSgmtById" parameterType="map">
+		delete from E_GUAR_ACCT_BS_INF
+		 where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 相关还款责任人段 -->
+	<delete id="delRltSgmtById" parameterType="map">
+		delete from E_SEC_RLT_REPYMT_INF
+		 where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 抵质押物信息段 -->
+	<delete id="delMccInfoSgmtById" parameterType="map">
+		delete from E_GUAR_MOTGA_CLTAL_INF
+		 where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	</delete>
+	
+	<!-- 删除 在保责任信息段 -->
+	<delete id="delRepymtInfSgmtById" parameterType="map">
+		delete from E_GUAR_INSURANCE_INF
+		 where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	</delete>
+	
+	<!-- 查询 基本信息段 主键是否存在 -->
+	<select id="getGuarAcctBsInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_GUAR_ACCT_BS_INF
+	     where eeb_guar_acct_bs_inf_sgmt_id = #{eebGuarAcctBsInfSgmtId} 
+	       and eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	</select>
+	<!--新增 企业担保按段更正基本信息段 -->
+	<insert id="saveGuarAcctBsInfSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into E_GUAR_ACCT_BS_INF(
+					eeb_guar_acct_bs_inf_sgmt_id,
+					busi_lines,
+					busi_dtil_lines,
+					open_date,
+					guar_amt,
+					cy,
+					due_date,
+					guar_mode,
+					oth_repy_guarway,
+					sec_dep,
+					ctrct_txt_code,
+					eea_guar_acct_bs_sgmt_id,
+					COMPANY)
+		    select <if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					busi_lines,
+					busi_dtil_lines,
+					open_date,
+					guar_amt,
+					cy,
+					due_date,
+					guar_mode,
+					oth_repy_guarway,
+					sec_dep,
+					ctrct_txt_code,
+					#{eeaGuarAcctBsSgmtId},
+					company
+			from E_GUAR_ACCT_BS_INF_HIST
+			where eea_guar_acct_bs_sgmt_id = #{oldEeaGuarAcctBsSgmtId}
+	</insert>
+	<!-- 新增  基本信息段 -->
+	<insert id="insertGuarAcctBsInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_GUAR_ACCT_BS_INF(
+					eeb_guar_acct_bs_inf_sgmt_id,
+					busi_lines,
+					busi_dtil_lines,
+					open_date,
+					guar_amt,
+					cy,
+					due_date,
+					guar_mode,
+					oth_repy_guarway,
+					sec_dep,
+					ctrct_txt_code,
+					eea_guar_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{eebGuarAcctBsInfSgmtId},
+					#{busiLines},
+					#{busiDtilLines},
+					#{openDate},
+					#{guarAmt},
+					#{cy},
+					#{dueDate},
+					#{guarMode},
+					#{othRepyGuarway},
+					#{secDep},
+					#{ctrctTxtCd},
+					#{eeaGuarAcctBsSgmtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新   基本信息段 -->
+	<update id="updateGuarAcctBsInfSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_GUAR_ACCT_BS_INF
+			set busi_lines = #{busiLines, jdbcType=VARCHAR},
+				busi_dtil_lines = #{busiDtilLines, jdbcType=VARCHAR},
+				open_date = #{openDate, jdbcType=TIMESTAMP},
+				guar_amt = #{guarAmt},
+				cy = #{cy, jdbcType=VARCHAR},
+				due_date = #{dueDate, jdbcType=TIMESTAMP},
+				guar_mode = #{guarMode, jdbcType=VARCHAR},
+			    oth_repy_guarway = #{othRepyGuarway, jdbcType=VARCHAR},
+				sec_dep = #{secDep}, 
+				ctrct_txt_code = #{ctrctTxtCd, jdbcType=VARCHAR}
+		  where eeb_guar_acct_bs_inf_sgmt_id = #{eebGuarAcctBsInfSgmtId} 
+	        and eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+		  ]]>
+	</update>
+	
+	<!-- 删除  基本信息段 -->
+	<delete id="delGuarAcctBsInfSgmt" parameterType="map">
+		delete from E_GUAR_ACCT_BS_INF
+		 where eeb_guar_acct_bs_inf_sgmt_id = #{eebGuarAcctBsInfSgmtId} 
+	       and eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	</delete>
+	<!-- 新增   企业担保按段更正相关还款责任人段 -->
+	<insert id="saveRltRepymtInf" parameterType="map" useGeneratedKeys="false">
+		insert into E_SEC_RLT_REPYMT_INF(
+					eec_rlt_repymt_inf_sgmt_id,
+					INFO_ID_TYPE,
+					arlp_name,
+					arlp_cert_type,
+					arlp_cert_num,
+					arlp_type,
+					arlp_amt,
+					warty_sign,
+					max_guar_mcc,
+					EEA_GUAR_ACCT_BS_SGMT_ID,
+					COMPANY)
+		   select   <if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+		    		INFO_ID_TYPE,
+					arlp_name,
+					arlp_cert_type,
+					arlp_cert_num,
+					arlp_type,
+					arlp_amt,
+					warty_sign,
+					max_guar_mcc,
+					#{eeaGuarAcctBsSgmtId},
+					company
+			from E_SEC_RLT_REPYMT_INF_HIST
+			where EEA_GUAR_ACCT_BS_SGMT_ID = #{oldEeaGuarAcctBsSgmtId}
+	</insert>
+	<!-- 新增   相关还款责任人段 -->
+	<insert id="insertRltRepymtInf" parameterType="map">
+		<![CDATA[
+		insert into E_SEC_RLT_REPYMT_INF(
+					eec_rlt_repymt_inf_sgmt_id,
+					INFO_ID_TYPE,
+					arlp_name,
+					arlp_cert_type,
+					arlp_cert_num,
+					arlp_type,
+					arlp_amt,
+					warty_sign,
+					max_guar_mcc,
+					EEA_GUAR_ACCT_BS_SGMT_ID,
+					COMPANY)
+		    values (#{eecRltRepymtInfSgmtId},
+		    		#{infoIdType},
+					#{arlpName},
+					#{arlpCertType},
+					#{arlpCertNum},
+					#{arlpType},
+					#{arlpAmt}, 
+					#{wartySign},
+					#{maxGuarMcc},
+					#{eeaGuarAcctBsSgmtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新  相关还款责任人段  -->
+	<update id="updateRltRepymtInf" parameterType="map">
+		update E_SEC_RLT_REPYMT_INF
+		   <set>
+		   	  	INFO_ID_TYPE = #{infoIdType, jdbcType=VARCHAR},
+		   	  	arlp_name = #{arlpName, jdbcType=VARCHAR},
+		   	  	arlp_cert_type = #{arlpCertType, jdbcType=VARCHAR},
+		   	  	arlp_cert_num = #{arlpCertNum, jdbcType=VARCHAR},
+		   	  	arlp_type = #{arlpType, jdbcType=VARCHAR},
+		   	  	arlp_amt = #{arlpAmt},
+		   	  	warty_sign = #{wartySign, jdbcType=VARCHAR},
+		   	  	max_guar_mcc = #{maxGuarMcc, jdbcType=VARCHAR}
+		   </set>
+		   where EEA_GUAR_ACCT_BS_SGMT_ID = #{eeaGuarAcctBsSgmtId}
+	         and eec_rlt_repymt_inf_sgmt_id = #{eecRltRepymtInfSgmtId}
+	</update>
+	
+	<!-- 删除 相关还款责任人段 -->
+	<delete id="delRltRepymtInf" parameterType="map">
+		delete from E_SEC_RLT_REPYMT_INF
+		 where EEA_GUAR_ACCT_BS_SGMT_ID = #{eeaGuarAcctBsSgmtId} 
+		   and eec_rlt_repymt_inf_sgmt_id = #{eecRltRepymtInfSgmtId}
+	</delete>
+	<!-- 查询  相关还款责任人段 主键是否存在 -->
+	<select id="getRltRepymtInfKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_SEC_RLT_REPYMT_INF
+	     where EEA_GUAR_ACCT_BS_SGMT_ID = #{eeaGuarAcctBsSgmtId}
+	       and eec_rlt_repymt_inf_sgmt_id = #{eecRltRepymtInfSgmtId}
+	</select>
+	
+	<!-- 查询  抵质押物信息段 主键是否存在 -->
+	<select id="getMccInfKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_GUAR_MOTGA_CLTAL_INF
+	     where EEA_GUAR_ACCT_BS_SGMT_ID = #{eeaGuarAcctBsSgmtId}
+	       and eed_guar_motga_cltal_inf_id = #{eedGuarMotgaCltalInfId}
+	</select>
+	
+	<!-- 新增  企业担保按段更正抵质押物信息段 -->
+	<insert id="saveMccInf" parameterType="map" useGeneratedKeys="false">
+		insert into E_GUAR_MOTGA_CLTAL_INF(
+					eed_guar_motga_cltal_inf_id,
+					ccc,
+					eea_guar_acct_bs_sgmt_id,
+					COMPANY)
+		    select  <if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					ccc,
+					#{eeaGuarAcctBsSgmtId},
+					COMPANY
+			from E_GUAR_MOTGA_CLTAL_INF_HIST
+			where eea_guar_acct_bs_sgmt_id = #{oldEeaGuarAcctBsSgmtId}
+				
+	</insert>
+	
+	<!-- 新增  抵质押物信息段 -->
+	<insert id="insertMccInf" parameterType="map">
+		<![CDATA[
+		insert into E_GUAR_MOTGA_CLTAL_INF(
+					eed_guar_motga_cltal_inf_id,
+					ccc,
+					eea_guar_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{eedGuarMotgaCltalInfId},
+					#{ccc},
+					#{eeaGuarAcctBsSgmtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新  抵质押物信息段 -->
+	<update id="updateMccInf" parameterType="map">
+		update E_GUAR_MOTGA_CLTAL_INF
+		   <set>
+		   	  <if test='ccc != null and ccc != ""'>
+		   	  	ccc = #{ccc, jdbcType=VARCHAR}
+		   	  </if>
+		   </set>
+		   where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	         and eed_guar_motga_cltal_inf_id = #{eedGuarMotgaCltalInfId}
+	</update>
+	
+	<!-- 删除 抵质押物信息段 -->
+	<delete id="delMccInf" parameterType="map">
+		delete from E_GUAR_MOTGA_CLTAL_INF
+		 where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	       and eed_guar_motga_cltal_inf_id = #{eedGuarMotgaCltalInfId}
+	</delete>
+	
+	<!-- 查询  在保责任信息段 主键是否存在 -->
+	<select id="getRepymtInfSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_GUAR_INSURANCE_INF
+	     where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	       and eef_guar_rlt_repymt_inf_sg_id = #{eefGuarRltRepymtInfSgId}
+	</select>
+	
+	<!-- 新增  企业担保账户按段更正在保责任信息段 -->
+	<insert id="saveRepymtInfSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into E_GUAR_INSURANCE_INF(
+					eef_guar_rlt_repymt_inf_sg_id,
+					acct_status,
+					loan_amt,
+					repay_prd,
+					five_cate,
+					five_cate_adj_date,
+					ri_ex,
+					comp_adv_flag,
+					close_date,
+					eea_guar_acct_bs_sgmt_id,
+					COMPANY)
+		    select  <if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+		    		acct_status,
+					loan_amt,
+					repay_prd,
+					five_cate,
+					five_cate_adj_date,
+					ri_ex,
+					comp_adv_flag,
+					close_date,
+		            #{eeaGuarAcctBsSgmtId},
+		            COMPANY
+		  from E_GUAR_INSURANCE_INF_HIST
+		  where eea_guar_acct_bs_sgmt_id = #{oldEeaGuarAcctBsSgmtId}
+	</insert>
+	
+	<!-- 新增  在保责任信息段 -->
+	<insert id="insertRepymtInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_GUAR_INSURANCE_INF(
+					eef_guar_rlt_repymt_inf_sg_id,
+					acct_status,
+					loan_amt,
+					repay_prd,
+					five_cate,
+					five_cate_adj_date,
+					ri_ex,
+					comp_adv_flag,
+					close_date,
+					eea_guar_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{eefGuarRltRepymtInfSgId, jdbcType=CHAR},
+		    		#{acctStatus, jdbcType=VARCHAR},
+		                 #{loanAmt},
+		    		#{repayPrd},
+		    		#{fiveCate, jdbcType=VARCHAR},
+		    		#{fiveCateAdjDate},
+		    		#{riEx},
+		    		#{compAdvFlag, jdbcType=VARCHAR},
+		    		#{closeDate},
+		            #{eeaGuarAcctBsSgmtId, jdbcType=CHAR},
+		            #{COMPANY}
+				    )
+		    ]]>
+	</insert>
+	
+	<!-- 更新 在保责任信息段 -->
+	<update id="updateRepymtInfSgmt" parameterType="map">
+		update E_GUAR_INSURANCE_INF
+		   <set>
+		   	  <if test='acctStatus != null'>
+		   	  	acct_status = #{acctStatus},
+		   	  </if>
+		   	  <if test='loanAmt != null'>
+		   	  	loan_amt = #{loanAmt},
+		   	  </if>
+		   	  <if test='repayPrd != null'>
+		   	  	repay_prd = #{repayPrd},
+		   	  </if>
+		   	  <if test='fiveCate != null'>
+		   	  	five_cate = #{fiveCate},
+		   	  </if>
+		   	  <if test='fiveCateAdjDate != null'>
+		   	  	five_cate_adj_date = #{fiveCateAdjDate},
+		   	  </if>
+		   	  <if test='riEx != null'>
+		   	  	ri_ex = #{riEx}, 
+		   	  </if>
+		   	  <if test='compAdvFlag != null'>
+		   	  	comp_adv_flag = #{compAdvFlag},
+		   	  </if>
+		   	  <if test='closeDate != null'>
+		   	  	close_date = #{closeDate}
+		   	  </if>   	  
+		   </set>
+		   where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	         and eef_guar_rlt_repymt_inf_sg_id = #{eefGuarRltRepymtInfSgId}
+	</update>
+	
+	<!-- 删除  在保责任信息段  -->
+	<delete id="delRepymtInfSgmt" parameterType="map">
+		delete from E_GUAR_INSURANCE_INF
+		 where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	       and eef_guar_rlt_repymt_inf_sg_id = #{eefGuarRltRepymtInfSgId}
+	</delete>
+	
+	<!-- 查询  账户信息授信额度信息段 主键是否存在 -->
+	<select id="getAcctCredSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_GUAR_ACCT_CRED
+	     where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	       and eee_guar_acct_cred_sgmt_id = #{eeeGuarAcctCredSgmtId}
+	</select>
+	
+	<!-- 新增  企业担保账户按段更正账户信息授信额度信息段 -->
+	<insert id="saveAcctCredSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into E_GUAR_ACCT_CRED(
+					eee_guar_acct_cred_sgmt_id,
+					mcc,
+					eea_guar_acct_bs_sgmt_id,
+					COMPANY)
+		    select  <if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+		    		mcc,
+		            #{eeaGuarAcctBsSgmtId},
+		            company
+			from E_GUAR_ACCT_CRED_HIST
+			where eea_guar_acct_bs_sgmt_id = #{oldEeaGuarAcctBsSgmtId}
+	</insert>
+	
+	<!-- 新增  账户信息授信额度信息段 -->
+	<insert id="insertAcctCredSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_GUAR_ACCT_CRED(
+					eee_guar_acct_cred_sgmt_id,
+					mcc,
+					eea_guar_acct_bs_sgmt_id,
+					COMPANY)
+		    values (#{eeeGuarAcctCredSgmtId, jdbcType=CHAR},
+		    		#{mcc, jdbcType=VARCHAR},
+		            #{eeaGuarAcctBsSgmtId, jdbcType=CHAR},
+		            #{COMPANY}
+				    )
+		    ]]>
+	</insert>
+	
+	<!-- 更新 账户信息授信额度信息段 -->
+	<update id="updateAcctCredSgmt" parameterType="map">
+		update E_GUAR_ACCT_CRED
+		   <set>
+		   	  <if test='mcc != null and mcc != ""'>
+		   	  	mcc = #{mcc, jdbcType=VARCHAR}
+		   	  </if>
+		   </set>
+		   where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	       and eee_guar_acct_cred_sgmt_id = #{eeeGuarAcctCredSgmtId}
+	</update>
+	
+	<!-- 删除  账户信息授信额度信息段  -->
+	<delete id="delAcctCredSgmt" parameterType="map">
+		delete from E_GUAR_ACCT_CRED
+		 where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
+	       and eee_guar_acct_cred_sgmt_id = #{eeeGuarAcctCredSgmtId}
+	</delete>
+	
+	<!-- B-基础段
+	C-基本信息段
+	D-在保责任信息段
+	E-相关还款责任人段
+	F-抵质押物信息段 
+	G-授信额度信息段-->
+	<select id="findHistEntGuaranteelistPage" parameterType="page" resultType="pd">
+		SELECT DISTINCT A.EEA_GUAR_ACCT_BS_SGMT_ID,A.INF_REC_TYPE,A.ACCT_TYPE,A.ACCT_CODE,
+			A.RPT_DATE,A.RPT_DATE_CODE,A.NAME,A.ID_TYPE,A.ID_NUM,A.BUSINESS_STATES,A.LAST_UPDATE_TIME
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode != "" '>
+				,'${pd.mdfcSgmtCode}' AS MDFC_SGMT_CODE 
+			</if>
+			FROM  E_GUAR_ACCT_BS_HIST A 
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "C" '>
+				INNER JOIN E_GUAR_ACCT_BS_INF_HIST B ON A.EEA_GUAR_ACCT_BS_SGMT_ID = B.EEA_GUAR_ACCT_BS_SGMT_ID
+			</if>
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "D" '>
+				INNER JOIN E_GUAR_INSURANCE_INF_HIST B ON A.EEA_GUAR_ACCT_BS_SGMT_ID = B.EEA_GUAR_ACCT_BS_SGMT_ID
+			</if>
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "E" '>
+				INNER JOIN E_SEC_RLT_REPYMT_INF_HIST B ON A.EEA_GUAR_ACCT_BS_SGMT_ID = B.EEA_GUAR_ACCT_BS_SGMT_ID
+			</if>
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "F" '>
+				INNER JOIN E_GUAR_MOTGA_CLTAL_INF_HIST B ON A.EEA_GUAR_ACCT_BS_SGMT_ID = B.EEA_GUAR_ACCT_BS_SGMT_ID
+			</if>
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "G" '>
+				INNER JOIN E_GUAR_ACCT_CRED_HIST B ON A.EEA_GUAR_ACCT_BS_SGMT_ID = B.EEA_GUAR_ACCT_BS_SGMT_ID
+			</if>
+		WHERE A.COMPANY = #{pd.COMPANY}
+		<if test='pd.mdfcSgmtCode == "" '>
+		  AND 1 = 2
+		</if>
+		<if test='pd.acctCode != null and pd.acctCode != "" '>
+		  AND A.ACCT_CODE = #{pd.acctCode}
+		</if>
+	    ORDER BY A.RPT_DATE DESC
+	</select>
+	
+</mapper>

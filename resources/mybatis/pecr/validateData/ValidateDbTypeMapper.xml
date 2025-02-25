@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ValidateDbTypeMapper">
+
+
+  <resultMap id="BaseResultMap" type="com.dcits.supervise.pecr.validateData.model.ValidateDbType">
+    <id column="DB_NAME" jdbcType="VARCHAR" property="dbName" />
+    <result column="IS_CURRENT" jdbcType="CHAR" property="isCurrent" />
+  </resultMap>
+  
+ <sql id="Base_Column_List">
+    DB_NAME, IS_CURRENT
+  </sql>
+  
+  <sql id="tableName">
+  	VALIDATE_DB_TYPE
+  </sql>
+
+	<select id="selectByCondition" parameterType="map" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from <include refid="tableName"/>
+		where 1=1
+		<if test='IS_CURRENT != null and IS_CURRENT != ""'>
+			and IS_CURRENT = #{IS_CURRENT}
+		</if>
+	</select>
+	
+	<select id="selectOneByCondition" parameterType="map" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from <include refid="tableName"/>
+		where 1=1
+		<if test='IS_CURRENT != null and IS_CURRENT != ""'>
+			and IS_CURRENT = #{IS_CURRENT}
+		</if>
+	</select>
+
+</mapper>

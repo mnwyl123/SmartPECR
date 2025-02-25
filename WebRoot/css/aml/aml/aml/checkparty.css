@@ -1,0 +1,217 @@
+.btn_t{
+	width:102px;
+	height:30px;
+	background-color:#fa7d11;
+	margin:6px 0px;
+	border:none;
+	color:#ffffff;
+}
+.table_s {
+	color:#303030;
+}
+.nav-n>li>a:active{
+	 border-top:1px solid #cccccc !important;
+}
+
+.table_s th,.table_s{
+  border: 1px solid #cccccc;
+  line-height:30px;
+}
+.table_s>tbody th{
+	height:40px;
+	background-color:#dfe3e6;
+}
+.table_h>thead th{
+	height:40px !important;
+	background-color:#dfe3e6 !important;
+}
+.table_l tr>td{
+	border: 1px solid #cccccc;
+	border-top:none !important;
+	border-right:none !important;
+}
+.table-ll tr>td{
+	border: 1px solid #cccccc;
+	border-bottom:none;
+}
+.table-th> thead th{
+	border: 1px solid #cccccc !important;
+}
+
+
+
+.style_d{
+	border-right:none !important;
+}
+
+.style_m>div{
+	margin:5px 0px 0px 0px;
+}
+
+.style_m  input,.style_m  select{
+	width:218px !important;
+	height:28px !important;
+	background-color:#ffffff;
+	line-height:28px !important;
+}
+.style_t  input:not([type=radio]),.style_t  select{
+	width:95px !important;
+	height:28px !important;
+	background-color:#ffffff !important;
+	line-height:28px !important;
+}
+
+/*.table_b > thead > tr {
+  color: #000000 !important;
+  font-weight: normal;
+  background-color: #dfe3e6 !important;
+}
+.table-f > thead > tr {
+	color: #000000 !important;
+    font-weight: normal;
+}*/
+.table-bord tr>td,.table-bord tr>th{
+	border: 1px solid #cccccc !important;
+	border-bottom:none !important;
+}
+/* css格式隔行换色 
+.scroll>table tr:nth-child(even) td{
+	background-color:#EEEEEE !important;
+}*/
+/* css格式隔行换色(特殊情况) 
+.scroll1>table tr:nth-child(odd) td{
+	background-color:#EEEEEE !important;
+}*/
+.clearfix>select{
+	height:28px !important;
+	width:218px !important;
+}
+.no-border{
+	bodder:none !important;
+}
+.select_w{
+	width:340px;
+	height:28px;
+}
+.margin-10{
+	margin-top:25px !important;
+}
+.margin-5{
+	margin-top:5px !important;
+}
+.select_h{
+	height:400px;	
+}
+.wizard-actions-c{
+	margin-top:15px !important;
+}
+.btn-margin{
+	margin-left:100px;
+}
+.btn-b{
+	border-radius:3px !important;
+}
+.backgroung-m{
+	background-color:#f0f2f4 !important;
+}
+.title-l{
+	color:#42a9f8 !important;
+	font-family:"微软雅黑" !important;
+	font-size:16px !important;
+}
+.btn-s{
+	width: 102px;
+    height: 30px;
+    color: white !important;
+    background: #FA7D11;
+    border-style: none;
+    position: absolute;
+    float: right;
+    right: 10px;
+    bottom:23px;
+    border-radius: 3px;
+}
+.row {
+	line-height: 30px !important;
+}
+.row1{
+	line-height: 10px !important;
+}
+.main-container1:before {
+	background-color: #f0f2f4 !important;
+}
+.tab{
+	background-color:#FFFFFF;
+}
+.page-content1 {
+	background-color: #f0f2f4  !important;
+	border-bottom:0px !important;
+	padding: 0px !important;
+}
+.margin1-5{
+	margin:6px 0 0 0 !important;
+}
+.btn-group>.btn {
+    background-color: #FFFFFF !important;
+    border: 0px !important;
+}
+.help-error{
+	display:inline !important;
+	padding-left:5px;
+	color:#AE81FF;
+}
+.active1:active{
+		   border:none !important;
+		   background:#ffffff !important;
+ }
+ .btn-size1{
+	width: 102px !important;
+    border-radius: 2px !important;
+ }
+ .fenye{
+	margin: 0px !important;
+    padding: 0px !important;
+    background-color: #ffffff !important;
+	position: fixed;
+    bottom: 10px;
+    width: 100%;
+}
+.table-center td{
+	text-align:center !important;
+}
+/*.table-hover > tbody > tr:hover>td {
+    background-color: #d4fdfc !important;
+}*/
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+    border-top: 0px solid #f0f2f4 !important;
+    border-bottom: 0px solid #f0f2f4 !important;
+    border-left: 1px solid #e6e6e6 !important;
+    border-right: 1px solid #e6e6e6 !important;
+    padding: 4px !important;}
+
+.table-c  input{
+	text-align:center !important;
+}
+.tab-background{
+	background:transparent url(../../images/tab-1_05_1.png) no-repeat !important;
+	height:27px !important;
+	width:145px !important;
+	/*padding:3px !important;*/
+	/*text-align:center !important;
+	/*background-size:145px 30px;*/
+}
+.tab-background2{
+	background:transparent url(../../images/tab-1_05_2.png) no-repeat !important;
+	height:27px !important;
+	width:145px !important;
+	/*padding:3px !important;*/
+	/*text-align:center !important;*/
+}
+.btn-small{
+	padding: 0px 5px !important;
+    border-width: 3px !important;
+    font-size: 12px !important;
+    width: 30px !important;
+    height: 25px !important;
+	border-radius:2px;
+}

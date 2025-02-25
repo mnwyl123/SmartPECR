@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ValidateErrorMessageMapper">
+
+
+  <resultMap id="BaseResultMap" type="com.dcits.supervise.pecr.validateData.model.ValidateErrorMessage">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="TABLE_PK" jdbcType="VARCHAR" property="tablePk" />
+    <result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
+    <result column="TABLE_FIELD" jdbcType="VARCHAR" property="tableField" />
+    <result column="ERROR_MSG" jdbcType="VARCHAR" property="errorMsg" />
+    <result column="CUR_DATE" jdbcType="VARCHAR" property="curDate" />
+    <result column="VALIDATE_RULES_ID" jdbcType="VARCHAR" property="validateRulesId" />
+    <result column="V_COMMENT" jdbcType="VARCHAR" property="vComment" />
+    <result column="BUSINESS_PK" jdbcType="VARCHAR" property="businessPk" />
+    <result column="TABLE_NAME_CN" jdbcType="VARCHAR" property="tableNameCn" />
+    <result column="SUBJECT" jdbcType="VARCHAR" property="subject" />
+    <result column="IS_FORCE" jdbcType="VARCHAR" property="isForce" />
+    <result column="IS_MULTI_TABLE" jdbcType="VARCHAR" property="isMultiTable" />
+    <result column="MASTER_TABLE_ID" jdbcType="VARCHAR" property="masterTableId" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, TABLE_PK, TABLE_NAME, TABLE_FIELD, ERROR_MSG, CUR_DATE, VALIDATE_RULES_ID, V_COMMENT,
+    BUSINESS_PK, TABLE_NAME_CN, SUBJECT, IS_FORCE, IS_MULTI_TABLE, MASTER_TABLE_ID
+  </sql>
+  
+  <sql id="tableName">
+  	VALIDATE_ERROR_MESSAGE
+  </sql>
+
+	<delete id="deleteErrorMessage" parameterType="map">
+		delete from <include refid="tableName"/>
+		where 1=1 
+		<if test='currentDate != null and currentDate !=""'>
+			and CUR_DATE = #{currentDate}
+		</if>
+		<if test='tableName != null and tableName != ""'>
+			and TABLE_NAME = #{tableName}
+		</if>
+		<if test='isMultiTable != null and isMultiTable != ""'>
+			and IS_MULTI_TABLE = #{isMultiTable}
+		</if>
+		<if test='pk != null and pk != ""'>
+			and TABLE_PK = #{pk}
+		</if>
+	</delete>
+	
+	<select id="countByCondition" parameterType="map" resultType="java.lang.Long">
+		select count(*) as count
+		from <include refid="tableName"/>
+		where 1=1
+		<if test='tableName != null and tableName != ""'>
+			and TABLE_NAME = #{tableName}
+		</if>
+		<if test='pk != null and pk != ""'>
+			and TABLE_PK = #{pk}
+		</if>
+	</select>
+	
+	<select id="selectByCondition" parameterType="map" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from <include refid="tableName"/>
+		where 1=1
+		<if test='tableName != null and tableName != ""'>
+			and TABLE_NAME = #{tableName}
+		</if>
+		<if test='masterTableId != null and masterTableId != ""'>
+			and MASTER_TABLE_ID = #{masterTableId}
+		</if>
+		<if test='pk != null and pk != ""'>
+			and TABLE_PK = #{pk}
+		</if>
+	</select>
+	
+	<select id="selectListByCondition" parameterType="map" resultType="java.util.LinkedHashMap">
+		select <include refid="Base_Column_List"/>
+		from 
+		<include refid="tableName"/>
+		where 1=1
+		<if test='tableNames != null and tableNames.size >0 '>
+			and 
+			<foreach collection="tableNames" item="item" index="index" open="(" close=")" separator="or">
+			TABLE_NAME = #{item}
+			</foreach>
+		</if>
+		<if test='tablePks != null and tablePks.size >0 '>
+			and 
+			<foreach collection="tablePks" item="item" index="index" open="(" close=")" separator="or">
+			TABLE_PK = #{item}
+			</foreach>
+		</if>
+	</select>
+	
+	<select id="selectErrorMessageByTablePK" parameterType="java.util.ArrayList" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from 
+		<include refid="tableName"/>
+		where 1=1 and
+			<foreach collection="list" item="TABLE_PK" index="index" open="(" close=")" separator="or">
+				TABLE_PK = #{TABLE_PK}
+			</foreach>
+	</select>
+	
+	<select id="selectErrorMessageByMasterTablePK" parameterType="String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from 
+		<include refid="tableName"/>
+		where 1=1 
+			and	MASTER_TABLE_ID = #{PKString}
+	</select>
+
+</mapper>

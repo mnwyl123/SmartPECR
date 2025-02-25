@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IncomeAndExpenseStatementMapper">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.IncomeAndExpenseStatementDlt" id="IaesResultMap">
+		<result column="ela_income_and_expense_stat_id" property="elaIncomeAndExpenseStatId" />
+		<result column="inf_rec_type" property="infRecType" />
+		<result column="ent_name" property="entName" />
+		<result column="ent_cert_type" property="entCertType" />
+		<result column="ent_cert_num" property="entCertNum" />
+		<result column="sheet_year" property="sheetYear" />
+		<result column="sheet_type" property="sheetType" />
+		<result column="sheet_type_divide" property="sheetTypeDivide" />
+		<result column="business_states" property="businessStates" />
+		<result column="org_code" property="orgCode" />
+	</resultMap>
+
+	<!-- 事业单位收入支出表整笔删除请求记录 -->
+	<select id="getlistPage" parameterType="page" resultMap="IaesResultMap">
+		select
+			 ela_income_and_expense_stat_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+		from E_INCOME_EXPENSE_bs
+		<where>
+			and inf_rec_type = '654'
+			<if test="pd.orgCode != null and pd.orgCode != ''">
+				and mngmt_org_code = #{pd.orgCode}
+			</if>
+			<if test='pd.name != null and pd.name != ""'>
+				and name = #{pd.name}
+			</if>
+			<if test='pd.acctType != null and pd.acctType != ""'>
+				and acct_type = #{pd.acctType}
+			</if>
+			<if test='pd.businessStates != null and pd.businessStates != ""'>
+				and business_states = #{pd.businessStates}
+			</if>
+			<if test='pd.isFilter != null and pd.isFilter != ""'>
+				and is_filter = #{pd.isFilter}
+			</if>
+		</where>
+	</select>
+
+
+	<!-- 详情或者修改 查询指定记录  -->
+	<select id="getAcctInfSgmtById" parameterType="pd" resultType="pd">
+		select
+			 ela_income_and_expense_stat_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+		from E_INCOME_EXPENSE_bs
+		  where ela_income_and_expense_stat_id = #{elaIncomeAndExpenseStatId}
+		  and inf_rec_type = '654'
+	</select>
+
+	<!-- 查询  主键是否存在 -->
+	<select id="getAcctBsSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_INCOME_EXPENSE_bs
+	     where ela_income_and_expense_stat_id = #{elaIncomeAndExpenseStatId}
+		  and inf_rec_type = '654'
+	</select>
+	<!-- 新增  -->
+	<insert id="insertAcctBsSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_INCOME_EXPENSE_bs(
+					ela_income_and_expense_stat_id 
+					  ,inf_rec_type 
+					  ,ent_name 
+					  ,ent_cert_type 
+					  ,ent_cert_num 
+					  ,sheet_year 
+					  ,sheet_type 
+					  ,sheet_type_divide
+					  ,business_states
+			  		  ,org_code)
+		    values (#{elaIncomeAndExpenseStatId},
+					#{infRecType},
+					#{entName},
+					#{entCertType},
+					#{entCertNum},
+					#{sheetYear},
+					#{sheetType},
+					#{sheetTypeDivide},
+					'11',
+					#{orgCode}
+				)
+		]]>
+	</insert>
+	<!-- 更新  -->
+	<update id="updateAcctBsSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_INCOME_EXPENSE_bs
+			set ent_name = #{entName, jdbcType=VARCHAR},
+				ent_cert_type = #{entCertType, jdbcType=VARCHAR},
+				ent_cert_num = #{entCertNum, jdbcType=VARCHAR},
+				sheet_year = #{sheetYear, jdbcType=CHAR},
+				sheet_type = #{sheetType, jdbcType=VARCHAR},
+				sheet_type_divide = #{sheetTypeDivide, jdbcType=VARCHAR},
+				org_code = #{orgCode, jdbcType=VARCHAR}
+		  WHERE ela_income_and_expense_stat_id = #{elaIncomeAndExpenseStatId}
+		  and inf_rec_type = '654'
+		  ]]>
+	</update>
+	<!-- 删除 -->
+	<delete id="delAcctBsSgmtById" parameterType="map">
+		delete from E_INCOME_EXPENSE_bs
+		 where ela_income_and_expense_stat_id = #{elaIncomeAndExpenseStatId}
+		  and inf_rec_type = '654'
+	</delete>
+</mapper>

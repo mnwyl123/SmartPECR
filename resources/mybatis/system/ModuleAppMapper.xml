@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ModuleAppMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		SYS_MODULE_APP
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		MODULE_ID,	
+		SYS_IND,
+		ORDER_BY
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{MODULE_ID},	
+		#{SYS_IND},	 
+		#{ORDER_BY}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where MODULE_ID = #{MODULE_ID}
+		  and SYS_IND = #{SYS_IND}
+	</delete>
+	
+	<!-- 删除-->
+	<delete id="deleteByModuleId" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where MODULE_ID = #{MODULE_ID} 
+	</delete>
+	<!-- 删除-->
+	<delete id="deleteBySysInd" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where SYS_IND = #{SYS_IND} 
+	</delete>
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+			MODULE_ID = #{MODULE_ID},
+			SYS_IND = #{SYS_IND}, 
+			ORDER_BY = #{ORDER_BY} 
+		where MODULE_ID = #{MODULE_ID} and 
+			SYS_IND = #{SYS_IND}
+		<!-- 此处根据情况而进行修改 
+		where 
+		 此处根据情况而进行修改 
+		 -->
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where MODULE_ID = #{MODULE_ID} and 
+			SYS_IND = #{SYS_IND}
+			<!-- where 
+			此处根据情况而进行修改 
+			-->
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		 
+		select 
+		a.MODULE_ID,	
+		a.SYS_IND,
+		b.NAME,	
+		a.ORDER_BY
+		from SYS_MODULE_APP a,
+		     SYS_APP b
+		where a.SYS_IND = b.SYS_IND and
+		      MODULE_ID = #{pd.MODULE_ID}
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+					b.NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+			    OR 
+					b.SYS_IND LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+				)
+		</if>
+	</select>
+	
+	<!-- 列表 -->
+	<select id="listAllSysInd" parameterType="pd" resultType="pd">
+		 
+		select distinct
+		a.MODULE_ID,	
+		a.SYS_IND,
+		b.NAME,	
+		a.ORDER_BY,
+		b.URL,
+		b.PICTURE_PATH 
+		from SYS_MODULE_APP a
+        left join sys_app b on a.SYS_IND = b.SYS_IND and b.status = '1'
+		order by a.ORDER_BY
+		
+	</select>
+	
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where MODULE_ID = #{MODULE_ID}
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		 where MODULE_ID = #{MODULE_ID} AND SYS_IND in  
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>  
+	</delete> 
+	<!-- 批量删除 -->
+	<delete id="deleteAllBySysInd" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		 where   SYS_IND in  
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>  
+	</delete>
+	
+	<!-- 查询明细总数 -->
+	<select id="findCount" parameterType="pd" resultType="pd">
+		select
+			count(*) ZS
+		from 
+			<include refid="tableName"></include>
+		where
+			MODULE_ID = #{MODULE_ID}
+	</select>
+	
+	
+</mapper>

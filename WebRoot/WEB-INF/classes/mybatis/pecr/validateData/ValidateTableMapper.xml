@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ValidateTableMapper">
+
+
+  <resultMap id="BaseResultMap" type="com.dcits.supervise.pecr.validateData.model.ValidateTable">
+  	<result column="TABLE_ID" jdbcType="VARCHAR" property="tableId" />
+    <result column="TABLE_NAME_EN" jdbcType="VARCHAR" property="tableNameEn" />
+    <result column="TABLE_NAME_CN" jdbcType="VARCHAR" property="tableNameCn" />
+    <result column="MASTER_TABLE_EN" jdbcType="VARCHAR" property="masterTableEn" />
+    <result column="MASTER_TABLE_PK" jdbcType="VARCHAR" property="masterTablePk" />
+    <result column="TBALE_PK" jdbcType="VARCHAR" property="tbalePk" />
+  </resultMap>
+  <parameterMap type="com.dcits.supervise.pecr.validateData.model.ValidateTable" id="BaseParameterMap">
+  	<parameter property="tableId" resultMap="BaseResultMap"/>
+  	<parameter property="tableNameEn" resultMap="BaseResultMap"/>
+  	<parameter property="tableNameCn" resultMap="BaseResultMap"/>
+  	<parameter property="masterTableEn" resultMap="BaseResultMap"/>
+  	<parameter property="masterTablePk" resultMap="BaseResultMap"/>
+  	<parameter property="tbalePk" resultMap="BaseResultMap"/>
+  </parameterMap>
+  
+ <sql id="Base_Column_List">
+    TABLE_ID, TABLE_NAME_EN, TABLE_NAME_CN, MASTER_TABLE_EN, MASTER_TABLE_PK, TBALE_PK
+  </sql>
+  
+  <sql id="tableName">
+  	VALIDATE_TABLE
+  </sql>
+
+	<select id="selectByCondition"  resultMap="BaseResultMap">
+		select  <include refid="Base_Column_List"/>
+		from <include refid="tableName"/>
+	</select>
+	
+	<select id="selectOneByCondition" parameterMap="BaseParameterMap" resultMap="BaseResultMap">
+		select distinct <include refid="Base_Column_List"/>
+		from <include refid="tableName"/>
+		where 1=1
+		<if test='tableId != null and tableId != ""'>
+			and TABLE_ID = #{tableId}
+		</if>
+		<if test='tableNameCn != null and tableNameCn != ""'>
+			and TABLE_NAME_CN = #{tableNameCn}
+		</if>
+		<if test='tableNameEn != null and tableNameEn != ""'>
+			and TABLE_NAME_EN = #{tableNameEn}
+		</if>
+		<if test='masterTableEn != null and masterTableEn != ""'>
+			and MASTER_TABLE_EN = #{masterTableEn}
+		</if>
+		<if test='masterTablePk != null and masterTablePk != ""'>
+			and MASTER_TABLE_PK = #{masterTablePk}
+		</if>
+		<if test='tbalePk != null and tbalePk != ""'>
+			and TBALE_PK = #{tbalePk}
+		</if>
+	</select>
+
+</mapper>

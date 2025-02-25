@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WhiteListMapper">
+
+	<!-- 查询 -->	
+	<select id="productList" parameterType="page" resultType="pd">
+		select 
+			 uuid
+			,product_code
+			,last_update_time
+		  from white_product
+		  where  1=1 
+		 	<if test='pd.product_code != null and pd.product_code != ""'>
+		 		and product_code like '%${pd.product_code}%'
+		 	</if>	
+		 order by last_update_time desc
+	</select>
+	
+	
+	<select id="selectCountProduct" parameterType="pd" resultType="int">
+		select 
+			 count(1)
+		  from white_product
+		  where  1=1 
+		 	<if test='product_code != null and product_code != ""'>
+		 		and product_code = #{product_code}
+		 	</if>
+		 	<if test='uuid != null and uuid != ""'>
+		 		and uuid != #{uuid}
+		 	</if>		 	
+	</select>
+	
+	<insert id="insertWhiteProduct" parameterType="pd">
+		insert into white_product 
+			(
+				uuid,
+				product_code,
+				last_update_time
+			)
+			values
+			(
+				<if test="_databaseId == 'oracle' ">
+				   sys_guid(),
+				</if>
+				<if test="_databaseId == 'db2'">
+				concat (hex (RAND ()), hex (RAND ())),
+				</if>
+				#{product_code},
+				to_char(sysdate,'yyyy-mm-dd hh:mi:ss')
+			)
+	</insert>
+
+
+	<update id="updateWhiteProduct" parameterType="pd">
+		update white_product set product_code=#{product_code},last_update_time=to_char(sysdate,'yyyy-mm-dd hh:mi:ss') where uuid = #{uuid}
+	</update>
+	
+	<select id="selectCountMsgProduct" parameterType="pd" resultType="int">
+		select 
+			 count(1)
+		  from white_msg_maintenance
+		  where  1=1 
+		 	<if test='product_code != null and product_code != ""'>
+		 		and product_code = #{product_code}
+		 	</if>		 	
+	</select>
+
+	<select id="selectOneProduct" parameterType="pd" resultType="pd">
+		select 
+			uuid,
+			product_code,
+			last_update_time
+		  from white_product
+		  where  1=1 
+		 	<if test='uuid != null and uuid != ""'>
+		 		and uuid = #{uuid}
+		 	</if>		 	
+	</select>
+
+	<delete id="deleteWhiteProduct" parameterType="pd">
+		delete from white_product
+		where uuid = #{uuid}
+	</delete>	
+
+
+
+
+
+
+	<!-- 查询 -->	
+	<select id="customerList" parameterType="page" resultType="pd">
+		select 
+			 uuid
+			,customer_type
+			,customer_id_type
+			,customer_id_num
+			,last_update_time
+		  from white_customer
+		  where  1=1 
+		 		
+		 	<if test='pd.customer_id_num != null and pd.customer_id_num != ""'>
+		 		and customer_id_num like '%${pd.customer_id_num}%'
+		 	</if>	
+		 order by last_update_time desc
+	</select>
+	
+	
+	<select id="selectCountCustomer" parameterType="pd" resultType="int">
+		select 
+			 count(1)
+		  from white_customer
+		  where  1=1 
+		 	<if test='customer_type != null and customer_type != ""'>
+		 		and customer_type = #{customer_type}
+		 	</if>	
+		 	<if test='customer_id_type != null and customer_id_type != ""'>
+		 		and customer_id_type = #{customer_id_type}
+		 	</if>	
+		 	<if test='customer_id_num != null and customer_id_num != ""'>
+		 		and customer_id_num = #{customer_id_num}
+		 	</if>
+		 	<if test='uuid != null and uuid != ""'>
+		 		and uuid != #{uuid}
+		 	</if>		 	
+	</select>
+	
+	<insert id="insertWhiteCustomer" parameterType="pd">
+		insert into white_customer 
+			(
+				uuid
+				,customer_type
+				,customer_id_type
+				,customer_id_num
+				,last_update_time
+			)
+			values
+			(
+				<if test="_databaseId == 'oracle' ">
+				   sys_guid(),
+				</if>
+				<if test="_databaseId == 'db2'">
+				concat (hex (RAND ()), hex (RAND ())),
+				</if>
+				#{customer_type},
+				#{customer_id_type},
+				#{customer_id_num},
+				to_char(sysdate,'yyyy-mm-dd hh:mi:ss')
+			)
+	</insert>
+
+
+	<update id="updateWhiteCustomer" parameterType="pd">
+		update white_customer set 
+			customer_type=#{customer_type},
+			customer_id_type=#{customer_id_type},
+			customer_id_num=#{customer_id_num},
+			last_update_time=to_char(sysdate,'yyyy-mm-dd hh:mi:ss')
+		where uuid = #{uuid}
+	</update>
+	
+	<select id="selectCountMsgCustomer" parameterType="pd" resultType="int">
+		select 
+			 count(1)
+		  from white_msg_maintenance
+		  where  1=1 
+		 	<if test='customer_type != null and customer_type != ""'>
+		 		and customer_type = #{customer_type}
+		 	</if>	
+		 	<if test='customer_id_type != null and customer_id_type != ""'>
+		 		and customer_id_type = #{customer_id_type}
+		 	</if>	
+		 	<if test='customer_id_num != null and customer_id_num != ""'>
+		 		and customer_id_num = #{customer_id_num}
+		 	</if>	 	
+	</select>
+
+	<select id="selectOneCustomer" parameterType="pd" resultType="pd">
+		select 
+			 uuid
+			,customer_type
+			,customer_id_type
+			,customer_id_num
+			,last_update_time
+		  from white_customer
+		  where  1=1 
+		 	<if test='uuid != null and uuid != ""'>
+		 		and uuid = #{uuid}
+		 	</if>		 	
+	</select>
+
+	<delete id="deleteWhiteCustomer" parameterType="pd">
+		delete from white_customer
+		where uuid = #{uuid}
+	</delete>	
+
+
+
+
+
+<!-- 查询 -->	
+	<select id="businessList" parameterType="page" resultType="pd">
+		select 
+			 uuid
+			,business_type
+			,business_code
+			,last_update_time
+		  from white_business
+		  where  1=1 
+		 	<if test='pd.business_type != null and pd.business_type != ""'>
+		 		and business_type = #{pd.business_type}
+		 	</if>	
+		 	<if test='pd.business_code != null and pd.business_code != ""'>
+		 		and business_code like '%${pd.business_code}%'
+		 	</if>	
+		 order by last_update_time desc
+	</select>
+	
+	
+	<select id="selectCountBusiness" parameterType="pd" resultType="int">
+		select 
+			 count(1)
+		  from white_business
+		  where  1=1 
+		 	<if test='business_type != null and business_type != ""'>
+		 		and business_type = #{business_type}
+		 	</if>
+		 	<if test='business_code != null and business_code != ""'>
+		 		and business_code = #{business_code}
+		 	</if>
+		 	<if test='uuid != null and uuid != ""'>
+		 		and uuid != #{uuid}
+		 	</if>		 	
+	</select>
+	
+	<insert id="insertWhiteBusiness" parameterType="pd">
+		insert into white_business 
+			(
+				uuid,
+				business_type,
+				business_code,
+				last_update_time
+			)
+			values
+			(
+				upper(replace(uuid(),'-','')),
+				#{business_type},
+				#{business_code},
+				to_char(sysdate,'yyyy-mm-dd hh:mi:ss')
+			)
+	</insert>
+
+
+	<update id="updateWhiteBusiness" parameterType="pd">
+		update white_business set business_type=#{business_type},business_code=#{business_code},to_char(sysdate,'yyyy-mm-dd hh:mi:ss') where uuid = #{uuid}
+	</update>
+	
+	<select id="selectCountMsgBusiness" parameterType="pd" resultType="int">
+		select 
+			 count(1)
+		  from white_msg_maintenance
+		  where  1=1 
+		 	<if test='business_type != null and business_type != ""'>
+		 		and business_type = #{business_type}
+		 	</if>
+		 	<if test='business_code != null and business_code != ""'>
+		 		and business_code = #{business_code}
+		 	</if>		 	
+	</select>
+
+	<select id="selectOneBusiness" parameterType="pd" resultType="pd">
+		select 
+			uuid,
+			business_type,
+			business_code,
+			last_update_time
+		  from white_business
+		  where  1=1 
+		 	<if test='uuid != null and uuid != ""'>
+		 		and uuid = #{uuid}
+		 	</if>		 	
+	</select>
+
+	<delete id="deleteWhiteBusiness" parameterType="pd">
+		delete from white_business
+		where uuid = #{uuid}
+	</delete>	
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,914 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CashFlowsMapper">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.CashFlows" id="cashFlowsResultMap">
+		<result column="eja_cash_flows_bs_sgmt_id" property="ejaCashFlowsBsSgmtId" />
+		<result column="inf_rec_type" property="infRecType" />
+		<result column="ent_name" property="entName" />
+		<result column="ent_cert_type" property="entCertType" />
+		<result column="ent_cert_num" property="entCertNum" />
+		<result column="rpt_date" property="rptDate" />
+		<result column="sheet_year" property="sheetYear" />
+		<result column="sheet_type" property="sheetType" />
+		<result column="sheet_type_divide" property="sheetTypeDivide" />
+		<result column="audit_firm_name" property="auditFirmName" />
+		<result column="auditor_name" property="auditorName" />
+		<result column="audit_time" property="auditTime" />
+		<result column="cimoc" property="cimoc" />
+		<result column="rpt_date_code" property="rptDateCode" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="operator_user" property="operatorUser" />
+		<result column="org_name" property="orgName" />
+		<result column="org_code" property="orgCode" />
+		<result column="business_states" property="businessStates" />
+		<result column="reject_reason" property="rejectReason" />
+		<result column="is_filter" property="isFilter" />
+		<result column="report_message_id" property="reportMessageId" />
+	</resultMap>
+
+	<!-- 企业现金流量 基础段 -->
+	<select id="getcashFlowsList" parameterType="page" resultMap="cashFlowsResultMap">
+		select
+			  eja_cash_flows_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,rpt_date 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,audit_firm_name 
+			  ,auditor_name 
+			  ,audit_time 
+			  ,cimoc 
+			  ,rpt_date_code 
+			  ,last_update_time 
+			  ,operator_user 
+			  ,org_name 
+			  ,org_code 
+			  ,business_states 
+			  ,reject_reason 
+			  ,is_filter 
+			  ,report_message_id  
+			  ,COMPANY
+		from E_CASH_FLOWS_BS
+	   	<if test="pd.managerId != null and pd.managerId != ''">
+	   	  	LEFT JOIN PECR.sys_l_c_a_m_m M
+			ON E_CASH_FLOWS_BS.ENT_NAME = M.CUST_NAME
+			AND E_CASH_FLOWS_BS.ENT_CERT_TYPE = M.CUST_ID_TYPE
+			AND E_CASH_FLOWS_BS.ENT_CERT_NUM = M.CUST_ID_NUM
+	   	</if>
+		<where>
+			<if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+			<if test="pd.rptDate != null and pd.rptDate != ''">
+		         and rpt_date = #{pd.rptDate}
+		    </if>
+		    <if test="pd.entName != null and pd.entName != ''">
+		   	  	and ent_name like '%${pd.entName}%'
+		   	</if>
+		   	<if test="pd.entCertType != null and pd.entCertType != ''">
+		   	  	and ent_cert_type = #{pd.entCertType}
+		   	</if>
+		   	<if test="pd.entCertNum != null and pd.entCertNum != ''">
+		   	  	and ent_cert_num like '%${pd.entCertNum}%'
+		   	</if>
+		   	<if test="pd.businessStates != null and pd.businessStates != ''">
+		   	  	and business_states = #{pd.businessStates}
+		   	</if>
+		   	<if test="pd.managerId != null and pd.managerId != ''">
+		   	  	AND M.MANAGER_ID = #{pd.managerId}
+		   		AND M.DATA_TYPE = '2'
+		   		AND M.DATA_LEVEL = '6'
+		   		AND M.END_DATE = '2099-12-31'
+		   	</if>
+		   	    AND COMPANY = #{pd.COMPANY}
+		</where>
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 基础段 -->
+	<select id="getCashFlowsBsSgmtById" parameterType="pd" resultType="map">
+		 select
+			  eja_cash_flows_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,rpt_date 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,audit_firm_name 
+			  ,auditor_name 
+			  ,audit_time 
+			  ,cimoc 
+			  ,rpt_date_code 
+			  ,last_update_time 
+			  ,operator_user 
+			  ,org_name 
+			  ,org_code 
+			  ,business_states 
+			  ,reject_reason 
+			  ,is_filter 
+			  ,report_message_id  
+			  ,COMPANY
+		from E_CASH_FLOWS_BS
+		  where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId}
+		    and COMPANY = #{COMPANY}
+	</select>
+	
+	<!-- 企业现金流量表02现金流量表段 -->
+	<select id="getCashFlows2002SgmtById" parameterType="pd" resultType="pd">
+		 select   ejb_cash_flows2002_sgmt_id 
+				  ,cash_received_from_sales_of_go 
+				  ,tax_refunds 
+				  ,other_cash_received_relating_t 
+				  ,total_cash_inflows_from_operat 
+				  ,cash_paid_for_goods_and_servic 
+				  ,cash_paid_to_and_on_behalf_of_ 
+				  ,payments_of_all_types_of_taxes 
+				  ,other_cash_payments_from_opera 
+				  ,total_cash_outflows_from_opera 
+				  ,net_cash_flows_from_operating 
+				  ,cash_received_from_return_of_i 
+				  ,cash_received_from_onvestments 
+				  ,net_cash_received_from_disposa 
+				  ,cash_received_relating_to_othe 
+				  ,total_cash_inflows_from_invest 
+				  ,cash_paid_to_acquire_fixed_ass 
+				  ,cash_payments_for_investments 
+				  ,cash_payments_related_to_oth_t 
+				  ,total_cash_outflows_from_inves 
+				  ,net_cash_flows_from_investing_ 
+				  ,cash_received_from_investors 
+				  ,cash_from_borrowings 
+				  ,other_cash_received_relating_c 
+				  ,total_cash_inflows_from_financ 
+				  ,cash_repayments_for_debts 
+				  ,cash_payments_for_distribution 
+				  ,cash_payments_related_to_oth_c 
+				  ,total_cash_outflows_from_finan 
+				  ,net_cash_flows_from_financing_ 
+				  ,effect_of_exchang_rate_changes 
+				  ,net_increasein_cash_and_cash_e 
+				  ,net_profit 
+				  ,provision_for_assets 
+				  ,depreciation_of_fixed_assets 
+				  ,amortisation_of_intangible_ass 
+				  ,long_term_deferred_expenses_am 
+				  ,decrease_of_deffered_expenses 
+				  ,addition_of_accued_expense 
+				  ,losses_on_disposal_of_fixed_as 
+				  ,losses_on_scrapping_of_fixed_a 
+				  ,finance_expense 
+				  ,losses_arsing_from_investment 
+				  ,deferred_tax_credit 
+				  ,decrease_in_inventories 
+				  ,decreasein_operating_receivabl 
+				  ,increasein_operating_receivabl 
+				  ,others 
+				  ,net_cash_flows_from_operating2 
+				  ,debts_transfer_to_capital 
+				  ,one_year_due_convertible_bonds 
+				  ,financing_rent_to_the_fixed_as 
+				  ,non_cash_others 
+				  ,cash_at_the_end_of_period 
+				  ,cash_at_the_beginning_of_the_p 
+				  ,cash_equivalents_at_the_end_of 
+				  ,cash_rquivalents_at_the_beginn 
+				  ,net_increase_in_cash_and_cash_ 
+				  ,eja_cash_flows_bs_sgmt_id 
+				  ,rpt_date 
+				  ,COMPANY
+		   from E_CASH_FLOWS2002
+		  where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId}
+	</select>
+	
+	<!-- 企业现金流量表07现金流量表段 -->
+	<select id="getCashFlows2007SgmtById" parameterType="pd" resultType="pd">
+		 select   ejc_cash_flows2007_sgmt_id
+				  ,cash_received_from_sales_of_go 
+				  ,tax_refunds 
+				  ,other_cash_received_relating_j 
+				  ,total_cash_inflows_from_operat 
+				  ,cash_paid_for_goods_and_servic 
+				  ,cash_paid_to_and_on_beha_lf_of 
+				  ,payments_of_all_types_of_taxes 
+				  ,other_cash_payments_from_opera 
+				  ,total_cash_outflows_from_opera 
+				  ,net_cash_flows_from_operating 
+				  ,cash_received_from_return_of_i 
+				  ,cash_received_from_onvestments 
+				  ,net_cash_received_from_disposa 
+				  ,net_cash_inflows_of_disposal_o 
+				  ,cash_received_relating_to_othe 
+				  ,total_cash_inflows_from_invest 
+				  ,cash_paid_to_acquire_fixed_ass 
+				  ,cash_payments_for_investments 
+				  ,net_cash_outflows_of_procureme 
+				  ,cash_payments_related_to_oth_t 
+				  ,sub_total_of_cash_outflows 
+				  ,net_cash_flows_from_investing_ 
+				  ,cash_received_from_investors 
+				  ,cash_from_borrowings 
+				  ,other_cash_received_relating_c 
+				  ,total_cash_inflows_from_financ 
+				  ,cash_repayments_for_debts 
+				  ,cash_payments_for_distribution 
+				  ,cash_payments_related_to_oth_c 
+				  ,total_cash_outflows_from_finan 
+				  ,net_cash_flows_from_financing_ 
+				  ,effect_of_exchang_rate_changes 
+				  ,netincreasein_cash_and_cash_eq 
+				  ,initial_cash_and_cash_equivale 
+				  ,the_final_cash_and_cash_equiva 
+				  ,net_profit 
+				  ,provision_for_asset_impairment 
+				  ,depreciation_of_fixed_assets 
+				  ,amortisation_of_intangible_ass 
+				  ,amortisation_of_long_term_deff 
+				  ,decrease_of_deffered_expenses 
+				  ,addition_of_accued_expense 
+				  ,losses_on_disposal_of_fixed_as 
+				  ,losses_on_scrapping_of_fixed_a 
+				  ,profit_or_loss_from_changes_in 
+				  ,finance_expense 
+				  ,losses_arsing_from_investment 
+				  ,deferred_income_tax_assets 
+				  ,deferred_income_tax_liabilitie 
+				  ,decreasein_inventories 
+				  ,decreasein_operating_receivabl 
+				  ,increase_in_operating_receivab 
+				  ,others 
+				  ,net_cash_flows_from_operating2 
+				  ,debts_transfer_to_capital 
+				  ,one_year_due_convertible_bonds 
+				  ,financing_rent_to_the_fixed_as 
+				  ,non_cash_others 
+				  ,cash_at_the_end_of_period 
+				  ,cash_at_the_beginning_of_the_p 
+				  ,cash_equivalents_at_the_end_of 
+				  ,cash_equivalents_at_the_beginn 
+				  ,netincreasein_cash_and_cash_e2 
+				  ,eja_cash_flows_bs_sgmt_id 
+				  ,rpt_date
+				  ,COMPANY
+		   from E_CASH_FLOWS2007
+		  where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId}
+	</select>
+	
+	<!-- 查询 基础段 主键是否存在 -->
+	<select id="getCashFlowsBsSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_CASH_FLOWS_BS
+	     where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId}
+	</select>
+	
+	<!-- 新增    基础段 -->
+	<insert id="insertCashFlowsBsSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_CASH_FLOWS_BS(
+					  eja_cash_flows_bs_sgmt_id 
+					  ,inf_rec_type 
+					  ,ent_name 
+					  ,ent_cert_type 
+					  ,ent_cert_num 
+					  ,sheet_year 
+					  ,sheet_type 
+					  ,sheet_type_divide 
+					  ,audit_firm_name 
+					  ,auditor_name 
+					  ,audit_time 
+					  ,org_code
+					  ,cimoc 
+					  ,rpt_date_code 
+					  ,business_states 
+					  ,is_filter
+					  ,rpt_date 
+					  ,COMPANY
+					  )
+		    values (#{ejaCashFlowsBsSgmtId},
+					#{infRecType},
+					#{entName},
+					#{entCertType},
+					#{entCertNum},
+					#{sheetYear},
+					#{sheetType},
+					#{sheetTypeDivide},
+					#{auditFirmName},
+					#{auditorName},
+					#{auditTime},
+					#{orgCode},
+					#{cimoc},
+					#{rptDateCode},
+					'11',
+					#{isFilter},
+					#{rptDate},
+					#{COMPANY}
+					
+				)
+		
+		]]>
+	</insert>
+
+	<!-- 更新    基础段 -->
+	<update id="updateCashFlowsBsSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_CASH_FLOWS_BS
+			set ent_name = #{entName, jdbcType=VARCHAR},
+				ent_cert_type = #{entCertType, jdbcType=VARCHAR},
+				ent_cert_num = #{entCertNum, jdbcType=VARCHAR},
+				sheet_year = #{sheetYear, jdbcType=CHAR},
+				sheet_type = #{sheetType, jdbcType=VARCHAR},
+				sheet_type_divide = #{sheetTypeDivide, jdbcType=VARCHAR},
+				audit_firm_name = #{auditFirmName, jdbcType=VARCHAR},
+				auditor_name = #{auditorName, jdbcType=VARCHAR},
+				audit_time = #{auditTime, jdbcType=VARCHAR},
+				org_code = #{orgCode, jdbcType=VARCHAR},
+				cimoc = #{cimoc, jdbcType=VARCHAR},
+				rpt_date_code = #{rptDateCode, jdbcType=VARCHAR},
+				is_filter = #{isFilter, jdbcType=VARCHAR},
+				business_states = '11',
+				rpt_date = #{rptDate, jdbcType=VARCHAR}
+		  where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId}
+		    and COMPANY = #{COMPANY}
+		  
+		  ]]>
+	</update>
+
+	<!-- 删除基础段 -->
+	<delete id="delCashFlowsBsSgmtById" parameterType="map">
+		delete from E_CASH_FLOWS_BS
+		 where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId}
+		   and COMPANY = #{COMPANY}
+	</delete>
+	
+	<!-- 查询 基础段 主键是否存在 -->
+	<select id="get2002SgmtKey" parameterType="map" resultType="int">
+	     select count(1) 
+		  from E_CASH_FLOWS2002
+	     where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId} 
+	       and ejb_cash_flows2002_sgmt_id = #{ejbCashFlows2002SgmtId} 
+	</select>
+	
+	<!-- 新增    基础段 -->
+	<insert id="insert2002Sgmt" parameterType="map">
+		<![CDATA[
+		insert into E_CASH_FLOWS2002(
+					  ejb_cash_flows2002_sgmt_id 
+					  ,total_cash_inflows_from_operat 
+					  ,total_cash_outflows_from_opera 
+					  ,net_cash_flows_from_operating 
+					  ,total_cash_inflows_from_invest 
+					  ,total_cash_outflows_from_inves 
+					  ,net_cash_flows_from_investing_ 
+					  ,total_cash_inflows_from_financ 
+					  ,total_cash_outflows_from_finan 
+					  ,net_cash_flows_from_financing_ 
+					  ,net_increasein_cash_and_cash_e
+					  ,cash_received_from_sales_of_go 
+					  ,tax_refunds 
+					  ,other_cash_received_relating_t 
+					  ,cash_paid_for_goods_and_servic
+					  ,cash_paid_to_and_on_behalf_of_ 
+					  ,payments_of_all_types_of_taxes
+					  ,other_cash_payments_from_opera
+					  ,cash_received_from_return_of_i
+					  ,cash_received_from_onvestments
+					  ,net_cash_received_from_disposa
+					  ,cash_received_relating_to_othe
+					  ,cash_paid_to_acquire_fixed_ass
+					  ,cash_payments_for_investments
+					  ,cash_payments_related_to_oth_t
+					  ,cash_received_from_investors
+					  ,cash_from_borrowings
+					  ,other_cash_received_relating_c
+					  ,cash_repayments_for_debts
+					  ,cash_payments_for_distribution
+					  ,cash_payments_related_to_oth_c
+					  ,effect_of_exchang_rate_changes
+					  ,net_profit
+					  ,provision_for_assets
+					  ,depreciation_of_fixed_assets
+					  ,amortisation_of_intangible_ass
+					  ,long_term_deferred_expenses_am
+					  ,decrease_of_deffered_expenses
+					  ,addition_of_accued_expense
+					  ,losses_on_disposal_of_fixed_as
+					  ,losses_on_scrapping_of_fixed_a
+					  ,finance_expense
+					  ,losses_arsing_from_investment
+					  ,deferred_tax_credit
+					  ,decrease_in_inventories
+					  ,decreasein_operating_receivabl
+					  ,increasein_operating_receivabl
+					  ,others
+					  ,net_cash_flows_from_operating2
+					  ,debts_transfer_to_capital
+					  ,one_year_due_convertible_bonds
+					  ,financing_rent_to_the_fixed_as
+					  ,non_cash_others
+					  ,cash_at_the_end_of_period
+					  ,cash_at_the_beginning_of_the_p
+					  ,cash_equivalents_at_the_end_of
+					  ,cash_rquivalents_at_the_beginn
+					  ,net_increase_in_cash_and_cash_
+					  ,eja_cash_flows_bs_sgmt_id
+					  ,COMPANY
+					  )
+		    values ( #{ejbCashFlows2002SgmtId},
+					#{totalCashInflowsFromOperat_old}, 
+					#{totalCashOutflowsFromOpera_old}, 
+					 #{netCashFlowsFromOperating_old}, 
+					 #{totalCashInflowsFromInvest_old},
+					 #{totalCashOutflowsFromInves_old}, 
+					 #{netCashFlowsFromInvesting_old},
+					#{totalCashInflowsFromFinanc_old}, 
+					 #{totalCashOutflowsFromFinan_old},
+					 #{netCashFlowsFromFinancing_old},
+					#{netIncreaseinCashAndCashE_old}, 
+					 #{cashReceivedFromSalesOfGo_old},
+					 #{taxRefunds_old}, 
+					 #{otherCashReceivedRelatingT_old}, 
+					#{cashPaidForGoodsAndServic_old}, 
+					 #{cashPaidToAndOnBehalfOf_old},
+					 #{paymentsOfAllTypesOfTaxes_old}, 
+					 #{otherCashPaymentsFromOpera_old}, 
+					 #{cashReceivedFromReturnOfI_old}, 
+					 #{cashReceivedFromOnvestments_old}, 
+					 #{netCashReceivedFromDisposa_old}, 
+					#{cashReceivedRelatingToOthe_old}, 
+					#{cashPaidToAcquireFixedAss_old}, 
+					 #{cashPaymentsForInvestments_old},
+					 #{cashPaymentsRelatedToOthT_old}, 
+					 #{cashReceivedFromInvestors_old}, 
+					 #{cashFromBorrowings_old},
+					#{otherCashReceivedRelatingC_old},
+					#{cashRepaymentsForDebts_old}, 
+					 #{cashPaymentsForDistribution_old},
+					 #{cashPaymentsRelatedToOthC_old}, 
+					#{effectOfExchangRateChanges_old},
+					 #{netProfit_old}, 
+					 #{provisionForAssets_old}, 
+					 #{depreciationOfFixedAssets_old}, 
+					 #{amortisationOfIntangibleAss_old}, 
+					 #{longTermDeferredExpensesAm_old}, 
+					 #{decreaseOfDefferedExpenses_old}, 
+					#{additionOfAccuedExpense_old}, 
+					 #{lossesOnDisposalOfFixedAs_old},
+					 #{lossesOnScrappingOfFixedA_old},
+					#{financeExpense_old},
+					#{lossesArsingFromInvestment_old}, 
+					#{deferredTaxCredit_old}, 
+					#{decreaseInInventories_old}, 
+					 #{decreaseinOperatingReceivabl_old}, 
+					 #{increaseinOperatingReceivabl_old},
+					#{others_old}, 
+					#{netCashFlowsFromOperating2_old},
+					 #{debtsTransferToCapital_old}, 
+					#{oneYearDueConvertibleBonds_old},
+					 #{financingRentToTheFixedAs_old},
+					 #{nonCashOthers_old},
+					 #{cashAtTheEndOfPeriod_old},
+					 #{cashAtTheBeginningOfTheP_old},
+					 #{cashEquivalentsAtTheEndOf_old}, 
+					#{cashRquivalentsAtTheBeginn_old},
+					#{netIncreaseInCashAndCash_old},
+					#{ejaCashFlowsBsSgmtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+
+	<!-- 更新    基础段 -->
+	<update id="update2002Sgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_CASH_FLOWS2002
+			set total_cash_inflows_from_operat = #{totalCashInflowsFromOperat_old}, 
+				total_cash_outflows_from_opera = #{totalCashOutflowsFromOpera_old}, 
+				net_cash_flows_from_operating = #{netCashFlowsFromOperating_old}, 
+				total_cash_inflows_from_invest = #{totalCashInflowsFromInvest_old},
+				total_cash_outflows_from_inves =#{totalCashOutflowsFromInves_old},
+				net_cash_flows_from_investing_ = #{netCashFlowsFromInvesting_old},
+				total_cash_inflows_from_financ = #{totalCashInflowsFromFinanc_old}, 
+				total_cash_outflows_from_finan = #{totalCashOutflowsFromFinan_old}, 
+				net_cash_flows_from_financing_ =#{netCashFlowsFromFinancing_old}, 
+				net_increasein_cash_and_cash_e = #{netIncreaseinCashAndCashE_old}, 
+				cash_received_from_sales_of_go = #{cashReceivedFromSalesOfGo_old}, 
+				
+				tax_refunds =#{taxRefunds_old},
+				other_cash_received_relating_t = #{otherCashReceivedRelatingT_old},
+				cash_paid_for_goods_and_servic = #{cashPaidForGoodsAndServic_old}, 
+				cash_paid_to_and_on_behalf_of_ =#{cashPaidToAndOnBehalfOf_old},
+				payments_of_all_types_of_taxes = #{paymentsOfAllTypesOfTaxes_old}, 
+				other_cash_payments_from_opera = #{otherCashPaymentsFromOpera_old},
+				cash_received_from_return_of_i = #{cashReceivedFromReturnOfI_old}, 
+				cash_received_from_onvestments =#{cashReceivedFromOnvestments_old},
+				net_cash_received_from_disposa = #{netCashReceivedFromDisposa_old}, 
+				cash_received_relating_to_othe =#{cashReceivedRelatingToOthe_old},
+				cash_paid_to_acquire_fixed_ass = #{cashPaidToAcquireFixedAss_old}, 
+				cash_payments_for_investments = #{cashPaymentsForInvestments_old},
+				cash_payments_related_to_oth_t = #{cashPaymentsRelatedToOthT_old},
+				cash_received_from_investors = #{cashReceivedFromInvestors_old}, 
+				cash_from_borrowings = #{cashFromBorrowings_old}, 
+				other_cash_received_relating_c = #{otherCashReceivedRelatingC_old}, 
+				cash_repayments_for_debts = #{cashRepaymentsForDebts_old}, 
+				cash_payments_for_distribution = #{cashPaymentsForDistribution_old}, 
+				cash_payments_related_to_oth_c = #{cashPaymentsRelatedToOthC_old},
+				effect_of_exchang_rate_changes = #{effectOfExchangRateChanges_old},
+				
+				net_profit = #{netProfit_old},
+				provision_for_assets = #{provisionForAssets_old}, 
+				depreciation_of_fixed_assets = #{depreciationOfFixedAssets_old},
+				amortisation_of_intangible_ass = #{amortisationOfIntangibleAss_old}, 
+				long_term_deferred_expenses_am = #{longTermDeferredExpensesAm_old},
+				decrease_of_deffered_expenses = #{decreaseOfDefferedExpenses_old}, 
+				addition_of_accued_expense = #{additionOfAccuedExpense_old},
+				losses_on_disposal_of_fixed_as = #{lossesOnDisposalOfFixedAs_old}, 
+				losses_on_scrapping_of_fixed_a = #{lossesOnScrappingOfFixedA_old}, 
+
+				finance_expense = #{financeExpense_old}, 
+				losses_arsing_from_investment = #{lossesArsingFromInvestment_old},
+				deferred_tax_credit = #{deferredTaxCredit_old}, 
+				decrease_in_inventories =#{decreaseInInventories_old},
+				decreasein_operating_receivabl = #{decreaseinOperatingReceivabl_old}, 
+				increasein_operating_receivabl = #{increaseinOperatingReceivabl_old}, 
+
+				others = #{others_old}, 
+				net_cash_flows_from_operating2 =#{netCashFlowsFromOperating2_old}, 
+				debts_transfer_to_capital =#{debtsTransferToCapital_old},
+				one_year_due_convertible_bonds = #{oneYearDueConvertibleBonds_old},
+				financing_rent_to_the_fixed_as = #{financingRentToTheFixedAs_old}, 
+				
+				non_cash_others = #{nonCashOthers_old}, 
+				cash_at_the_end_of_period = #{cashAtTheEndOfPeriod_old}, 
+				cash_at_the_beginning_of_the_p = #{cashAtTheBeginningOfTheP_old},
+				cash_equivalents_at_the_end_of = #{cashEquivalentsAtTheEndOf_old},
+				cash_rquivalents_at_the_beginn = #{cashRquivalentsAtTheBeginn_old},
+				net_increase_in_cash_and_cash_ = #{netIncreaseInCashAndCash_old} 
+		  WHERE eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId} 
+	       and ejb_cash_flows2002_sgmt_id = #{ejbCashFlows2002SgmtId} 
+		  ]]>
+	</update>
+
+	<!-- 删除基础段 -->
+	<delete id="del2002SgmtById" parameterType="map">
+		delete from E_CASH_FLOWS2002
+		 where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId} 
+	       <!-- and ejb_cash_flows2002_sgmt_id = #{ejbCashFlows2002SgmtId}  -->
+	</delete>
+	
+	<!-- 查询 基础段 主键是否存在 -->
+	<select id="get2007SgmtKey" parameterType="map" resultType="int">
+	     select count(1) 
+		  from E_CASH_FLOWS2007
+	     where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId} 
+	       and ejc_cash_flows2007_sgmt_id = #{ejbCashFlows2007SgmtId} 
+	</select>
+	
+	<!-- 新增    基础段 -->
+	<insert id="insert2007Sgmt" parameterType="map">
+		<![CDATA[
+		insert into E_CASH_FLOWS2007(
+					  ejc_cash_flows2007_sgmt_id
+					  ,total_cash_inflows_from_operat 
+					  ,net_cash_flows_from_operating 
+					  ,net_cash_flows_from_investing_ 
+					  ,net_cash_flows_from_financing_ 
+					  ,netincreasein_cash_and_cash_eq 
+					  ,the_final_cash_and_cash_equiva 
+					  ,cash_received_from_sales_of_go 
+					  ,tax_refunds 
+					  ,other_cash_received_relating_j 
+					  ,cash_paid_for_goods_and_servic 
+					  ,cash_paid_to_and_on_beha_lf_of 
+					  ,payments_of_all_types_of_taxes
+					  ,other_cash_payments_from_opera 
+					  ,total_cash_outflows_from_opera 
+					  ,cash_received_from_return_of_i 
+					  ,cash_received_from_onvestments
+					  ,net_cash_received_from_disposa 
+					  ,net_cash_inflows_of_disposal_o
+					  ,cash_received_relating_to_othe
+					  ,total_cash_inflows_from_invest
+					  ,cash_paid_to_acquire_fixed_ass
+					  ,cash_payments_for_investments
+					  ,net_cash_outflows_of_procureme
+					  ,cash_payments_related_to_oth_t
+					  ,sub_total_of_cash_outflows
+					  ,cash_received_from_investors
+					  ,cash_from_borrowings
+					  ,other_cash_received_relating_c
+					  ,total_cash_inflows_from_financ
+					  ,cash_repayments_for_debts
+					  ,cash_payments_for_distribution
+					  ,cash_payments_related_to_oth_c
+					  ,total_cash_outflows_from_finan
+					  ,effect_of_exchang_rate_changes
+					  ,initial_cash_and_cash_equivale
+					  ,net_profit
+					  ,provision_for_asset_impairment
+					  ,depreciation_of_fixed_assets
+					  ,amortisation_of_intangible_ass
+					  ,amortisation_of_long_term_deff
+					  ,decrease_of_deffered_expenses
+					  ,addition_of_accued_expense
+					  ,losses_on_disposal_of_fixed_as
+					  ,losses_on_scrapping_of_fixed_a
+					  ,profit_or_loss_from_changes_in
+					  ,finance_expense
+					  ,losses_arsing_from_investment
+					  ,deferred_income_tax_assets
+					  ,deferred_income_tax_liabilitie
+					  ,decreasein_inventories
+					  ,decreasein_operating_receivabl
+					  ,increase_in_operating_receivab
+					  ,others
+					  ,net_cash_flows_from_operating2
+					  ,debts_transfer_to_capital
+					  ,one_year_due_convertible_bonds
+					  ,financing_rent_to_the_fixed_as
+					  ,non_cash_others
+					  ,cash_at_the_end_of_period
+					  ,cash_at_the_beginning_of_the_p
+					  ,cash_equivalents_at_the_end_of
+					  ,cash_equivalents_at_the_beginn
+					  ,netincreasein_cash_and_cash_e2
+					  ,eja_cash_flows_bs_sgmt_id
+					  ,COMPANY
+					  )
+		    values (#{ejbCashFlows2007SgmtId},
+					 #{totalCashInflowsFromOperat_new},
+					 #{netCashFlowsFromOperating_new},
+					 #{netCashFlowsFromInvesting_new},
+					 	
+					 #{netCashFlowsFromFinancing_new}, 
+					 	
+					 #{netincreaseinCashAndCashEq_new}, 
+					 	
+					 #{theFinalCashAndCashEquiva_new}, 
+					 	
+					#{cashReceivedFromSalesOfGo_new}, 
+					 	
+					#{taxRefunds_new}, 
+					 	
+					 #{otherCashReceivedRelatingJ_new}, 
+					 	
+					#{cashPaidForGoodsAndServic_new}, 
+					 	
+				#{cashPaidToAndOnBehaLfOf_new}, 
+					 	
+					#{paymentsOfAllTypesOfTaxes_new}, 
+					 	
+					#{otherCashPaymentsFromOpera_new}, 
+					 	
+					#{totalCashOutflowsFromOpera_new}, 
+					 	
+					#{cashReceivedFromReturnOfI_new}, 
+					 	
+				#{cashReceivedFromOnvestments_new}, 
+					 	
+					#{netCashReceivedFromDisposa_new}, 
+					 	
+					#{netCashInflowsOfDisposalO_new}, 
+					 	
+					 #{cashReceivedRelatingToOthe_new}, 
+					 	
+					#{totalCashInflowsFromInvest_new}, 
+					 	
+					#{cashPaidToAcquireFixedAss_new}, 
+					 	
+				#{cashPaymentsForInvestments_new}, 
+					 	
+					#{netCashOutflowsOfProcureme_new}, 
+					 	
+					#{cashPaymentsRelatedToOthT_new}, 
+					 	
+				#{subTotalOfCashOutflows_new}, 
+					 	
+					#{cashReceivedFromInvestors_new}, 
+					 	
+					#{cashFromBorrowings_new}, 
+					 	
+				#{otherCashReceivedRelatingC_new}, 
+					 	
+				#{totalCashInflowsFromFinanc_new}, 
+					 	
+					#{cashRepaymentsForDebts_new}, 
+					 	
+					#{cashPaymentsForDistribution_new}, 
+					 	
+					#{cashPaymentsRelatedToOthC_new}, 
+				#{totalCashOutflowsFromFinan_new}, 
+					 	
+					#{effectOfExchangRateChanges_new}, 
+					 	
+					#{initialCashAndCashEquivale_new}, 
+					 	
+					#{netProfit_new}, 
+					 	
+				#{provisionForAssetImpairment_new}, 
+					 	
+					#{depreciationOfFixedAssets_new}, 
+					 	
+					 #{amortisationOfIntangibleAss_new}, 
+					 	
+					 #{amortisationOfLongTermDeff_new}, 
+				#{decreaseOfDefferedExpenses_new}, 
+					 	
+					#{additionOfAccuedExpense_new}, 
+					 	
+					#{lossesOnDisposalOfFixedAs_new}, 
+					 	
+					#{lossesOnScrappingOfFixedA_new}, 
+					 	
+				#{profitOrLossFromChangesIn_new}, 
+					 	
+					#{financeExpense_new}, 
+					 	
+					#{lossesArsingFromInvestment_new}, 
+					 	
+					 #{deferredIncomeTaxAssets_new}, 
+					 	
+				#{deferredIncomeTaxLiabilitie_new}, 
+					 	
+					#{decreaseinInventories_new}, 
+					 	
+					 #{decreaseinOperatingReceivabl_new}, 
+					 	
+					#{increaseInOperatingReceivab_new}, 
+					 	
+					#{others_new}, 
+					 	
+					#{netCashFlowsFromOperating2_new}, 
+					 	
+					#{debtsTransferToCapital_new}, 
+					#{oneYearDueConvertibleBonds_new}, 
+					 	
+					#{financingRentToTheFixedAs_new}, 
+						 	
+					#{nonCashOthers_new}, 
+						 	
+					#{cashAtTheEndOfPeriod_new}, 
+						 	
+					#{cashAtTheBeginningOfTheP_new}, 
+						 	
+					#{cashEquivalentsAtTheEndOf_new}, 
+						 	
+					#{cashEquivalentsAtTheBeginn_new}, 
+						 	
+					#{netincreaseinCashAndCashE2_new}, 
+						 	
+					#{ejaCashFlowsBsSgmtId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+
+	<!-- 更新    基础段 -->
+	<update id="update2007Sgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_CASH_FLOWS2007
+			set total_cash_inflows_from_operat = #{totalCashInflowsFromOperat_new}, 
+						 						 	
+				net_cash_flows_from_operating = #{netCashFlowsFromOperating_new}, 
+						 						 	
+				net_cash_flows_from_investing_ = #{netCashFlowsFromInvesting_new}, 
+						 						 	
+				net_cash_flows_from_financing_ = #{netCashFlowsFromFinancing_new}, 
+						 						 	
+				netincreasein_cash_and_cash_eq = #{netincreaseinCashAndCashEq_new}, 
+						 						 	
+				the_final_cash_and_cash_equiva = #{theFinalCashAndCashEquiva_new}, 
+						 						 	
+				cash_received_from_sales_of_go = #{cashReceivedFromSalesOfGo_new}, 
+				 
+				tax_refunds = #{taxRefunds_new},
+		 						 	
+					 						 	
+				other_cash_received_relating_j = #{otherCashReceivedRelatingJ_new}, 
+						 						 	
+				cash_paid_for_goods_and_servic = #{cashPaidForGoodsAndServic_new}, 
+						 						 	
+				cash_paid_to_and_on_beha_lf_of =#{cashPaidToAndOnBehaLfOf_new}, 
+						 						 	
+				payments_of_all_types_of_taxes = #{paymentsOfAllTypesOfTaxes_new}, 
+						 						 	
+				other_cash_payments_from_opera = #{otherCashPaymentsFromOpera_new}, 
+						 						 	
+				total_cash_outflows_from_opera = #{totalCashOutflowsFromOpera_new}, 
+						 						 	
+				cash_received_from_return_of_i = #{cashReceivedFromReturnOfI_new}, 
+						 						 	
+				cash_received_from_onvestments = #{cashReceivedFromOnvestments_new}, 
+						 						 	
+				net_cash_received_from_disposa = #{netCashReceivedFromDisposa_new}, 
+						 						 	
+				net_cash_inflows_of_disposal_o =#{netCashInflowsOfDisposalO_new}, 
+						 						 	
+				cash_received_relating_to_othe = #{cashReceivedRelatingToOthe_new}, 
+						 						 	
+				total_cash_inflows_from_invest = #{totalCashInflowsFromInvest_new}, 
+						 						 	
+				cash_paid_to_acquire_fixed_ass = #{cashPaidToAcquireFixedAss_new}, 
+						 						 	
+				cash_payments_for_investments = #{cashPaymentsForInvestments_new}, 
+						 						 	
+				net_cash_outflows_of_procureme = #{netCashOutflowsOfProcureme_new}, 
+						 						 	
+				cash_payments_related_to_oth_t = #{cashPaymentsRelatedToOthT_new}, 
+						 						 	
+				sub_total_of_cash_outflows = #{subTotalOfCashOutflows_new}, 
+						 						 	
+				cash_received_from_investors = #{cashReceivedFromInvestors_new}, 
+						 						 	
+				cash_from_borrowings = #{cashFromBorrowings_new}, 
+						 						 	
+				other_cash_received_relating_c =#{otherCashReceivedRelatingC_new}, 
+						 						 	
+				total_cash_inflows_from_financ = #{totalCashInflowsFromFinanc_new}, 
+						 						 	
+				cash_repayments_for_debts = #{cashRepaymentsForDebts_new}, 
+						 						 	
+				cash_payments_for_distribution =#{cashPaymentsForDistribution_new}, 
+						 						 	
+				cash_payments_related_to_oth_c = #{cashPaymentsRelatedToOthC_new}, 
+						 						 	
+				total_cash_outflows_from_finan = #{totalCashOutflowsFromFinan_new}, 
+						 						 	
+				effect_of_exchang_rate_changes = #{effectOfExchangRateChanges_new}, 
+						 						 	
+				initial_cash_and_cash_equivale = #{initialCashAndCashEquivale_new}, 
+						 						 	
+ 
+				net_profit = #{netProfit_new},	 						 	
+				provision_for_asset_impairment =#{provisionForAssetImpairment_new}, 
+						 						 	
+				depreciation_of_fixed_assets = #{depreciationOfFixedAssets_new}, 
+						 						 	
+				amortisation_of_intangible_ass = #{amortisationOfIntangibleAss_new}, 
+						 						 	
+				amortisation_of_long_term_deff = #{amortisationOfLongTermDeff_new}, 
+						 						 	
+				decrease_of_deffered_expenses = #{decreaseOfDefferedExpenses_new}, 
+						 						 	
+				addition_of_accued_expense = #{additionOfAccuedExpense_new}, 
+						 						 	
+				losses_on_disposal_of_fixed_as = #{lossesOnDisposalOfFixedAs_new}, 
+						 						 	
+				losses_on_scrapping_of_fixed_a = #{lossesOnScrappingOfFixedA_new}, 
+						 						 	
+				profit_or_loss_from_changes_in = #{profitOrLossFromChangesIn_new}, 
+						 						 	
+				 
+				finance_expense = #{financeExpense_new},		 						 	
+				losses_arsing_from_investment = #{lossesArsingFromInvestment_new}, 
+						 						 	
+				deferred_income_tax_assets = #{deferredIncomeTaxAssets_new}, 
+						 						 	
+				deferred_income_tax_liabilitie = #{deferredIncomeTaxLiabilitie_new}, 
+						 						 	
+				decreasein_inventories = #{decreaseinInventories_new}, 
+						 						 	
+				decreasein_operating_receivabl = #{decreaseinOperatingReceivabl_new}, 
+						 						 	
+				increase_in_operating_receivab = #{increaseInOperatingReceivab_new}, 
+						 						 	
+				
+				others = #{others_new}, 		 						 	
+				net_cash_flows_from_operating2 =#{netCashFlowsFromOperating2_new}, 
+						 						 	
+				debts_transfer_to_capital = #{debtsTransferToCapital_new}, 
+						 						 	
+				one_year_due_convertible_bonds = #{oneYearDueConvertibleBonds_new}, 
+						 						 	
+				financing_rent_to_the_fixed_as = #{financingRentToTheFixedAs_new}, 
+												 	
+				 
+				non_cash_others = #{nonCashOthers_new},								 	
+				cash_at_the_end_of_period = #{cashAtTheEndOfPeriod_new}, 
+												 	
+				cash_at_the_beginning_of_the_p = #{cashAtTheBeginningOfTheP_new}, 
+												 	
+				cash_equivalents_at_the_end_of =#{cashEquivalentsAtTheEndOf_new}, 
+												 	
+				cash_equivalents_at_the_beginn = #{cashEquivalentsAtTheBeginn_new}, 
+												 	
+				netincreasein_cash_and_cash_e2 = #{netincreaseinCashAndCashE2_new}
+		  WHERE eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId} 
+	       and ejc_cash_flows2007_sgmt_id = #{ejbCashFlows2007SgmtId} 
+		  ]]>
+	</update>
+
+	<!-- 删除基础段 -->
+	<delete id="del2007SgmtById" parameterType="map">
+		delete from E_CASH_FLOWS2007
+		 where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId} 
+	       <!-- and ejc_cash_flows2007_sgmt_id = #{ejbCashFlows2007SgmtId} -->
+	</delete>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReportSerialNumberMapper">
+
+    <!-- 流水号表 -->
+    <sql id="tableName">
+		SERIAL_NUMBER_TABLE
+	</sql>
+
+    <sql id="fields">
+		ID,
+		SERIAL_NUMBER,
+		INF_REC_TYPE,
+		EXTRACT_DATE
+	</sql>
+
+    <resultMap type="com.dcits.supervise.pecr.generateReport.entity.SerialNumberEntity" id="numResultMap">
+        <result column="ID"  property="id"/>
+        <result column="SERIAL_NUMBER"  property="serial_number"/>
+        <result column="INF_REC_TYPE"  property="infRecType"/>
+        <result column="EXTRACT_DATE"  property="extractDate"/>
+    </resultMap>
+    
+    <select id="getLock" parameterType="pd" resultType="pd">
+           SELECT ID,SERIAL_NUMBER,INF_REC_TYPE,EXTRACT_DATE FROM SERIAL_NUMBER_TABLE 
+           	WHERE INF_REC_TYPE = #{inRefType} 
+           		AND COMPANY = #{company}
+	</select>
+	<!-- 新增流水号 -->
+	<insert id="insertSerivalNumber" parameterType="pd">
+        insert into SERIAL_NUMBER_TABLE(
+        			ID,
+        			SERIAL_NUMBER,
+        			INF_REC_TYPE,
+        			EXTRACT_DATE,
+        			COMPANY
+        			)
+        			values(
+        			#{ID},
+        			#{serialNumber},
+        			#{inRefType},
+        			#{extractDate},
+        			#{company}
+        			)
+        
+    </insert>
+    
+    <delete id="deleteSerivalNumber" parameterType="pd">
+    	delete from SERIAL_NUMBER_TABLE where ID = #{ID} and SERIAL_NUMBER = #{serialNumber}
+    			and INF_REC_TYPE = #{inRefType} and EXTRACT_DATE = #{extractDate} and COMPANY = #{company}
+    </delete>
+	
+    <update id="updateSerivalNumber" parameterType="java.util.HashMap">
+        update
+        <include refid="tableName"/>
+        set 	SERIAL_NUMBER = #{serialNumber},
+        		EXTRACT_DATE = #{extractDate}
+        WHERE 	INF_REC_TYPE=#{inRefType}
+        		AND COMPANY = #{company}
+    </update>
+
+</mapper>

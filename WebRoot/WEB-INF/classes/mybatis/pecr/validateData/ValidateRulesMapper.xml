@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ValidateRulesMapper">
+
+
+  <resultMap id="BaseResultMap" type="com.dcits.supervise.pecr.validateData.model.ValidateRules">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="RULE_NAME" jdbcType="VARCHAR" property="ruleName" />
+    <result column="RULE_TYPE" jdbcType="VARCHAR" property="ruleType" />
+    <result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
+    <result column="TABLE_FIELD" jdbcType="VARCHAR" property="tableField" />
+    <result column="TEMPLATE_NAME" jdbcType="VARCHAR" property="templateName" />
+    <result column="RULE_COMMENT" jdbcType="VARCHAR" property="ruleComment" />
+    <result column="SUBJECT" jdbcType="VARCHAR" property="subject" />
+    <result column="IS_FORCE" jdbcType="VARCHAR" property="isForce" />
+    <result column="IS_MULTI_TABLE" jdbcType="VARCHAR" property="isMultiTable" />
+    <result column="TABLE_PK" jdbcType="VARCHAR" property="tablePk" />
+    <result column="ACTION" jdbcType="VARCHAR" property="action" />
+    <result column="SEQ" jdbcType="DECIMAL" property="seq" />
+  </resultMap>
+  
+ <sql id="Base_Column_List">
+     ID, RULE_NAME, RULE_TYPE, TABLE_NAME, TABLE_FIELD, TEMPLATE_NAME, RULE_COMMENT, SUBJECT, 
+    IS_FORCE, IS_MULTI_TABLE, TABLE_PK, ACTION, SEQ
+  </sql>
+  
+  <sql id="tableName">
+  	VALIDATE_RULES
+  </sql>
+
+	<select id="selectByCondition" parameterType="map" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from <include refid="tableName"/>
+		where 1=1
+		<if test='tableName != null and tableName != ""'>
+			and TABLE_NAME = #{tableName}
+		</if>
+		<if test='types != null and types.size >0 '>
+		and
+			<foreach collection="types" item="item" index="index" open="(" close=")" separator="or">
+				RULE_TYPE = #{item}
+			</foreach>
+		</if>
+		<if test='isMultiTable != null and isMultiTable != ""'>
+			and IS_MULTI_TABLE = #{isMultiTable}
+		</if>
+	</select>
+	
+	<select id="selectOneByCondition" parameterType="map" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from <include refid="tableName"/>
+		where 1=1
+		<if test='tableName != null and tableName != ""'>
+			and TABLE_NAME = #{tableName}
+		</if>
+		<if test='types != null and types.size >0 '>
+		and
+			<foreach collection="types" item="item" index="index" open="(" close=")" separator="or">
+				RULE_TYPE = #{item}
+			</foreach>
+		</if>
+		<if test='isMultiTable != null and isMultiTable != ""'>
+			and IS_MULTI_TABLE = #{isMultiTable}
+		</if>
+	</select>
+
+</mapper>

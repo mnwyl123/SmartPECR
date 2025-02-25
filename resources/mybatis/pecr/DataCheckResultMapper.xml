@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DataCheckResultMapper">
+	<!-- 校验结果查看 -->
+	<select id="findResultlistPage" parameterType="page" resultType="pd">
+		select t.check_task_name,
+		       t.belong_subject,
+		       t.execute_result,
+		       t.start_time,
+		       t.spend_time,
+		       t.result_statistic
+		  from data_check_result t 
+	</select>
+</mapper>

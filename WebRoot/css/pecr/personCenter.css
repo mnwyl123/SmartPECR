@@ -1,0 +1,27 @@
+/**
+ * 公共样式表
+ * 网页布局
+ */
+/*公共样式*/
+html,body{
+	width: 100%;
+	height: 100%;
+	font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Tahoma", "Hiragino Sans GB", "STHeiti", "Microsoft YaHei";
+	font-size: 13px;
+	overflow: hidden;
+}
+/*个人中心界面布局*/
+.wrap-box{
+	width: 450px;
+	height: 240px;
+	padding: 10px;
+}
+.layui-tab-content{
+	padding: 20px 0;
+}
+.layui-form .layui-form-item .layui-inline{
+	margin: 0 0 10px;
+}
+.layui-form .layui-btn{
+	margin: 0;
+}

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indvObjWebServiceMapper">
+
+    <resultMap id="listObjection" type="com.dcits.supervise.pecr.objectionHanding.entity.CreditCenterObjHandingEntity">
+        <result column="CREDIT_CENTER_OBJ_HANDING_ID" property="creditCenterObjHandingId"></result>
+        <result column="OBJ_CHECK_ID" property="objCheckId"></result>
+        <result column="OBJ_CHECK_NUM" property="objCheckNum"></result>
+        <result column="CHECK_BEGIN_DATE" property="checkBeginDate"></result>
+        <result column="NAME" property="name"></result>
+        <result column="ID_TYPE" property="idType"></result>
+        <result column="ID_NUM" property="idNum"></result>
+        <result column="PHONE_NUM" property="phoneNum"></result>
+        <result column="OBJ_ITEM_INF" property="objItemInf"></result>
+        <result column="OBJ_ITEM_DESC" property="objItemDesc"></result>
+        <result column="DATA_PROVIDER_ORG_CODE" property="dataProviderOrgCode"></result>
+        <result column="DATA_OCCUR_ORG_CODE" property="dataOccurOrgCode"></result>
+        <result column="BUSINESS_CODE" property="businessCode"></result>
+        <result column="BUSINESS_TYPE" property="businessType"></result>
+        <result column="CHECK_FINAL_DATE" property="checkFinalDate"></result>
+        <result column="DATA_OCCUR_DATE" property="dataOccurDate"></result>
+        <result column="DATA_OCCUR_AMOUNT" property="dataOccurAmount"></result>
+        <result column="ENCLOSURE_FLAG" property="enclosureFlag"></result>
+        <result column="AIRMF_RESULT_CODE" property="airmfResultCode"></result>
+        <result column="AIRMF_RESULT_DESC" property="airmfResultDesc"></result>
+        <result column="AIRMF_ENCLOSURE_FLAG" property="airmfEnclosureFlag"></result>
+        <result column="AIRMF_ENCLOSURE_INF" property="airmfEnclosureInf"></result>
+        <result column="RFIVR_CHECK_RESULT" property="rfIvrCheckResult"></result>
+        <result column="RFIVR_CHECK_RESULT_DESC" property="rfIvrCheckResultDesc"></result>
+        <result column="AFIVR_RESULT_CODE" property="afIvrResultCode"></result>
+        <result column="AFIVR_RESULT_DESC" property="afIvrResultDesc"></result>
+        <result column="FOPOACRR_CORRECT_RESULT" property="fopoacrrCorrectResult"></result>
+        <result column="FOPOACRR_ENCLOSURE_INF" property="fopoacrrEnclosureInf"></result>
+        <result column="FOPOACRR_CORRECT_DESC" property="fopoacrrCorrectDesc"></result>
+        <result column="FOPOACR_RESULT_CODE" property="fopoacrResultCode"></result>
+        <result column="FOPOACR_RESULT_DESC" property="fopoacrResultDesc"></result>
+        <result column="POCRASR_RESULT_CODE" property="pocrasrResultCode"></result>
+        <result column="POCRASR_RESULT_DESC" property="pocrasrResultDesc"></result>
+        <result column="POCRASR_CORRECT_ACCEPT_FLAG" property="pocrasrCorrectAcceptFlag"></result>
+        <result column="POCRASR_CORRECT_OPINION" property="pocrasrCorrectOpinion"></result>
+        <result column="APLR_LOCATE_INF_NM" property="aplrLocateInfNm"></result>
+        <result column="APLR_OBJ_DESC" property="aplrObjDesc"></result>
+        <result column="APAR_RESULT_CODE" property="aparResultCode"></result>
+        <result column="APAR_RESULT_DESC" property="aparResultDesc"></result>
+        <result column="APAR_SERVICE_RETURN_CODE" property="aparServiceReturnCode"></result>
+        <result column="DAR_RESULT_CODE" property="darResultCode"></result>
+        <result column="DAR_RESULT_DESC" property="darResultDesc"></result>
+    </resultMap>
+
+    <resultMap id="listHistoricalCheckInf" type="com.dcits.supervise.pecr.objectionHanding.entity.HistoricalCheckInfEntity">
+        <result column="HISTORICAL_CHECK_INF_ID" property="historicalCheckInfId"></result>
+        <result column="CREDIT_CENTER_OBJ_HANDING_ID" property="creditCenterObjHandingId"></result>
+        <result column="CHECK_TIME" property="checkTime"></result>
+        <result column="CHECK_RESULT" property="checkResult"></result>
+        <result column="CHECK_RESULT_DESC" property="checkResultDesc"></result>
+        <result column="CHECK_USER_CODE" property="checkOrgCode"></result>
+        <result column="PHONE_NUM" property="phoneNum"></result>
+        <result column="CHECK_ACCEPT_FLAG" property="checkAcceptFlag"></result>
+        <result column="CHECK_OPINION" property="checkOpinion"></result>
+    </resultMap>
+    
+    <resultMap id="listLocateInf" type="com.dcits.supervise.pecr.objectionHanding.entity.LocateInfEntity">
+        <result column="LOCATE_INF_ID" property="locateInfId"></result>
+        <result column="CREDIT_CENTER_OBJ_HANDING_ID" property="creditCenterObjHandingId"></result>
+        <result column="LOCATE_INF_TYPE" property="locateInfType"></result>
+    </resultMap>
+
+
+    <!--插入异议事项单信息-->
+    <insert id="insertToCheckInf" parameterType="map">
+        <selectKey keyProperty="" order="BEFORE" resultType="String">
+        	<if test="_databaseId == 'oracle' ">
+			  select SYS_GUID() as Credit_Center_Obj_Handing_ID from dual
+			</if>
+			<if test="_databaseId == 'db2'">
+			SELECT concat (hex (RAND ()), hex (RAND ())) as Credit_Center_Obj_Handing_ID FROM SYSIBM.SYSDUMMY1
+			</if>
+        </selectKey>
+        insert into CREDIT_CENTER_OBJ_HANDING (
+        OBJ_CHECK_ID,OBJ_CHECK_NUM,CHECK_BEGIN_DATE,NAME,ID_TYPE,ID_NUM,PHONE_NUM,
+        OBJ_ITEM_INF,OBJ_ITEM_DESC,DATA_PROVIDER_ORG_CODE,
+        DATA_OCCUR_ORG_CODE,BUSINESS_CODE,BUSINESS_TYPE,CHECK_FINAL_DATE,DATA_OCCUR_DATE,
+        DATA_OCCUR_AMOUNT,ENCLOSURE_FLAG
+        ) values (
+        #{objCheckId,jdbcType=VARCHAR},
+        #{objCheckNum,jdbcType=VARCHAR},
+        #{name,jdbcType=VARCHAR},
+        #{idType,jdbcType=VARCHAR},
+        #{idNum,jdbcType=VARCHAR},
+        #{phoneNum,jdbcType=VARCHAR},
+        #{objItemInf,jdbcType=VARCHAR},
+        #{objItemDesc,jdbcType=VARCHAR},
+        #{dataProviderOrgCode,jdbcType=VARCHAR},
+        #{dataOccurOrgCode,jdbcType=VARCHAR},
+        #{businessCode,jdbcType=VARCHAR},
+        #{businessType,jdbcType=VARCHAR},
+        #{checkFinalDate,jdbcType=VARCHAR},
+        #{dataOccurDate,jdbcType=VARCHAR},
+        #{dataOccurAmount,jdbcType=VARCHAR},
+        #{enclosureFlag,jdbcType=VARCHAR});
+    </insert>
+
+    <!--插入核查历史信息-->
+    <insert id="insertHistoricalCheckInf" parameterType="map">
+        insert into Historical_Check_Inf(CREDIT_CENTER_OBJ_HANDING_ID, CHECK_TIME, CHECK_RESULT, CHECK_RESULT_DESC,
+                                         CHECK_ORG_CODE, CHECK_USER_CODE, PHONE_NUM, CHECK_ACCEPT_FLAG, CHECK_OPINION)
+        values (#{creditCenterObjHandingId,jdbcType=VARCHAR},
+                #{checkTime,jdbcType=VARCHAR},
+                #{checkResult,jdbcType=VARCHAR},
+                #{checkResultDesc,jdbcType=VARCHAR},
+                #{checkOrgCode,jdbcType=VARCHAR},
+                #{checkUserCode,jdbcType=VARCHAR},
+                #{phoneNum,jdbcType=VARCHAR},
+                #{checkAcceptFlag,jdbcType=VARCHAR},
+                #{checkOpinion,jdbcType=VARCHAR});
+    </insert>
+
+    <!--更新异议附件信息-->
+    <update id="updateObjAnnexById" parameterType="map">
+        update CREDIT_CENTER_OBJ_HANDING set
+        <if test="resultCode != null and resultCode != ''">
+            AIRMF_RESULT_CODE = #{resultCode,jdbcType=VARCHAR}
+        </if>
+        <if test="resultDesc != null and resultDesc != ''">
+            ,AIRMF_RESULT_DESC = #{resultDesc,jdbcType=VARCHAR}
+        </if>
+        <if test="enclosureFlag != null and enclosureFlag != ''">
+            ,AIRMF_ENCLOSURE_FLAG = #{enclosureFlag,jdbcType=VARCHAR}
+        </if>
+        <if test="enclosureInf != null and enclosureInf != ''">
+            ,AIRMF_ENCLOSURE_INF = #{enclosureInf,jdbcType=VARCHAR}
+        </if>
+        where OBJ_CHECK_ID = #{objCheckId,jdbcType=VARCHAR}
+    </update>
+
+    <!--更新异议反馈核查结果信息-->
+    <update id="updateFeedbackCheckResultById" parameterType="map">
+        update CREDIT_CENTER_OBJ_HANDING set
+        <if test="rfIvrCheckResult != null and rfIvrCheckResult != ''">
+            RFIVR_CHECK_RESULT = #{rfIvrCheckResult,jdbcType=VARCHAR}
+        </if>
+        <if test="rfIvrCheckResultDesc != null and rfIvrCheckResultDesc != ''">
+            ,RFIVR_CHECK_RESULT_DESC = #{rfIvrCheckResultDesc,jdbcType=VARCHAR}
+        </if>
+        <if test="afIvrResultCode != null and afIvrResultCode != ''">
+            ,AFIVR_RESULT_CODE = #{afIvrResultCode,jdbcType=VARCHAR}
+        </if>
+        <if test="afIvrResultDesc != null and afIvrResultDesc != ''">
+            ,AFIVR_RESULT_DESC = #{afIvrResultDesc,jdbcType=VARCHAR}
+        </if>
+        where OBJ_CHECK_ID = #{objCheckId,jdbcType=VARCHAR}
+    </update>
+
+    <!--更新异议反馈更正结果信息-->
+    <update id="updateFeedbackCorrectResultById" parameterType="map">
+        update CREDIT_CENTER_OBJ_HANDING set
+        <if test="fopoacrrCorrectResult != null and fopoacrrCorrectResult != ''">
+            FOPOACRR_CORRECT_RESULT = #{fopoacrrCorrectResult,jdbcType=VARCHAR}
+        </if>
+        <if test="fopoacrrEnclosureInf != null and fopoacrrEnclosureInf != ''">
+            ,FOPOACRR_ENCLOSURE_INF = #{fopoacrrEnclosureInf,jdbcType=VARCHAR}
+        </if>
+        <if test="fopoacrrCorrectDesc != null and fopoacrrCorrectDesc != ''">
+            ,FOPOACRR_CORRECT_DESC = #{fopoacrrCorrectDesc,jdbcType=VARCHAR}
+        </if>
+        <if test="fopoacrResultCode != null and fopoacrResultCode != ''">
+            ,FOPOACR_RESULT_CODE = #{fopoacrResultCode,jdbcType=VARCHAR}
+        </if>
+        <if test="fopoacrResultDesc != null and fopoacrResultDesc != ''">
+            ,FOPOACR_RESULT_DESC = #{fopoacrResultDesc,jdbcType=VARCHAR}
+        </if>
+        where OBJ_CHECK_ID = #{objCheckId,jdbcType=VARCHAR}
+    </update>
+
+    <!--更新异议更正结果接收情况-->
+    <update id="updateReceiveResultById" parameterType="map">
+        update CREDIT_CENTER_OBJ_HANDING set
+        <if test="pocrasrResultCode != null and pocrasrResultCode != ''">
+            FOPOACRR_CORRECT_RESULT = #{pocrasrResultCode,jdbcType=VARCHAR}
+        </if>
+        <if test="pocrasrResultDesc != null and pocrasrResultDesc != ''">
+            ,FOPOACRR_ENCLOSURE_INF = #{pocrasrResultDesc,jdbcType=VARCHAR}
+        </if>
+        <if test="pocrasrCorrectAcceptFlag != null and pocrasrCorrectAcceptFlag != ''">
+            ,FOPOACRR_CORRECT_DESC = #{pocrasrCorrectAcceptFlag,jdbcType=VARCHAR}
+        </if>
+        <if test="pocrasrCorrectOpinion != null and pocrasrCorrectOpinion != ''">
+            ,FOPOACR_RESULT_CODE = #{pocrasrCorrectOpinion,jdbcType=VARCHAR}
+        </if>
+        where OBJ_CHECK_ID = #{objCheckId,jdbcType=VARCHAR}
+    </update>
+
+    <!--更新添加个人异议标注-->
+    <update id="updateAddObjLabelById" parameterType="map">
+        update CREDIT_CENTER_OBJ_HANDING set
+        <if test="aplrLocateInfNm != null and aplrLocateInfNm != ''">
+            APLR_LOCATE_INF_NM = #{aplrLocateInfNm,jdbcType=VARCHAR}
+        </if>
+        <if test="aplrObjDesc != null and aplrObjDesc != ''">
+            ,APLR_OBJ_DESC = #{aplrObjDesc,jdbcType=VARCHAR}
+        </if>
+        <if test="aparResultCode != null and aparResultCode != ''">
+            ,APAR_RESULT_CODE = #{aparResultCode,jdbcType=VARCHAR}
+        </if>
+        <if test="aparResultDesc != null and aparResultDesc != ''">
+            ,APAR_RESULT_DESC = #{aparResultDesc,jdbcType=VARCHAR}
+        </if>
+        <if test="aparServiceReturnCode != null and aparServiceReturnCode != ''">
+            ,APAR_SERVICE_RETURN_CODE = #{aparServiceReturnCode,jdbcType=VARCHAR}
+        </if>
+        where OBJ_CHECK_ID = #{objCheckId,jdbcType=VARCHAR}
+    </update>
+
+    <!--更新删除个人异议标注-->
+    <update id="updateDeleteObjLabelById" parameterType="map">
+        update CREDIT_CENTER_OBJ_HANDING set
+        <if test="darResultCode != null and darResultCode != ''">
+            DAR_RESULT_CODE = #{darResultCode,jdbcType=VARCHAR}
+        </if>
+        <if test="darResultDesc != null and darResultDesc != ''">
+            ,DAR_RESULT_DESC = #{darResultDesc,jdbcType=VARCHAR}
+        </if>
+        where OBJ_CHECK_ID = #{objCheckId,jdbcType=VARCHAR}
+    </update>
+
+    <!--获取异议列表-->
+    <select id="objectionlistPage" parameterType="page" resultMap="listObjection">
+        select * from CREDIT_CENTER_OBJ_HANDING where 1=1
+        <if test="pd.objCheckId != null and pd.objCheckId != ''">
+            AND OBJ_CHECK_ID like '%${pd.objCheckId}%'
+        </if>
+        <if test="pd.idNum != null and pd.idNum != ''">
+            AND ID_NUM like '%${pd.idNum}%'
+        </if>
+        <if test="pd.phoneNum != null and pd.phoneNum != ''">
+            AND PHONE_NUM like'%${pd.phoneNum}%'
+        </if>
+    </select>
+
+    <!--根据ID插入定位信息-->
+    <insert id="insertLocalInfById">
+        insert into LOCATE_INF (CREDIT_CENTER_OBJ_HANDING_ID, LOCATE_INF_TYPE)
+        values (#{creditCenterObjHandingId,jdbcType=VARCHAR},
+                #{locateInfType,jdbcType=VARCHAR})
+    </insert>
+
+    <!--根据ID删除异议事项单-->
+    <delete id="deleteToCheckObjectionById" parameterType="String">
+        delete
+        from CREDIT_CENTER_OBJ_HANDING
+        where CREDIT_CENTER_OBJ_HANDING_ID = #{creditCenterObjHandingId,jdbcType=VARCHAR}
+    </delete>
+
+    <!--根据ID删除历史核查信息-->
+    <delete id="deleteHistoricalCheckInf" parameterType="String">
+        delete
+        from HISTORICAL_CHECK_INF
+        where CREDIT_CENTER_OBJ_HANDING_ID = #{creditCenterObjHandingId,jdbcType=VARCHAR}
+    </delete>
+
+    <!--根据ID删除定位信息-->
+    <delete id="deleteLocateInf" parameterType="String">
+        delete
+        from LOCATE_INF
+        where CREDIT_CENTER_OBJ_HANDING_ID = #{creditCenterObjHandingId,jdbcType=VARCHAR}
+    </delete>
+
+    <!--根据ID查询异议事项单信息-->
+    <select id="getToCheckObjectionById" parameterType="pd" resultType="pd">
+        select *
+        from CREDIT_CENTER_OBJ_HANDING
+        where CREDIT_CENTER_OBJ_HANDING_ID = #{creditCenterObjHandingId,jdbcType=VARCHAR}
+    </select>
+
+    <!--根据ID查询历史核查信息-->
+    <select id="getHistoricalCheckInfById" parameterType="String" resultMap="listHistoricalCheckInf">
+        select *
+        from Historical_Check_Inf
+        where CREDIT_CENTER_OBJ_HANDING_ID = #{creditCenterObjHandingId,jdbcType=VARCHAR}
+    </select>
+
+    <!--根据ID查询定位信息-->
+    <select id="getLocateInfById" parameterType="String" resultMap="listLocateInf">
+        select *
+        from Locate_Inf
+        where CREDIT_CENTER_OBJ_HANDING_ID = #{creditCenterObjHandingId,jdbcType=VARCHAR}
+    </select>
+</mapper>

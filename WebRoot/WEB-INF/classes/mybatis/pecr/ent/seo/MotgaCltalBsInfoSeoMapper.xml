@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MotgaCltalBsInfoSeoMapper">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.MotgaCltalCtrctBsSgmt" id="motgaCltalInfoResultMap">
+		<result column="EFA_MOTGA_CLTAL_CTRCT_BS_ID" property="efaMotgaCltalCtrctBsId" />
+		<result column="INF_REC_TYPE" property="infRecType" />
+		<result column="CC_CODE" property="ccCode" />
+		<result column="RPT_DATE" property="rptDate" />
+		<result column="RPT_DATE_CODE" property="rptDateCode" />
+		<result column="INFO_ID_TYPE" property="infoIdType" />
+		<result column="NAME" property="name" />
+		<result column="CERT_TYPE" property="certType" />
+		<result column="CERT_NUM" property="certNum" />
+		<result column="MNGMT_ORG_CODE" property="mngmtOrgCode" />
+		<result column="BUSINESS_STATES" property="businessStates" />
+		<result column="REJECT_REASON" property="rejectReason" />
+		<result column="FLAG" property="flag" />
+		<result column="report_message_id" property="reportMessageId" />
+	</resultMap>
+	<select id="datalistPage" parameterType="page" resultType="pd">
+			  select 
+				 CC_CODE,
+				 EXTEND1 AS NAME,
+				 EXTEND2 AS ID_NUM,
+				 EXTEND3 AS CUSTOMERID
+			  from MOTGA_CLTAL_CTRCT_BS_MIDDLE
+			  <if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m M
+					ON CC_CODE = M.ACCT_NUM
+			  </if>
+			  where 1=1		
+			   	  <if test='pd.CC_CODE != null and pd.CC_CODE != ""'>
+			   	  	and CC_CODE = #{pd.CC_CODE}
+			   	  </if>
+			   	  <if test='pd.ID_NUM != null and pd.ID_NUM != ""'>
+			   	  	and EXTEND2 = #{pd.ID_NUM}
+			   	  </if>
+			   	  <if test='pd.CUSTOMERID != null and pd.CUSTOMERID != ""'>
+			   	  	and EXTEND3 = #{pd.CUSTOMERID}
+			   	  </if>
+			   	   <if test="pd.managerId != null and pd.managerId != ''">
+						and M.MANAGER_ID = #{pd.managerId}
+						AND M.DATA_TYPE = '2'
+						AND M.DATA_LEVEL = '5'
+		   				AND M.END_DATE = '2099-12-31'
+				  </if>
+			   	 AND COMPANY = #{pd.COMPANY}
+	</select>
+	<!-- 抵（质）押合同信息 基础段 -->
+	<select id="dataHistlistPage" parameterType="page" resultMap="motgaCltalInfoResultMap">
+	select * from (
+		 select efa_motga_cltal_ctrct_bs_id,
+				inf_rec_type,
+				cc_code,
+				rpt_date,
+				rpt_date_code,
+				info_id_type,
+				name,
+				cert_type,
+				cert_num,
+				mngmt_org_code,
+				business_states,
+			    reject_reason,
+			    report_message_id,
+			    'new' FLAG,
+			    COMPANY
+		   from MOTGA_CLTAL_CTRCT_BS
+		  where CC_CODE = #{pd.CC_CODE}
+		  union all
+		  select efa_motga_cltal_ctrct_bs_id,
+				inf_rec_type,
+				cc_code,
+				rpt_date,
+				rpt_date_code,
+				info_id_type,
+				name,
+				cert_type,
+				cert_num,
+				mngmt_org_code,
+				business_states,
+			    reject_reason,
+			    report_message_id,
+			    'old' FLAG,
+			    COMPANY
+		   from MOTGA_CLTAL_CTRCT_BS_hist
+		  where CC_CODE = #{pd.CC_CODE}
+		  ) a
+  		where 1=1
+	   	  <if test='pd.RPT_DATE != null and pd.RPT_DATE != ""'>
+	   	  	and a.rpt_date = #{pd.RPT_DATE}
+	   	  </if>
+	   	    and a.COMPANY = #{pd.COMPANY}
+			
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 基础段 -->
+	<select id="getMotgaCltalBsSgmtById" parameterType="pd" resultType="map">
+		 select efa_motga_cltal_ctrct_bs_id,
+				inf_rec_type,
+				cc_code,
+				rpt_date,
+				rpt_date_code,
+				info_id_type,
+				name,
+				cert_type,
+				cert_num,
+				mngmt_org_code,
+				last_update_time,
+				operator_user,
+				org_name,
+				org_code,
+				business_states,
+				is_filter,
+				reject_reason
+		   from MOTGA_CLTAL_CTRCT_BS_HIST
+		  where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+		  	and COMPANY = #{COMPANY}
+	</select>
+	<!-- 详情或者修改 查询指定记录 基本信息段 -->
+	<select id="getMotgaCltalInfById" parameterType="pd" resultType="pd">
+		 select efb_motga_cltal_bs_inf_sgmt_id,
+				guar_type,
+				cc_amt,
+				cy,
+				cc_val_date,
+				cc_exp_date,
+				max_guar,
+				cc_status
+		   from MOTGA_CLTAL_BS_INF_HIST
+		  where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+	</select>
+	<!-- 详情或者修改 查询指定记录 其他债务人信息段 -->
+	<select id="getComRecInfSgmtByIdlistPage" parameterType="page" resultType="pd">
+		 select efc_com_rec_inf_sgmt_id,
+				info_id_type,
+				guar_name,
+				guar_cert_type,
+				guar_cert_num
+		   from MOTGA_COM_REC_INF_HIST
+		  where efa_motga_cltal_ctrct_bs_id = #{pd.efaMotgaCltalCtrctBsId}
+	</select>
+	<!-- 详情或者修改 查询指定记录  抵押物信息段 -->
+	<select id="getMotgaProptInfByIdlistPage" parameterType="page" resultType="pd">
+		 select efd_motga_propt_inf_sgmt_id,
+		        ple_type,
+				motga_propt_id_type,
+				ple_cert_id,
+				ple_distr,
+				ple_value,
+				ple_cy,
+				val_org_type,
+				val_date,
+				pledgor_type,
+				pledgor_name,
+				pleor_cert_type,
+				pleor_cert_num,
+				ple_desc
+		   from MOTGA_PROPT_INF_HIST
+		  where efa_motga_cltal_ctrct_bs_id = #{pd.efaMotgaCltalCtrctBsId}
+	</select>
+	<!-- 详情或者修改 查询指定记录 质物信息段 -->
+	<select id="getCltalInfByIdlistPage" parameterType="page" resultType="pd">
+		 select efe_cltal_inf_sgmt_id,
+				imp_type,
+				imp_val,
+				imp_cy,
+				ippc,
+				pawn_name,
+				pawn_cert_type,
+				pawn_cert_num
+		   from MOTGA_CLTAL_INF_HIST
+		  where efa_motga_cltal_ctrct_bs_id = #{pd.efaMotgaCltalCtrctBsId}
+	</select>
+	<update id="updateStatus" parameterType="map">
+		update MOTGA_CLTAL_CTRCT_BS
+		   <set>
+		   	  	BUSINESS_STATES = '11'
+		   </set>
+		   where efa_motga_cltal_ctrct_bs_id = #{baseId}
+	</update>
+	<update id="backdate" parameterType="map">
+			update MOTGA_CLTAL_CTRCT_BS
+			   <set>
+			   	  	BUSINESS_STATES = '30'
+			   </set>
+			   where REPORT_MESSAGE_ID = #{reportMessageId}
+			   and COMPANY = #{COMPANY}
+	</update>
+	<delete id="deletedate" parameterType="map" >
+			delete from report_message
+			 where REPORT_MESSAGE_FILE_NAME = #{reportMessageId}
+			 and COMPANY = #{COMPANY}
+	</delete>
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IndvObjectionMapper">
+
+    <resultMap id="listIndvObjection" type="com.dcits.supervise.pecr.objectionHanding.entity.IndvObjection">
+        <result column="OBJECTION_ID" property="objectionId"></result>
+        <result column="CUST_NAME" property="custName"></result>
+        <result column="ID_TYPE" property="idType"></result>
+        <result column="ID_NUM" property="idNum"></result>
+        <result column="OBJECTION_TYPE" property="objectionType"></result>
+        <result column="OBJECTION_SEGMENT" property="objectionSegment"></result>
+        <result column="IS_LABEL" property="isLabel"></result>
+        <result column="OBJECTION_REGIST_REMARK" property="objectionRegistRemark"></result>
+        <result column="REGIST_DATE" property="registDate"></result>
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate"></result>
+        <result column="MATERIAL_CHECK_REMARK" property="materialCheckRemark"></result>
+        <result column="REVIEW_REMARK" property="reviewRemark"></result>
+        <result column="APPROVE_REMARK" property="approveRemark"></result>
+        <result column="OBJECTION_REGIST_CLOSED_TIME" property="objectionRegistClosedTime"></result>
+        <result column="MATERIAL_CHECK_CLOSED_TIME" property="materialCheckClosedTime"></result>
+        <result column="REVIEW_CLOSED_TIME" property="reviewClosedTime"></result>
+        <result column="APPROVE_CLOSED_TIME" property="approveClosedTime"></result>
+        <result column="OBJECTION_STATUS" property="objectionStatus"></result>
+    </resultMap>
+
+
+    <!--获取客户拦截明细表数据列表-->
+    <select id="getIndvObjectionlistPage" parameterType="page" resultMap="listIndvObjection">
+        select *
+        from OBJECTION_INGO_REGIST
+        where 1=1
+          	AND COMPANY = #{pd.COMPANY}
+        <if test="pd.idType != null and pd.idType != ''">
+            AND ID_TYPE = #{pd.idType}
+        </if>
+        <if test="pd.idNum != null and pd.idNum != ''">
+            AND ID_NUM like '%${pd.idNum}%'
+        </if>
+        <if test="pd.registDate != null and pd.registDate != ''">
+            AND REGIST_DATE = #{pd.registDate}
+        </if>
+        <if test='pd.objType == "CHECK"'>
+            AND OBJECTION_STATUS = #{pd.loadDataOS}
+        </if>
+         <if test='pd.objType == "APPLY"'>
+            AND OBJECTION_STATUS in ('10','70')
+        </if>order by REGIST_DATE desc
+    </select>
+
+
+    <insert id="addIndvObjection" parameterType="page">
+        insert into OBJECTION_INGO_REGIST(CUST_NAME, ID_TYPE, ID_NUM, OBJECTION_TYPE, OBJECTION_SEGMENT, IS_LABEL,
+                                          OBJECTION_REGIST_REMARK, REGIST_DATE, LAST_UPDATE_DATE, OBJECTION_STATUS,COMPANY)
+        values (#{pd.custName,jdbcType=VARCHAR},
+                #{pd.idType,jdbcType=VARCHAR},
+                #{pd.idNum,jdbcType=VARCHAR},
+                #{pd.objectionType,jdbcType=VARCHAR},
+                #{pd.objectionSegment,jdbcType=VARCHAR},
+                #{pd.isLabel,jdbcType=VARCHAR},
+                #{pd.objectionRegistRemark,jdbcType=VARCHAR},
+                to_char(sysdate, 'yyyy-mm-dd'),
+                to_char(sysdate, 'yyyy-mm-dd hh:ii:ss'),
+                '10',
+                #{pd.COMPANY})
+    </insert>
+
+    <update id="updateIndvObjectionById" parameterType="page">
+        update OBJECTION_INGO_REGIST set LAST_UPDATE_DATE=to_char(sysdate, 'yyyy-mm-dd hh:ii:ss')
+        <if test="pd.custName != null and pd.custName != ''">
+            ,CUST_NAME = #{pd.custName}
+        </if>
+        <if test="pd.idType != null and pd.idType != ''">
+            ,ID_TYPE = #{pd.idType}
+        </if>
+        <if test="pd.idNum != null and pd.idNum != ''">
+            ,ID_NUM = #{pd.idNum}
+        </if>
+        <if test="pd.objectionType != null and pd.objectionType != ''">
+            ,OBJECTION_TYPE = #{pd.objectionType}
+        </if>
+        <if test="pd.objectionSegment != null and pd.objectionSegment != ''">
+            ,OBJECTION_SEGMENT = #{pd.objectionSegment}
+        </if>
+        <if test="pd.isLabel != null and pd.isLabel != ''">
+            ,IS_LABEL = #{pd.isLabel}
+        </if>
+        <if test="pd.objectionRegistRemark != null and pd.objectionRegistRemark != ''">
+            ,OBJECTION_REGIST_REMARK = #{pd.objectionRegistRemark}
+        </if>
+        <if test="pd.materialCheckRemark != null and pd.materialCheckRemark != ''">
+            ,MATERIAL_CHECK_REMARK = #{pd.materialCheckRemark}
+        </if>
+        <if test="pd.reviewRemark != null and pd.reviewRemark != ''">
+            ,REVIEW_REMARK = #{pd.reviewRemark}
+        </if>
+        <if test="pd.approveRemark != null and pd.approveRemark != ''">
+            ,APPROVE_REMARK = #{pd.approveRemark}
+        </if>
+        where OBJECTION_ID=#{pd.objectionId}
+          and COMPANY = #{pd.COMPANY}
+    </update>
+
+    <delete id="deleteByObjectionId" parameterType="pd">
+        delete
+        from OBJECTION_INGO_REGIST
+        where OBJECTION_ID = #{objectionId,jdbcType=VARCHAR}
+          and COMPANY = #{COMPANY}
+    </delete>
+
+    <!--更新异议状态时，根据不同状态更新该操作结束时间-->
+    <update id="changeObjectionStatus" parameterType="map">
+        update OBJECTION_INGO_REGIST
+        set OBJECTION_STATUS = #{objectionStatus,jdbcType=VARCHAR}
+        <if test="objectionStatus == '20'">
+            ,OBJECTION_REGIST_CLOSED_TIME = to_char(sysdate, 'yyyy-mm-dd hh:ii:ss')
+        </if>
+        <if test="objectionStatus == '30'">
+            ,MATERIAL_CHECK_CLOSED_TIME = to_char(sysdate, 'yyyy-mm-dd hh:ii:ss')
+        </if>
+        <if test="objectionStatus == '40'">
+            ,REVIEW_CLOSED_TIME = to_char(sysdate, 'yyyy-mm-dd hh:ii:ss')
+        </if>
+        <if test="objectionStatus == '50'">
+            ,APPROVE_CLOSED_TIME = to_char(sysdate, 'yyyy-mm-dd hh:ii:ss')
+        </if>
+        <if test="objectionStatus == '60'">
+            ,OBJECTION_REGIST_CLOSED_TIME = to_char(sysdate, 'yyyy-mm-dd hh:ii:ss')
+        </if>
+        where OBJECTION_ID = #{objectionId,jdbcType=VARCHAR}
+          and COMPANY = #{COMPANY}
+    </update>
+
+</mapper>

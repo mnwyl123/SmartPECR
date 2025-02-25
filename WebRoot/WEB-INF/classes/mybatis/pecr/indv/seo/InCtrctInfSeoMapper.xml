@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InCtrctInfSeoMapper">
+	<resultMap type="com.dcits.supervise.pecr.indv.entity.InCtrctInfCtrctBsSgmt" id="CtrctBsSgmtResultMap">
+		<result column="PCA_CTRCT_BS_SGMT_ID" property="pcaCtrctBsSgmtId"/>
+		<result column="INF_REC_TYPE"         property="infRecType"/>
+		<result column="CONTRACT_CODE"        property="contractCode"/>
+		<result column="RPT_DATE"             property="rptDate"/>
+		<result column="RPT_DATE_CODE"        property="rptDateCode"/>
+		<result column="NAME"                 property="name"/>
+		<result column="ID_TYPE"              property="idType"/>
+		<result column="ID_NUM"               property="idNum"/>
+		<result column="MNGMT_ORG_CODE"       property="mngmtOrgCode"/>
+		<result column="LAST_UPDATE_TIME"     property="lastUpdateTime"/>
+		<result column="OPERATOR_USER"        property="operatorUser"/>
+		<result column="ORG_NAME"             property="orgName"/>
+		<result column="ORG_CODE"             property="orgCode"/>
+		<result column="BUSINESS_STATES"      property="businessStates"/>
+		<result column="REJECT_REASON"        property="rejectReason"/>
+		<result column="IS_FILTER"            property="isFilter"/>
+		<result column="FLAG"                 property="flag"/>
+		<result column="REPORT_MESSAGE_ID"    property="reportMessageId"/>
+		<result column="MDFC_SGMT_CODE"       property="mdfcSgmtCode"/>
+	</resultMap>
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		  select 
+			 A.CONTRACT_CODE,A.COMPANY,A.EXTEND1 AS NAME,A.EXTEND2 AS ID_NUM,A.EXTEND3 AS CUSTOMERID
+		  from I_CTRCT_BS_MIDDLE A
+		  <if test="pd.managerId != null and pd.managerId != ''">
+				LEFT JOIN PECR.sys_l_c_a_m_m M
+		        ON A.CONTRACT_CODE = M.ACCT_NUM
+		  </if>
+		  where 1=1		
+		   	  <if test='pd.CONTRACT_CODE != null and pd.CONTRACT_CODE != ""'>
+		   	  	and A.CONTRACT_CODE like '%${pd.CONTRACT_CODE}%'
+		   	  </if>
+		   	  <if test='pd.ID_NUM != null and pd.ID_NUM != ""'>
+		   	  	and A.EXTEND2 like '%${pd.ID_NUM}%'
+		   	  </if>
+		   	  <if test='pd.CUSTOMERID != null and pd.CUSTOMERID != ""'>
+		   	  	and A.EXTEND3 like '%${pd.CUSTOMERID}%'
+		   	  </if>
+		   	  <if test="pd.managerId != null and pd.managerId != ''">
+					and M.MANAGER_ID = #{pd.managerId}
+					AND M.DATA_TYPE = '1'
+					AND M.DATA_LEVEL = '4'
+					AND M.END_DATE = '2099-12-31'
+			  </if>
+		   	    and A.COMPANY = #{pd.COMPANY}
+	</select>
+	
+	<select id="changelistPage" parameterType="page" resultType="pd">
+		select distinct CONTRACT_CODE,NAME,ID_NUM,CUSTOMERID from (
+		  select 
+			 CONTRACT_CODE,COMPANY,NAME,ID_NUM,EXTEND3 as CUSTOMERID
+		  from I_CTRCT_BS
+		  where INF_REC_TYPE = '222'	
+		   	  <if test='pd.CONTRACT_CODE != null and pd.CONTRACT_CODE != ""'>
+		   	  	and CONTRACT_CODE like '%${pd.CONTRACT_CODE}%'
+		   	  </if>
+		   	  <if test='pd.ID_NUM != null and pd.ID_NUM != ""'>
+		   	  	and ID_NUM like '%${pd.ID_NUM}%'
+		   	  </if>
+		   	  <if test='pd.CUSTOMERID != null and pd.CUSTOMERID != ""'>
+		   	  	and EXTEND3 like '%${pd.CUSTOMERID}%'
+		   	  </if>
+		   	  union all 
+		  select 
+			 CONTRACT_CODE,COMPANY,NAME,ID_NUM,EXTEND3 as CUSTOMERID
+		  from I_CTRCT_BS_HIST
+		  where INF_REC_TYPE = '222'	
+		   	  <if test='pd.CONTRACT_CODE != null and pd.CONTRACT_CODE != ""'>
+		   	  	and CONTRACT_CODE like '%${pd.CONTRACT_CODE}%'
+		   	  </if>
+		   	  <if test='pd.ID_NUM != null and pd.ID_NUM != ""'>
+		   	  	and ID_NUM like '%${pd.ID_NUM}%'
+		   	  </if>
+		   	  <if test='pd.CUSTOMERID != null and pd.CUSTOMERID != ""'>
+		   	  	and EXTEND3 like '%${pd.CUSTOMERID}%'
+		   	  </if>
+		   	  )a
+		  where  a.COMPANY = #{pd.COMPANY}
+	</select>
+	<!-- 授信协议信息  数据列表 -->
+	<select id="dataHistlistPage" parameterType="page" resultMap="CtrctBsSgmtResultMap">
+	select * from (
+		 select pca_ctrct_bs_sgmt_id,
+				inf_rec_type,
+				contract_code,
+				rpt_date,
+				rpt_date_code,
+				name,
+				id_type,
+				id_num,
+				mngmt_org_code,
+				last_update_time,
+				operator_user,
+				org_name,
+				org_code,
+				business_states,
+				reject_reason,
+				is_filter,
+				report_message_id,
+				mdfc_sgmt_code,
+				'new' FLAG,
+				COMPANY
+		   from I_CTRCT_BS
+		where CONTRACT_CODE = #{pd.CONTRACT_CODE} and INF_REC_TYPE = '220' 
+		union all
+		select pca_ctrct_bs_sgmt_id,
+				inf_rec_type,
+				contract_code,
+				rpt_date,
+				rpt_date_code,
+				name,
+				id_type,
+				id_num,
+				mngmt_org_code,
+				last_update_time,
+				operator_user,
+				org_name,
+				org_code,
+				business_states,
+				reject_reason,
+				is_filter,
+				report_message_id,
+				mdfc_sgmt_code,
+				'old' FLAG,
+				COMPANY
+		   from I_CTRCT_BS_HIST
+		where CONTRACT_CODE = #{pd.CONTRACT_CODE} and INF_REC_TYPE = '220') a
+		 where 1=1
+		 	 <if test='pd.RPT_DATE != null and pd.RPT_DATE != ""'>
+				and a.RPT_DATE = #{pd.RPT_DATE}
+			</if>
+			    and a.COMPANY = #{pd.COMPANY}
+	</select>
+<select id="changeHistlistPage" parameterType="page" resultMap="CtrctBsSgmtResultMap">
+	select * from (
+		 select pca_ctrct_bs_sgmt_id,
+				inf_rec_type,
+				contract_code,
+				rpt_date,
+				rpt_date_code,
+				name,
+				id_type,
+				id_num,
+				mngmt_org_code,
+				last_update_time,
+				operator_user,
+				org_name,
+				org_code,
+				business_states,
+				reject_reason,
+				is_filter,
+				report_message_id,
+				mdfc_sgmt_code,
+				'new' FLAG,
+				COMPANY
+		   from I_CTRCT_BS
+		where CONTRACT_CODE = #{pd.CONTRACT_CODE} and INF_REC_TYPE = '222' 
+		union all
+		select pca_ctrct_bs_sgmt_id,
+				inf_rec_type,
+				contract_code,
+				rpt_date,
+				rpt_date_code,
+				name,
+				id_type,
+				id_num,
+				mngmt_org_code,
+				last_update_time,
+				operator_user,
+				org_name,
+				org_code,
+				business_states,
+				reject_reason,
+				is_filter,
+				report_message_id,
+				mdfc_sgmt_code,
+				'old' FLAG,
+				COMPANY
+		   from I_CTRCT_BS_HIST
+		where CONTRACT_CODE = #{pd.CONTRACT_CODE} and INF_REC_TYPE = '222') a
+		where 1=1
+			<if test='pd.RPT_DATE != null and pd.RPT_DATE != ""'>
+				and a.RPT_DATE = #{pd.RPT_DATE}
+			</if>
+			<if test='pd.NAME != null and pd.NAME != ""'>
+				and a.NAME like '%${pd.NAME}%'
+			</if>
+			<if test='pd.ID_NUM!= null and pd.ID_NUM != ""'>
+				and a.ID_NUM like'%${pd.ID_NUM}%'
+			</if>
+		        and a.COMPANY = #{pd.COMPANY}
+	</select>
+	<!-- 个人授信协议信息记录  基础段 -->
+	<select id="getCtrctBsSgmtData" parameterType="pd" resultType="pd">
+		 select pca_ctrct_bs_sgmt_id,
+				inf_rec_type,
+				contract_code,
+				rpt_date,
+				rpt_date_code,
+				name,
+				id_type,
+				id_num,
+				mngmt_org_code,
+				last_update_time,
+				operator_user,
+				org_name,
+				org_code,
+				business_states,
+				reject_reason,
+				is_filter,
+				report_message_id,
+				mdfc_sgmt_code,
+				extend1,
+				extend2,
+				extend3,
+				COMPANY
+		   from I_CTRCT_BS_HIST
+		  where pca_ctrct_bs_sgmt_id = #{pcaCtrctBsSgmtId}
+		    and COMPANY = #{COMPANY}
+	</select>
+	
+	<!-- 个人授信协议信息记录  共同受信人信息段 -->
+	<select id="getCertRelSgmtlistpage" parameterType="page" resultType="pd">
+		 select pcb_ctrct_cert_rel_sgmt_id,
+				brer_type,
+				cert_rel_name,
+				cert_rel_id_type,
+				cert_rel_id_num,
+				pca_ctrct_bs_sgmt_id,
+				rpt_date,
+				extend1,
+				extend2,
+				extend3,
+				COMPANY
+		   from I_CTRCT_CERT_REL_HIST
+		  where pca_ctrct_bs_sgmt_id = #{pd.pcaCtrctBsSgmtId}
+	</select>
+	
+	<!-- 个人授信协议信息记录  额度信息段 -->
+	<select id="getCreditLimSgmtData" parameterType="pd" resultType="pd">
+		 select pcc_credit_lim_sgmt_id,
+				credit_lim_type,
+				lim_loop_flg,
+				credit_lim,
+				cy,
+				con_eff_date,
+				con_exp_date,
+				con_status,
+				credit_rest,
+				credit_rest_code,
+				pca_ctrct_bs_sgmt_id,
+				rpt_date,
+				extend1,
+				extend2,
+				extend3,
+				COMPANY
+		   from I_CREDIT_LIM_HIST
+		  where pca_ctrct_bs_sgmt_id = #{pcaCtrctBsSgmtId}
+	</select>
+	
+<update id="updateStatus" parameterType="map">
+		update I_CTRCT_BS
+		   <set>
+		   	  	BUSINESS_STATES = '11'
+		   </set>
+		   where pca_ctrct_bs_sgmt_id = #{baseId}
+		     and COMPANY = #{COMPANY}
+</update>
+<update id="backdate" parameterType="map">
+		update I_CTRCT_BS
+		   <set>
+		   	  	BUSINESS_STATES = '30'
+		   </set>
+		   where REPORT_MESSAGE_ID = #{reportMessageId}
+		     and COMPANY = #{COMPANY}
+</update>
+<delete id="deletedate" parameterType="map" >
+		delete from report_message
+		 where REPORT_MESSAGE_FILE_NAME = #{reportMessageId}
+		   and COMPANY = #{COMPANY}
+</delete>
+</mapper>

@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CheckRuleMapper">
+	<!-- 查询校验规则 -->
+	<select id="queryCheckRulelistPage" parameterType="page" resultType="pd">
+		    SELECT ERRNO, 
+		           BUSINESSTYPE,  
+		           ERRDESCRIBE,    
+		           VALIDTYPE,      
+		           VALIDEXPRESSION,
+		           ISINUSE,       
+		           CHECKTANLENAME, 
+		           CHECKCOLNAME,   
+		           CHTABLENAME,
+		           INTERNALKEY  
+		      FROM VALIDATE_RULES_MANAGEMENT 
+		    <where>
+				<if test="pd.ERRNO != null and pd.ERRNO  != ''">
+		           and ERRNO = #{pd.ERRNO}
+		        </if>
+			</where>
+	</select>
+	<!-- 根据主键查询结果集 -->
+	<select id="getOneCheckRule" parameterType="pd" resultType="pd">
+		SELECT ERRNO,          
+               BUSINESSTYPE,   
+               ERRDESCRIBE,    
+               VALIDTYPE,      
+               VALIDEXPRESSION,
+               ISINUSE,        
+               CHECKTANLENAME, 
+               CHECKCOLNAME,   
+               CHTABLENAME,
+               INTERNALKEY
+          FROM VALIDATE_RULES_MANAGEMENT
+         WHERE ERRNO = #{ERRNO}
+	</select>
+	<!-- 新增 -->
+    <insert id="addCheckRules" parameterType="pd">
+	    INSERT INTO VALIDATE_RULES_MANAGEMENT(
+		     		ERRNO,         
+		            BUSINESSTYPE,  
+		            ERRDESCRIBE,    
+		            VALIDTYPE,     
+		            VALIDEXPRESSION,
+		            ISINUSE,       
+		            CHECKTANLENAME,
+		            CHECKCOLNAME,   
+		            CHTABLENAME,
+		            INTERNALKEY)
+	         VALUES(#{ERRNO},         
+	                #{BUSINESSTYPE},  
+	                #{ERRDESCRIBE},    
+	                #{VALIDTYPE},     
+	                #{VALIDEXPRESSION},
+	                #{ISINUSE},       
+	                #{CHECKTANLENAME},
+	                #{CHECKCOLNAME},   
+	                #{CHTABLENAME},
+	                #{INTERNALKEY}) 
+	</insert>
+	<!-- 修改 -->
+	<update id="updateCheckRules" parameterType="pd">
+		UPDATE VALIDATE_RULES_MANAGEMENT 
+		   SET BUSINESSTYPE = #{BUSINESSTYPE},  
+               ERRDESCRIBE = #{ERRDESCRIBE},    
+               VALIDTYPE = #{VALIDTYPE},     
+               VALIDEXPRESSION = #{VALIDEXPRESSION},
+               ISINUSE = #{ISINUSE},       
+               CHECKTANLENAME = #{CHECKTANLENAME},
+               CHECKCOLNAME = #{CHECKCOLNAME},   
+               CHTABLENAME = #{CHTABLENAME},
+               INTERNALKEY = #{INTERNALKEY}   
+         WHERE ERRNO = #{ERRNO}
+	</update>
+	
+	<delete id="deleteCheckRules" parameterType="String">
+		DELETE FROM VALIDATE_RULES_MANAGEMENT WHERE ERRNO = #{ERRNO}
+	</delete>
+	<!-- 韦宗英 分页  -->
+	<select id="getDataChecklistPage" parameterType="page" resultType="pd">
+	  SELECT TABLE_PK,
+	       TABLE_NAME,
+	       TABLE_FIELD,
+	       ERROR_MSG,
+	       CUR_DATE,
+	       VALIDATE_RULES_ID,
+	       V_COMMENT,
+	       TABLE_NAME_CN,
+	       MASTER_TABLE_ID,
+	       INF_REC_TYPE,
+	       BUSINESS_PK
+	  FROM (
+			  SELECT  A.TABLE_PK,
+			          A.TABLE_NAME,
+			          A.TABLE_FIELD,
+			          A.ERROR_MSG,
+			          A.CUR_DATE,
+			          A.VALIDATE_RULES_ID,
+			          A.V_COMMENT,
+			          A.TABLE_NAME_CN,
+			          A.MASTER_TABLE_ID,
+			         CASE WHEN B.INF_REC_TYPE = '110' THEN B.INF_REC_TYPE 
+			              WHEN C.INF_REC_TYPE = '114' THEN C.INF_REC_TYPE
+			              WHEN D.INF_REC_TYPE = '120' THEN D.INF_REC_TYPE
+			              WHEN E.INF_REC_TYPE = '130' THEN E.INF_REC_TYPE
+			              WHEN F.INF_REC_TYPE = '134' THEN F.INF_REC_TYPE
+			              WHEN G.INF_REC_TYPE = '140' THEN G.INF_REC_TYPE
+			              WHEN H.INF_REC_TYPE = '210' THEN H.INF_REC_TYPE
+			              WHEN I.INF_REC_TYPE = '211' THEN I.INF_REC_TYPE
+			              WHEN J.INF_REC_TYPE = '212' THEN J.INF_REC_TYPE
+			              WHEN K.INF_REC_TYPE = '213' THEN K.INF_REC_TYPE
+			              WHEN L.INF_REC_TYPE = '214' THEN L.INF_REC_TYPE
+			              WHEN M.INF_REC_TYPE = '215' THEN M.INF_REC_TYPE
+			              WHEN N.INF_REC_TYPE = '220' THEN N.INF_REC_TYPE
+			              WHEN B1.INF_REC_TYPE = '221' THEN B1.INF_REC_TYPE 
+			              WHEN C1.INF_REC_TYPE = '222' THEN C1.INF_REC_TYPE
+			              WHEN D1.INF_REC_TYPE = '223' THEN D1.INF_REC_TYPE
+			              WHEN E1.INF_REC_TYPE = '224' THEN E1.INF_REC_TYPE
+			              WHEN F1.INF_REC_TYPE = '230' THEN F1.INF_REC_TYPE
+			              WHEN G1.INF_REC_TYPE = '231' THEN G1.INF_REC_TYPE
+			              WHEN H1.INF_REC_TYPE = '232' THEN H1.INF_REC_TYPE
+			              WHEN I1.INF_REC_TYPE = '233' THEN I1.INF_REC_TYPE
+			              WHEN J1.INF_REC_TYPE = '234' THEN J1.INF_REC_TYPE
+			             <!--  WHEN K1.INF_REC_TYPE = '310' THEN K1.INF_REC_TYPE
+			              WHEN L1.INF_REC_TYPE = '340' THEN L1.INF_REC_TYPE
+			              WHEN M1.INF_REC_TYPE = '314' THEN M1.INF_REC_TYPE
+			              WHEN N1.INF_REC_TYPE = '350' THEN N1.INF_REC_TYPE
+			              WHEN B2.INF_REC_TYPE = '410' THEN B2.INF_REC_TYPE 
+			              WHEN C2.INF_REC_TYPE = '411' THEN C2.INF_REC_TYPE
+			              WHEN D2.INF_REC_TYPE = '412' THEN D2.INF_REC_TYPE
+			              WHEN E2.INF_REC_TYPE = '413' THEN E2.INF_REC_TYPE
+			              WHEN F2.INF_REC_TYPE = '414' THEN F2.INF_REC_TYPE
+			              WHEN G2.INF_REC_TYPE = '420' THEN G2.INF_REC_TYPE
+			              WHEN H2.INF_REC_TYPE = '421' THEN H2.INF_REC_TYPE
+			              WHEN I2.INF_REC_TYPE = '422' THEN I2.INF_REC_TYPE
+			              WHEN J2.INF_REC_TYPE = '423' THEN J2.INF_REC_TYPE
+			              WHEN K2.INF_REC_TYPE = '424' THEN K2.INF_REC_TYPE
+			              WHEN L2.INF_REC_TYPE = '440' THEN L2.INF_REC_TYPE
+			              WHEN M2.INF_REC_TYPE = '441' THEN M2.INF_REC_TYPE
+			              WHEN N2.INF_REC_TYPE = '442' THEN N2.INF_REC_TYPE
+			              WHEN B3.INF_REC_TYPE = '443' THEN B3.INF_REC_TYPE 
+			              WHEN C3.INF_REC_TYPE = '444' THEN C3.INF_REC_TYPE
+			              WHEN D3.INF_REC_TYPE = '510' THEN D3.INF_REC_TYPE
+			              WHEN E3.INF_REC_TYPE = '511' THEN E3.INF_REC_TYPE
+			              WHEN F3.INF_REC_TYPE = '514' THEN F3.INF_REC_TYPE
+			              WHEN G3.INF_REC_TYPE = '610' THEN G3.INF_REC_TYPE
+			              WHEN H3.INF_REC_TYPE = '614' THEN H3.INF_REC_TYPE
+			              WHEN I3.INF_REC_TYPE = '620' THEN I3.INF_REC_TYPE
+			              WHEN J3.INF_REC_TYPE = '624' THEN J3.INF_REC_TYPE
+			              WHEN K3.INF_REC_TYPE = '630' THEN K3.INF_REC_TYPE
+			              WHEN L3.INF_REC_TYPE = '634' THEN L3.INF_REC_TYPE
+			              WHEN M3.INF_REC_TYPE = '640' THEN M3.INF_REC_TYPE
+			              WHEN N3.INF_REC_TYPE = '644' THEN N3.INF_REC_TYPE
+			              WHEN B4.INF_REC_TYPE = '650' THEN B4.INF_REC_TYPE 
+			              WHEN C4.INF_REC_TYPE = '654' THEN C4.INF_REC_TYPE  -->
+			              
+			           END INF_REC_TYPE,
+			         CASE WHEN B.INF_REC_TYPE = '110' THEN B.ID_TYPE || '_' || B.ID_NUM 
+			              WHEN C.INF_REC_TYPE = '114' THEN C.ID_TYPE || '_' || C.ID_NUM 
+			              WHEN D.INF_REC_TYPE = '120' THEN D.ID_TYPE || '_' || D.ID_NUM 
+			              WHEN E.INF_REC_TYPE = '130' THEN E.ID_TYPE || '_' || E.ID_NUM 
+			              WHEN F.INF_REC_TYPE = '134' THEN F.ID_TYPE || '_' || F.ID_NUM 
+			              WHEN G.INF_REC_TYPE = '140' THEN G.ID_TYPE || '_' || G.ID_NUM 
+			              WHEN H.INF_REC_TYPE = '210' THEN H.ACCT_TYPE || '_' || H.ACCT_CODE
+			              WHEN I.INF_REC_TYPE = '211' THEN I.OD_BNES_CODE
+			              WHEN J.INF_REC_TYPE = '212' THEN J.ACCT_TYPE || '_' || J.ACCT_CODE
+			              WHEN K.INF_REC_TYPE = '213' THEN K.DEL_REC_CODE
+			              WHEN L.INF_REC_TYPE = '214' THEN L.DEL_REC_CODE
+			              WHEN M.INF_REC_TYPE = '215' THEN M.ACCT_CODE || '_' || M.OPETN_TYPE
+			              WHEN N.INF_REC_TYPE = '220' THEN N.CONTRACT_CODE
+			              WHEN B1.INF_REC_TYPE = '221' THEN B1.OD_BNES_CODE 
+			              WHEN C1.INF_REC_TYPE = '222' THEN C1.CONTRACT_CODE
+			              WHEN D1.INF_REC_TYPE = '223' THEN D1.DEL_REC_CODE
+			              WHEN E1.INF_REC_TYPE = '224' THEN E1.DEL_REC_CODE
+			              WHEN F1.INF_REC_TYPE = '230' THEN F1.ACCT_TYPE || '_' || F1.ACCT_CODE 
+			              WHEN G1.INF_REC_TYPE = '231' THEN G1.OD_BNES_CODE
+			              WHEN H1.INF_REC_TYPE = '232' THEN H1.ACCT_TYPE || '_' || H1.ACCT_CODE 
+			              WHEN I1.INF_REC_TYPE = '233' THEN I1.DEL_REC_CODE
+			              WHEN J1.INF_REC_TYPE = '234' THEN J1.DEL_REC_CODE
+			             <!--  WHEN K1.INF_REC_TYPE = '310' THEN K1.ENT_CERT_TYPE || '_' || K1.ENT_CERT_NUM 
+			              WHEN L1.INF_REC_TYPE = '340' THEN L1.ENT_CERT_TYPE || '_' || L1.ENT_CERT_NUM 
+			              WHEN M1.INF_REC_TYPE = '314' THEN M1.ID_TYPE || '_' || M1.ID_NUM 
+			              WHEN N1.INF_REC_TYPE = '350' THEN N1.ENT_CERT_TYPE || '_' || N1.ENT_CERT_NUM
+			              WHEN B2.INF_REC_TYPE = '410' THEN B2.ACCT_TYPE || '_' || B2.ACCT_CODE 
+			              WHEN C2.INF_REC_TYPE = '411' THEN C2.OD_BNES_CODE
+			              WHEN D2.INF_REC_TYPE = '412' THEN D2.ACCT_TYPE || '_' || D2.ACCT_CODE 
+			              WHEN E2.INF_REC_TYPE = '413' THEN E2.DEL_REC_CODE
+			              WHEN F2.INF_REC_TYPE = '414' THEN F2.DEL_REC_CODE
+			              WHEN G2.INF_REC_TYPE = '420' THEN G2.CONTRACT_CODE
+			              WHEN H2.INF_REC_TYPE = '421' THEN H2.OD_BNES_CODE
+			              WHEN I2.INF_REC_TYPE = '422' THEN I2.CONTRACT_CODE
+			              WHEN J2.INF_REC_TYPE = '423' THEN J2.DEL_REC_CODE
+			              WHEN K2.INF_REC_TYPE = '424' THEN K2.DEL_REC_CODE
+			              WHEN L2.INF_REC_TYPE = '440' THEN L2.ACCT_TYPE || '_' || L2.ACCT_CODE 
+			              WHEN M2.INF_REC_TYPE = '441' THEN M2.OD_BNES_CODE
+			              WHEN N2.INF_REC_TYPE = '442' THEN N2.ACCT_TYPE || '_' || N2.ACCT_CODE
+			              WHEN B3.INF_REC_TYPE = '443' THEN B3.DEL_REC_CODE
+			              WHEN C3.INF_REC_TYPE = '444' THEN C3.DEL_REC_CODE
+			              WHEN D3.INF_REC_TYPE = '510' THEN D3.CC_CODE
+			              WHEN E3.INF_REC_TYPE = '511' THEN E3.OD_BNES_CODE
+			              WHEN F3.INF_REC_TYPE = '514' THEN F3.DEL_REC_CODE
+			              WHEN G3.INF_REC_TYPE = '610' THEN G3.ENT_CERT_TYPE || '_' || G3.ENT_CERT_NUM 
+			              WHEN H3.INF_REC_TYPE = '614' THEN H3.ID_TYPE || '_' || H3.ID_NUM 
+			              WHEN I3.INF_REC_TYPE = '620' THEN I3.ENT_CERT_TYPE || '_' || I3.ENT_CERT_NUM 
+			              WHEN J3.INF_REC_TYPE = '624' THEN J3.ID_TYPE || '_' || J3.ID_NUM 
+			              WHEN K3.INF_REC_TYPE = '630' THEN K3.ENT_CERT_TYPE || '_' || K3.ENT_CERT_NUM 
+			              WHEN L3.INF_REC_TYPE = '634' THEN L3.ID_TYPE || '_' || L3.ID_NUM 
+			              WHEN M3.INF_REC_TYPE = '640' THEN M3.ENT_CERT_TYPE || '_' || M3.ENT_CERT_NUM 
+			              WHEN N3.INF_REC_TYPE = '644' THEN N3.ID_TYPE || '_' || N3.ID_NUM
+			              WHEN B4.INF_REC_TYPE = '650' THEN B4.ENT_CERT_TYPE || '_' || B4.ENT_CERT_NUM 
+			              WHEN C4.INF_REC_TYPE = '654' THEN C4.ID_TYPE || '_' || C4.ID_NUM  -->
+			              
+			           END BUSINESS_PK
+			   FROM VALIDATE_ERROR_MESSAGE A
+			   LEFT JOIN I_BS B ON A.MASTER_TABLE_ID = B.PAA_BS_SGMT_ID AND B.BUSINESS_STATES IN ('110','80','10')
+			   <if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC1
+					ON B.NAME = LC1.CUST_NAME AND B.ID_TYPE = LC1.CUST_ID_TYPE AND B.ID_NUM = LC1.CUST_ID_NUM
+				</if>
+			   LEFT JOIN I_IN_BS_INF_DLT C ON A.MASTER_TABLE_ID = C.PAY_IN_BS_INF_DLT_ID AND C.BUSINESS_STATES IN ('110','80','10')
+			   LEFT JOIN I_IN_FAL_MMBS_INF D ON A.MASTER_TABLE_ID = D.PAJ_IN_FAL_MMBS_INF_ID AND D.BUSINESS_STATES IN ('110','80','10')
+			   LEFT JOIN I_IN_ID_EFCT_INF E ON A.MASTER_TABLE_ID = E.PAK_IN_ID_EFCT_INF_ID AND E.BUSINESS_STATES IN ('110','80','10')
+			   LEFT JOIN I_IN_ID_EFCT_INF_DLT F ON A.MASTER_TABLE_ID = F.PAZ_IN_ID_EFCT_INF_DLT_ID AND F.BUSINESS_STATES IN ('110','80','10')
+			   LEFT JOIN I_IN_CTF_ITG_INF G ON A.MASTER_TABLE_ID = G.PAL_IN_CTF_ITG_INF_ID AND G.BUSINESS_STATES IN ('110','80','10')
+			   LEFT JOIN I_ACCT_BS H ON A.MASTER_TABLE_ID = H.PBA_ACCT_BS_SGMT_ID AND H.BUSINESS_STATES IN ('110','80','10')
+			   <if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC2
+					ON H.ACCT_TYPE = LC2.ACCT_TYPE AND H.ACCT_CODE = LC2.ACCT_NUM
+			   </if>
+			   LEFT JOIN I_IN_ACCT_ID_CAGS_INF I ON A.MASTER_TABLE_ID = I.PBW_IN_ACCT_ID_CAGS_INF_ID AND I.BUSINESS_STATES IN ('110','80','10')
+			   LEFT JOIN I_ACCT_BS J ON A.MASTER_TABLE_ID = J.PBA_ACCT_BS_SGMT_ID AND J.BUSINESS_STATES IN ('110','80','10')
+			   <if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC3
+					ON J.ACCT_TYPE = LC3.ACCT_TYPE AND J.ACCT_CODE = LC3.ACCT_NUM
+				</if>
+			   LEFT JOIN I_IN_ACCT_DEL K ON A.MASTER_TABLE_ID = K.PBY_IN_ACCT_DEL_ID AND K.BUSINESS_STATES IN ('110','80','10')
+			   LEFT JOIN I_IN_ACCT_ENT_DEL L ON A.MASTER_TABLE_ID = L.PBZ_IN_ACCT_ENT_DEL_ID AND L.BUSINESS_STATES IN ('110','80','10')
+			   LEFT JOIN I_IN_SPC_EVT_DSC_INF M ON A.MASTER_TABLE_ID = M.PBK_IN_SPC_EVT_DSC_INF_ID AND M.BUSINESS_STATES IN ('110','80','10')
+			   LEFT JOIN I_CTRCT_BS N ON A.MASTER_TABLE_ID = N.PCA_CTRCT_BS_SGMT_ID AND N.BUSINESS_STATES IN ('110','80','10')
+			   <if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC4
+					ON N.CONTRACT_CODE = LC4.ACCT_NUM
+				</if>
+				LEFT JOIN I_IN_CTRCTID_CAGS_INF B1 ON A.MASTER_TABLE_ID = B1.PCW_IN_CTRCTID_CAGS_INF_ID AND B1.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN I_CTRCT_BS C1 ON A.MASTER_TABLE_ID = C1.PCA_CTRCT_BS_SGMT_ID AND C1.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC5
+					ON C1.CONTRACT_CODE = LC5.ACCT_NUM
+				</if>
+				LEFT JOIN I_IN_CTRCT_DEL D1 ON A.MASTER_TABLE_ID = D1.PCY_IN_CTRCT_DEL_ID AND D1.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN I_IN_CTRCT_ENT_DEL E1 ON A.MASTER_TABLE_ID = E1.PCZ_IN_CTRCT_ENT_DEL_ID AND E1.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN I_GUAR_ACCT_BS F1 ON A.MASTER_TABLE_ID = F1.PDA_GUAR_ACCT_BS_SGMT_ID AND F1.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC6
+					ON F1.NAME = LC6.CUST_NAME AND F1.ID_TYPE = LC6.CUST_ID_TYPE AND F1.ID_NUM = LC6.CUST_ID_NUM
+				</if>
+				LEFT JOIN I_INSECACCTID_CAGSINF G1 ON A.MASTER_TABLE_ID = G1.PDW_INSECACCTID_CAGSINF_ID AND G1.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN I_GUAR_ACCT_BS H1 ON A.MASTER_TABLE_ID = H1.PDA_GUAR_ACCT_BS_SGMT_ID AND H1.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC7
+					ON H1.NAME = LC7.CUST_NAME AND H1.ID_TYPE = LC7.CUST_ID_TYPE AND H1.ID_NUM = LC7.CUST_ID_NUM
+				</if>
+				LEFT JOIN I_IN_SEC_ACCT_DEL I1 ON A.MASTER_TABLE_ID = I1.PDY_IN_SEC_ACCT_DEL_ID AND I1.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN I_IN_SEC_ACCT_ENT_DEL J1 ON A.MASTER_TABLE_ID = J1.PDZ_IN_SEC_ACCT_ENT_DEL_ID AND J1.BUSINESS_STATES IN ('110','80','10')
+				<!-- LEFT JOIN E_BS K1 ON A.MASTER_TABLE_ID = K1.EAA_BS_SGMT_ID AND K1.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC8
+					ON K1.ENT_NAME = LC8.CUST_NAME AND K1.ENT_CERT_TYPE = LC8.CUST_ID_TYPE AND K1.ENT_CERT_NUM = LC8.CUST_ID_NUM
+				</if>
+				LEFT JOIN E_CTFITG_INF L1 ON A.MASTER_TABLE_ID = L1.EBA_EN_CTFITG_INF_ID AND L1.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_BS_INF_DLT M1 ON A.MASTER_TABLE_ID = M1.EAZ_EN_BS_INF_DLT_ID AND M1.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_ICDN_RLTP_INF N1 ON A.MASTER_TABLE_ID = N1.ECA_EN_ICDN_RLTP_INF_ID AND N1.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_ACCT_BS B2 ON A.MASTER_TABLE_ID = B2.EDA_ACCT_BS_SGMT_ID AND B2.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC9
+					ON B2.ACCT_TYPE = LC9.ACCT_TYPE AND B2.ACCT_CODE = LC9.ACCT_NUM
+				</if>
+				LEFT JOIN E_ACCT_INF_ID_CAGS_INF C2 ON A.MASTER_TABLE_ID = C2.EDW_EN_ACCT_INF_ID_CAGS_INF_ID AND C2.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_ACCT_BS D2 ON A.MASTER_TABLE_ID = D2.EDA_ACCT_BS_SGMT_ID AND D2.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC10
+					ON D2.ACCT_TYPE = LC10.ACCT_TYPE AND D2.ACCT_CODE = LC10.ACCT_NUM
+				</if>
+				LEFT JOIN E_ACCT_INF_DEL E2 ON A.MASTER_TABLE_ID = E2.EDY_EN_ACCT_INF_DEL_ID AND E2.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_ACCT_INF_ENT_DEL F2 ON A.MASTER_TABLE_ID = F2.EDZ_EN_ACCT_INF_ENT_DEL_ID AND F2.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_CTRCT_BS G2 ON A.MASTER_TABLE_ID = G2.EGA_CTRCT_BS_SGMT_ID AND G2.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC11
+					ON G2.CONTRACT_CODE = LC11.ACCT_NUM
+				</if>
+				LEFT JOIN E_CR_ACCT_ID_CAGS_INF H2 ON A.MASTER_TABLE_ID = H2.EGW_EN_ACCT_INF_ID_CAGS_INF_ID AND H2.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_CTRCT_BS I2 ON A.MASTER_TABLE_ID = I2.EGA_CTRCT_BS_SGMT_ID AND I2.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC12
+					ON I2.CONTRACT_CODE = LC12.ACCT_NUM
+				</if>
+				LEFT JOIN E_CTRCT_INF_DEL J2 ON A.MASTER_TABLE_ID = J2.EGY_EN_CTRCT_INF_DEL_ID AND J2.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_CTRCT_INF_ENT_DEL K2 ON A.MASTER_TABLE_ID = K2.EGZ_EN_CTRCT_INF_ENT_DEL_ID AND K2.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_GUAR_ACCT_BS L2 ON A.MASTER_TABLE_ID = L2.EEA_GUAR_ACCT_BS_SGMT_ID AND L2.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC13
+					ON L2.ACCT_TYPE = LC13.ACCT_TYPE AND L2.ACCT_CODE = LC13.ACCT_NUM
+				</if>
+				LEFT JOIN E_SEC_ACCT_ID_CAGS_INF M2 ON A.MASTER_TABLE_ID = M2.EEW_EN_SEC_ACCT_ID_CAGS_INF_ID AND M2.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_GUAR_ACCT_BS N2 ON A.MASTER_TABLE_ID = N2.EEA_GUAR_ACCT_BS_SGMT_ID AND N2.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC14
+					ON N2.ACCT_TYPE = LC14.ACCT_TYPE AND N2.ACCT_CODE = LC14.ACCT_NUM
+				</if>
+				LEFT JOIN E_SEC_ACCT_DEL B3 ON A.MASTER_TABLE_ID = B3.EEY_EN_SEC_ACCT_DEL_ID AND B3.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_SEC_ACCT_ENT_DEL C3 ON A.MASTER_TABLE_ID = C3.EEZ_EN_SEC_ACCT_ENT_DEL_SG_ID AND C3.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN MOTGA_CLTAL_CTRCT_BS D3 ON A.MASTER_TABLE_ID = D3.EFA_MOTGA_CLTAL_CTRCT_BS_ID AND D3.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC15
+					ON D3.CC_CODE = LC15.ACCT_NUM
+				</if>
+				LEFT JOIN MOC_ID_CAGS_INF E3 ON A.MASTER_TABLE_ID = E3.EFW_MOC_ID_CAGS_INF_ID AND E3.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN MOC_ENT_DEL F3 ON A.MASTER_TABLE_ID = F3.EFZ_MOC_ENT_DEL_ID AND F3.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_BALANCE_SHEET_BS G3 ON A.MASTER_TABLE_ID = G3.EHA_BALANCE_SHEET_BS_SGMT_ID AND G3.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC16
+					ON G3.ENT_NAME = LC16.CUST_NAME AND G3.ENT_CERT_TYPE = LC16.CUST_ID_TYPE AND G3.ENT_CERT_NUM = LC16.CUST_ID_NUM
+				</if>
+				LEFT JOIN E_BALANCE_SHEET_DLT H3 ON A.MASTER_TABLE_ID = H3.EMZ_BALANCE_SHEET_DLT_ID AND H3.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_INCOME_STATEMENT I3 ON A.MASTER_TABLE_ID = I3.EIA_INCOME_STATEMENT_PROFIT_ID AND I3.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC17
+					ON I3.ENT_NAME = LC17.CUST_NAME AND I3.ENT_CERT_TYPE = LC17.CUST_ID_TYPE AND I3.ENT_CERT_NUM = LC17.CUST_ID_NUM
+				</if>
+				LEFT JOIN E_IN_COME_ENT_DEL J3 ON A.MASTER_TABLE_ID = J3.E_IN_COME_ENT_DEL_ID AND J3.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_CASH_FLOWS_BS K3 ON A.MASTER_TABLE_ID = K3.EJA_CASH_FLOWS_BS_SGMT_ID AND K3.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC18
+					ON K3.ENT_NAME = LC18.CUST_NAME AND K3.ENT_CERT_TYPE = LC18.CUST_ID_TYPE AND K3.ENT_CERT_NUM = LC18.CUST_ID_NUM
+				</if>
+				LEFT JOIN E_CASH_FLOW_ENT_DEL L3 ON A.MASTER_TABLE_ID = L3.E_CASH_FLOW_ENT_DEL_ID AND L3.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_INSTITU_BALANCE_BS M3 ON A.MASTER_TABLE_ID = M3.EKA_INSTITUTION_BALANCE_SHT_ID AND M3.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC19
+					ON M3.ENT_NAME = LC19.CUST_NAME AND M3.ENT_CERT_TYPE = LC19.CUST_ID_TYPE AND M3.ENT_CERT_NUM = LC19.CUST_ID_NUM
+				</if>
+				LEFT JOIN E_ASSETS_DEBT_ENT_DEL N3 ON A.MASTER_TABLE_ID = N3.E_ASSETS_DEBT_ENT_DEL_ID AND N3.BUSINESS_STATES IN ('110','80','10')
+				LEFT JOIN E_INCOME_EXPENSE_BS B4 ON A.MASTER_TABLE_ID = B4.ELA_INCOME_AND_EXPENSE_STAT_ID AND B4.BUSINESS_STATES IN ('110','80','10')
+				<if test="pd.managerId != null and pd.managerId != ''">
+					LEFT JOIN PECR.sys_l_c_a_m_m LC20
+					ON B4.ENT_NAME = LC20.CUST_NAME AND B4.ENT_CERT_TYPE = LC20.CUST_ID_TYPE AND B4.ENT_CERT_NUM = LC20.CUST_ID_NUM
+				</if>
+				LEFT JOIN E_IN_OUT_ENT_DEL C4 ON A.MASTER_TABLE_ID = C4.E_IN_OUT_ENT_DEL_ID AND C4.BUSINESS_STATES IN ('110','80','10') -->
+				
+				WHERE 1 = 1
+				<if test="pd.managerId != null and pd.managerId != ''">
+					and LC1.MANAGER_ID = #{pd.managerId} AND LC1.DATA_TYPE = '1' AND LC1.DATA_LEVEL = '1' AND LC1.END_DATE = '2099-12-31' 
+					and LC2.MANAGER_ID = #{pd.managerId} AND LC2.DATA_TYPE = '1' AND LC2.DATA_LEVEL = '2' AND LC2.END_DATE = '2099-12-31' 
+					and LC3.MANAGER_ID = #{pd.managerId} AND LC3.DATA_TYPE = '1' AND LC3.DATA_LEVEL = '2' AND LC3.END_DATE = '2099-12-31' 
+					and LC4.MANAGER_ID = #{pd.managerId} AND LC4.DATA_TYPE = '1' AND LC4.DATA_LEVEL = '4' AND LC4.END_DATE = '2099-12-31' 
+					and LC5.MANAGER_ID = #{pd.managerId} AND LC5.DATA_TYPE = '1' AND LC5.DATA_LEVEL = '4' AND LC5.END_DATE = '2099-12-31' 
+					and LC6.MANAGER_ID = #{pd.managerId} AND LC6.DATA_TYPE = '1' AND LC6.DATA_LEVEL = '3' AND LC6.END_DATE = '2099-12-31' 
+					and LC7.MANAGER_ID = #{pd.managerId} AND LC7.DATA_TYPE = '1' AND LC7.DATA_LEVEL = '3' AND LC7.END_DATE = '2099-12-31'
+					<!-- and LC8.MANAGER_ID = #{pd.managerId} AND LC8.DATA_TYPE = '2' AND LC8.DATA_LEVEL = '1' AND LC8.END_DATE = '2099-12-31'
+					and LC9.MANAGER_ID = #{pd.managerId} AND LC9.DATA_TYPE = '2' AND LC9.DATA_LEVEL = '2' AND LC9.END_DATE = '2099-12-31' 
+					and LC10.MANAGER_ID = #{pd.managerId} AND LC10.DATA_TYPE = '2' AND LC10.DATA_LEVEL = '2' AND LC10.END_DATE = '2099-12-31' 
+					and LC11.MANAGER_ID = #{pd.managerId} AND LC11.DATA_TYPE = '2' AND LC11.DATA_LEVEL = '4' AND LC11.END_DATE = '2099-12-31' 
+					and LC12.MANAGER_ID = #{pd.managerId} AND LC12.DATA_TYPE = '2' AND LC12.DATA_LEVEL = '4' AND LC12.END_DATE = '2099-12-31' 
+					and LC13.MANAGER_ID = #{pd.managerId} AND LC13.DATA_TYPE = '2' AND LC13.DATA_LEVEL = '3' AND LC13.END_DATE = '2099-12-31' 
+					and LC14.MANAGER_ID = #{pd.managerId} AND LC14.DATA_TYPE = '2' AND LC14.DATA_LEVEL = '3' AND LC14.END_DATE = '2099-12-31' 
+					and LC15.MANAGER_ID = #{pd.managerId} AND LC15.DATA_TYPE = '2' AND LC15.DATA_LEVEL = '5' AND LC15.END_DATE = '2099-12-31'  
+					and LC16.MANAGER_ID = #{pd.managerId} AND LC16.DATA_TYPE = '2' AND LC16.DATA_LEVEL = '6' AND LC16.END_DATE = '2099-12-31'
+					and LC17.MANAGER_ID = #{pd.managerId} AND LC17.DATA_TYPE = '2' AND LC17.DATA_LEVEL = '6' AND LC17.END_DATE = '2099-12-31' 
+					and LC18.MANAGER_ID = #{pd.managerId} AND LC18.DATA_TYPE = '2' AND LC18.DATA_LEVEL = '6' AND LC18.END_DATE = '2099-12-31'  
+					and LC19.MANAGER_ID = #{pd.managerId} AND LC19.DATA_TYPE = '2' AND LC19.DATA_LEVEL = '6' AND LC19.END_DATE = '2099-12-31'  
+					and LC10.MANAGER_ID = #{pd.managerId} AND LC20.DATA_TYPE = '2' AND LC20.DATA_LEVEL = '6' AND LC20.END_DATE = '2099-12-31'  -->
+				</if>
+				<if test="pd.curDate != null and pd.curDate != ''">
+					and A.CUR_DATE = #{pd.curDate}
+				</if>
+			)t WHERE 1 = 1
+		<if test="pd.infRecType != null and pd.infRecType != ''">
+			and t.INF_REC_TYPE = #{pd.infRecType}
+		</if>
+		<if test="pd.curDate != null and pd.curDate != ''">
+			and t.CUR_DATE = #{pd.curDate}
+		</if>
+	</select>
+	
+	<select id="getDataCheckList" parameterType="page" resultType="java.util.HashMap">
+		select 
+			id,
+			table_pk,
+			table_name,
+			table_field,
+			error_msg,
+			cur_date,
+			validate_rules_id,
+			v_comment,
+			business_pk,
+			table_name_cn,
+			subject,
+			is_force,
+			is_multi_table,
+			master_table_id
+			from validate_error_message 
+		where 1=1 
+		<if test="pd.tableName != null and pd.tableName != ''">
+			and table_name like '%${pd.tableName}%'
+		</if>
+		<if test="pd.tableField != null and pd.tableField != ''">
+			and table_field like '%${pd.tableField}%'
+		</if>
+	</select>
+	
+	<!-- 获取机构区代码 -->
+	<select id="getOrgCode" parameterType="java.util.HashMap" resultType="Map">
+		select a.ccrc_org_code from sys_org a
+         WHERE ORG_CODE = #{orgCode}
+	</select>
+</mapper>

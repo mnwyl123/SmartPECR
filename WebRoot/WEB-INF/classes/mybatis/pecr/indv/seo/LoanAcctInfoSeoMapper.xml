@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LoanAcctInfoSeoMapper">
+	<resultMap type="com.dcits.supervise.pecr.indv.entity.LoanAcctBsSgmt" id="loanAcctInfoResultMap">
+		<result column="PBA_ACCT_BS_SGMT_ID" property="pbaAcctBsSgmtId" />
+		<result column="ACCT_TYPE" property="acctType" />
+		<result column="ACCT_CODE" property="acctCode" />
+		<result column="RPT_DATE" property="rptDate" />
+		<result column="RPT_DATE_CODE" property="rptDateCode" />
+		<result column="NAME" property="name" />
+		<result column="ID_TYPE" property="idType" />
+		<result column="ID_NUM" property="idNum" />
+		<result column="MNGMT_ORG_CODE" property="mngmtOrgCode" />
+		<result column="BUSINESS_STATES" property="businessStates" />
+		<result column="REJECT_REASON" property="rejectReason" />
+		<result column="REPORT_MESSAGE_ID" property="reportMessageId" />
+		<result column="FLAG" property="flag" />
+		<result column="MONTH" property="month" />
+		<result column="MDFC_SGMT_CODE" property="mdfcSgmtCode" />
+	</resultMap>
+
+	<resultMap type="com.dcits.supervise.pecr.indv.entity.LoanAcctRltInfSgmt" id="loanAcctRltInfMap">
+		<result column="PBC_RLT_REPYMT_INF_SGMT_ID" property="pbcRltRepymtInfSgmtId" />
+		<result column="INFO_ID_TYPE" property="infoIdType" />
+		<result column="ARLP_NAME" property="arlpName" />
+		<result column="ARLP_CERT_TYPE" property="arlpCertType" />
+		<result column="ARLP_CERT_NUM" property="arlpCertNum" />
+		<result column="ARLP_TYPE" property="arlpType" />
+		<result column="ARLP_AMT" property="arlpAmt" />
+		<result column="WARTY_SIGN" property="wartySign" />
+		<result column="MAX_GUAR_MCC" property="maxGuarMcc" />
+	</resultMap>
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		  select 
+			 A.ACCT_TYPE,A.ACCT_CODE,A.COMPANY,A.EXTEND1 AS NAME,A.EXTEND2 AS ID_NUM,A.EXTEND3 AS CUSTOMERID
+		  from I_ACCT_BS_MIDDLE A
+		  <if test="pd.managerId != null and pd.managerId != ''">
+				LEFT JOIN PECR.sys_l_c_a_m_m M
+		        ON A.ACCT_TYPE = M.ACCT_TYPE
+		        AND A.ACCT_CODE = M.ACCT_NUM
+		  </if>
+		  where 1=1		
+		   	  <if test='pd.ACCT_TYPE != null and pd.ACCT_TYPE != ""'>
+		   	  	and A.ACCT_TYPE = #{pd.ACCT_TYPE}
+		   	  </if>
+		   	  <if test='pd.ACCT_CODE != null and pd.ACCT_CODE != ""'>
+		   	  	and A.ACCT_CODE like '%${pd.ACCT_CODE}%'
+		   	  </if>
+		   	  <if test='pd.ID_NUM != null and pd.ID_NUM != ""'>
+		   	  	and A.EXTEND2 like '%${pd.ID_NUM}%'
+		   	  </if>
+		   	  <if test='pd.CUSTOMERID != null and pd.CUSTOMERID != ""'>
+		   	  	and A.EXTEND3 like '%${pd.CUSTOMERID}%'
+		   	  </if>
+		   	   <if test="pd.managerId != null and pd.managerId != ''">
+					and M.MANAGER_ID = #{pd.managerId}
+					AND M.DATA_TYPE = '1'
+					AND M.DATA_LEVEL = '2'
+					AND M.END_DATE = '2099-12-31'
+			   </if>
+		   	    and A.COMPANY = #{pd.COMPANY}
+	</select>
+	
+	<select id="changelistPage" parameterType="page" resultType="pd">
+		select distinct ACCT_TYPE,ACCT_CODE,NAME,ID_NUM,CUSTOMERID from (
+		  select 
+			 ACCT_TYPE,ACCT_CODE,COMPANY,NAME,ID_NUM,EXTEND3 AS CUSTOMERID
+		  from I_ACCT_BS
+		  where INF_REC_TYPE = '212' AND COMPANY = #{pd.COMPANY}		 
+		   	  <if test='pd.ACCT_TYPE != null and pd.ACCT_TYPE != ""'>
+		   	  	and ACCT_TYPE = #{pd.ACCT_TYPE}
+		   	  </if>
+		   	  <if test='pd.ACCT_CODE != null and pd.ACCT_CODE != ""'>
+		   	  	and ACCT_CODE like '%${pd.ACCT_CODE}%'
+		   	  </if>
+		   	  <if test='pd.ID_NUM != null and pd.ID_NUM != ""'>
+		   	  	and ID_NUM like '%${pd.ID_NUM}%'
+		   	  </if>
+		   	  <if test='pd.CUSTOMERID != null and pd.CUSTOMERID != ""'>
+		   	  	and EXTEND3 like '%${pd.CUSTOMERID}%'
+		   	  </if>
+		   	  union all 
+		  select 
+			 ACCT_TYPE,ACCT_CODE,COMPANY,NAME,ID_NUM,EXTEND3 AS CUSTOMERID
+		  from I_ACCT_BS_HIST
+		  where INF_REC_TYPE = '212' AND COMPANY = #{pd.COMPANY}		
+		   	  <if test='pd.ACCT_TYPE != null and pd.ACCT_TYPE != ""'>
+		   	  	and ACCT_TYPE = #{pd.ACCT_TYPE}
+		   	  </if>
+		   	  <if test='pd.ACCT_CODE != null and pd.ACCT_CODE != ""'>
+		   	  	and ACCT_CODE like '%${pd.ACCT_CODE}%'
+		   	  </if>
+		   	  <if test='pd.ID_NUM != null and pd.ID_NUM != ""'>
+		   	  	and ID_NUM like '%${pd.ID_NUM}%'
+		   	  </if>
+		   	  <if test='pd.CUSTOMERID != null and pd.CUSTOMERID != ""'>
+		   	  	and EXTEND3 like '%${pd.CUSTOMERID}%'
+		   	  </if>
+		   	  ) a
+		  where a.COMPANY = #{pd.COMPANY}
+	</select>
+	<!-- 借贷信息 基础段 -->
+	<select id="dataHistlistPage" parameterType="page" resultMap="loanAcctInfoResultMap">
+	select * from (
+		select
+			 A.pba_acct_bs_sgmt_id,
+			 acct_type,
+			 acct_code,
+			 A.rpt_date,
+			 rpt_date_code,
+			 name,
+			 id_type,
+			 id_num,
+			 mngmt_org_code,
+			 business_states,
+			 reject_reason,
+			 MDFC_SGMT_CODE,
+			 REPORT_MESSAGE_ID,
+			 'new' FLAG,
+			 A.COMPANY,
+			 B.MONTH
+		from I_ACCT_BS A
+	   LEFT JOIN I_AMBLG_INF B
+    	  ON A.PBA_ACCT_BS_SGMT_ID = B.PBA_ACCT_BS_SGMT_ID
+		where ACCT_TYPE = #{pd.ACCT_TYPE} and ACCT_CODE = #{pd.ACCT_CODE} and INF_REC_TYPE = '210'	
+		union all
+		select
+			 A.pba_acct_bs_sgmt_id,
+			 acct_type,
+			 acct_code,
+			 A.rpt_date,
+			 rpt_date_code,
+			 name,
+			 id_type,
+			 id_num,
+			 mngmt_org_code,
+			 business_states,
+			 reject_reason,
+			 MDFC_SGMT_CODE,
+			 REPORT_MESSAGE_ID,
+			 'old' FLAG,
+			 A.COMPANY,
+			 B.MONTH
+		from I_ACCT_BS_HIST A
+	   LEFT JOIN I_AMBLG_INF_HIST B
+    	  ON A.PBA_ACCT_BS_SGMT_ID = B.PBA_ACCT_BS_SGMT_ID
+		where ACCT_TYPE = #{pd.ACCT_TYPE} and ACCT_CODE = #{pd.ACCT_CODE} and INF_REC_TYPE = '210'	) a
+		where 1=1
+		 <if test='pd.RPT_DATE != null and pd.RPT_DATE != ""'>
+			and a.RPT_DATE = #{pd.RPT_DATE}
+		</if>
+		    and a.COMPANY = #{pd.COMPANY}
+	</select>
+	
+	<select id="changeHistlistPage" parameterType="page" resultMap="loanAcctInfoResultMap">
+	select * from (
+		select
+			 A.pba_acct_bs_sgmt_id,
+			 acct_type,
+			 acct_code,
+			 A.rpt_date,
+			 rpt_date_code,
+			 name,
+			 id_type,
+			 id_num,
+			 mngmt_org_code,
+			 business_states,
+			 reject_reason,
+			 MDFC_SGMT_CODE,
+			 REPORT_MESSAGE_ID,
+			 'new' FLAG,
+			 A.COMPANY,
+			 B.MONTH
+		from I_ACCT_BS A
+	    LEFT JOIN I_AMBLG_INF B
+    	  ON A.PBA_ACCT_BS_SGMT_ID = B.PBA_ACCT_BS_SGMT_ID
+		where ACCT_TYPE = #{pd.ACCT_TYPE} and ACCT_CODE = #{pd.ACCT_CODE} and INF_REC_TYPE = '212'	
+		union all
+		select
+			 A.pba_acct_bs_sgmt_id,
+			 acct_type,
+			 acct_code,
+			 A.rpt_date,
+			 rpt_date_code,
+			 name,
+			 id_type,
+			 id_num,
+			 mngmt_org_code,
+			 business_states,
+			 reject_reason,
+			 MDFC_SGMT_CODE,
+			 REPORT_MESSAGE_ID,
+			 'old' FLAG,
+			 A.COMPANY,
+			 B.MONTH
+		from I_ACCT_BS_HIST A
+	    LEFT JOIN I_AMBLG_INF_HIST B
+    	  ON A.PBA_ACCT_BS_SGMT_ID = B.PBA_ACCT_BS_SGMT_ID
+		where ACCT_TYPE = #{pd.ACCT_TYPE} and ACCT_CODE = #{pd.ACCT_CODE} and INF_REC_TYPE = '212'	) a
+		where 1=1
+			 <if test='pd.RPT_DATE != null and pd.RPT_DATE != ""'>
+			 	and a.RPT_DATE = #{pd.RPT_DATE}
+		     </if>
+		     <if test='pd.NAME != null and pd.NAME != ""'>
+			 	and a.NAME like '%${pd.NAME}%'
+		     </if>
+		     <if test='pd.ID_NUM != null and pd.ID_NUM != ""'>
+			 	and a.ID_NUM like '%${pd.ID_NUM}%'
+		     </if>
+		        and a.COMPANY = #{pd.COMPANY}
+	</select>
+    <!-- 借贷信息按段更正 基础段 -->
+	<select id="loanAcctUpdatelistPage" parameterType="page" resultMap="loanAcctInfoResultMap">
+		select
+			 pba_acct_bs_sgmt_id,
+			 acct_type,
+			 acct_code,
+			 rpt_date,
+			 rpt_date_code,
+			 name,
+			 id_type,
+			 id_num,
+			 mngmt_org_code,
+			 business_states,
+			 reject_reason,
+			 MDFC_SGMT_CODE
+		  from I_ACCT_BS_hist  where 1=1 and INF_REC_TYPE = '212'
+			<if test='pd.name != null and pd.name != ""'>
+				and name = #{pd.name}
+			</if>
+			<if test='pd.businessStates != null and pd.businessStates != ""'>
+				and business_states = #{pd.businessStates}
+			</if>
+		
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 基础段 -->
+	<select id="getAcctBsSgmtById" parameterType="pd" resultType="map">
+		 select pba_acct_bs_sgmt_id,
+				inf_rec_type,
+				acct_type,
+				acct_code,
+				rpt_date,
+				rpt_date_code,
+				name,
+				id_type,
+				id_num,
+				mngmt_org_code,
+				last_update_time,
+				operator_user,
+				org_name,
+				org_code,
+				business_states,
+				is_filter,
+				reject_reason,
+				report_message_id,
+				mdfc_sgmt_code,
+				COMPANY
+		   from I_ACCT_BS_HIST
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+		    and COMPANY = #{COMPANY}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 基本信息段 -->
+	<select id="getAcctBsInfSgmtById" parameterType="pd" resultType="pd">
+		 select pbb_acct_bs_inf_sgmt_id,
+				busi_lines,
+				busi_dtl_lines,
+				open_date,
+				cy,
+				acct_cred_line,
+				loan_amt,
+				flag,
+				due_date,
+				repay_mode,
+				repay_freqcy,
+				repay_prd,
+				apply_busi_dist,
+				guar_mode,
+				oth_repy_guar_way,
+				asset_trand_flag,
+				fund_sou,
+				loan_form,
+				credit_id,
+				COMPANY
+		   from I_ACCT_BS_INF_HIST
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 相关还款责任人段 -->
+	<select id="getLoanRltSgmtByIdlistPage" parameterType="page" resultMap="loanAcctRltInfMap">
+		 select pbc_rlt_repymt_inf_sgmt_id,
+				info_id_type,
+				arlp_name,
+				arlp_cert_type,
+				arlp_cert_num,
+				arlp_type,
+				arlp_amt,
+				warty_sign,
+				max_guar_mcc,
+				COMPANY
+		   from I_LOAN_RLT_REPYMT_INF_HIST
+		  where pba_acct_bs_sgmt_id = #{pd.pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 抵质押物信息段 -->
+	<select id="getMccInfoSgmtByIdlistPage" parameterType="page" resultType="pd">
+		select pbd_mcc_inf_sgmt_id,
+		       CCC,
+		       COMPANY
+		  from I_MCC_INF_HIST
+		 where pba_acct_bs_sgmt_id = #{pd.pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 授信额度信息段 -->
+	<select id="getAcctCredSgmtById" parameterType="pd" resultType="pd">
+		select pbe_acct_cred_sgmt_id,
+		       mcc,
+		       COMPANY
+		from I_ACCT_CRED_HIST
+		where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 初始债权说明段 -->
+	<select id="getOcInfoSgmtById" parameterType="pd" resultType="pd">
+		 select pbf_oc_inf_sgmt_id,
+				init_cred_name,
+				init_cred_org_nm,
+				orig_dbt_cate,
+				init_rpy_sts,
+				COMPANY
+		   from I_OC_INF_HIST
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 月度表现信息段 -->
+	<select id="getAmblgInfoSgmtById" parameterType="pd" resultType="pd">
+		select pbg_amblg_inf_sgmt_id,
+				month,
+				sett_date,
+				acct_status,
+				acct_bal,
+				prid_acct_bal,
+				used_amt,
+				not_isu_bal,
+				rem_rep_prd,
+				five_cate,
+				five_cate_adj_date,
+				rpy_status,
+				rpy_prct,
+				overd_prd,
+				tot_overd,
+				overd_princ,
+				oved31_60_princ,
+				oved61_90_princ,
+				oved91_180_princ,
+				oved_princ180,
+				ovedraw_ba_ove180,
+				cur_rpy_amt,
+				act_rpy_amt,
+				lat_rpy_date,
+				close_date,
+				COMPANY 
+		  from I_AMBLG_INF_HIST
+		 where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 大额专项分期信息段 -->
+	<select id="getSpecPrdSgmtById" parameterType="pd" resultType="pd">
+		 select pbh_spec_prd_sgmt_id,
+				spec_line,
+				spec_efct_date,
+				spec_end_date,
+				used_inst_amt,
+				COMPANY
+		   from I_SPEC_PRD_HIST
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 非月度表现信息段 -->
+	<select id="getAcctDbtInfSgmtById" parameterType="pd" resultType="pd">
+		 select pbi_acct_dbt_inf_sgmt_id,
+				nomonth_acct_status,
+				nomonth_acct_bal,
+				nomonth_five_cate,
+				nomonth_five_cate_adj_date,
+				nomonth_rem_rep_prd,
+				nomonth_rpy_status,
+				nomonth_overd_prd,
+				nomonth_tot_overd,
+				nomonth_lat_rpy_amt,
+				nomonth_lat_rpy_date,
+				nomonth_close_date,
+				COMPANY
+		   from I_ACCT_DBT_INF_HIST
+		  where pba_acct_bs_sgmt_id = #{pbaAcctBsSgmtId}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 特殊交易说明段 -->
+	<select id="getTrstDspnSgmtByIdlistPage" parameterType="page" resultType="pd">
+		 select pbj_as_trst_dspn_sgmt_id,
+				chan_tran_type,
+				tran_date,
+				tran_amt,
+				due_tran_mon,
+				det_info,
+				COMPANY
+		   from I_AS_TRST_DSPN_HIST
+		  where pba_acct_bs_sgmt_id = #{pd.pbaAcctBsSgmtId}
+	</select>
+	<update id="updateStatus" parameterType="map">
+		update I_ACCT_BS
+		   <set>
+		   	  	BUSINESS_STATES = '11'
+		   </set>
+		   where pba_acct_bs_sgmt_id = #{baseId}
+		     and COMPANY = #{COMPANY}
+	</update>
+	<update id="backdate" parameterType="map">
+			update I_ACCT_BS
+			   <set>
+			   	  	BUSINESS_STATES = '30'
+			   </set>
+			   where REPORT_MESSAGE_ID = #{reportMessageId}
+			     and COMPANY = #{COMPANY}
+	</update>
+	<delete id="deletedate" parameterType="map" >
+			delete from report_message
+			 where REPORT_MESSAGE_FILE_NAME = #{reportMessageId}
+			   and COMPANY = #{COMPANY}
+	</delete>
+	
+</mapper>

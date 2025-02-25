@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OrgMapper">
+	
+	<resultMap type="Org" id="orgResultMap">
+		<id column="ORG_ID" property="orgId"/>
+		<result column="DEPARTMENT_ID" property="DEPARTMENT_ID"/>
+		<result column="NAME" property="name"/>
+		<result column="NAME_EN" property="nameEn"/>
+		<result column="ORG_CODE" property="orgCode"/>
+		<result column="ORG_LEVEL" property="orgLevel"/>
+		<result column="PARENT_ID" property="parentId"/>
+		<result column="ORG_DESC" property="orgDesc"/>
+		<result column="HEADMAN" property="headman"/>
+		<result column="TEL" property="tel"/>
+		<result column="FUNCTIONS" property="functions"/>
+		<result column="ADDRESS" property="address"/>
+		<result column="STATUS" property="status"/>
+		<result column="ORG_ORDER" property="orgOrder"/>
+		<result column="COMPANY" property="company"/>
+		<result column="ORG_CODE_FOURTEEN" property="orgCodeFourteen"/>
+		<result column="EACH_ORG_CODE_FOURTEEN" property="eachOrgCodeFourteen"/>
+	</resultMap>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		SYS_DEPARTMENT
+	</sql>
+	<sql id="OrgtableName">
+		SYS_ORG
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+	    ORG_ID,
+		NAME,	
+		NAME_EN,
+		ORG_CODE,
+		ORG_LEVEL,	
+		PARENT_ID,
+		ORG_DESC,
+		HEADMAN,
+		TEL,
+		FUNCTIONS,
+		ADDRESS,
+		STATUS,	
+		ORG_ORDER,
+		COMPANY,
+		ORG_CODE_FOURTEEN,
+		EACH_ORG_CODE_FOURTEEN
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{ORG_ID},	
+		#{NAME},	
+		#{NAME_EN},	
+		#{ORG_CODE},
+		#{ORG_LEVEL},
+		#{PARENT_ID},
+		#{ORG_DESC},
+		#{HEADMAN},
+		#{TEL},
+		#{FUNCTIONS},	
+		#{ADDRESS},
+		#{STATUS},
+		#{ORG_ORDER},	
+		#{COMPANY},
+		#{ORG_CODE_FOURTEEN},
+		#{EACH_ORG_CODE_FOURTEEN}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="OrgtableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="OrgtableName"></include>
+		where 
+			ORG_ID = #{ORG_ID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="OrgtableName"></include>
+		set 
+			NAME = #{NAME},
+			NAME_EN = #{NAME_EN},
+			ORG_DESC =#{ORG_DESC},
+			HEADMAN = #{HEADMAN},
+			TEL = #{TEL},
+			FUNCTIONS = #{FUNCTIONS},
+			ADDRESS = #{ADDRESS},
+			STATUS = #{STATUS},
+			ORG_ORDER = #{ORG_ORDER},
+			ORG_CODE_FOURTEEN = #{ORG_CODE_FOURTEEN},
+			EACH_ORG_CODE_FOURTEEN = #{EACH_ORG_CODE_FOURTEEN}
+		where 
+		ORG_ID = #{ORG_ID}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="OrgtableName"></include>
+		where 
+			ORG_ID = #{ORG_ID}
+	</select>
+	
+	<!-- 通过编码获取数据 -->
+	<select id="findByBianma" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="OrgtableName"></include>
+		where 
+			ORG_CODE = #{ORG_CODE} and COMPANY = #{COMPANY}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultMap="orgResultMap">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="OrgtableName"></include>
+		where
+			
+			 COMPANY = #{pd.COMPANY} 
+		<if test="pd.ORG_ID !=null and pd.ORG_ID != ''"><!-- 检索 -->
+			and PARENT_ID = #{pd.ORG_ID} 
+		</if>
+		<if test="pd.keywords != null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+				 NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+				 or 
+				 NAME_EN LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+				 or
+				 ORG_CODE LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+				 or
+				 ORG_LEVEL LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+				)
+		</if>
+		order by ORG_ORDER
+	</select>
+	
+	<!-- 通过ID获取其子级列表 -->
+	<select id="listSubDepartmentByParentId" parameterType="pd" resultMap="orgResultMap">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="OrgtableName"></include>
+		where 
+			PARENT_ID = #{parentId} and COMPANY = #{company} 
+			order by NAME 
+	</select>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findByOrgId" parameterType="String" resultMap="orgResultMap">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="OrgtableName"></include>
+		where 
+			ORG_ID = #{ORG_ID}
+	</select>
+		
+	<!-- 通过USERID获取机构 -->
+	<select id="findOrgByUserId" parameterType="pd" resultMap="orgResultMap" >
+		select  
+		<include refid="Field"></include>
+		from 
+		<include refid="OrgtableName"></include> o 
+		where o.COMPANY = #{COMPANY} 
+		and o.ORG_ID in
+  			 (select ORG_ID FROM SYS_USER_ORG where USER_ID = #{USER_ID}) 
+	</select>
+	<!-- 通过company查找-->
+	<select id="listAllOrgByCompany" parameterType="String" resultMap="orgResultMap">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="OrgtableName"></include>
+		where 
+			COMPANY = #{company} and STATUS='0' order by NAME 
+	</select>
+	
+	<select id="findRootOrg" parameterType="String" resultType="java.util.HashMap">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="OrgtableName"></include>
+		where PARENT_ID = '0'
+		  AND COMPANY = #{company}
+	</select>
+	
+	
+	<!-- 删除-->
+	<delete id="deleteUserOrg" parameterType="pd">
+		delete from sys_user_org
+		where 
+			ORG_ID = #{ORG_ID}
+	</delete>
+	<!-- 查询机构是否被授权-->
+	<select id="finUserOrg" parameterType="pd" resultType="String">
+		select USER_ID from sys_user_org
+		where 
+			ORG_ID = #{ORG_ID}
+	</select>
+	<!-- 通过company查找-->
+	<select id="ComOrglist" parameterType="pd" resultMap="orgResultMap">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="OrgtableName"></include>
+		WHERE
+		<!-- 	ORG_ID IN
+			(
+				SELECT
+					ORG_ID
+				FROM
+					sys_user_org
+				WHERE
+					USER_ID = #{USER_ID}
+			)
+		and STATUS='0'
+		union
+		select 
+		<include refid="Field"></include>
+		from 
+		sys_org a
+		where 
+				not EXISTS(
+					select 1
+					from sys_user_org b
+						where 
+							a.ORG_ID = b.ORG_ID
+			) -->
+			1=1
+		order by ORG_LEVEL DESC,ORG_ORDER
+	</select>
+	<!-- 列表 -->
+	<select id="ComdatalistPage" parameterType="page" resultMap="orgResultMap">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="OrgtableName"></include>
+		where
+			<!-- ORG_ID IN
+			(
+				SELECT
+					ORG_ID
+				FROM
+					sys_user_org
+				WHERE
+					USER_ID = #{pd.USER_ID}
+			) -->
+			1=1
+		<if test="pd.ORG_ID !=null and pd.ORG_ID != ''"><!-- 检索 -->
+		and PARENT_ID = #{pd.ORG_ID}
+		</if>
+		<if test="pd.keywords != null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+				 NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+				 or 
+				 NAME_EN LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+				 or
+				 ORG_CODE LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+				 or
+				 ORG_LEVEL LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+				)
+		</if>
+		order by ORG_LEVEL DESC
+	</select>
+	<!-- 通过ID获取其子级列表 -->
+	<select id="listComDepartmentByParentId" parameterType="pd" resultMap="orgResultMap">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="OrgtableName"></include>
+		where 
+			ORG_ID IN
+			(
+				SELECT
+					ORG_ID
+				FROM
+					sys_user_org
+				WHERE
+					USER_ID = #{USER_ID}
+			)
+		
+		
+			order by ORG_LEVEL DESC
+	</select>
+	<!-- 通过ID获取其子级列表 -->
+	<select id="listAubDepartmentByParentId" parameterType="pd" resultMap="orgResultMap">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="OrgtableName"></include>
+		where 
+			PARENT_ID = #{parentId} and COMPANY = #{company} and STATUS = '0' order by ORG_ORDER 
+	</select>
+	<!-- fh313596790qq(pengyj) -->
+	
+	<!-- 通过ID获取其子级列表 -->
+	<select id="listSonOrg" parameterType="pd" resultType="java.lang.String">
+		select 
+		ORG_ID
+		from 
+		<include refid="OrgtableName"></include>
+		where 
+			PARENT_ID = #{ORG_ID} 
+	</select>
+	
+	<!-- 通过ID获取机构编码 -->
+	<select id="findOrgCode" parameterType="pd" resultType="java.lang.String">
+		select 
+		ORG_CODE
+		from 
+		<include refid="OrgtableName"></include>
+		where 
+			ORG_ID = #{ORG_ID} 
+	</select>
+	
+	<!-- 获取下级机构 -->
+	<!--<select id="getChildOrgList" parameterType="pd" resultMap="orgResultMap">
+		select
+		<include refid="Field"></include>
+		FROM 
+		<include refid="OrgtableName"></include>
+		WHERE COMPANY = #{COMPANY} AND STATUS = '0'
+		START WITH ORG_ID = #{ORG_ID}
+		CONNECT BY PRIOR ORG_ID = PARENT_ID
+	</select>-->
+	
+	<select id="getChildOrgList" parameterType="pd" resultMap="orgResultMap">
+	select * from(
+select distinct b.org_id,b.parent_id,b.name,b.org_level,b.org_code,b.company from sense.sys_org a
+inner join sense.sys_org b on  (a.org_id=b.parent_id and a.org_id=#{ORG_ID}) or (b.org_id=#{ORG_ID}) 
+union 
+select distinct d.org_id,d.parent_id,d.name,d.org_level,d.org_code,d.company from ( select b.org_id from sense.sys_org a
+inner join sense.sys_org b on a.org_id=b.parent_id and a.org_id=#{ORG_ID}) c
+inner join sense.sys_org d on c.org_id=d.parent_id ) e
+where e.company=#{COMPANY}
+order by e.org_level
+	</select>
+	
+	
+	
+	
+</mapper>

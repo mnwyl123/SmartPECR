@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EnIcdnRltpInfMapper">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EnIcdnRltpInf" id="enIcdnRltpInfResultMap">
+		<result column="eca_en_icdn_rltp_inf_id" property="ecaEnIcdnRltpInfId"/>
+		<result column="inf_rec_type" property="infRecType"/> 
+		<result column="ent_name" property="entName"/> 
+		<result column="ent_cert_type" property="entCertType"/>
+		<result column="ent_cert_num" property="entCertNum"/> 
+		<result column="asso_ent_name" property="assoEntName"/> 
+		<result column="asso_ent_cert_type" property="assoEntCertType"/> 
+		<result column="asso_ent_cert_num" property="assoEntCertNum"/>
+		<result column="asso_type" property="assoType"/> 
+		<result column="asso_sign" property="assoSign"/> 
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="operator_user" property="operatorUser"/>
+		<result column="org_name" property="orgName"/>
+		<result column="org_code" property="orgCode"/>
+		<result column="business_states" property="businessStates"/>
+		<result column="reject_reason" property="rejectReason"/>
+		<result column="is_filter" property="isFilter"/>
+		<result column="report_message_id" property="reportMessageId"/>
+		<result column="rpt_date" property="rptDate"/>
+	</resultMap>
+	<!-- 企业间关联关系 查询 -->
+	<select id="enIcdnRltpInflistPage" parameterType="page" resultMap="enIcdnRltpInfResultMap">
+		  select 
+			      eca_en_icdn_rltp_inf_id 
+				  ,inf_rec_type 
+				  ,ent_name 
+				  ,ent_cert_type 
+				  ,ent_cert_num 
+				  ,asso_ent_name 
+				  ,asso_ent_cert_type 
+				  ,asso_ent_cert_num 
+				  ,asso_type
+				  ,asso_sign 
+				  ,last_update_time 
+				  ,operator_user 
+				  ,org_name 
+				  ,org_code 
+				  ,business_states 
+				  ,reject_reason 
+				  ,is_filter 
+				  ,report_message_id 
+				  ,rpt_date
+				  ,COMPANY
+		   from E_ICDN_RLTP_INF
+		   <if test="pd.managerId != null and pd.managerId != ''">
+				LEFT JOIN PECR.sys_l_c_a_m_m M
+		        ON ENT_NAME = M.CUST_NAME
+				AND ENT_CERT_TYPE = M.CUST_ID_TYPE
+				AND ENT_CERT_NUM = M.CUST_ID_NUM
+		   </if>
+		<where>
+			<if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+			<if test="pd.rptDate != null and pd.rptDate != ''">
+		         and rpt_date = #{pd.rptDate}
+		    </if>
+		    <if test="pd.entName != null and pd.entName != ''">
+		   	  	and ent_name like '%${pd.entName}%'
+		   	</if>
+		   	<if test="pd.entCertType != null and pd.entCertType != ''">
+		   	  	and ent_cert_type = #{pd.entCertType}
+		   	</if>
+		   	<if test="pd.entCertNum != null and pd.entCertNum != ''">
+		   	  	and ent_cert_num like '%${pd.entCertNum}%'
+		   	</if>
+		   	<if test="pd.businessStates != null and pd.businessStates != ''">
+		   	  	and business_states = #{pd.businessStates}
+		   	</if>
+			<if test="pd.managerId != null and pd.managerId != ''">
+				and M.MANAGER_ID = #{pd.managerId}
+				AND M.DATA_TYPE = '2'
+				AND M.DATA_LEVEL = '1'
+		   		AND M.END_DATE = '2099-12-31'
+			</if>
+		   	  	and COMPANY = #{pd.COMPANY}
+		</where>
+	</select>
+	<!-- 详情或者修改 查询指定记录 -->
+	<select id="EnIcdnRltpInfbyId" parameterType="pd" resultType="pd">
+		 select   eca_en_icdn_rltp_inf_id 
+				  ,inf_rec_type 
+				  ,ent_name 
+				  ,ent_cert_type 
+				  ,ent_cert_num 
+				  ,asso_ent_name 
+				  ,asso_ent_cert_type 
+				  ,asso_ent_cert_num 
+				  ,asso_type
+				  ,asso_sign 
+				  ,last_update_time 
+				  ,operator_user 
+				  ,org_name 
+				  ,org_code 
+				  ,business_states 
+				  ,reject_reason 
+				  ,is_filter 
+				  ,report_message_id 
+				  ,rpt_date
+				  ,COMPANY
+		   from E_ICDN_RLTP_INF
+		  where eca_en_icdn_rltp_inf_id = #{ecaEnIcdnRltpInfId}
+		  	and COMPANY = #{COMPANY}
+	</select>
+	<!-- 新增  -->
+	<insert id="insertEnIcdnRltpInf" parameterType="map">
+		<![CDATA[
+		insert into E_ICDN_RLTP_INF(
+					eca_en_icdn_rltp_inf_id 
+				  ,inf_rec_type 
+				  ,ent_name 
+				  ,ent_cert_type 
+				  ,ent_cert_num 
+				  ,asso_ent_name 
+				  ,asso_ent_cert_type 
+				  ,asso_ent_cert_num 
+				  ,asso_type
+				  ,asso_sign 
+				  ,last_update_time 
+				  ,operator_user 
+				  ,org_name 
+				  ,org_code 
+				  ,business_states 
+				  ,reject_reason 
+				  ,is_filter 
+				  ,report_message_id 
+				  ,rpt_date
+				  ,COMPANY)
+		    values (#{ecaEnIcdnRltpInfId},
+					'350',
+					#{entName},
+					#{entCertType},
+					#{entCertNum},
+					#{assoEntName},
+					#{assoEntCertType},
+					#{assoEntCertNum},
+					#{assoType},
+					#{assoSign},
+					#{lastUpdateTime},
+					#{operatorUser},
+					#{orgName},
+					#{orgCode},
+					'11',
+					#{rejectReason},
+					#{isFilter},
+					#{reportMessageId},
+					#{rptDate},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+
+	<!-- 更新   -->
+	<update id="updateEnIcdnRltpInf" parameterType="map">
+		 <![CDATA[ 
+		 update E_ICDN_RLTP_INF
+			set ent_name = #{entName, jdbcType=VARCHAR},
+				ent_cert_type = #{entCertType, jdbcType=VARCHAR},
+				ent_cert_num = #{entCertNum, jdbcType=VARCHAR},
+				asso_ent_name = #{assoEntName, jdbcType=CHAR},
+				asso_ent_cert_type = #{assoEntCertType, jdbcType=VARCHAR},
+				asso_ent_cert_num = #{assoEntCertNum, jdbcType=VARCHAR},
+				asso_type = #{assoType, jdbcType=VARCHAR},
+				asso_sign = #{assoSign, jdbcType=VARCHAR},
+				is_filter = #{isFilter, jdbcType=VARCHAR},
+				rpt_date = #{rptDate, jdbcType=VARCHAR},
+				business_states='11'
+		  WHERE eca_en_icdn_rltp_inf_id = #{ecaEnIcdnRltpInfId}
+		  	and COMPANY = #{COMPANY}
+		  ]]>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="deleteEnIcdnRltpInf" parameterType="pd">
+		delete from E_ICDN_RLTP_INF
+		 where eca_en_icdn_rltp_inf_id = #{ecaEnIcdnRltpInfId}
+		 and COMPANY = #{COMPANY}
+	</delete>
+</mapper>

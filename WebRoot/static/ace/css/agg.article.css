@@ -1,0 +1,106 @@
+﻿* {
+	margin:0px; 
+	padding:0px;
+	font-family:"微软雅黑";
+}
+/**old article**/
+/****************  文章内容列表页-格式：pop*className ****************/
+.pop_cl,.pop_cl2{ clear:both; float:none; height:1px; }
+.pop_cl2{ height:40px; }
+#popall{ background:#fff;  margin:auto; text-align:center; color:#333; font-size:13px;  padding: 8px 20px 24px;}
+/*-- 头部 --*/
+#popNav{ /*margin:12px auto 0 auto; */text-align:left;/* background:url(../img/agg/article/pop_bookmark.gif) no-repeat 8px 8px; padding-left:2.5em;*/  font-size:14px; font-weight:normal;color:#4383b4;border-bottom: 1px dotted #e2e2e2;
+    margin: 0 0 12px;
+    padding-bottom: 13px;
+    padding-top: 2px;
+}
+#popNav span{ 
+	color: #2679b5;
+    font-size: 24px;
+    font-weight: lighter;
+    margin: 0 0 0 8px;
+    padding: 0; 
+}
+#popNav i { /*color:#f79d00; */margin:0 4px 0 12px; font-size:14px; }
+/*-- 内容区 --*/
+#popCont{ margin:auto; text-align:center; background:#fff/* url(../img/agg/article/pop_contbg.gif) repeat-x top*/; border:1px solid #E3E2E2; }
+
+/*-- 修改提示 --*/
+#popCont .tips{ float:right; margin:20px 15px 0 0; height:45px; width:245px; text-align:left}
+.tips .tipbg{ float:left; background:url(../img/agg/article/pop_tips.gif) no-repeat; height:45px; width:41px; }
+.tips .tipcot{ float:left; height:45px;width:200px; border-top:1px solid #D1D7E5;border-right:1px solid #D1D7E5;border-bottom:1px solid #D1D7E5; font-size:12px; line-height:21px; color:#7A889C; }
+.tipcot span{ color:#0091BB; font-weight:bold; }
+
+/*-- 文章区 --*/
+#popCont .Article{ width:96%; margin:auto; text-align:center; }
+.Ar_title h1{ font-size:24px; font-family:'微软雅黑'; font-weight:normal; line-height:50px; }
+.Ar_title span{ margin:0 1.5% 0 2%; font-size:13px; color:#7E7E7E; }
+.Ar_title img{ vertical-align:middle; padding-right:4px; border:0; }
+.Ar_title a{ font-size:12px; color:#7E7E7E; text-decoration:none; margin:0 2px; }
+.Ar_title a:hover{font-size:12px; color:#ff6600; text-decoration:none;}
+.Ar_cont{ line-height:27px; text-align:left; margin-top:20px; }
+.Ar_cont img{ width:expression(this.width > 460 ? 460 :true); max-width:460px; border:1px solid #586365; margin-top:10px; margin-bottom:10px;}
+
+/*-- 分页 --*/
+#popCont .Ar_pages{ text-align:center; margin:5% 0 5% 0;}
+.Ar_pages span{ 
+  display:-moz-inline-box;
+  display:inline-block;
+  border:1px solid #A6A4A5; padding:1px 8px; height:17px; line-height:18px; color:#676767; font-size:12px; }
+.Ar_pages span.onit,.Ar_pages span:hover{ 
+  display:-moz-inline-box;
+  display:inline-block;
+  border:1px solid #333; background:#736F6E; color:#fff; font-size:12px; }
+.Ar_pages span.onit{ font-weight:bold;}
+
+/*-- 文章相关 --*/
+#popCont .Ar_other{ border-top:1px dashed #DCDBD6; padding:5px 0 5px 40px; text-align:left;}
+#popCont .Ar_other span{ color:#B2B4B5; font-size:12px; padding:6px 0 6px 4px; display:inline-block; *display:inline;zoom:1 }
+#popCont .Ar_other span a,#popCont .Ar_other2 a{ font-size:13px; color:#777; /*text-decoration:underline; */}
+#popCont .Ar_other span a:hover,#popCont .Ar_other2 a:hover{ font-size:13px; color:#ff6600; text-decoration:underline; }
+.Ar_other h1{ margin-left:-40px; font-size:16px; color:#478fca; font-weight:normal; margin-bottom:7px; }
+.Ar_other span img,.Ar_other h1 img{ vertical-align:middle; margin-right:8px; border:0;}
+.Ar_other p{ line-height:27px;}
+.Ar_other ul li{ list-style:none; display:block; line-height:27px; }
+.Ar_other ul li a{ font-size:13px; color:#777; text-decoration:none; font-family:'微软雅黑'; }
+.Ar_other ul li a:hover{ font-size:13px; color:#ff6600; text-decoration:none; font-family:'微软雅黑'; }
+
+/*-- 评论区 --*/
+#popCont .comment{ border-top:1px solid #E3E2E2;width:100%; padding:20px 0;}
+.comment h1{ font-size:13px; color:#333; margin-bottom:7px; text-align:left; padding-left:20px; }
+.comment h1 img{ vertical-align:-6px; margin-right:8px; border:0;}
+.comment a{ float:right; padding-right:20px; font-weight:normal; color:#313097; margin-top:-1px; *margin-top:-20px; }
+.comment strong{ color:#FE9039; }
+.comment dl{ border:1px solid #F9F9F9; background:#FDFDFD; width:92%; margin:auto; text-align:left; padding:10px 15px; margin-top:10px; font-size:12px}
+.comment dt{  color:#9585BF;  }
+.comment dt span{  color:#9ea1af; line-height:24px; padding-left:8px; font-weight:normal;}
+.comment dd{ line-height:27px; font-size:13px; }
+#popCont .comment input{ border:1px solid #ccc; background:url(../img/agg/article/pop_buttonbg.gif) repeat-x; height:26px; width:102px; font-size:13px; color:#333; }
+#popCont .comment .reply{ text-align:left; width:95%; margin:auto; margin-top:20px;}
+
+/****************  文章内容列表页2新增样式-格式：pop*className ****************/
+#popCont .Ar_other2{  clear:both; background:#fff; text-align:left; margin-top:2.5%!important;_margin-bottom:0.1%; }
+
+.Ar_other2 span{ float:left; width:50%; *+width:49.9%;_width:49.9%; line-height:24px; word-wrap:break-word; border-top:1px dashed #DCDBD6; padding:1% 0%; }
+.Ar_other2 span.one{ float:left; width:100%; line-height:24px; }
+
+.Ar_other2 h1{
+               float:left; font-size:13px;padding:0 0 0 1.5em; margin:0 3.5% 0 0; line-height:24px;
+               background:url(../img/agg/article/pop_arrow.gif) no-repeat 4px 8px;
+               background:url(../img/agg/article/pop_arrow.gif) no-repeat 4px 6px \9;
+              *background:url(../img/agg/article/pop_arrow.gif) no-repeat 4px 6px;             
+			   }
+.Ar_other2 span.one h2{ float:left; font-size:13px; font-weight:normal;word-wrap:break-word;}
+
+.Ar_other i.fa-download { font-size:16px; color:#478fca; padding:0 2px 0 21px; vertical-align:middle; }
+
+.Ar_other i.fa-paperclip { color:#ccc;font-size:20px;margin:0 10px 0 5px;  }
+.Ar_other i.fa-rss{ color:#ff7e00;font-size:20px;margin:0 10px 0 5px;  }
+.Ar_other i.fa-book { color:#7dcd00;font-size:20px;margin:0 10px 0 5px;  }
+.comment i.fa-comments { color:#afd9ef;font-size:20px;margin:0 10px 0 5px;  }
+.Ar_title i { font-size:14px; padding:0 5px; }
+.Ar_title i.fa-star { color:#ff7e00;}
+.Ar_title i.fa-comment-o { color:#9ea1af; }
+.Ar_title i.fa-close { color:#cc0606; }
+.comment textarea { border:1px solid #ccc; background:#fff; }
+.comment button { vertical-align:8px; margin-left:5px; }

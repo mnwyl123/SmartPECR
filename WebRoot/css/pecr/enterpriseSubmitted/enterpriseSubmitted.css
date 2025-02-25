@@ -1,0 +1,133 @@
+.stepCont{
+	width:100%;
+	padding: 0;
+	position: relative;
+}
+.ystep-container {
+	font-family: "Helvetica Neue",Helvetica,"Hiragino Sans GB","Wenquanyi Micro Hei","Microsoft Yahei",Arial,sans-serif;
+/*		display: inline-block;
+		position: relative;*/
+	color: #000;
+	background: #fff;
+}
+.ystep-container ul,.ystep-container li,.ystep-container p {
+	margin: 0;
+	padding: 0;
+}
+/*size css*/
+.ystep-lg {
+	left: 0;
+	width:100%;
+	height: 28px;
+	font-size: 18px;
+}
+/*large size css*/
+.ystep-lg .ystep-container-steps {
+	cursor: pointer;
+	z-index: 10;
+}
+.ystep-lg li {
+	/*float: left;*/
+	display: inline-block;
+	/*width: 100px;*/
+	/*height: 85px;*/
+	/*margin-right: 100px;*/
+}
+.ystep-lg .ystep-step-done {
+	background-position: -278px -132px;
+}
+.ystep-lg .ystep-step-undone {
+	background-position: -137px -131px;
+}
+.ystep-lg .ystep-step-active {
+	background-position: -414px -131px;
+}
+.ystep-lg .ystep-progress {
+	width: 400px;
+	height: 4px;
+	position: absolute;
+	bottom: 0px;
+	left: 50%;
+	transform: translateX(-50%);
+	margin-right: 10px;
+	overflow: hidden;
+}
+.ystep-lg .ystep-progress-bar {
+	height: 4px;
+	/*background: #e4e4e4;*/
+	display: inline-block;
+	float: left;
+}
+.ystep-lg .ystep-progress-highlight {
+	height: 4px;
+	display: block;
+}
+
+/*blue css*/
+.ystep-blue .ystep-step-done {
+	
+}
+.ystep-blue .ystep-step-undone {
+	color: #9c9a9b;
+}
+.ystep-blue .ystep-step-active {
+	color: #3276b1;
+}
+.ystep-blue .ystep-progress-highlight {
+	background: #28558c;
+}
+/*按钮样式*/
+.ystep {
+	padding: 20px;
+/*min-width: 1114px;*/
+}
+.step-button{
+	padding: 0 18px;
+	margin-top: 0;
+}
+.step-button button,.step-button button:hover{
+	margin: 32px auto 110px;
+	padding: 8px 75px;
+}
+.setp_button{
+	padding: 0;
+	text-align: center;
+	background: #fff;
+}
+/* 导航向导结束 */
+
+/* page1内容布局 */
+.pageCont{
+	margin-top: 100px;
+}
+#page1{
+	width: 50%;
+	margin: 0 auto;
+}
+.form_group{
+	text-align: center;
+	margin: 0 auto;
+}
+.layui-form-label{
+	/*float: right;*/
+}
+.layui-input-block{
+	margin-left: 0;
+	float: right;
+}
+.form_group{
+	float: right;
+}
+.stepPage_top{
+	margin-top: 18px;
+}
+.step-button{
+	width: 100%;
+    text-align: center;
+    display: inline-block;
+}
+#prevBtn,#nextBtn{
+	margin-right: 16px;
+	margin-left: 12px;
+	color:#fff;
+}

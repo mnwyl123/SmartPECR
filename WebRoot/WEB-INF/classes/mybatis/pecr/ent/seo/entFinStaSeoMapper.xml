@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BalanceSheetDltSeoMapper">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.BalanceSheetDlt" id="IaesResultMap">
+		<result column="eha_balance_sheet_bs_sgmt_id" property="ehaBalanceSheetBsSgmtId" />
+		<result column="inf_rec_type" property="infRecType" />
+		<result column="ent_name" property="entName" />
+		<result column="ent_cert_type" property="entCertType" />
+		<result column="ent_cert_num" property="entCertNum" />
+		<result column="sheet_year" property="sheetYear" />
+		<result column="sheet_type" property="sheetType" />
+		<result column="sheet_type_divide" property="sheetTypeDivide" />
+		<result column="business_states" property="businessStates" />
+		<result column="org_code" property="orgCode" />
+		<result column="flag" property="flag" />
+	</resultMap>
+<select id="datalistPage" parameterType="page" resultType="pd">
+		   select distinct ENT_CERT_NUM,ENT_CERT_TYPE from ( 
+		   select 
+			  ENT_CERT_NUM,ENT_CERT_TYPE,COMPANY
+		  from E_BALANCE_SHEET_BS 
+		 union all
+		   	   select 
+			  ENT_CERT_NUM,ENT_CERT_TYPE,COMPANY
+		  from E_BALANCE_SHEET_BS_hist
+		   union all
+		   	   select 
+			 ENT_CERT_NUM,ENT_CERT_TYPE,COMPANY
+		  from E_CASH_FLOWS_BS
+		   union all
+		   	   select 
+			 ENT_CERT_NUM,ENT_CERT_TYPE,COMPANY
+		  from E_CASH_FLOWS_BS_hist
+		   union all
+		   	   select 
+			 ENT_CERT_NUM,ENT_CERT_TYPE,COMPANY
+		  from E_INCOME_EXPENSE_bs
+		   union all
+		   	   select 
+			 ENT_CERT_NUM,ENT_CERT_TYPE,COMPANY
+		  from E_INCOME_EXPENSE_bs_hist
+		   union all
+		   	   select 
+			 ENT_CERT_NUM,ENT_CERT_TYPE,COMPANY
+		  from E_INCOME_STATEMENT
+		   union all
+		   	   select 
+			 ENT_CERT_NUM,ENT_CERT_TYPE,COMPANY
+		  from E_INCOME_STATEMENT_hist
+		   union all
+		   	   select 
+			 ENT_CERT_NUM,ENT_CERT_TYPE,COMPANY
+		  from E_INSTITU_BALANCE_bs
+		   union all
+		   	   select 
+			 ENT_CERT_NUM,ENT_CERT_TYPE,COMPANY
+		  from E_INSTITU_BALANCE_bs_hist
+		)  a  where 1=1		
+		   	   <if test='pd.ENT_CERT_NUM != null and pd.ENT_CERT_NUM != ""'>
+		   	  	and a.ENT_CERT_NUM like '%${pd.ENT_CERT_NUM}%'
+		   	  </if>
+		   	  <if test='pd.ENT_CERT_TYPE != null and pd.ENT_CERT_TYPE != ""'>
+		   	  	and a.ENT_CERT_TYPE = #{pd.ENT_CERT_TYPE}
+		   	  </if>
+		   	    and a.COMPANY = #{pd.COMPANY}
+		 
+	</select>
+	<!-- 授信协议信息  数据列表 -->
+	<select id="dataHistlistPage" parameterType="page" resultMap="IaesResultMap">
+	select * from (
+		 select
+			 eha_balance_sheet_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,'new' FLAG
+			  ,COMPANY
+		   from E_BALANCE_SHEET_BS
+	         where inf_rec_type = '614' and ent_cert_type = #{pd.ENT_CERT_TYPE} and ent_cert_num = #{pd.ENT_CERT_NUM}
+		union all
+		select
+			 eha_balance_sheet_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,'old' FLAG
+			  ,COMPANY
+		   from E_BALANCE_SHEET_BS_hist  
+		   where inf_rec_type = '614' and ent_cert_type = #{pd.ENT_CERT_TYPE} and ent_cert_num = #{pd.ENT_CERT_NUM}
+		   union all
+
+			 select
+			 eja_cash_flows_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,'new' FLAG
+			  ,COMPANY
+		   from E_CASH_FLOWS_BS  
+		   where inf_rec_type = '634' and ent_cert_type = #{pd.ENT_CERT_TYPE} and ent_cert_num = #{pd.ENT_CERT_NUM}
+		   union all
+		
+			select
+			 eja_cash_flows_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,'old' FLAG
+			  ,COMPANY
+		   from E_CASH_FLOWS_BS_hist  
+		   where inf_rec_type = '634' and ent_cert_type = #{pd.ENT_CERT_TYPE} and ent_cert_num = #{pd.ENT_CERT_NUM}
+		    union all
+		
+		
+			select
+			 ela_income_and_expense_stat_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,'new' FLAG
+			  ,COMPANY
+		   from E_INCOME_EXPENSE_bs  
+		   where inf_rec_type = '654' and ent_cert_type = #{pd.ENT_CERT_TYPE} and ent_cert_num = #{pd.ENT_CERT_NUM}
+		    union all
+		
+			select
+			 ela_income_and_expense_stat_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,'old' FLAG
+			  ,COMPANY
+		   from E_INCOME_EXPENSE_bs_hist  
+		   where inf_rec_type = '654' and ent_cert_type = #{pd.ENT_CERT_TYPE} and ent_cert_num = #{pd.ENT_CERT_NUM}
+		     
+		     union all
+		
+			select
+			 eia_income_statement_profit_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,'new' FLAG
+			  ,COMPANY
+		   from E_INCOME_STATEMENT  
+		   where inf_rec_type = '624' and ent_cert_type = #{pd.ENT_CERT_TYPE} and ent_cert_num = #{pd.ENT_CERT_NUM} 
+		    union all
+		
+			select
+			 eia_income_statement_profit_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,'old' FLAG
+			  ,COMPANY
+		   from E_INCOME_STATEMENT_hist  
+		   where inf_rec_type = '624' and ent_cert_type = #{pd.ENT_CERT_TYPE} and ent_cert_num = #{pd.ENT_CERT_NUM} 
+		   union all
+		
+			select
+			 eka_institution_balance_sht_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,'new' FLAG
+			  ,COMPANY
+		   from E_INSTITU_BALANCE_bs  
+		   where inf_rec_type = '644' and ent_cert_type = #{pd.ENT_CERT_TYPE} and ent_cert_num = #{pd.ENT_CERT_NUM} 
+		   union all
+		
+			select
+			 eka_institution_balance_sht_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,'old' FLAG
+			  ,COMPANY
+		   from E_INSTITU_BALANCE_bs_hist  
+		   where inf_rec_type = '644' and ent_cert_type = #{pd.ENT_CERT_TYPE} and ent_cert_num = #{pd.ENT_CERT_NUM}) a
+	where 1=1 
+	 	<if test='pd.RPT_DATE != null and pd.RPT_DATE != ""'>
+		 	and a.RPT_DATE = #{pd.RPT_DATE}
+		</if>
+	        and a.COMPANY = #{pd.COMPANY}
+	</select>
+	
+	<update id="updateStatusBalance" parameterType="map">
+		update E_BALANCE_SHEET_BS
+		   <set>
+		   	  	BUSINESS_STATES = '11'
+		   </set>
+		   where EHA_BALANCE_SHEET_BS_SGMT_ID = #{baseId}
+		     and COMPANY = #{COMPANY}
+</update>
+	<update id="updateStatusCash" parameterType="map">
+		update E_CASH_FLOWS_BS
+		   <set>
+		   	  	BUSINESS_STATES = '11'
+		   </set>
+		   where eja_cash_flows_bs_sgmt_id = #{baseId}
+		     and COMPANY = #{COMPANY}
+</update>
+	<update id="updateStatusIncome" parameterType="map">
+		update E_INCOME_EXPENSE_bs
+		   <set>
+		   	  	BUSINESS_STATES = '11'
+		   </set>
+		   where ela_income_and_expense_stat_id = #{baseId}
+		   and COMPANY = #{COMPANY}
+</update>
+	<update id="updateStatusPabs" parameterType="map">
+		update E_INCOME_STATEMENT
+		   <set>
+		   	  	BUSINESS_STATES = '11'
+		   </set>
+		   where eia_income_statement_profit_id = #{baseId}
+		   and COMPANY = #{COMPANY}
+</update>
+	<update id="updateStatusInstitution" parameterType="map">
+		update E_INSTITU_BALANCE_bs
+		   <set>
+		   	  	BUSINESS_STATES = '11'
+		   </set>
+		   where eka_institution_balance_sht_id = #{baseId}
+		   and COMPANY = #{COMPANY}
+</update>
+
+<update id="backdateBalance" parameterType="map">
+		update E_BALANCE_SHEET_BS
+		   <set>
+		   	  	BUSINESS_STATES = '20'
+		   </set>
+		   where REPORT_MESSAGE_ID = #{reportMessageId}
+		     and COMPANY = #{COMPANY}
+</update>
+<update id="backdateCash" parameterType="map">
+		update E_CASH_FLOWS_BS
+		   <set>
+		   	  	BUSINESS_STATES = '20'
+		   </set>
+		   where REPORT_MESSAGE_ID = #{reportMessageId}
+		     and COMPANY = #{COMPANY}
+</update>
+<update id="backdateIncome" parameterType="map">
+		update E_INCOME_EXPENSE_bs
+		   <set>
+		   	  	BUSINESS_STATES = '20'
+		   </set>
+		   where REPORT_MESSAGE_ID = #{reportMessageId}
+		     and COMPANY = #{COMPANY}
+</update>
+<update id="backdatePabs" parameterType="map">
+		update E_INCOME_STATEMENT
+		   <set>
+		   	  	BUSINESS_STATES = '20'
+		   </set>
+		   where REPORT_MESSAGE_ID = #{reportMessageId}
+		     and COMPANY = #{COMPANY}
+</update>
+<update id="backdateInstitution" parameterType="map">
+		update E_INSTITU_BALANCE_bs
+		   <set>
+		   	  	BUSINESS_STATES = '20'
+		   </set>
+		   where REPORT_MESSAGE_ID = #{reportMessageId}
+		     and COMPANY = #{COMPANY}
+</update>
+<delete id="deletedate" parameterType="map" >
+		delete from report_message
+		 where REPORT_MESSAGE_FILE_NAME = #{reportMessageId}
+		   and COMPANY = #{COMPANY}
+</delete>
+<select id="getBalanceById" parameterType="pd" resultType="pd">
+		select
+			 eha_balance_sheet_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,COMPANY
+		from E_BALANCE_SHEET_BS_hist
+		  where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId}
+		  and inf_rec_type = '614'
+		  and COMPANY = #{COMPANY}
+	</select>
+	<select id="getCashById" parameterType="pd" resultType="pd">
+		select
+			 eja_cash_flows_bs_sgmt_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,COMPANY
+		from E_CASH_FLOWS_BS_hist
+		  where eja_cash_flows_bs_sgmt_id = #{ejaCashFlowsBsSgmtId}
+		  and inf_rec_type = '634'
+		  and COMPANY = #{COMPANY}
+	</select>
+	<select id="getIncomeById" parameterType="pd" resultType="pd">
+		select
+			 ela_income_and_expense_stat_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,COMPANY
+		from E_INCOME_EXPENSE_bs_hist
+		  where ela_income_and_expense_stat_id = #{elaIncomeAndExpenseStatId}
+		  and inf_rec_type = '654'
+		  and COMPANY = #{COMPANY}
+	</select>
+	
+	<select id="getPabsById" parameterType="pd" resultType="pd">
+		select
+			 eia_income_statement_profit_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,COMPANY
+		from E_INCOME_STATEMENT_hist
+		  where eia_income_statement_profit_id = #{eiaIncomeStatementProfitId}
+		  and inf_rec_type = '624'
+		  and COMPANY = #{COMPANY}
+	</select>
+	<select id="getInstitutionById" parameterType="pd" resultType="pd">
+		select
+			 eka_institution_balance_sht_id 
+			  ,inf_rec_type 
+			  ,ent_name 
+			  ,ent_cert_type 
+			  ,ent_cert_num 
+			  ,sheet_year 
+			  ,sheet_type 
+			  ,sheet_type_divide 
+			  ,business_states
+			  ,org_code
+			  ,COMPANY
+		from E_INSTITU_BALANCE_bs_hist
+		  where eka_institution_balance_sht_id = #{ekaInstitutionBalanceShtId}
+		  and inf_rec_type = '644'
+		  and COMPANY = #{COMPANY}
+	</select>
+</mapper>

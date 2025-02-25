@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ValidateMappingMapper">
+
+
+  <resultMap id="BaseResultMap" type="com.dcits.supervise.pecr.validateData.model.ValidateMapping">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="VALIDATE_RULES_ID" jdbcType="VARCHAR" property="validateRulesId" />
+    <result column="VALIDATE_PARAMETER_NAME" jdbcType="VARCHAR" property="validateParameterName" />
+    <result column="TEMPLATE_MAPPING_NAME" jdbcType="VARCHAR" property="templateMappingName" />
+    <result column="VALIDATE_MAPPING_COMMENT" jdbcType="VARCHAR" property="validateMappingComment" />
+    <result column="VALIDATE_MAPPING_TYPE" jdbcType="VARCHAR" property="validateMappingType" />
+    <result column="SEQ" jdbcType="DECIMAL" property="seq" />
+  </resultMap>
+  
+ <sql id="Base_Column_List">
+    ID, VALIDATE_RULES_ID, VALIDATE_PARAMETER_NAME, TEMPLATE_MAPPING_NAME, VALIDATE_MAPPING_COMMENT, 
+    VALIDATE_MAPPING_TYPE, SEQ
+  </sql>
+  
+  <sql id="tableName">
+  	VALIDATE_MAPPING
+  </sql>
+
+	<select id="selectByCondition" parameterType="map" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from <include refid="tableName"/>
+		where 1=1
+		<if test='VALIDATE_RULES_ID != null and VALIDATE_RULES_ID != ""'>
+			and VALIDATE_RULES_ID = #{VALIDATE_RULES_ID}
+		</if>
+		<if test='SEQ != null and SEQ != ""'>
+			and SEQ = #{SEQ}
+		</if>
+	</select>
+	
+	<select id="selectOneByCondition" parameterType="map" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from <include refid="tableName"/>
+		where 1=1
+		<if test='VALIDATE_RULES_ID != null and VALIDATE_RULES_ID != ""'>
+			and VALIDATE_RULES_ID = #{VALIDATE_RULES_ID}
+		</if>
+		<if test='SEQ != null and SEQ != ""'>
+			and SEQ = #{SEQ}
+		</if>
+	</select>
+
+</mapper>

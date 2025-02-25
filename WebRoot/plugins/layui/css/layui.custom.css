@@ -1,0 +1,117 @@
+.layui-colla-title {
+    position: relative;
+    height: 34px;
+    line-height: 34px;
+    padding: 0 15px 0 35px;
+    color: #333;
+    background-color: #f2f2f2;
+    cursor: pointer;
+    font-size: 12px;
+    overflow: hidden;
+    font-weight: bold;
+  }
+  .layui-form-label{	
+	float: left;
+    display: block;
+    padding: 5px 10px 8px 5px;
+    width: 150px;
+    font-weight: 500;
+    line-height: 15px;
+    text-align: end;
+    font-size: 13px;
+    font-family: Microsoft Yahei;
+  }
+  .layui-form-pane .layui-form-label {
+    width: 120px;
+    padding: 0px 10px 2px 0px;
+    height: 25px;
+    /*line-height: 25px;*/
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 2px 0 0 2px;
+    text-align: center;
+    background-color: #f1ebeb;
+    overflow: hidden;
+    box-sizing: border-box;
+	text-overflow:ellipsis;
+    font-family: Microsoft Yahei;
+    font-weight: 540;
+}
+  .layui-input, .layui-select, .layui-textarea {
+    height: 25px;
+    border-width: 1px;
+    border-style: solid;
+    background-color: #fff;
+    border-radius: 2px;
+	font-size: 12px;
+}
+.layui-input-block {
+    min-height: 30px;
+}
+
+/*
+.layui-form-item {
+	margin-bottom:0px;
+}
+*/
+
+.layui-tree-txt {
+    display: inline-block;
+    vertical-align: middle;
+    color: #555;
+    font-size: 12px;
+}
+.inputError{
+	color:red;font-size:8px;text-align:left;
+}
+.layui-table-view .layui-table td, .layui-table-view .layui-table th {
+    padding: 2px 0;
+    border-top: none;
+    border-left: none;
+}
+.layui-table td, .layui-table th {
+    position: relative;
+    padding: 9px 15px;
+    min-height: 20px;
+    line-height: 20px;
+    font-size: 10px;
+}
+.layui-form-item .layui-input-block .layui-btn {
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 18px;
+    background-color: #009688;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 14px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.pane-title-btn{
+	position:absolute;
+	right: 40px;
+	margin: 6px 0px;
+	z-index: 100;
+}
+
+.layui-btn-xs {
+    height: 22px;
+    line-height: 22px;
+    padding: 0 15px;
+    font-size: 12px;
+}
+
+.layui-btn-xs-column-toolbar {
+    height: 22px;
+    line-height: 22px;
+    padding: 0 8px;
+    font-size: 12px;
+}
+
+.readonly-backgroud{
+	background-color: #f3f2f2;
+}

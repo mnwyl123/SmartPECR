@@ -1,0 +1,1156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EntBalanceSheetInfoManager">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EntBalanceSheetBsSgmt" id="assetsInfoResultMap">
+		<result column="EHA_BALANCE_SHEET_BS_SGMT_ID" property="ehaBalanceSheetBsSgmtId" />
+		<result column="INF_REC_TYPE" property="infRecType" />
+		<result column="ENT_NAME" property="entName" />
+		<result column="ENT_CERT_TYPE" property="entCertType" />
+		<result column="ENT_CERT_NUM" property="entCertNum" />
+		<result column="RPT_DATE" property="rptDate" />
+		<result column="SHEET_YEAR" property="sheetYear" />
+		<result column="SHEET_TYPE" property="sheetType" />
+		<result column="SHEET_TYPE_DIVIDE" property="sheetTypeDivide" />
+		<result column="AUDIT_FIRM_NAME" property="auditFirmName" />
+		<result column="AUDITOR_NAME" property="auditorName" />
+		<result column="AUDIT_TIME" property="auditTime" />
+		<result column="CIMOC" property="cimoc" />
+		<result column="RPT_DATE_CODE" property="rptDateCode" />
+		<result column="ORG_NAME" property="orgName" />
+		<result column="ORG_CODE" property="orgCode" />
+		<result column="BUSINESS_STATES" property="businessStates" />
+		<result column="REJECT_REASON" property="rejectReason" />
+		<result column="IS_FILTER" property="isFilter" />
+	</resultMap>
+
+	<!-- 企业资产负债表 基础段 -->
+	<select id="assetsInfolistPage" parameterType="page" resultMap="assetsInfoResultMap">
+		 select eha_balance_sheet_bs_sgmt_id,
+				inf_rec_type,
+				ent_name,
+				ent_cert_type,
+				ent_cert_num,
+				rpt_date,
+				sheet_year,
+				sheet_type,
+				sheet_type_divide,
+				audit_firm_name,
+				auditor_name,
+				audit_time,
+				cimoc,
+				rpt_date_code,
+				org_name,
+				org_code,
+				business_states,
+				reject_reason,
+				is_filter,
+				COMPANY
+		   from E_BALANCE_SHEET_BS
+		   <if test="pd.managerId != null and pd.managerId != ''">
+			   LEFT JOIN PECR.sys_l_c_a_m_m M
+			   ON E_BALANCE_SHEET_BS.ENT_NAME = M.CUST_NAME
+			   AND E_BALANCE_SHEET_BS.ENT_CERT_TYPE = M.CUST_ID_TYPE
+			   AND E_BALANCE_SHEET_BS.ENT_CERT_NUM = M.CUST_ID_NUM
+		   	</if>
+		<where>
+			<if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+			<if test="pd.rptDate != null and pd.rptDate != ''">
+		         and rpt_date = #{pd.rptDate}
+		    </if>
+		    <if test="pd.entName != null and pd.entName != ''">
+		   	  	and ent_name like '%${pd.entName}%'
+		   	</if>
+		   	<if test="pd.entCertType != null and pd.entCertType != ''">
+		   	  	and ent_cert_type = #{pd.entCertType}
+		   	</if>
+		   	<if test="pd.entCertNum != null and pd.entCertNum != ''">
+		   	  	and ent_cert_num like '%${pd.entCertNum}%'
+		   	</if>
+		   	<if test="pd.businessStates != null and pd.businessStates != ''">
+		   	  	and business_states = #{pd.businessStates}
+		   	</if>
+		   	<if test="pd.managerId != null and pd.managerId != ''">
+		   	  	and M.MANAGER_ID = #{pd.managerId}
+		   		AND M.DATA_TYPE = '2'
+		   		AND M.DATA_LEVEL = '6'
+		   		AND M.END_DATE = '2099-12-31'
+		   	</if>
+		   		and COMPANY = #{pd.COMPANY}
+		</where>
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 基础段 -->
+	<select id="getBalanceBsSgmtById" parameterType="pd" resultType="map">
+		 select eha_balance_sheet_bs_sgmt_id,
+				inf_rec_type,
+				ent_name,
+				ent_cert_type,
+				ent_cert_num,
+				rpt_date,
+				sheet_year,
+				sheet_type,
+				sheet_type_divide,
+				audit_firm_name,
+				auditor_name,
+				audit_time,
+				cimoc,
+				rpt_date_code,
+				org_name,
+				org_code,
+				business_states,
+				reject_reason,
+				is_filter,
+				COMPANY
+		   from E_BALANCE_SHEET_BS
+		  where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId}
+		  	and COMPANY = #{COMPANY}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录   02企业资产负债表段 -->
+	<select id="getBalanceSheet2002ById" parameterType="pd" resultType="pd">
+		 select ehb_balance_sheet2002_sgmt_id,
+				currency_funds,
+				short_term_investments,
+				notes_receivable,
+				dividends_receivable,
+				interest_receivable,
+				accounts_receivable,
+				other_receivables,
+				prepayments,
+				future_guarantee,
+				allowance_receivable,
+				export_drawback_receivable,
+				inventories,
+				raw_materials,
+				finished_products,
+				deferred_expenses,
+				unsettled_glon_current_assets,
+				long_term_debenture_investment,
+				other_current_assets,
+				total_current_assets,
+				long_term_investment,
+				long_term_equity_investment,
+				long_term_securities_investmen,
+				incorporating_price_difference,
+				total_long_term_investment,
+				original_cost_of_fixed_asset,
+				fixed_asset_accumulated_deprec,
+				fixed_assets_net_value,
+				provision_forimpairment_of_fix,
+				net_value_of_fixed_assets,
+				fixed_assets_pending_for_dispo,
+				construction_materials,
+				constructionin_progress,
+				unsettled_gl_on_fixed_assets,
+				total_fixed_assets,
+				intangible_assets,
+				land_use_rights,
+				deferred_assets,
+				including_fixed_assets_repair,
+				improvement_expenditure_of_fix,
+				other_long_term_assets,
+				among_it_specially_approved_re,
+				totalintangible_assets_and_oth,
+				deferred_assets_debits,
+				total_assets,
+				short_term_borrowings,
+				notes_payable,
+				accounts_payable,
+				receiptsin_advance,
+				wages_or_salaries_payables,
+				employee_benefits,
+				income_payable,
+				taxes_payable,
+				other_payable_to_government,
+				other_payable,
+				provision_for_expenses,
+				provisions,
+				long_term_liabilities_due_with,
+				other_current_liabilities,
+				total_current_liabilities,
+				long_term_borrowings,
+				bonds_payable,
+				long_term_payables,
+				grants_payable,
+				other_long_term_liabilities,
+				special_reserve_fund,
+				total_long_term_liabilities,
+				deferred_taxation_credit,
+				totalliabilities,
+				minority_interest,
+				paidin_capital,
+				national_capital,
+				collective_capital,
+				legal_persons_capital,
+				state_owned_legal_persons_capi,
+				collective_legal_persons_capit,
+				personal_capital,
+				foreign_businessmens_capital,
+				capitalr_rserve,
+				surplus_reserve,
+				statutory_surplus_reserve,
+				public_welfare_fund,
+				supplermentary_current_capital,
+				unaffirmedinvestment_loss,
+				unappropriated_profit,
+				difference_on_translation_of_f,
+				total_equity,
+				total_equity_and_liabilities,
+				eha_balance_sheet_bs_sgmt_id,
+				COMPANY
+		   from E_BALANCE_SHEET02
+		  where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId}
+	</select>
+	
+	<!-- 详情或者修改 查询指定记录   07企业资产负债表段 -->
+	<select id="getBalanceSheet2007ById" parameterType="pd" resultType="pd">
+		 select ehc_balance_sheet2007_sgmt_id,
+				currency_funds,
+				financial_assets_held_for_trad,
+				notes_receivable,
+				accounts_receivable,
+				prepayments,
+				interest_receivable,
+				dividends_receivable,
+				other_receivables,
+				inventories,
+				current_portion_of_non_current,
+				other_current_assets,
+				total_current_assets,
+				financial_assets_available_for,
+				held_to_maturity_investments,
+				long_term_equity_investment,
+				long_term_receivables,
+				investment_properties,
+				fixed_assets,
+				construction_in_progress,
+				construction_materials,
+				fixed_assets_pending_for_dispo,
+				non_current_biological_assets,
+				oil_and_gas_assets,
+				intangible_assets,
+				development_disbursements,
+				good_will,
+				long_term_deferred_expenses,
+				deferred_tax_assets,
+				other_non_current_assets,
+				total_non_current_assets,
+				total_assets,
+				short_term_borrowings,
+				financial_liabilities_held_for,
+				notes_payable,
+				accounts_payable,
+				receiptsin_advance,
+				interest_payable,
+				employee_benefits_payable,
+				taxs_payable,
+				dividends_payable,
+				other_payables,
+				current_portion_of_long_term_l,
+				other_current_liabilities,
+				total_current_liabilities,
+				long_term_borrowings,
+				bonds_payables,
+				long_term_payables,
+				grants_payable,
+				provisions,
+				deferred_tax_liabilities,
+				other_non_current_liabilities,
+				total_non_current_liabilities,
+				total_liabilities,
+				paidin_capital_or_share_capita,
+				capitalr_rserve,
+				less_treasury_stocks,
+				surplus_reserve,
+				unappropriated_profit,
+				total_equity,
+				total_equity_and_liabilities,
+				eha_balance_sheet_bs_sgmt_id,
+				COMPANY
+		   from E_BALANCE_SHEET07
+		  where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId}
+	</select>
+	
+	<!-- 查询 基础段 主键是否存在 -->
+	<select id="getBalanceSheetSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_BALANCE_SHEET_BS
+	     where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId}
+	</select>
+	
+	<!-- 新增    基础段 -->
+	<insert id="insertBalanceSheetSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_BALANCE_SHEET_BS(
+					eha_balance_sheet_bs_sgmt_id,
+					inf_rec_type,
+					ent_name,
+					ent_cert_type,
+					ent_cert_num,
+					rpt_date,
+					sheet_year,
+					sheet_type,
+					sheet_type_divide,
+					audit_firm_name,
+					auditor_name,
+					audit_time,
+					cimoc,
+					rpt_date_code,
+					operator_user,
+					org_code,
+					business_states,
+					is_filter,
+					COMPANY)
+		    values (#{ehaBalanceSheetBsSgmtId, jdbcType=CHAR},
+					#{infRecType, jdbcType=CHAR},
+					#{entName, jdbcType=VARCHAR},
+					#{entCertType, jdbcType=VARCHAR},
+					#{entCertNum, jdbcType=VARCHAR},
+					#{rptDate}, 
+					#{sheetYear, jdbcType=VARCHAR},
+					#{sheetType, jdbcType=VARCHAR},
+					#{sheetTypeDivide, jdbcType=VARCHAR},
+					#{auditFirmName, jdbcType=VARCHAR},
+					#{auditorName, jdbcType=VARCHAR},
+					#{auditTime}, 
+					#{cimoc, jdbcType=VARCHAR},
+					#{rptDateCode, jdbcType=VARCHAR},
+					#{operationUser, jdbcType=VARCHAR},
+					#{orgCode, jdbcType=VARCHAR},
+					'11',
+					#{isFilter, jdbcType=VARCHAR},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+
+	<!-- 更新    基础段 -->
+	<update id="updateBalanceSheetSgmt" parameterType="map">
+		<![CDATA[
+		 update E_BALANCE_SHEET_BS
+		 	set inf_rec_type = #{infRecType, jdbcType=CHAR},
+					ent_name = #{entName, jdbcType=VARCHAR},
+			   ent_cert_type = #{entCertType, jdbcType=VARCHAR},
+				ent_cert_num = #{entCertNum, jdbcType=VARCHAR},
+					rpt_date = #{rptDate},
+				  sheet_year = #{sheetYear, jdbcType=VARCHAR},
+				  sheet_type = #{sheetType, jdbcType=VARCHAR},
+		   sheet_type_divide = #{sheetTypeDivide, jdbcType=VARCHAR},
+			 audit_firm_name = #{auditFirmName, jdbcType=VARCHAR},
+				auditor_name = #{auditorName, jdbcType=VARCHAR},
+				  audit_time = #{auditTime},
+					   cimoc = #{cimoc, jdbcType=VARCHAR},
+			   rpt_date_code = #{rptDateCode, jdbcType=VARCHAR},
+			   operator_user = #{operationUser, jdbcType=VARCHAR},
+					org_code = #{orgCode, jdbcType=VARCHAR},
+			 business_states = '11',
+				   is_filter = #{isFilter, jdbcType=VARCHAR}
+		  where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId}
+		  	and COMPANY = #{COMPANY}
+			
+		]]>
+		<!-- and business_states = '10' -->
+	</update>
+
+	<!-- 删除基础段 -->
+	<delete id="delBalanceSheetById" parameterType="map">
+		delete from E_BALANCE_SHEET_BS
+		 where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId}
+		 and COMPANY = #{COMPANY}
+	</delete>
+	
+	<!-- 删除 02企业资产负债表段 -->
+	<delete id="delSheet2002ById" parameterType="map">
+		delete from E_BALANCE_SHEET02
+		 where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId}
+	</delete>
+	
+	<!-- 删除  07企业资产负债表段-->
+	<delete id="delSheet2007ById" parameterType="map">
+		delete from E_BALANCE_SHEET07
+		 where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId}
+	</delete>
+	
+	<!-- 查询 02企业资产负债表段 主键是否存在 -->
+	<select id="getSheet02SgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_BALANCE_SHEET02
+	     where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId} 
+		   and ehb_balance_sheet2002_sgmt_id = #{ehbBalanceSheet2002SgmtId}
+	</select>
+	
+	<!-- 新增  02企业资产负债表段 -->
+	<insert id="insertSheet02Sgmt" parameterType="map">
+		<![CDATA[
+		insert into E_BALANCE_SHEET02(
+					ehb_balance_sheet2002_sgmt_id,
+					currency_funds,
+					short_term_investments,
+					notes_receivable,
+					dividends_receivable,
+					interest_receivable,
+					accounts_receivable,
+					other_receivables,
+					prepayments,
+					future_guarantee,
+					allowance_receivable,
+					export_drawback_receivable,
+					inventories,
+					raw_materials,
+					finished_products,
+					deferred_expenses,
+					unsettled_glon_current_assets,
+					long_term_debenture_investment,
+					other_current_assets,
+					total_current_assets,
+					long_term_investment,
+					long_term_equity_investment,
+					long_term_securities_investmen,
+					incorporating_price_difference,
+					total_long_term_investment,
+					original_cost_of_fixed_asset,
+					fixed_asset_accumulated_deprec,
+					fixed_assets_net_value,
+					provision_forimpairment_of_fix,
+					net_value_of_fixed_assets,
+					fixed_assets_pending_for_dispo,
+					construction_materials,
+					constructionin_progress,
+					unsettled_gl_on_fixed_assets,
+					total_fixed_assets,
+					intangible_assets,
+					land_use_rights,
+					deferred_assets,
+					including_fixed_assets_repair,
+					improvement_expenditure_of_fix,
+					other_long_term_assets,
+					among_it_specially_approved_re,
+					totalintangible_assets_and_oth,
+					deferred_assets_debits,
+					total_assets,
+					short_term_borrowings,
+					notes_payable,
+					accounts_payable,
+					receiptsin_advance,
+					wages_or_salaries_payables,
+					employee_benefits,
+					income_payable,
+					taxes_payable,
+					other_payable_to_government,
+					other_payable,
+					provision_for_expenses,
+					provisions,
+					long_term_liabilities_due_with,
+					other_current_liabilities,
+					total_current_liabilities,
+					long_term_borrowings,
+					bonds_payable,
+					long_term_payables,
+					grants_payable,
+					other_long_term_liabilities,
+					special_reserve_fund,
+					total_long_term_liabilities,
+					deferred_taxation_credit,
+					totalliabilities,
+					minority_interest,
+					paidin_capital,
+					national_capital,
+					collective_capital,
+					legal_persons_capital,
+					state_owned_legal_persons_capi,
+					collective_legal_persons_capit,
+					personal_capital,
+					foreign_businessmens_capital,
+					capitalr_rserve,
+					surplus_reserve,
+					statutory_surplus_reserve,
+					public_welfare_fund,
+					supplermentary_current_capital,
+					unaffirmedinvestment_loss,
+					unappropriated_profit,
+					difference_on_translation_of_f,
+					total_equity,
+					total_equity_and_liabilities,
+					eha_balance_sheet_bs_sgmt_id,
+					COMPANY
+					)
+		    values (
+		    		#{ehbBalanceSheet2002SgmtId, jdbcType=CHAR},
+					#{cf_old}, 
+					#{sti_old}, 
+					#{nr_old}, 
+					#{dr_old}, 
+					#{ir_old},
+					#{ar_old}, 
+					#{or_old}, 
+					#{prepayments_old},					 
+					#{fg_old},
+					#{allr_old},
+					#{edr_old},
+					#{inventories_old},
+					#{rm_old},
+					#{fp_old}, 
+					#{de_old},
+					#{ugca_old}, 						 
+					#{ltdi_old}, 
+					#{oca_old}, 
+					#{tca_old},
+					#{lti_old}, 
+					#{ltei_old},
+					#{ltsi_old}, 
+					#{ipd_old}, 
+					#{tlti_old}, 							 
+					#{ocofa_old},
+					#{faad_old}, 
+					#{fanv_old},
+					#{pfof_old},
+					#{nvofa_old}, 
+					#{fapfd_old},
+					#{cm_old}, 
+					#{cp_old}, 						 
+					#{ugfa_old},
+					#{tfa_old}, 
+					#{ia_old},
+					#{lur_old}, 
+						 
+					#{da_old}, 
+						 
+					#{ifar_old}, 
+						 
+					#{ieof_old}, 
+						 
+					#{olta_old}, 
+						 							 
+					#{aisar_old}, 
+						 
+					#{taa_old}, 
+						 
+					#{dad_old}, 
+						 
+					#{ta_old}, 
+						 
+					#{stb_old}, 
+						 
+					#{np_old}, 
+						 
+					#{ap_old}, 
+						 
+					#{ra_old}, 
+						 							 
+					#{wosp_old}, 
+						 
+					#{eb_old}, 
+						 
+					#{ip_old}, 
+						 
+					#{tp_old}, 
+						 
+					#{optg_old}, 
+						 
+					#{otherPayable_old}, 
+						 
+					#{pfe_old}, 
+						 
+					#{provisions_old}, 
+						 							 
+					#{ltldw_old}, 
+						 
+					#{ocl_old}, 
+						 
+					#{tcl_old}, 
+						 
+					#{ltb_old}, 
+						 
+					#{bp_old}, 
+						 
+					#{ltp_old}, 
+						 
+					#{gp_old}, 
+						 
+					#{oltl_old}, 
+						 	
+					#{srf_old}, 
+						 
+					#{tltl_old}, 
+						 
+					#{dtc_old}, 
+						 
+					#{totb_old}, 
+						 
+					#{mi_old}, 
+						 
+					#{pc_old}, 
+						 
+					#{nc_old}, 
+						 
+					#{ctc_old}, 
+						 
+					#{lpc_old}, 
+						 							 
+					#{solpc_old}, 
+						 
+					#{clpc_old}, 
+						 
+					#{perc_old}, 
+						 
+					#{fbc_old}, 
+						 
+					#{cr_old}, 
+						 
+					#{sr_old}, 
+						 
+					#{ssr_old}, 
+						 
+					#{pwf_old}, 
+						 							 
+					#{scc_old}, 
+						 
+					#{ul_old}, 
+						 
+					#{up_old}, 
+						 
+					#{dotof_old}, 
+						 
+					#{te_old}, 
+						 
+					#{teal_old}, 
+						 
+					#{ehaBalanceSheetBsSgmtId, jdbcType=VARCHAR},
+					#{COMPANY}
+				   )
+		]]>
+	</insert>
+	
+	<!-- 更新   02企业资产负债表段-->
+	<update id="updateSheet02Sgmt" parameterType="map">
+		<![CDATA[
+			 update E_BALANCE_SHEET02
+			 	set currency_funds = #{cf_old}, 
+									 
+			short_term_investments = #{sti_old}, 
+									 
+	              notes_receivable = #{nr_old}, 
+									 
+			  dividends_receivable = #{dr_old}, 
+									 
+			   interest_receivable = #{ir_old}, 
+									 
+			   accounts_receivable = #{ar_old}, 
+									 
+	  		     other_receivables = #{or_old}, 
+									 
+					   prepayments = #{prepayments_old}, 
+									 						 
+	 			  future_guarantee = #{fg_old}, 
+									 
+			  allowance_receivable = #{allr_old}, 
+									 
+		export_drawback_receivable = #{edr_old}, 
+									 
+					   inventories = #{inventories_old}, 
+									 
+					 raw_materials = #{rm_old}, 
+									 
+				 finished_products = #{fp_old}, 
+									 
+				 deferred_expenses = #{de_old}, 
+									 
+	 unsettled_glon_current_assets = #{ugca_old}, 
+									 							 
+	long_term_debenture_investment = #{ltdi_old}, 
+									 
+	          other_current_assets = #{oca_old}, 
+									 
+			  total_current_assets = #{tca_old}, 
+									 
+			  long_term_investment = #{lti_old}, 
+									 
+	   long_term_equity_investment = #{ltei_old}, 
+									 
+	long_term_securities_investmen = #{ltsi_old}, 
+									 
+	incorporating_price_difference = #{ipd_old}, 
+									 
+		total_long_term_investment = #{tlti_old}, 
+									 							 
+	  original_cost_of_fixed_asset = #{ocofa_old}, 
+									 
+	fixed_asset_accumulated_deprec = #{faad_old}, 
+									 
+	        fixed_assets_net_value = #{fanv_old}, 
+									 
+	provision_forimpairment_of_fix = #{pfof_old}, 
+									 
+		 net_value_of_fixed_assets = #{nvofa_old}, 
+									 
+	fixed_assets_pending_for_dispo = #{fapfd_old}, 
+									 
+			construction_materials = #{cm_old}, 
+									 
+		   constructionin_progress = #{cp_old}, 
+									 							 
+	  unsettled_gl_on_fixed_assets = #{ugfa_old}, 
+									 
+		        total_fixed_assets = #{tfa_old}, 
+									 
+				 intangible_assets = #{ia_old}, 
+									 
+				   land_use_rights = #{lur_old}, 
+									 
+				   deferred_assets = #{da_old}, 
+									 
+	 including_fixed_assets_repair = #{ifar_old}, 
+									 
+	improvement_expenditure_of_fix = #{ieof_old}, 
+									 
+			other_long_term_assets = #{olta_old}, 
+									 							 
+	among_it_specially_approved_re = #{aisar_old}, 
+									 
+	totalintangible_assets_and_oth = #{taa_old}, 
+									 
+			deferred_assets_debits = #{dad_old}, 
+									 
+					  total_assets = #{ta_old}, 
+									 
+			 short_term_borrowings = #{stb_old}, 
+									 
+					 notes_payable = #{np_old}, 
+									 
+				  accounts_payable = #{ap_old}, 
+									 
+				receiptsin_advance = #{ra_old}, 
+									 							 
+		wages_or_salaries_payables = #{wosp_old}, 
+									 
+				 employee_benefits = #{eb_old}, 
+									 
+					income_payable = #{ip_old}, 
+									 
+					 taxes_payable = #{tp_old}, 
+									 
+	   other_payable_to_government = #{optg_old}, 
+									 
+					 other_payable = #{otherPayable_old}, 
+									 
+			provision_for_expenses = #{pfe_old}, 
+									 
+						provisions = #{provisions_old}, 
+									 							 
+	long_term_liabilities_due_with = #{ltldw_old}, 
+									 
+		 other_current_liabilities = #{ocl_old}, 
+									 
+		 total_current_liabilities = #{tcl_old}, 
+									 
+			  long_term_borrowings = #{ltb_old}, 
+									 
+					 bonds_payable = #{bp_old}, 
+									 
+				long_term_payables = #{ltp_old}, 
+									 
+					grants_payable = #{gp_old}, 
+									 
+	   other_long_term_liabilities = #{oltl_old}, 
+									 	
+			  special_reserve_fund = #{srf_old}, 
+									 
+	   total_long_term_liabilities = #{tltl_old}, 
+									 
+		  deferred_taxation_credit =#{dtc_old}, 
+									 
+			      totalliabilities =#{totb_old}, 
+									 
+				 minority_interest = #{mi_old}, 
+									 
+					paidin_capital = #{pc_old}, 
+									 
+				  national_capital = #{nc_old}, 
+									 
+				collective_capital = #{ctc_old}, 
+									 
+			 legal_persons_capital = #{lpc_old}, 
+									 							 
+	state_owned_legal_persons_capi = #{solpc_old}, 
+									 
+	collective_legal_persons_capit = #{clpc_old}, 
+									 
+				  personal_capital = #{perc_old}, 
+									 
+	  foreign_businessmens_capital = #{fbc_old}, 
+									 
+				   capitalr_rserve = #{cr_old}, 
+									 
+				   surplus_reserve = #{sr_old}, 
+									 
+		 statutory_surplus_reserve = #{ssr_old}, 
+									 
+			   public_welfare_fund = #{pwf_old}, 
+									 							 
+	supplermentary_current_capital = #{scc_old}, 
+									 
+		 unaffirmedinvestment_loss = #{ul_old}, 
+									 
+			 unappropriated_profit = #{up_old}, 
+									 
+	difference_on_translation_of_f = #{dotof_old}, 
+									 
+					  total_equity = #{te_old}, 
+									 
+	  total_equity_and_liabilities = #{teal_old}
+							         
+		      where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId} 
+		        and ehb_balance_sheet2002_sgmt_id = #{ehbBalanceSheet2002SgmtId}
+		     ]]>
+	</update>
+	
+	<!-- 删除  02企业资产负债表段  -->
+	<delete id="delSheet02Sgmt" parameterType="map">
+		delete from E_BALANCE_SHEET02
+		 where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId} 
+		   <!-- and ehb_balance_sheet2002_sgmt_id = #{ehbBalanceSheet2002SgmtId} -->
+	</delete>
+	
+	<!-- 查询 07企业资产负债表段 主键是否存在 -->
+	<select id="getSheet07SgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_BALANCE_SHEET07
+	     where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId} 
+	      and ehc_balance_sheet2007_sgmt_id = #{ehcBalanceSheet2007SgmtId}
+	</select>
+	
+	<!-- 新增  07企业资产负债表段 -->
+	<insert id="insertSheet07Sgmt" parameterType="map">
+		<![CDATA[
+		insert into E_BALANCE_SHEET07(
+					ehc_balance_sheet2007_sgmt_id,
+					currency_funds,
+					financial_assets_held_for_trad,
+					notes_receivable,
+					accounts_receivable,
+					prepayments,
+					interest_receivable,
+					dividends_receivable,
+					other_receivables,
+					inventories,
+					current_portion_of_non_current,
+					other_current_assets,
+					total_current_assets,
+					financial_assets_available_for,
+					held_to_maturity_investments,
+					long_term_equity_investment,
+					long_term_receivables,
+					investment_properties,
+					fixed_assets,
+					construction_in_progress,
+					construction_materials,
+					fixed_assets_pending_for_dispo,
+					non_current_biological_assets,
+					oil_and_gas_assets,
+					intangible_assets,
+					development_disbursements,
+					good_will,
+					long_term_deferred_expenses,
+					deferred_tax_assets,
+					other_non_current_assets,
+					total_non_current_assets,
+					total_assets,
+					short_term_borrowings,
+					financial_liabilities_held_for,
+					notes_payable,
+					accounts_payable,
+					receiptsin_advance,
+					interest_payable,
+					employee_benefits_payable,
+					taxs_payable,
+					dividends_payable,
+					other_payables,
+					current_portion_of_long_term_l,
+					other_current_liabilities,
+					total_current_liabilities,
+					long_term_borrowings,
+					bonds_payables,
+					long_term_payables,
+					grants_payable,
+					provisions,
+					deferred_tax_liabilities,
+					other_non_current_liabilities,
+					total_non_current_liabilities,
+					total_liabilities,
+					paidin_capital_or_share_capita,
+					capitalr_rserve,
+					less_treasury_stocks,
+					surplus_reserve,
+					unappropriated_profit,
+					total_equity,
+					total_equity_and_liabilities,
+					eha_balance_sheet_bs_sgmt_id,
+					COMPANY
+					)
+		    values (
+		    		#{ehcBalanceSheet2007SgmtId, jdbcType=CHAR},
+					#{cf_new}, 
+						 
+					#{fahft_new}, 
+						 
+					#{nr_new}, 
+						 
+					#{ar_new}, 
+						 
+					#{prepayments_new}, 
+						 
+					#{ir_new}, 
+						 
+					#{dr_new}, 
+						 
+					#{or_new}, 
+						 						 
+					#{inventories_new}, 
+						 
+					#{cponc_new}, 
+						 
+					#{oca_new}, 
+						 
+					#{tca_new}, 
+						 
+					#{faaf_new}, 
+						 
+					#{htmi_new}, 
+						 
+					#{ltei_new}, 
+						 
+					#{ltr_new}, 
+						 							 
+					#{ip_new}, 
+						 
+					#{fa_new}, 
+						 
+					#{cip_new}, 
+						 
+					#{cm_new}, 
+					#{fapfd_new}, 
+						 
+					#{ncba_new}, 
+						 
+					#{oaga_new}, 
+				#{ia_new}, 
+						 							 
+					#{devd_new}, 
+						 
+					#{goodWill_new}, 
+						 
+					#{ltde_new}, 
+						 
+					#{dt_new}, 
+						 
+					#{onca_new}, 
+						 
+					#{tnca_new}, 
+						 
+					#{ta_new}, 
+						 
+					#{stb_new}, 
+						 							 
+					#{flhf_new}, 
+						 
+					#{notesPayable_new}, 
+						 
+					#{ap_new}, 
+						 
+					#{ra_new}, 
+						 
+					#{ipay_new}, 
+					#{ebp_new}, 
+						 
+					#{taxsPayable_new}, 
+						 
+					#{dp_new}, 
+						 							 
+					#{otherPayables_new}, 
+						 
+					#{cpolt_new}, 
+						 
+					#{ocl_new}, 
+						 
+					#{tcl_new}, 
+						 
+					#{ltb_new}, 
+						 
+					#{bp_new}, 
+						 
+					#{ltp_new}, 
+						 
+					#{gp_new}, 
+						 							 
+					#{provisions_new}, 
+						 
+					#{dtl_new}, 
+						 
+					#{oncls_new}, 
+						 
+					#{tncl_new}, 
+						 
+					#{tl_new}, 
+						 
+					#{pcosp_new}, 
+						 
+					#{cr_new}, 
+						 
+					#{lts_new}, 
+						 							 
+					#{sr_new}, 
+						 
+					#{uap_new}, 
+						 
+					#{te_new}, 
+						 
+					#{teal_new}, 
+						 
+					#{ehaBalanceSheetBsSgmtId, jdbcType=CHAR},
+					#{COMPANY}
+				   )
+		]]>
+	</insert>
+	
+	<!-- 更新   07企业资产负债表段-->
+	<update id="updateSheet07Sgmt" parameterType="map">
+			<![CDATA[
+				 update E_BALANCE_SHEET07
+				 	set currency_funds = #{cf_new}, 
+								         
+		financial_assets_held_for_trad = #{fahft_new}, 
+								 		 
+					  notes_receivable = #{nr_new}, 
+								 		 
+				   accounts_receivable = #{ar_new}, 
+								 		 
+						   prepayments = #{prepayments_new}, 
+								 		 
+				   interest_receivable = #{ir_new}, 
+								 		 
+				  dividends_receivable =#{dr_new}, 
+										 
+					 other_receivables = #{or_new}, 
+										 						 
+						   inventories = #{inventories_new}, 
+										 
+		current_portion_of_non_current = #{cponc_new}, 
+										 
+				  other_current_assets = #{oca_new}, 
+										 
+				  total_current_assets = #{tca_new}, 
+										 
+		financial_assets_available_for = #{faaf_new}, 
+										 
+		  held_to_maturity_investments = #{htmi_new}, 
+										 
+		   long_term_equity_investment = #{ltei_new}, 
+										 
+				 long_term_receivables = #{ltr_new}, 
+										 							 
+				 investment_properties =#{ip_new}, 
+										 
+						  fixed_assets =#{fa_new}, 
+										 
+			  construction_in_progress = #{cip_new}, 
+										 
+				construction_materials = #{cm_new}, 
+								 		 
+		fixed_assets_pending_for_dispo = #{fapfd_new}, 
+										 
+		 non_current_biological_assets = #{ncba_new}, 
+								 		 
+		            oil_and_gas_assets = #{oaga_new}, 
+								 		 
+				     intangible_assets = #{ia_new}, 
+										 							 
+			 development_disbursements = #{devd_new}, 
+										 
+							 good_will = #{goodWill_new}, 
+										 
+		   long_term_deferred_expenses =#{ltde_new}, 
+										 
+				   deferred_tax_assets = #{dt_new}, 
+										 
+			  other_non_current_assets = #{onca_new}, 
+										 
+			  total_non_current_assets = #{tnca_new}, 
+										 
+						  total_assets = #{ta_new}, 
+										 
+				 short_term_borrowings = #{stb_new}, 
+										 							 
+		financial_liabilities_held_for = #{flhf_new}, 
+										 
+						 notes_payable = #{notesPayable_new}, 
+										 
+					  accounts_payable = #{ap_new}, 
+										 
+					receiptsin_advance = #{ra_new}, 
+										 
+					  interest_payable = #{ipay_new}, 
+										 
+			 employee_benefits_payable = #{ebp_new}, 
+										 
+						  taxs_payable = #{taxsPayable_new}, 
+										 
+					 dividends_payable = #{dp_new}, 
+										 							 
+						other_payables =#{otherPayables_new}, 
+										 
+		current_portion_of_long_term_l = #{cpolt_new}, 
+										 
+			 other_current_liabilities = #{ocl_new}, 
+										 
+			 total_current_liabilities = #{tcl_new}, 
+										 
+				  long_term_borrowings = #{ltb_new}, 
+										 
+						bonds_payables = #{bp_new}, 
+										 
+					long_term_payables = #{ltp_new}, 
+										 
+						grants_payable = #{gp_new}, 
+										 							 
+							provisions = #{provisions_new}, 
+										 
+			  deferred_tax_liabilities = #{dtl_new}, 
+										 
+		 other_non_current_liabilities = #{oncls_new}, 
+										 
+		 total_non_current_liabilities = #{tncl_new}, 
+										 
+					 total_liabilities = #{tl_new}, 
+										 
+		paidin_capital_or_share_capita = #{pcosp_new}, 
+										 
+					   capitalr_rserve = #{cr_new}, 
+										 
+				  less_treasury_stocks = #{lts_new}, 
+										 							 
+					   surplus_reserve = #{sr_new}, 
+										 
+				 unappropriated_profit = #{uap_new}, 
+										 
+						  total_equity = #{te_new}, 
+										 
+		  total_equity_and_liabilities = #{teal_new}
+										
+		  		where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId} 
+	       		  and ehc_balance_sheet2007_sgmt_id = #{ehcBalanceSheet2007SgmtId}
+	      ]]>
+	</update>
+	
+	<!-- 删除  07企业资产负债表段  -->
+	<delete id="delSheet07Sgmt" parameterType="map">
+		delete from E_BALANCE_SHEET07
+		 where eha_balance_sheet_bs_sgmt_id = #{ehaBalanceSheetBsSgmtId} 
+	        <!-- and ehc_balance_sheet2007_sgmt_id = #{ehcBalanceSheet2007SgmtId}-->
+	</delete>
+	
+</mapper>

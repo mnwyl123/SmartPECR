@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MotgaCltalBsInfoManager">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.MotgaCltalCtrctBsSgmt" id="motgaCltalInfoResultMap">
+		<result column="EFA_MOTGA_CLTAL_CTRCT_BS_ID" property="efaMotgaCltalCtrctBsId" />
+		<result column="INF_REC_TYPE" property="infRecType" />
+		<result column="CC_CODE" property="ccCode" />
+		<result column="RPT_DATE" property="rptDate" />
+		<result column="RPT_DATE_CODE" property="rptDateCode" />
+		<result column="INFO_ID_TYPE" property="infoIdType" />
+		<result column="NAME" property="name" />
+		<result column="CERT_TYPE" property="certType" />
+		<result column="CERT_NUM" property="certNum" />
+		<result column="MNGMT_ORG_CODE" property="mngmtOrgCode" />
+		<result column="BUSINESS_STATES" property="businessStates" />
+		<result column="REJECT_REASON" property="rejectReason" />
+	</resultMap>
+
+	<!-- 抵（质）押合同信息 基础段 -->
+	<select id="motgaContractInfolistPage" parameterType="page" resultMap="motgaCltalInfoResultMap">
+		 select efa_motga_cltal_ctrct_bs_id,
+				inf_rec_type,
+				cc_code,
+				rpt_date,
+				rpt_date_code,
+				info_id_type,
+				name,
+				cert_type,
+				cert_num,
+				mngmt_org_code,
+				business_states,
+			    reject_reason,
+			    COMPANY
+		   from motga_cltal_ctrct_bs
+		   <if test="pd.managerId != null and pd.managerId != ''">
+			   LEFT JOIN PECR.sys_l_c_a_m_m M
+			   ON E_CTRCT_BS.CC_CODE = M.ACCT_NUM
+		   </if>
+		<where>
+			<if test="pd.infoIdType != null and pd.infoIdType != ''">
+				and info_id_type = #{pd.infoIdType}
+			</if>
+			<if test='pd.name != null and pd.name != ""'>
+				and name like '%${pd.name}%'
+			</if>
+			<if test='pd.certType != null and pd.certType != ""'>
+				and cert_type = #{pd.certType}
+			</if>
+			<if test='pd.certNum != null and pd.certNum != ""'>
+				and cert_num like '%${pd.certNum}%'
+			</if>
+			<if test='pd.businessStates != null and pd.businessStates != ""'>
+				and business_states = #{pd.businessStates}
+			</if>
+			<if test='pd.rptDate != null and pd.rptDate != ""'>
+				and rpt_date = #{pd.rptDate}
+			</if>
+			 <if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+			<if test="pd.managerId != null and pd.managerId != ''">
+		   	  	and M.MANAGER_ID = #{pd.managerId}
+		   		AND M.DATA_TYPE = '2'
+		   		AND M.DATA_LEVEL = '5'
+		   		AND M.END_DATE = '2099-12-31'
+		   	</if>
+		   		and COMPANY = #{pd.COMPANY}
+		</where>
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 基础段 -->
+	<select id="getMotgaCltalBsSgmtById" parameterType="pd" resultType="map">
+		 select efa_motga_cltal_ctrct_bs_id,
+				inf_rec_type,
+				cc_code,
+				rpt_date,
+				rpt_date_code,
+				info_id_type,
+				name,
+				cert_type,
+				cert_num,
+				mngmt_org_code,
+				last_update_time,
+				operator_user,
+				org_name,
+				org_code,
+				business_states,
+				is_filter,
+				reject_reason,
+				COMPANY
+		   from motga_cltal_ctrct_bs
+		  where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+		    and COMPANY = #{COMPANY}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 基本信息段 -->
+	<select id="getMotgaCltalInfById" parameterType="pd" resultType="pd">
+		 select EFB_MOTGA_CLTAL_BS_INF_SGMT_ID,
+				guar_type,
+				cc_amt,
+				cy,
+				cc_val_date,
+				cc_exp_date,
+				max_guar,
+				cc_status,
+				COMPANY
+		   from motga_cltal_bs_inf
+		  where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+	</select>
+	
+	<!-- 查询 基础段 主键是否存在 -->
+	<select id="getMotgaCltalBsSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from motga_cltal_ctrct_bs
+	     where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+	</select>
+	
+	<!-- 新增    基础段 -->
+	<insert id="insertMotgaCltalBsSgmt" parameterType="map">
+		<![CDATA[
+		insert into motga_cltal_ctrct_bs(
+					efa_motga_cltal_ctrct_bs_id,
+					inf_rec_type,
+					cc_code,
+					rpt_date,
+					rpt_date_code,
+					info_id_type,
+					name,
+					cert_type,
+					cert_num,
+					mngmt_org_code,
+					operator_user,
+					org_code,
+					business_states,
+					is_filter,
+					COMPANY)
+		    values (#{efaMotgaCltalCtrctBsId, jdbcType=CHAR},
+					#{infRecType, jdbcType=VARCHAR},
+					#{ccCode, jdbcType=VARCHAR},
+					#{rptDate},
+					#{rptDateCode, jdbcType=VARCHAR},
+					#{infoIdType, jdbcType=VARCHAR},
+					#{name, jdbcType=VARCHAR},
+					#{certType, jdbcType=VARCHAR},
+					#{certNum, jdbcType=VARCHAR},
+					#{mngmtOrgCode, jdbcType=VARCHAR},
+					#{operationUser, jdbcType=VARCHAR},
+					#{orgCode, jdbcType=VARCHAR},
+					'11',
+					#{isFilter, jdbcType=VARCHAR},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+
+	<!-- 更新    基础段 -->
+	<update id="updateMotgaCltalBsSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update motga_cltal_ctrct_bs
+			set inf_rec_type = #{infRecType, jdbcType=VARCHAR},
+				cc_code = #{ccCode, jdbcType=VARCHAR},
+				rpt_date = #{rptDate},
+				rpt_date_code = #{rptDateCode, jdbcType=VARCHAR},
+				info_id_type = #{infoIdType, jdbcType=VARCHAR},
+				name = #{name, jdbcType=VARCHAR},
+				cert_type = #{certType, jdbcType=VARCHAR},
+				cert_num = #{certNum, jdbcType=VARCHAR},
+				mngmt_org_code = #{mngmtOrgCode, jdbcType=VARCHAR},
+				operator_user = #{operationUser, jdbcType=VARCHAR},
+				org_code = #{orgCode, jdbcType=VARCHAR},
+				business_states = '20',
+				is_filter = #{isFilter, jdbcType=VARCHAR}
+		  where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+		    and COMPANY = #{COMPANY}
+		  ]]>
+	</update>
+	
+	<!-- 删除基础段 -->
+	<delete id="delMotgaCltalBsSgmtById" parameterType="map">
+		delete from motga_cltal_ctrct_bs
+		 where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+		   and COMPANY = #{COMPANY}
+	</delete>
+
+	<!-- 删除 基本信息段 -->
+	<delete id="delCltalBsInfSgmtById" parameterType="map">
+		delete from motga_cltal_bs_inf
+		 where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+	</delete>
+	
+	<!-- 删除 其他债务人信息段 -->
+	<delete id="delComRecInfSgmtById" parameterType="map">
+		delete from motga_com_rec_inf
+		 where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+		   and COMPANY = #{COMPANY}
+	</delete>
+	
+	<!-- 删除 抵押物信息段 -->
+	<delete id="delProptInfoSgmtById" parameterType="map">
+		delete from motga_propt_inf
+		 where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+	</delete>
+	
+	<!-- 删除 质物信息段 -->
+	<delete id="delCltalInfoSgmtById" parameterType="map">
+		delete from motga_cltal_inf
+		 where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+	</delete>
+	
+	<!-- 查询 基本信息段 主键是否存在 -->
+	<select id="getMotgaCltalInfoKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from motga_cltal_bs_inf
+	     where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId} 
+	       and EFB_MOTGA_CLTAL_BS_INF_SGMT_ID = #{efbMotgaCltalBsInfSgmtId}
+	</select>
+	
+	<!-- 新增  基本信息段 -->
+	<insert id="insertMotgaCltalInfo" parameterType="map">
+		<![CDATA[
+		insert into motga_cltal_bs_inf(
+					EFB_MOTGA_CLTAL_BS_INF_SGMT_ID,
+					guar_type,
+					cc_amt,
+					cy,
+					cc_val_date,
+					cc_exp_date,
+					max_guar,
+					cc_status,
+					efa_motga_cltal_ctrct_bs_id,
+					COMPANY)
+		    values (#{efbMotgaCltalBsInfSgmtId, jdbcType=VARCHAR},
+					#{guarType, jdbcType=VARCHAR},
+					#{ccAmt},
+					#{cy, jdbcType=VARCHAR},
+					#{ccValDate},
+					#{ccExpDate},
+					#{maxGuar, jdbcType=VARCHAR},
+					#{ccStatus, jdbcType=VARCHAR},
+					#{efaMotgaCltalCtrctBsId, jdbcType=VARCHAR},
+					#{COMPANY}
+				   )
+		]]>
+	</insert>
+	
+	<!-- 更新   基本信息段 -->
+	<update id="updateMotgaCltalInfo" parameterType="map">
+		<![CDATA[
+		 update motga_cltal_bs_inf
+		 	set guar_type = #{guarType, jdbcType=VARCHAR},
+				cc_amt = #{ccAmt},
+				cy = #{cy, jdbcType=VARCHAR},
+				cc_val_date = #{ccValDate} ,
+				cc_exp_date = #{ccExpDate} ,
+				max_guar = #{maxGuar, jdbcType=VARCHAR},
+				cc_status = #{ccStatus, jdbcType=VARCHAR}
+		  where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+			and EFB_MOTGA_CLTAL_BS_INF_SGMT_ID = #{efbMotgaCltalBsInfSgmtId}
+		 ]]>
+	</update>
+	
+	<!-- 删除  基本信息段 -->
+	<delete id="delMotgaCltalInfo" parameterType="map">
+		delete from motga_cltal_bs_inf
+		 where EFB_MOTGA_CLTAL_BS_INF_SGMT_ID = #{efbMotgaCltalBsInfSgmtId}
+	</delete>
+	
+	<!-- 详情或者修改 查询指定记录 其他债务人信息段 -->
+	<select id="getComRecInfSgmtByIdlistPage" parameterType="page" resultType="pd">
+		 select efc_com_rec_inf_sgmt_id,
+				info_id_type,
+				guar_name,
+				guar_cert_type,
+				guar_cert_num,
+				COMPANY
+		   from motga_com_rec_inf
+		  where efa_motga_cltal_ctrct_bs_id = #{pd.efaMotgaCltalCtrctBsId}
+	</select>
+	
+	<!-- 新增   其他债务人信息段 -->
+	<insert id="insertComRecInfSgmt" parameterType="map">
+		<![CDATA[
+		insert into MOTGA_COM_REC_INF(
+					efc_com_rec_inf_sgmt_id,
+					info_id_type,
+					guar_name,
+					guar_cert_type,
+					guar_cert_num,
+					efa_motga_cltal_ctrct_bs_id,
+					COMPANY)
+		    values (
+		    		
+		    		#{UUID},
+					#{infoIdType, jdbcType=VARCHAR},
+					#{guarName, jdbcType=VARCHAR},
+					#{guarCertType, jdbcType=VARCHAR},
+					#{guarCertNum, jdbcType=VARCHAR},
+					#{efaMotgaCltalCtrctBsId, jdbcType=VARCHAR},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新  其他债务人信息段  -->
+	<update id="updateComRecInfSgmt" parameterType="map">
+		 <![CDATA[
+		  update motga_com_rec_inf
+		     set info_id_type = #{infoIdType, jdbcType=VARCHAR},
+			     guar_name = #{guarName, jdbcType=VARCHAR},
+			     guar_cert_type = #{guarCertType, jdbcType=VARCHAR},
+			     guar_cert_num = #{guarCertNum, jdbcType=VARCHAR}
+		   where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+	         and EFC_COM_REC_INF_SGMT_ID = #{efcComRecInfSgmtId}
+	      ]]>
+	</update>
+	
+	<!-- 删除 其他债务人信息段 -->
+	<delete id="delComRecInfSgmt" parameterType="map">
+		delete from motga_com_rec_inf
+		 where EFC_COM_REC_INF_SGMT_ID = #{efcComRecInfSgmtId}
+	</delete>
+	
+	<!-- 详情或者修改 查询指定记录  抵押物信息段 -->
+	<select id="getMotgaProptInfByIdlistPage" parameterType="page" resultType="pd">
+		 select EFD_MOTGA_PROPT_INF_SGMT_ID,
+		        ple_type,
+				motga_propt_id_type,
+				ple_cert_id,
+				ple_distr,
+				ple_value,
+				ple_cy,
+				val_org_type,
+				val_date,
+				pledgor_type,
+				pledgor_name,
+				pleor_cert_type,
+				pleor_cert_num,
+				ple_desc,
+				COMPANY
+		   from motga_propt_inf
+		  where efa_motga_cltal_ctrct_bs_id = #{pd.efaMotgaCltalCtrctBsId}
+	</select>
+	
+	<!-- 新增  抵押物信息段 -->
+	<insert id="insertMotgaProptInf" parameterType="map">
+		<![CDATA[
+		insert into motga_propt_inf(
+					EFD_MOTGA_PROPT_INF_SGMT_ID,
+					ple_type,
+					motga_propt_id_type,
+					ple_cert_id,
+					ple_distr,
+					ple_value,
+					ple_cy,
+					val_org_type,
+					val_date,
+					pledgor_type,
+					pledgor_name,
+					pleor_cert_type,
+					pleor_cert_num,
+					ple_desc,
+					efa_motga_cltal_ctrct_bs_id,
+					COMPANY)
+		    values (#{UUID},
+		    		#{pleType, jdbcType=VARCHAR},
+					#{motgaProptIdType, jdbcType=VARCHAR},
+					#{pleCertId, jdbcType=VARCHAR},
+					#{pleDistr, jdbcType=VARCHAR},
+					#{pleValue},
+					#{pleCy, jdbcType=VARCHAR},
+					#{valOrgType, jdbcType=VARCHAR},
+					#{valDate},
+					#{pledgorType, jdbcType=VARCHAR},
+					#{pledgorName, jdbcType=VARCHAR},
+					#{pleorCertType, jdbcType=VARCHAR},
+					#{pleorCertNum, jdbcType=VARCHAR},
+					#{pleDesc, jdbcType=VARCHAR},
+					#{efaMotgaCltalCtrctBsId, jdbcType=VARCHAR},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新  抵押物信息段 -->
+	<update id="updateMotgaProptInf" parameterType="map">
+		  update motga_propt_inf
+		     set ple_type = #{pleType, jdbcType=VARCHAR},
+				 motga_propt_id_type = #{motgaProptIdType, jdbcType=VARCHAR},
+				 ple_cert_id = #{pleCertId, jdbcType=VARCHAR},
+				 ple_distr = #{pleDistr, jdbcType=VARCHAR},
+				 ple_value = #{pleValue},
+				 ple_cy = #{pleCy, jdbcType=VARCHAR},
+				 val_org_type = #{valOrgType, jdbcType=VARCHAR},
+				 val_date = #{valDate},
+				 pledgor_type = #{pledgorType, jdbcType=VARCHAR},
+				 pledgor_name = #{pledgorName, jdbcType=VARCHAR},
+				 pleor_cert_type = #{pleorCertType, jdbcType=VARCHAR},
+				 pleor_cert_num = #{pleorCertNum, jdbcType=VARCHAR},
+				 ple_desc = #{pleDesc, jdbcType=VARCHAR}
+		   where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+	         and EFD_MOTGA_PROPT_INF_SGMT_ID = #{efdMotgaProptInfSgmtId}
+	</update>
+	
+	<!-- 删除 抵押物信息段 -->
+	<delete id="delMotgaProptInf" parameterType="map">
+		delete from motga_propt_inf
+		 where EFD_MOTGA_PROPT_INF_SGMT_ID = #{efdMotgaProptInfSgmtId}
+	</delete>
+	
+	<!-- 详情或者修改 查询指定记录 质物信息段 -->
+	<select id="getCltalInfByIdlistPage" parameterType="page" resultType="pd">
+		 select efe_cltal_inf_sgmt_id,
+				imp_type,
+				imp_val,
+				imp_cy,
+				ippc,
+				pawn_name,
+				pawn_cert_type,
+				pawn_cert_num,
+				COMPANY
+		   from MOTGA_CLTAL_INF
+		  where efa_motga_cltal_ctrct_bs_id = #{pd.efaMotgaCltalCtrctBsId}
+	</select>
+	
+	<!-- 新增  质物信息段-->
+	<insert id="insertCltalInf" parameterType="map">
+		<![CDATA[
+		insert into motga_cltal_inf(
+					efe_cltal_inf_sgmt_id,
+					imp_type,
+					imp_val,
+					imp_cy,
+					ippc,
+					pawn_name,
+					pawn_cert_type,
+					pawn_cert_num,
+					efa_motga_cltal_ctrct_bs_id,
+					COMPANY)
+		    values (#{UUID, jdbcType=VARCHAR},
+					#{impType, jdbcType=VARCHAR},
+					#{impVal},
+					#{impCy, jdbcType=VARCHAR},
+					#{ippc, jdbcType=VARCHAR},
+					#{pawnName, jdbcType=VARCHAR},
+					#{pawnCertType, jdbcType=VARCHAR},
+					#{pawnCertNum, jdbcType=VARCHAR},
+					#{efaMotgaCltalCtrctBsId},
+					#{COMPANY}
+					)
+		]]>
+	</insert>
+	
+	<!-- 更新 质物信息段 -->
+	<update id="updateCltalInf" parameterType="map">
+		<![CDATA[
+		  update motga_cltal_inf
+		     set imp_type = #{impType, jdbcType=VARCHAR},
+				 imp_val = #{impVal},
+				 imp_cy = #{impCy, jdbcType=VARCHAR},
+				 ippc = #{ippc, jdbcType=VARCHAR},
+				 pawn_name = #{pawnName, jdbcType=VARCHAR},
+				 pawn_cert_type = #{pawnCertType, jdbcType=VARCHAR},
+				 pawn_cert_num = #{pawnCertNum, jdbcType=VARCHAR}
+		   where efa_motga_cltal_ctrct_bs_id = #{efaMotgaCltalCtrctBsId}
+	         and efe_cltal_inf_sgmt_id = #{efeCltalInfSgmtId}
+	     ]]>
+	</update>
+	
+	<!-- 删除 质物信息段 -->
+	<delete id="delCltalInf" parameterType="map">
+		<![CDATA[
+		delete from motga_cltal_inf
+		 where efe_cltal_inf_sgmt_id = #{efeCltalInfSgmtId}
+	    ]]>
+	</delete>
+	
+</mapper>

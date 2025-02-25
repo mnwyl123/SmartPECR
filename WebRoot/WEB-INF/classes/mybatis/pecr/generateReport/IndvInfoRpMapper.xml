@@ -1,0 +1,4864 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IndvInfoRpMapper">
+
+	<sql id="validBusinessStates">
+		'20'
+	</sql>
+	<!-- 个人基本信息 -->
+	<sql id="pecrIndvIdSgmtTableName">
+		I_ID
+	</sql>
+	<sql id="pecrIndvBsSgmtTableName">
+		I_BS
+	</sql>
+	<sql id="pecrIndvIdSgmtFields">
+		PAB_ID_SGMT_ID ,
+		ALIAS ,
+		OTH_ID_TYPE ,
+		OTH_ID_NUM ,
+		ID_INFO_UP_DATE ,
+		PAA_BS_SGMT_ID ,
+		RPT_DATE
+	</sql>
+
+	<!-- 家庭信息模块 -->
+	<sql id="pecrIndvInFalMmbsTableName">
+		I_IN_FAL_MMBS_INF
+	</sql>
+	<sql id="pecrIndvInFalMmbsFields">
+		PAJ_IN_FAL_MMBS_INF_ID,
+		INF_REC_TYPE,
+		NAME,
+		ID_TYPE,
+		ID_NUM,
+		FAM_MEM_NAME,
+		FAM_MEM_CERT_TYPE,
+		FAM_MEM_CERT_NUM,
+		FAM_REL,
+		FAM_RELA_ASS_FLAG,
+		INF_SURC_CODE,
+		RPT_DATE
+	</sql>
+
+	<!-- 个人证件有效信息模块 -->
+	<sql id="pecrIndvInIDEfctTableName">
+		I_IN_ID_EFCT_INF
+	</sql>
+	<sql id="pecrIndvInIDEfctFields">
+		PAK_IN_ID_EFCT_INF_ID,
+		INF_REC_TYPE,
+		NAME,
+		ID_TYPE,
+		ID_NUM,
+		INF_SURC_CODE,
+		ID_EFCT_DATE,
+		ID_DUE_DATE,
+		ID_ORG_NAME,
+		ID_DIST,
+		CIMOC,
+		RPT_DATE
+	</sql>
+
+	<!-- 个人证件整合信息模块 -->
+	<sql id="pecrIndvInCtfItgTableName">
+		I_IN_CTF_ITG_INF
+	</sql>
+	<sql id="pecrIndvInCtfItgFields">
+		PAL_IN_CTF_ITG_INF_ID,
+		INF_REC_TYPE,
+		NAME,
+		ID_TYPE,
+		ID_NUM,
+		OTH_NAME,
+		OTH_ID_TYPE,
+		OTH_ID_NUM,
+		OTH_ASS_FLG,
+		INF_SURC_CODE,
+		RPT_DATE
+	</sql>
+
+	<!-- 个人担保基本信息 -->
+	<sql id="pecrIndvGuarMccTableName">
+		I_GUAR_MCC_INF
+	</sql>
+	<sql id="pecrIndvGrRepymtTableName">
+		I_GR_REPYMT_INF
+	</sql>
+	<sql id="pecrIndvGuarAcctBsSgmtTableName">
+		I_GUAR_ACCT_BS
+	</sql>
+
+	<!-- 个人授信信息模块 -->
+	<sql id="pecrIndvInCtrctInfTableName">
+		I_CTRCT_BS
+	</sql>
+	<sql id="pecrIndvCtrctCertRelTableName">
+		I_CTRCT_CERT_REL
+	</sql>
+
+	<!-- 个人借贷账户信息模块 -->
+	<sql id="pecrIndvAcctBsTableName">
+		I_ACCT_BS
+	</sql>
+
+
+	<resultMap
+		type="com.dcits.supervise.pecr.generateReport.entity.IndvBsSgmtReportEntity"
+		id="bsSgmtlistResultMap">
+		<result column="PAA_BS_SGMT_ID" property="paaBsSmgtId" />
+		<result column="INF_REC_TYPE" property="InfRecType" />
+		<result column="NAME" property="Name" />
+		<result column="ID_TYPE" property="IDType" />
+		<result column="ID_NUM" property="IDNum" />
+		<result column="INF_SURC_CODE" property="InfSurcCode" />
+		<result column="RPT_DATE" property="RptDate" />
+		<result column="RPT_DATE_CODE" property="RptDateCode" />
+		<result column="CIMOC" property="Cimoc" />
+		<result column="CUSTOMER_TYPE" property="CustomerType" />
+		<result column="SEX" property="Sex" />
+		<result column="D_O_B" property="DOB" />
+		<result column="NATION" property="Nation" />
+		<result column="HOUSE_ADD" property="HouseAdd" />
+		<result column="HH_DIST" property="HhDist" />
+		<result column="CELL_PHONE" property="CellPhone" />
+		<result column="EMAIL" property="Email" />
+		<result column="FCS_INFO_UP_DATE" property="FcsInfoUpDate" />
+		<result column="EDU_LEVEL" property="EduLevel" />
+		<result column="ACA_DEGREE" property="AcaDegree" />
+		<result column="EDU_INFO_UP_DATE" property="EduInfoUpDate" />
+		<result column="EMP_STATUS" property="EmpStatus" />
+		<result column="CPN_NAME" property="CpnName" />
+		<result column="CPN_TYPE" property="CpnType" />
+		<result column="INDUSTRY" property="Industry" />
+		<result column="CPN_ADDR" property="CpnAddr" />
+		<result column="CPN_PC" property="CpnPc" />
+		<result column="CPN_DIST" property="CpnDist" />
+		<result column="CPN_T_E_L" property="CpnTEL" />
+		<result column="OCCUPATION" property="Occupation" />
+		<result column="TITLE" property="Title" />
+		<result column="TECH_TITLE" property="TechTitle" />
+		<result column="WORK_START_DATE" property="WorkStartDate" />
+		<result column="OCTPN_INFO_UP_DATE" property="OctpnInfoUpDate" />
+		<result column="RESI_STATUS" property="ResiStatus" />
+		<result column="RESI_ADDR" property="ResiAddr" />
+		<result column="RESI_PC" property="ResiPc" />
+		<result column="RESI_DIST" property="ResiDist" />
+		<result column="HOME_TEL" property="HomeTel" />
+		<result column="RESI_INFO_UP_DATE" property="ResiInfoUpDate" />
+		<result column="MAIL_ADDR" property="MailAddr" />
+		<result column="MAIL_PC" property="MailPc" />
+		<result column="MAIL_DIST" property="MailDist" />
+		<result column="MLG_INFO_UP_DATE" property="MlgInfoUpDate" />
+		<result column="ANNL_INC" property="AnnlInc" />
+		<result column="TAX_INCOME" property="TaxIncome" />
+		<result column="INC_INFO_UP_DATE" property="IncInfoUpDate" />
+		<result column="MARI_STATUS" property="MariStatus" />
+		<result column="SPO_NAME" property="SpoName" />
+		<result column="SPO_ID_TYPE" property="SpoIDType" />
+		<result column="SPO_ID_NUM" property="SpoIDNum" />
+		<result column="SPO_TEL" property="SpoTel" />
+		<result column="SPS_CMPY_NM" property="SpsCmpyNm" />
+		<result column="SPS_INFO_UP_DATE" property="SpsInfoUpDate" />
+	</resultMap>
+	<!-- 获取生成报文总数   生成报文通用-->
+	<select id="getReportCount" parameterType="map" resultType="int">
+		select count(*)
+		from ${table_name}
+		where BUSINESS_STATES = '30'
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+	</select>
+	
+	
+	<!-- 获取报文名组成部分-区构号,生成报文通用      李继坤 -->
+	<select id="getCcrcOrgCode" parameterType="String" resultType="map">
+		select 
+			*
+		from 
+			sys_org_view
+		where PARENT_ID = '0'
+		  AND COMPANY = #{company}
+	</select>
+	
+	
+	<select id="countByFactor" parameterType="list" resultType="Int">
+		select count(*) from
+		<include refid="pecrIndvBsSgmtTableName" />
+		where
+		<foreach collection="list" item="item" index="index"
+			separator="or">
+			RPT_DATE=#{item}
+		</foreach>
+	</select>
+
+	<select id="dataBsSgmtlist" parameterType="map" resultMap="bsSgmtlistResultMap">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		a.PAA_BS_SGMT_ID ,
+		a.ORG_CODE,
+		INF_REC_TYPE ,
+		NAME ,
+		ID_TYPE ,
+		ID_NUM ,
+		INF_SURC_CODE ,
+		a.RPT_DATE ,
+		RPT_DATE_CODE ,
+		CIMOC ,
+		CUSTOMER_TYPE ,
+		SEX ,
+		D_O_B ,
+		NATION ,
+		HOUSE_ADD ,
+		HH_DIST ,
+		CELL_PHONE ,
+		EMAIL ,
+		FCS_INFO_UP_DATE ,
+		c.EDU_LEVEL ,
+		c.ACA_DEGREE ,
+		c.EDU_INFO_UP_DATE ,
+		EMP_STATUS ,
+		CPN_NAME ,
+		CPN_TYPE ,
+		INDUSTRY ,
+		CPN_ADDR ,
+		CPN_PC ,
+		CPN_DIST ,
+		CPN_T_E_L ,
+		OCCUPATION ,
+		TITLE ,
+		TECH_TITLE ,
+		WORK_START_DATE ,
+		OCTPN_INFO_UP_DATE ,
+		RESI_STATUS ,
+		RESI_ADDR ,
+		RESI_PC ,
+		RESI_DIST ,
+		HOME_TEL ,
+		RESI_INFO_UP_DATE ,
+		MAIL_ADDR,
+		MAIL_PC ,
+		MAIL_DIST ,
+		MLG_INFO_UP_DATE ,
+		MARI_STATUS ,
+		SPO_NAME ,
+		SPO_ID_TYPE ,
+		SPO_ID_NUM ,
+		SPO_TEL ,
+		SPS_CMPY_NM ,
+		SPS_INFO_UP_DATE ,
+		ANNL_INC ,
+		TAX_INCOME ,
+		INC_INFO_UP_DATE
+		from
+		I_BS a
+		left JOIN
+		I_EDU_INF c on
+		a.PAA_BS_SGMT_ID=c.PAA_BS_SGMT_ID
+		left JOIN
+		I_FCS_INF b on
+		a.PAA_BS_SGMT_ID=b.PAA_BS_SGMT_ID
+		left JOIN
+		I_OCTPN_INF d
+		on a.PAA_BS_SGMT_ID=d.PAA_BS_SGMT_ID
+		left
+		JOIN i_rednc_inf
+		e on a.PAA_BS_SGMT_ID=e.PAA_BS_SGMT_ID
+		left JOIN I_MLG_INF
+		f on a.PAA_BS_SGMT_ID=f.PAA_BS_SGMT_ID
+		left JOIN I_SPS_INF
+		g on a.PAA_BS_SGMT_ID=g.PAA_BS_SGMT_ID
+		left JOIN I_INC_INF
+		h on a.PAA_BS_SGMT_ID=h.PAA_BS_SGMT_ID
+		where a.BUSINESS_STATES='90' 
+			and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        a.company = #{item}
+	      </foreach>
+	      )
+	    </if>
+		<!-- <if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				PAA_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if> -->
+		order by a.RPT_DATE
+		<!-- order by a.PAA_BS_SGMT_ID -->
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="getIDSgmtRpMsgByFactor" parameterType="list" resultType="java.util.Map">
+		select c.NUM ,
+				c.PAB_ID_SGMT_ID,
+				c.ALIAS,
+				c.OTH_ID_TYPE,
+				c.OTH_ID_NUM,
+				c.ID_INFO_UP_DATE,
+				c.PAA_BS_SGMT_ID,
+				c.RPT_DATE,
+				c.COMPANY
+				<if test="_databaseId != 'mysql'">
+				    ,rank() over(partition by c.PAA_BS_SGMT_ID order by c.ID_INFO_UP_DATE desc) as ranknum
+				</if>
+		from (
+			select b.NUM ,
+				a.PAB_ID_SGMT_ID,
+				a.ALIAS,
+				a.OTH_ID_TYPE,
+				a.OTH_ID_NUM,
+				a.ID_INFO_UP_DATE,
+				a.PAA_BS_SGMT_ID,
+				a.RPT_DATE,
+				a.COMPANY from I_ID a ,
+			(
+						SELECT
+							count(1) NUM,
+							PAA_BS_SGMT_ID
+						FROM
+							I_ID
+						WHERE 1=1
+						 <if test=' list !=null and list.size >0 '>
+		                 	and(
+		                 	 <foreach collection="list" item="item" separator="or">
+		                 	 	PAA_BS_SGMT_ID = #{item}
+		                 	 </foreach>
+		                 	)
+		                 </if>
+						GROUP BY
+							PAA_BS_SGMT_ID
+	
+				
+			) b
+			WHERE
+				a.PAA_BS_SGMT_ID = b.PAA_BS_SGMT_ID
+			) c
+			
+	</select>
+	<!-- 生成报文 改变状态 -->
+	<update id="updateDataBsSgmt" parameterType="map">
+		update
+		<include refid="pecrIndvBsSgmtTableName" />
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1 = 1
+		and	INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+		    and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<!-- 李继坤 -->
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				PAA_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+	<!-- 家庭模块 -->
+	<select id="queryInFalMmbRpData" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		<include refid="pecrIndvInFalMmbsFields" />
+		from
+		<include refid="pecrIndvInFalMmbsTableName" />
+		where BUSINESS_STATES='90' 
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" index="index" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				PAJ_IN_FAL_MMBS_INF_ID=#{item}
+			</foreach>
+			)
+		</if>
+		order by RPT_DATE,ID_NUM
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<update id="updateInFalMmbRpDataStatus" parameterType="map">
+		update
+		<include refid="pecrIndvInFalMmbsTableName" />
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1 = 1
+		and	INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+		    and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				PAJ_IN_FAL_MMBS_INF_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+
+	<!-- 个人证件有效模块 -->
+	<select id="queryInIDEfctRpData" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		<include refid="pecrIndvInIDEfctFields" />
+		from
+		<include refid="pecrIndvInIDEfctTableName" />
+		where BUSINESS_STATES='90'
+		  and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" index="index"
+				separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				PAK_IN_ID_EFCT_INF_ID=#{item}
+			</foreach>
+			)
+		</if>
+		order by RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<update id="updateInIDEfctRpDataStatus" parameterType="map">
+		update
+		<include refid="pecrIndvInIDEfctTableName" />
+		a
+		set a.BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1 = 1
+		and	a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and a.BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+		    and a.BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				a.company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				a.PAK_IN_ID_EFCT_INF_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+
+	<update id="updateInSpcEvtDscInfRpDataStatus" parameterType="map">
+		update
+			I_IN_SPC_EVT_DSC_INF
+		set BUSINESS_STATES = #{BUSINESS_STATES}
+		where 1 = 1
+		and	INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+		    and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				PBK_IN_SPC_EVT_DSC_INF_ID = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+
+	<!-- 个人证件整合模块 -->
+	<select id="queryInCtfItgRpData" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<include refid="pecrIndvInCtfItgFields" />
+		from
+		<include refid="pecrIndvInCtfItgTableName" />
+		where BUSINESS_STATES='90' 
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" index="index"
+				separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<!-- 个人借贷特殊事件说明模块 -->
+	<select id="queryInSpcEvtDscInfRpData" parameterType="map"
+		resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		PBK_IN_SPC_EVT_DSC_INF_ID,
+		INF_REC_TYPE,
+		ACCT_CODE,
+		OPETN_TYPE,
+		MONTH,
+		FLAG,
+		RPT_DATE
+		from
+		I_IN_SPC_EVT_DSC_INF
+		where
+			BUSINESS_STATES='90' 
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" index="index"
+				separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				PBK_IN_SPC_EVT_DSC_INF_ID=#{item}
+			</foreach>
+			)
+		</if>
+		order by RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<update id="updateInCtfItgRpDataStatus" parameterType="map">
+		update
+		<include refid="pecrIndvInCtfItgTableName" />
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where
+		BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				PAL_IN_CTF_ITG_INF_ID=#{item}
+			</foreach>
+			)
+		</if>
+		and rownum &lt; #{rownum}
+	</update>
+
+
+	<!-- 个人担保账户信息 -->
+	<select id="dataGuarAcctBsSgmtlist" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		a.PDA_GUAR_ACCT_BS_SGMT_ID,
+		a.INF_REC_TYPE,
+		a.ACCT_TYPE,
+		a.ACCT_CODE,
+		a.RPT_DATE_CODE,
+		a.NAME,
+		a.ID_TYPE,
+		a.ID_NUM,
+		a.MNGMT_ORG_CODE,
+		a.RPT_DATE,
+		MDFC_SGMT_CODE,
+		BUSI_LINES,
+		BUSI_DTIL_LINES,
+		OPEN_DATE,
+		ACCT_CRED_LINE,
+		CY,
+		DUE_DATE,
+		GUAR_MODE,
+		OTH_REPY_GUAR_WAY,
+		SEC_DEP,
+		CTRCT_TXT_CD,
+		ACCT_STATUS,
+		LOAN_AMT,
+		REPAY_PRD,
+		FIVE_CATE,
+		FIVE_CATE_ADJ_DATE,
+		RI_EX,
+		COMP_ADV_FLAG,
+		CLOSE_DATE
+		from
+		I_GUAR_ACCT_BS a
+		left JOIN
+		I_GR_REPYMT_INF c on
+		a.PDA_GUAR_ACCT_BS_SGMT_ID=c.PDA_GUAR_ACCT_BS_SGMT_ID
+		left JOIN
+		I_GUAR_ACCT_INF b on
+		a.PDA_GUAR_ACCT_BS_SGMT_ID=b.PDA_GUAR_ACCT_BS_SGMT_ID
+		where
+		<!-- 李继坤 -->
+		a.BUSINESS_STATES='90' 
+		and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        a.company = #{item}
+	      </foreach>
+		)
+	    </if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				a.PDA_GUAR_ACCT_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="getGuarMccRpMsgByFactor" parameterType="list" resultType="java.util.Map">
+			select 
+				c.NUM,
+				c.PDD_GUAR_MCC_INF_SGMT_ID,
+				c.CCC,                    
+				c.PDA_GUAR_ACCT_BS_SGMT_ID,
+				c.RPT_DATE,               
+				c.COMPANY,
+				rank() over(partition by c.PDA_GUAR_ACCT_BS_SGMT_ID order by c.RPT_DATE desc) as RANKNUM
+			from (
+				select
+					b.NUM,
+					a.PDD_GUAR_MCC_INF_SGMT_ID,
+					a.CCC,                     
+					b.PDA_GUAR_ACCT_BS_SGMT_ID,
+					a.RPT_DATE,                
+					a.COMPANY from I_GUAR_MCC_INF a,
+				    (
+						SELECT
+							count(1) NUM,
+							PDA_GUAR_ACCT_BS_SGMT_ID
+						FROM
+							I_GUAR_MCC_INF
+						WHERE 1=1
+						<if test=' list !=null and list.size >0 '>
+							AND (
+							<foreach collection="list" item="item" separator="or">
+								PDA_GUAR_ACCT_BS_SGMT_ID = #{item}
+							</foreach>
+							)
+						</if>
+						GROUP BY
+							PDA_GUAR_ACCT_BS_SGMT_ID	
+					)b
+					WHERE  a.PDA_GUAR_ACCT_BS_SGMT_ID = b.PDA_GUAR_ACCT_BS_SGMT_ID
+				 )c
+	</select>
+	<select id="getRLTRepymtRpMsgByFactor" parameterType="list" resultType="java.util.Map">
+			select
+				c.NUM,
+				c.PDC_RLT_REPYMT_INF_SGMT_ID,
+				c.INFO_ID_TYPE,              
+				c.ARLP_NAME,                 
+				c.ARLP_CERT_TYPE,            
+				c.ARLP_CERT_NUM,             
+				c.ARLP_TYPE,                 
+				c.ARLP_AMT,                  
+				c.WARTY_SIGN,                
+				c.MAX_GUAR_MCC,              
+				c.PDA_GUAR_ACCT_BS_SGMT_ID,  
+				c.RPT_DATE,    
+				c.COMPANY
+				<if test="_databaseId != 'mysql'">
+				    ,rank() over(partition by c.PDA_GUAR_ACCT_BS_SGMT_ID order by c.RPT_DATE desc) as RANKNUM
+				</if>
+				
+			from (
+				select 
+					b.NUM,
+					a.PDC_RLT_REPYMT_INF_SGMT_ID,
+					a.INFO_ID_TYPE,              
+					a.ARLP_NAME,                 
+					a.ARLP_CERT_TYPE,            
+					a.ARLP_CERT_NUM,             
+					a.ARLP_TYPE,                 
+					a.ARLP_AMT,                  
+					a.WARTY_SIGN,                
+					a.MAX_GUAR_MCC,              
+					b.PDA_GUAR_ACCT_BS_SGMT_ID, 
+					a.RPT_DATE,    
+					a.COMPANY from I_GUAR_RLT_REPYMT_INF a,
+					(
+							SELECT
+								count(1) NUM,
+								PDA_GUAR_ACCT_BS_SGMT_ID
+							FROM
+								I_GUAR_RLT_REPYMT_INF
+							WHERE 1=1
+							<if test=' list !=null and list.size >0 '>
+								AND (
+								<foreach collection="list" item="item" separator="or">
+									PDA_GUAR_ACCT_BS_SGMT_ID = #{item}
+								</foreach>
+							     )
+							</if>
+							GROUP BY
+								PDA_GUAR_ACCT_BS_SGMT_ID)b
+					WHERE  a.PDA_GUAR_ACCT_BS_SGMT_ID = b.PDA_GUAR_ACCT_BS_SGMT_ID
+			     )c	
+	</select>
+	<update id="updateGuarAcctBsDataStatus" parameterType="map">
+		update
+		<include refid="pecrIndvGuarAcctBsSgmtTableName" />
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1=1
+		  and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+		    and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				PDA_GUAR_ACCT_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test='rownum != null and rownum != ""'>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+
+
+	<!-- 个人授信信息 -->
+	<select id="queryInCtrctInfRpData" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		a.PCA_CTRCT_BS_SGMT_ID,
+		a.INF_REC_TYPE,
+		a.CONTRACT_CODE,
+		a.RPT_DATE_CODE,
+		a.NAME,
+		a.ID_TYPE,
+		a.ID_NUM,
+		a.MNGMT_ORG_CODE,
+		a.RPT_DATE,
+		MDFC_SGMT_CODE,
+		CREDIT_LIM_TYPE,
+		LIM_LOOP_FLG,
+		CREDIT_LIM,
+		CY,      
+		CON_EFF_DATE,  
+		CON_EXP_DATE,
+		CON_STATUS,
+		CREDIT_REST,
+		CREDIT_REST_CODE
+		from
+		I_CTRCT_BS a
+		left JOIN I_CREDIT_LIM c on
+		a.PCA_CTRCT_BS_SGMT_ID=c.PCA_CTRCT_BS_SGMT_ID
+		where
+		a.BUSINESS_STATES='90' 
+		and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        a.company = #{item}
+	      </foreach>
+	      )
+	    </if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				a.PCA_CTRCT_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>           
+		order by a.RPT_DATE
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryInCtrctInfByRepID" parameterType="map" resultType="java.util.Map">
+		SELECT
+		a.PCA_CTRCT_BS_SGMT_ID
+		from i_ctrct_bs a
+		where
+		a.CONTRACT_CODE=#{contractCode} and a.RPT_DATE=#{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="querySecAcctTBs" parameterType="map" resultType="java.util.Map">
+		select * from I_GUAR_ACCT_BS a where 
+		a.ACCT_CODE =#{acctCode} and a.RPT_DATE=#{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryAcctSgmtBs" parameterType="map" resultType="java.util.Map">
+		select * from I_ACCT_BS a where 
+		a.ACCT_CODE =#{acctCode} and a.RPT_DATE=#{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="querySpcBs" parameterType="map" resultType="java.util.Map">
+		select * from I_IN_SPC_EVT_DSC_INF a where 
+		a.ACCT_CODE =#{acctCode} and a.RPT_DATE=#{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryEBs" parameterType="map" resultType="java.util.Map">
+		select * from E_BS a where 
+		a.ent_Name =#{entName} and a.ent_Cert_Type=#{entCertType} and
+	    a.inf_Surc_Code=#{infSurcCode} and
+		a.ent_Cert_Num =#{entCertNum} and a.RPT_DATE=#{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	
+	
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="getlableCN" parameterType="map" resultType="java.util.Map">
+		select * from lable_table where lable = #{lable} and  rownum &lt; 2
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryIndvBs" parameterType="map" resultType="java.util.Map">
+		select * from i_bs a where a.name =#{name} and a.id_type=#{iDType} and a.id_num =#{iDNum} 
+		and a.inf_surc_code =#{infSurcCode}  and a.rpt_date =#{rptDate} 
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryIncomeBs" parameterType="map" resultType="java.util.Map">
+		select * from e_income_expense_bs a where  a.ent_name =#{entName}  and a.Ent_Cert_Type = #{entCertType}
+		 and a.Ent_Cert_Num = #{entCertNum} and a.sheet_Year = #{sheetYear}
+		 and a.sheet_Type = #{sheetType} and a.sheet_Type_Divide = #{sheetTypeDivide}
+		 and a.cimoc = #{cimoc}
+		  and   a.rpt_date =#{rptDate} 
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	
+	
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryIcdnBs" parameterType="map" resultType="java.util.Map">
+		select * from e_icdn_rltp_inf a where 
+		a.ent_Name =#{entName} and a.ent_Cert_Type = #{entCertType} and 
+		a.ent_Cert_Num =#{entCertNum} and a.asso_Ent_Name = #{assoEntName} and 
+		a.asso_Ent_Cert_Type =#{assoEntCertType} and a.asso_Ent_Cert_Num = #{assoEntCertNum} and
+		a.rpt_date = #{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryAcctBs" parameterType="map" resultType="java.util.Map">
+		select * from e_acct_bs a where 
+		a.Acct_Code =#{acctCode}  and a.rpt_date = #{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryGuarBs" parameterType="map" resultType="java.util.Map">
+		select * from e_Guar_Acct_Bs a where 
+		a.acct_Code =#{acctCode} and a.rpt_date = #{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryCtrctBs" parameterType="map" resultType="java.util.Map">
+		select * from e_ctrct_bs a where 
+		a.CONTRACT_CODE =#{contractCode} and a.rpt_date = #{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryBalanceBs" parameterType="map" resultType="java.util.Map">
+		select * from e_balance_sheet_bs a where 
+		a.ent_Name =#{entName} and a.ent_Cert_Type =#{entCertType} and 
+		a.ent_Cert_Num =#{entCertNum} and a.sheet_Year =#{sheetYear} and
+		a.sheet_Type =#{sheetType} and a.sheet_Type_Divide =#{sheetTypeDivide} and
+		a.cimoc =#{cimoc} and a.rpt_date = #{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryCashBs" parameterType="map" resultType="java.util.Map">
+		select * from e_cash_flows_bs a where 
+		a.ENT_NAME =#{entName} and a.ent_Cert_Type =#{entCertType} and 
+		a.ent_Cert_Num =#{entCertNum} and a.sheet_Year =#{sheetYear} and
+		a.sheet_Type =#{sheetType} and a.sheet_Type_Divide =#{sheetTypeDivide} and
+		a.cimoc =#{cimoc} and a.rpt_date = #{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryIncodeBs" parameterType="map" resultType="java.util.Map">
+		select * from e_income_statement a where 
+		a.ENT_NAME =#{entName} and a.ent_Cert_Type =#{entCertType} and 
+		a.ent_Cert_Num =#{entCertNum} and a.sheet_Year =#{sheetYear} and 
+		a.sheet_Type =#{sheetType} and a.sheet_Type_Divide =#{sheetTypeDivide} and 
+		a.cimoc =#{cimoc} and a.rpt_date = #{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryInstBs" parameterType="map" resultType="java.util.Map">
+		select * from e_institu_balance_bs a where 
+		a.ENT_NAME =#{entName} and a.ent_Cert_Type =#{entCertType} and 
+		a.ent_Cert_Num =#{entCertNum} and a.sheet_Year =#{sheetYear} and
+		a.sheet_Type =#{sheetType} and a.sheet_Type_Divide =#{sheetTypeDivide} and
+		a.cimoc =#{cimoc} and a.rpt_date = #{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	
+	
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryFalBs" parameterType="map" resultType="java.util.Map">
+		select * from i_In_Fal_Mmbs_Inf a where 
+		a.name =#{name} and a.id_type=#{iDType} and a.id_num =#{iDNum}   
+		and a.fam_mem_name =#{famMemName} and a.fam_mem_cert_type=#{famMemCertType}  and a.fam_mem_cert_num = #{famMemCertNum} and a.inf_surc_code = #{infSurcCode} and a.rpt_date = #{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	
+	
+	<!-- 韦宗英  add 根据报文id获取个人授信信息 -->
+	<select id="queryIDBs" parameterType="map" resultType="java.util.Map">
+		select * from i_In_Fal_Mmbs_Inf a where 
+		a.name =#{name} and a.id_type=#{iDType} and a.id_num =#{iDNum} and a.inf_surc_code = #{infSurcCode} and a.rpt_date = #{rptDate}
+		<!-- order by a.PDA_GUAR_ACCT_BS_SGMT_ID -->
+	</select>
+	
+	<select id="getCtrctCertRelRpMsgByFactor" parameterType="list" resultType="java.util.Map">
+			select 
+				c.NUM,
+				c.PCB_CTRCT_CERT_REL_SGMT_ID,
+				c.BRER_TYPE,
+				c.CERT_REL_NAME,
+				c.CERT_REL_ID_TYPE,
+				c.CERT_REL_ID_NUM,
+				c.PCA_CTRCT_BS_SGMT_ID,
+				c.RPT_DATE,
+				c.COMPANY
+				<if test="_databaseId != 'mysql'">
+				    ,rank() over(partition by c.PCA_CTRCT_BS_SGMT_ID order by c.RPT_DATE desc) as RANKNUM
+				</if>
+		from (
+			select
+				b.NUM,
+				a.PCB_CTRCT_CERT_REL_SGMT_ID,
+				a.BRER_TYPE,
+				a.CERT_REL_NAME,
+				a.CERT_REL_ID_TYPE,
+				a.CERT_REL_ID_NUM,
+				b.PCA_CTRCT_BS_SGMT_ID,
+				a.RPT_DATE,
+				a.COMPANY
+				from I_CTRCT_CERT_REL a,
+			(
+					SELECT
+						count(1) NUM,
+						PCA_CTRCT_BS_SGMT_ID
+					FROM
+						I_CTRCT_CERT_REL
+					WHERE 1=1
+					<if test=' list !=null and list.size >0 '>
+						AND(
+						<foreach collection="list" item="item" separator="or">
+							PCA_CTRCT_BS_SGMT_ID = #{item}
+						</foreach>
+						)
+					</if>
+					GROUP BY
+						PCA_CTRCT_BS_SGMT_ID)b
+				WHERE 
+					a.PCA_CTRCT_BS_SGMT_ID = b.PCA_CTRCT_BS_SGMT_ID
+			)c
+	</select>
+	
+	<update id="editInCtrctInfStatus" parameterType="map">
+		update
+		i_ctrct_bs
+		set BUSINESS_STATES= #{businessStates}
+		where
+		PCA_CTRCT_BS_SGMT_ID=#{ctrctId}
+		
+	</update>
+	
+	<!-- 韦宗英  add -->
+	<update id="editInCtrctInfStatus2" parameterType="map">
+		update
+		${tableName}
+		set BUSINESS_STATES= #{businessStates}
+		where REPORT_FILE_COLNUM in (
+       		select RECORDBSID from feed_back_report_err_message 
+       		where report_message_name = #{reportFileName} and report_message_type  = #{reportMessageType}
+		) and report_message_id = #{reportFileName}
+	</update>
+	
+	
+	<update id="refreshRecodeIdByCols" parameterType="map">
+		UPDATE FEED_BACK_REPORT_ERR_MESSAGE T1 
+		   SET T1.RECORD_ID = (
+		   						SELECT ${pkName} 
+		   						FROM ${tableName} T2
+		   						WHERE T2.REPORT_MESSAGE_ID =  #{reportFileName} 
+			   						AND T2.INF_REC_TYPE =  #{reportMessageType}
+			   						AND T1.REPORT_MESSAGE_NAME = T2.REPORT_MESSAGE_ID
+							        AND T1.REPORT_MESSAGE_TYPE = T2.INF_REC_TYPE
+							        AND T1.RECORDBSID = T2.REPORT_FILE_COLNUM
+							        AND T2.BUSINESS_STATES = #{businessStates}
+		   					  )
+		WHERE T1.REPORT_MESSAGE_NAME = #{reportFileName} 
+		  AND T1.REPORT_MESSAGE_TYPE = #{reportMessageType}
+	</update>
+
+	<update id="updateInCtrctInfRpDataStatus" parameterType="map">
+		update
+		<include refid="pecrIndvInCtrctInfTableName" />
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1 = 1
+		and	INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+		    and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				PCA_CTRCT_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+
+	<!-- 个人借贷账户模块 -->
+	<select id="queryAcctBsSgmtRpData" parameterType="map"
+		resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		a.PBA_ACCT_BS_SGMT_ID ,
+		INF_REC_TYPE,
+		ACCT_TYPE,
+		ACCT_CODE,
+		a.RPT_DATE,
+		RPT_DATE_CODE,
+		NAME,
+		ID_TYPE,
+		ID_NUM,
+		MNGMT_ORG_CODE,
+		MDFC_SGMT_CODE,
+		BUSI_LINES,
+		BUSI_DTL_LINES,
+		OPEN_DATE,
+		CY,
+		ACCT_CRED_LINE,
+		LOAN_AMT,
+		FLAG,
+		DUE_DATE,
+		REPAY_MODE,
+		REPAY_FREQCY,
+		REPAY_PRD,
+		APPLY_BUSI_DIST,
+		GUAR_MODE,
+		OTH_REPY_GUAR_WAY,
+		ASSET_TRAND_FLAG,
+		FUND_SOU,
+		LOAN_FORM,
+		LOAN_CON_CODE,
+		FIRST_HOU_LOAN_FLAG,
+		CREDIT_ID,
+		MCC,
+		INIT_CRED_NAME,
+		INIT_CRED_ORG_NM,
+		ORIG_DBT_CATE,
+		INIT_RPY_STS,
+		MONTH,
+		SETT_DATE,
+		ACCT_STATUS,
+		ACCT_BAL,
+		PRID_ACCT_BAL,
+		USED_AMT,
+		NOT_ISU_BAL,
+		REM_REP_PRD,
+		FIVE_CATE,
+		FIVE_CATE_ADJ_DATE,
+		RPY_STATUS,
+		RPY_PRCT,
+		OVERD_PRD,
+		TOT_OVERD,
+		OVERD_PRINC,
+		OVED31_60_PRINC,
+		OVED61_90_PRINC,
+		OVED91_180_PRINC,
+		OVED_PRINC180,
+		OVEDRAW_BA_OVE180,
+		CUR_RPY_AMT,
+		ACT_RPY_AMT,
+		LAT_RPY_DATE,
+		CLOSE_DATE,
+		SPEC_LINE,
+		SPEC_EFCT_DATE,
+		SPEC_END_DATE,
+		USED_INST_AMT,
+		NOMONTH_ACCT_STATUS,
+		NOMONTH_ACCT_BAL,
+		NOMONTH_FIVE_CATE,
+		NOMONTH_FIVE_CATE_ADJ_DATE,
+		NOMONTH_REM_REP_PRD,
+		NOMONTH_RPY_STATUS,
+		NOMONTH_OVERD_PRD,
+		NOMONTH_TOT_OVERD,
+		NOMONTH_LAT_RPY_AMT,
+		NOMONTH_LAT_RPY_DATE,
+		NOMONTH_CLOSE_DATE
+		from
+		I_ACCT_BS a
+		left JOIN I_ACCT_BS_INF c on
+		a.PBA_ACCT_BS_SGMT_ID=c.PBA_ACCT_BS_SGMT_ID
+		left JOIN
+		I_ACCT_CRED b on
+		a.PBA_ACCT_BS_SGMT_ID=b.PBA_ACCT_BS_SGMT_ID
+		left JOIN
+		I_OC_INF d on a.PBA_ACCT_BS_SGMT_ID=d.PBA_ACCT_BS_SGMT_ID
+		left JOIN I_AMBLG_INF e on
+		a.PBA_ACCT_BS_SGMT_ID=e.PBA_ACCT_BS_SGMT_ID
+		left JOIN
+		I_SPEC_PRD f on
+		a.PBA_ACCT_BS_SGMT_ID=f.PBA_ACCT_BS_SGMT_ID
+		left JOIN
+		I_ACCT_DBT_INF g on
+		a.PBA_ACCT_BS_SGMT_ID=g.PBA_ACCT_BS_SGMT_ID
+		where
+		a.BUSINESS_STATES='90' 
+		and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        a.company = #{item}
+	      </foreach>
+	      )
+	    </if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				a.PBA_ACCT_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		<!-- order by a.PBA_ACCT_BS_SGMT_ID -->
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="queryLoanRltSgmtRpMsgByFactor" parameterType="list" resultType="java.util.Map">
+		select b.num ,a.* from I_LOAN_RLT_REPYMT_INF a ,
+			(select
+				count(*) as num ,PBA_ACCT_BS_SGMT_ID from
+				I_LOAN_RLT_REPYMT_INF
+				<if test=' list !=null and list.size >0 '>
+					where
+					<foreach collection="list" item="item" index="index" separator="or">
+						PBA_ACCT_BS_SGMT_ID = #{item}
+					</foreach>
+				</if>
+				GROUP BY PBA_ACCT_BS_SGMT_ID
+			)b
+		where a.PBA_ACCT_BS_SGMT_ID = b.PBA_ACCT_BS_SGMT_ID
+		order by a.PBA_ACCT_BS_SGMT_ID
+	</select>
+	<select id="queryMccSgmtRpRpMsgByFactor" parameterType="list" resultType="java.util.Map">
+		select b.num ,a.* from I_MCC_INF a ,
+		(select 
+			count(*) as num ,PBA_ACCT_BS_SGMT_ID from I_MCC_INF
+			<if test=' list !=null and list.size >0 '>
+				where
+				<foreach collection="list" item="item" index="index"
+					separator="or">
+					PBA_ACCT_BS_SGMT_ID = #{item}
+				</foreach>
+			</if>
+			GROUP BY PBA_ACCT_BS_SGMT_ID
+		)b
+		where a.PBA_ACCT_BS_SGMT_ID = b.PBA_ACCT_BS_SGMT_ID
+		order by a.PBA_ACCT_BS_SGMT_ID
+	</select>
+	<select id="querySpecSgmtRpRpMsgByFactor" parameterType="list" resultType="java.util.Map">
+		select b.num ,a.* from I_AS_TRST_DSPN a ,
+		(select 
+			count(*) as num ,PBA_ACCT_BS_SGMT_ID from I_AS_TRST_DSPN
+			<if test=' list !=null and list.size >0 '>
+				where
+				<foreach collection="list" item="item" index="index"
+					separator="or">
+					PBA_ACCT_BS_SGMT_ID = #{item}
+				</foreach>
+			</if>
+			GROUP BY PBA_ACCT_BS_SGMT_ID
+		)b
+		where a.PBA_ACCT_BS_SGMT_ID = b.PBA_ACCT_BS_SGMT_ID
+		order by a.PBA_ACCT_BS_SGMT_ID
+	</select>
+	
+	<update id="updateRepByRepName" parameterType="map">
+		UPDATE
+		REPORT_MESSAGE
+		SET REPORT_MESSAGE_STATUS= #{repStatus}
+		WHERE REPORT_MESSAGE_FILE_NAME=#{repName}
+	</update>
+	
+	<update id="updateAcctBsSgmtRpDataStatus" parameterType="map">
+		update
+		<include refid="pecrIndvAcctBsTableName" />
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1 = 1
+		and	INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+		    and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				PBA_ACCT_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+	<!-- 企业基本信息 -->
+	<select id="queryEntBsSgmtRpData" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		a.EAA_BS_SGMT_ID ,
+		INF_REC_TYPE,
+		ENT_NAME,
+		ENT_CERT_TYPE,
+		ENT_CERT_NUM,
+		a.RPT_DATE,
+		RPT_DATE_CODE,
+		INF_SURC_CODE,
+		CIMOC,
+		CUSTOMER_TYPE,
+		ETP_STS,
+		ORG_TYPE,
+		NATIONALITY ,
+		REG_ADD ,
+		ADM_DIV_OF_REG ,
+		ESTABLISH_DATE ,
+		BIZ_END_DATE ,
+		BIZ_RANGE ,
+		ECO_INDUS_CATE ,
+		ECO_TYPE ,
+		ENT_SCALE ,
+		FCS_INFO_UP_DATE ,
+		SUP_ORG_TYPE ,
+		SUP_ORG_NAME ,
+		SUP_ORG_CERT_TYPE ,
+		SUP_ORG_CERT_NUM ,
+		SUP_ORG_INFO_UP_DATE ,
+		CON_ADD_DISTRICT_CODE,
+		CON_ADD,
+		CON_PHONE,
+		FIN_CON_PHONE,
+		COTA_INFO_UP_DATE
+		from
+		E_BS a
+		left JOIN E_FCS_INF
+		c on
+		a.EAA_BS_SGMT_ID=c.EAA_BS_SGMT_ID
+		left JOIN
+		E_SPVSG_ATHRTY_INF b on a.EAA_BS_SGMT_ID=b.EAA_BS_SGMT_ID
+		left JOIN E_COTA_INF d on
+		a.EAA_BS_SGMT_ID=d.EAA_BS_SGMT_ID
+		where a.BUSINESS_STATES='90' 
+		  and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+		    and (
+		      <foreach collection="company" item="item" separator="or">
+		        a.company = #{item}
+		      </foreach>
+		      )
+	    </if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EAA_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	
+	<!-- 企业基本信息 其他标识信息段 -->
+	<select id="getIDSgmtByFactor" parameterType="list" resultType="java.util.Map">
+		SELECT C.EAB_ID_SGMT_ID,
+	       C.OTH_ENT_CERT_TYPE,
+	       C.OTH_ENT_CERT_NUM,
+	       C.ID_INFO_UP_DATE,
+	       C.NUM,
+	       C.EAA_BS_SGMT_ID,
+	       rank() over(partition by C.EAA_BS_SGMT_ID order by C.ID_INFO_UP_DATE desc) as RANKNUM
+	  FROM (SELECT A.EAB_ID_SGMT_ID,
+	               A.OTH_ENT_CERT_TYPE,
+	               A.OTH_ENT_CERT_NUM,
+	               A.ID_INFO_UP_DATE,
+	               B.NUM,
+	               B.EAA_BS_SGMT_ID
+	          FROM E_ID A,
+	               (SELECT count(1) NUM, EAA_BS_SGMT_ID
+	                  FROM E_ID
+	                 WHERE 1 = 1 
+	                 <if test=' list !=null and list.size >0 '>
+	                 	AND (
+		                 <foreach collection="list" item="item" separator="or">
+		                 	 EAA_BS_SGMT_ID = #{item}
+		                 </foreach>
+		                 )
+		             </if>
+	                 GROUP BY EAA_BS_SGMT_ID
+	                ) B
+	         WHERE A.EAA_BS_SGMT_ID = B.EAA_BS_SGMT_ID) C
+	</select>
+
+	<!-- 韦宗英 个人基本信息 其他标识信息段 -->
+	<select id="getIDSgmtByFactornew" parameterType="list"
+		resultType="java.util.Map">
+		select b.num ,a.* from I_ID a ,
+		(select count(*) as num
+		,PAA_BS_SGMT_ID from I_ID
+		<if test=' list !=null and list.size >0 '>
+			where
+			<foreach collection="list" item="item" index="index"
+				separator="or">
+				PAA_BS_SGMT_ID = #{item}
+			</foreach>
+		</if>
+		GROUP BY PAA_BS_SGMT_ID)b
+		where a.PAA_BS_SGMT_ID = b.PAA_BS_SGMT_ID
+		order by a.PAA_BS_SGMT_ID
+	</select>
+
+	<select id="getMnMmbInfSgmtByFactor" parameterType="list" resultType="java.util.Map">
+		SELECT C.EAD_MN_MMB_INF_SGMT_ID,
+		       C.MMB_ALIAS,
+		       C.MMB_ID_TYPE,
+		       C.MMB_ID_NUM,
+		       C.MMB_PSTN,
+		       C.MN_MMB_INFO_UPDATE,
+		       C.NUM,
+		       C.EAA_BS_SGMT_ID,
+		       rank() over(partition by C.EAA_BS_SGMT_ID order by C.MN_MMB_INFO_UPDATE desc) as RANKNUM
+		  FROM (SELECT A.EAD_MN_MMB_INF_SGMT_ID,
+		               A.MMB_ALIAS,
+		               A.MMB_ID_TYPE,
+		               A.MMB_ID_NUM,
+		               A.MMB_PSTN,
+		               A.MN_MMB_INFO_UPDATE,
+		               B.NUM,
+		               B.EAA_BS_SGMT_ID
+		          FROM E_MN_MMB_INF A,
+		               (SELECT count(1) NUM, EAA_BS_SGMT_ID
+		                  FROM E_MN_MMB_INF
+		                 WHERE 1 = 1
+		                   <if test=' list !=null and list.size >0 '>
+			                 	AND (
+				                 <foreach collection="list" item="item" separator="or">
+				                 	 EAA_BS_SGMT_ID = #{item}
+				                 </foreach>
+				                 )
+				           </if>
+		                 GROUP BY EAA_BS_SGMT_ID) B
+		         WHERE A.EAA_BS_SGMT_ID = B.EAA_BS_SGMT_ID ) C
+	</select>
+	<select id="getMnShaHodInfSgmtByFactor" parameterType="list" resultType="java.util.Map">
+		SELECT C.EAE_MN_SHA_HOD_INF_SGMT_ID,
+		       C.REG_CAP_CURRENCY,
+		       C.REG_CAP,
+		       C.SHAR_HOD_TYPE,
+		       C.SHAR_HOD_CERT_TYPE,
+		       C.SHAR_HOD_NAME,
+		       C.SHAR_HOD_ID_TYPE,
+		       C.SHAR_HOD_ID_NUM,
+		       C.INV_RATIO,
+		       C.MN_SHA_HOD_INFO_UP_DATE,
+		       C.NUM,
+		       C.EAA_BS_SGMT_ID,
+		       rank() over(partition by C.EAA_BS_SGMT_ID order by C.MN_SHA_HOD_INFO_UP_DATE desc) as RANKNUM
+		  FROM (SELECT A.EAE_MN_SHA_HOD_INF_SGMT_ID,
+		               A.REG_CAP_CURRENCY,
+		               A.REG_CAP,
+		               A.SHAR_HOD_TYPE,
+		               A.SHAR_HOD_CERT_TYPE,
+		               A.SHAR_HOD_NAME,
+		               A.SHAR_HOD_ID_TYPE,
+		               A.SHAR_HOD_ID_NUM,
+		               A.INV_RATIO,
+		               A.MN_SHA_HOD_INFO_UP_DATE,
+		               B.NUM,
+		               B.EAA_BS_SGMT_ID
+		          FROM E_MN_SHA_HOD_INF A,
+		               (SELECT count(1) NUM, EAA_BS_SGMT_ID
+		                  FROM E_MN_SHA_HOD_INF
+		                 WHERE 1 = 1
+		                   <if test=' list !=null and list.size >0 '>
+			                 	AND (
+				                 <foreach collection="list" item="item" separator="or">
+				                 	 EAA_BS_SGMT_ID = #{item}
+				                 </foreach>
+				                 )
+				           </if>
+		                 GROUP BY EAA_BS_SGMT_ID) B
+		         WHERE A.EAA_BS_SGMT_ID = B.EAA_BS_SGMT_ID) C
+	</select>
+	<select id="getActuCotrlInfSgmtByFactor" parameterType="list" resultType="java.util.Map">
+		SELECT C.EAF_ACTU_COTRL_INF_SGMT_ID,
+		       C.ACTU_COTRL_CERT_TYPE,
+		       C.ACTU_COTRL_NAME,
+		       C.ACTU_COTRL_ID_TYPE,
+		       C.ACTU_COTRL_ID_NUM,
+		       C.ACTU_COTRL_INFO_UPDATE,
+		       C.NUM,
+		       C.EAA_BS_SGMT_ID,
+		       rank() over(partition by C.EAA_BS_SGMT_ID order by C.ACTU_COTRL_INFO_UPDATE desc) as RANKNUM
+		  FROM (SELECT A.EAF_ACTU_COTRL_INF_SGMT_ID,
+		               A.ACTU_COTRL_CERT_TYPE,
+		               A.ACTU_COTRL_NAME,
+		               A.ACTU_COTRL_ID_TYPE,
+		               A.ACTU_COTRL_ID_NUM,
+		               A.ACTU_COTRL_INFO_UPDATE,
+		               B.NUM,
+		               B.EAA_BS_SGMT_ID
+		          FROM E_ACTU_COTRL_INF A,
+		               (SELECT count(1) NUM, EAA_BS_SGMT_ID
+		                  FROM E_ACTU_COTRL_INF
+		                 WHERE 1 = 1
+		                 <if test=' list !=null and list.size >0 '>
+			                 	AND (
+				                 <foreach collection="list" item="item" separator="or">
+				                 	 EAA_BS_SGMT_ID = #{item}
+				                 </foreach>
+				                 )
+				           </if>
+		                 GROUP BY EAA_BS_SGMT_ID) B
+		         WHERE A.EAA_BS_SGMT_ID = B.EAA_BS_SGMT_ID) C
+	</select>
+	<!-- 李继坤 企业 基本信息生成报文改变状态 -->
+	<update id="updateGuarEntBsSgmtDataStatus" parameterType="map">
+		update
+		E_BS
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1 = 1
+		  and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+		    and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EAA_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+	<!-- 事业单位收入支出 -->
+	<select id="getIncomeAndExpenseStatementBsSgmtByFactor" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		a.ELA_INCOME_AND_EXPENSE_STAT_ID ,
+		INF_REC_TYPE,
+		ENT_NAME,
+		ENT_CERT_TYPE,
+		ENT_CERT_NUM,
+		a.RPT_DATE,
+		SHEET_YEAR,
+		SHEET_TYPE,
+		SHEET_TYPE_DIVIDE,
+		AUDIT_FIRM_NAME,
+		AUDITOR_NAME,
+		AUDIT_TIME,
+		CIMOC,
+		RPT_DATE_CODE,
+		CURRENT_FINANCIAL_SUBSIDY_CARR,
+		FINANCIAL_SUBSIDY_REVENUE,
+		UNDERTAKINGS_EXPENDITURE_FINAN,
+		CURRENT_UNDERTAKINGS_CARRIED_O,
+		UNDERTAKINGS_CLASS_REVENUE,
+		UNDERTAKINGS_REVENUE,
+		SUPERIOR_SUBSIDY_REVENUE,
+		REVENUE_TURNED_OVER_BY_SUBSIDI,
+		OTHER_REVENUE,
+		DONATION_INCOME,
+		UNDERTAKINGS_CLASS_EXPENDITURE,
+		UNDERTAKINGS_EXPENDITURE_NON_F,
+		PAYMENT_TO_THE_HIGHER_AUTHORIT,
+		GRANT_TO_THE_AUXILIARY_ORGANIZ,
+		OTHER_EXPENDITURE,
+		CURRENT_OPERATING_BALANCE,
+		OPERATING_REVENUE,
+		OPERATING_EXPENDITURE,
+		OPERATING_BALANCE_MADE_UP_FOR_,
+		NON_FINANCIAL_SUBSIDY_CARRIED_,
+		NON_FINANCIAL_AID_CARRIED_OVER,
+		NON_FINANCIAL_AID_BALANCE_THIS,
+		ENTERPRISEINCOME_TAX_PAYABLE,
+		SPECIAL_FUNDS_TO_EXTRACT,
+		PUBLIC_FUND_TURNED_INTO
+		from
+		E_INCOME_EXPENSE_BS a
+		left JOIN
+		E_INCOME_EXPENSE c on
+		a.ELA_INCOME_AND_EXPENSE_STAT_ID=c.ELA_INCOME_AND_EXPENSE_STAT_ID
+		where a.BUSINESS_STATES='90' 
+			and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				a.company=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				ELA_INCOME_AND_EXPENSE_STAT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<update id="updateIncomeAndExpenseStatementDataStatus" parameterType="map">
+		update
+		E_INCOME_EXPENSE_BS
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1=1
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+		    and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				ELA_INCOME_AND_EXPENSE_STAT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+	<!-- 企业间关联关系信息 -->
+	<select id="getEnIcdnRltpInfByFactor" parameterType="list" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		a.ECA_EN_ICDN_RLTP_INF_ID ,
+		INF_REC_TYPE ,
+		ENT_NAME ,
+		ENT_CERT_TYPE ,
+		ENT_CERT_NUM ,
+		ASSO_ENT_NAME ,
+		ASSO_ENT_CERT_TYPE ,
+		ASSO_ENT_CERT_NUM ,
+		ASSO_TYPE ,
+		ASSO_SIGN ,
+		RPT_DATE
+		from
+		E_ICDN_RLTP_INF a
+		where a.BUSINESS_STATES='90'
+		   and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				ECA_EN_ICDN_RLTP_INF_ID =#{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<update id="updateEnIcdnRltpInfDataStatus" parameterType="map">
+		update
+		E_ICDN_RLTP_INF
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1=1
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>	
+		<if test=' OLD_BUSINESS_STATES == "" '>
+			and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				ECA_EN_ICDN_RLTP_INF_ID =#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+	<!-- 企业借贷账户交易 -->
+	<select id="getEnAcctInfByFactor" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		a.EDA_ACCT_BS_SGMT_ID ,
+		INF_REC_TYPE ,
+		ACCT_TYPE ,
+		ACCT_CODE ,
+		a.RPT_DATE ,
+		RPT_DATE_CODE ,
+		NAME ,
+		ID_TYPE ,
+		ID_NUM ,
+		MNGMT_ORG_CODE ,
+		MDFC_SGMT_CODE,
+		BUSI_LINES ,
+		BUSI_DTL_LINES ,
+		OPEN_DATE ,
+		CY ,
+		ACCT_CRED_LINE ,
+		LOAN_AMT ,
+		FLAG ,
+		DUE_DATE ,
+		REPAY_MODE ,
+		REPAY_FREQCY ,
+		APPLY_BUSI_DIST ,
+		GUAR_MODE ,
+		OTH_REPY_GUAR_WAY ,
+		LOAN_TIME_LIM_CAT ,
+		LOA_FRM ,
+		ACT_INVEST ,
+		FUND_SOU ,
+		ASSET_TRAND_FLAG ,
+		MCC,
+		INIT_CRED_NAME ,
+		INIT_CED_ORG_CODE ,
+		ORIG_DBT_CATE ,
+		INIT_RPY_STS ,
+		ACCT_STATUS ,
+		ACCT_BAL ,
+		BAL_CHG_DATE ,
+		FIVE_CATE ,
+		FIVE_CATE_ADJ_DATE ,
+		PYMT_PRD ,
+		TOT_OVERD ,
+		OVERD_PRINC ,
+		OVERD_DY ,
+		LAT_RPY_DATE ,
+		LAT_RPY_AMT ,
+		LAT_RPY_PRINC_AMT ,
+		RPMT_TYPE ,
+		LAT_AGRR_RPY_DATE ,
+		LAT_AGRR_RPY_AMT ,
+		NXT_AGRR_RPY_DATE ,
+		CLOSE_DATE
+		from
+		E_ACCT_BS a
+		left JOIN
+		E_ACCT_BS_INF f on
+		a.EDA_ACCT_BS_SGMT_ID=f.EDA_ACCT_BS_SGMT_ID
+		left JOIN
+		E_ACCT_CRED b on
+		a.EDA_ACCT_BS_SGMT_ID=b.EDA_ACCT_BS_SGMT_ID
+		left JOIN
+		E_ORIG_CREDITOR_INF d on
+		a.EDA_ACCT_BS_SGMT_ID=d.EDA_ACCT_BS_SGMT_ID
+		left JOIN
+		E_ACT_LBLTY_INF e on
+		a.EDA_ACCT_BS_SGMT_ID=e.EDA_ACCT_BS_SGMT_ID
+		where
+		a.BUSINESS_STATES='90'
+		and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				a.company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				a.EDA_ACCT_BS_SGMT_ID =#{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="getRltRepymtInfSgmtByFactor" parameterType="list" resultType="java.util.Map">
+		select b.num ,a.* from E_RLT_REPYMT_INF a ,
+			(select count(*) as num ,EDA_ACCT_BS_SGMT_ID from
+				E_RLT_REPYMT_INF
+			<if test=' list !=null and list.size >0 '>
+				where
+				<foreach collection="list" item="item" index="index" separator="or">
+					EDA_ACCT_BS_SGMT_ID = #{item}
+				</foreach>
+			</if>
+			GROUP BY EDA_ACCT_BS_SGMT_ID) b
+		where a.EDA_ACCT_BS_SGMT_ID = b.EDA_ACCT_BS_SGMT_ID
+		order by a.EDA_ACCT_BS_SGMT_ID
+	</select>
+	<select id="getMotgaCltalCtrctInfSgmtByFactor" parameterType="list" resultType="java.util.Map">
+		select b.num ,a.* from E_MOTGA_CLTAL_CTRCT_INF a ,
+			(select count(*) as num ,EDA_ACCT_BS_SGMT_ID from
+				E_MOTGA_CLTAL_CTRCT_INF
+			<if test=' list !=null and list.size >0 '>
+				where
+				<foreach collection="list" item="item" index="index" separator="or">
+					EDA_ACCT_BS_SGMT_ID = #{item}
+				</foreach>
+			</if>
+			GROUP BY EDA_ACCT_BS_SGMT_ID) b
+		where a.EDA_ACCT_BS_SGMT_ID = b.EDA_ACCT_BS_SGMT_ID
+		order by a.EDA_ACCT_BS_SGMT_ID
+	</select>
+	<select id="getAcctSpecTrstDspnSgmtByFactor" parameterType="list" resultType="java.util.Map">
+		select b.num ,a.* from E_ACCT_SPEC_TRST a ,
+			(select count(*) as num ,EDA_ACCT_BS_SGMT_ID from
+				E_ACCT_SPEC_TRST
+			<if test=' list !=null and list.size >0 '>
+				where
+				<foreach collection="list" item="item" index="index" separator="or">
+					EDA_ACCT_BS_SGMT_ID = #{item}
+				</foreach>
+			</if>
+			GROUP BY EDA_ACCT_BS_SGMT_ID)b
+		where a.EDA_ACCT_BS_SGMT_ID = b.EDA_ACCT_BS_SGMT_ID
+		order by a.EDA_ACCT_BS_SGMT_ID
+	</select>
+	<update id="updateEnAcctInfDataStatus" parameterType="map">
+		update
+		E_ACCT_BS
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1 = 1
+		and	INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+			and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EDA_ACCT_BS_SGMT_ID =#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+
+	<!-- 企业担保账户信息 -->
+	<select id="getGuarAcctBsSgmtByFactor" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		a.EEA_GUAR_ACCT_BS_SGMT_ID ,
+		INF_REC_TYPE,
+		ACCT_TYPE,
+		ACCT_CODE,
+		a.RPT_DATE,
+		RPT_DATE_CODE,
+		NAME,
+		ID_TYPE,
+		ID_NUM,
+		MNGMT_ORG_CODE,
+		MDFC_SGMT_CODE,
+		BUSI_LINES,
+		BUSI_DTIL_LINES,
+		OPEN_DATE,
+		GUAR_AMT,
+		CY,
+		DUE_DATE,
+		GUAR_MODE,
+		OTH_REPY_GUARWAY,
+		SEC_DEP,
+		CTRCT_TXT_CODE,
+		MCC,
+		ACCT_STATUS,
+		LOAN_AMT,
+		REPAY_PRD,
+		FIVE_CATE,
+		FIVE_CATE_ADJ_DATE,
+		RI_EX,
+		COMP_ADV_FLAG,
+		CLOSE_DATE
+		from
+		E_GUAR_ACCT_BS a
+		left JOIN
+		E_GUAR_ACCT_BS_INF c on
+		a.EEA_GUAR_ACCT_BS_SGMT_ID=c.EEA_GUAR_ACCT_BS_SGMT_ID
+		left JOIN
+		E_GUAR_ACCT_CRED d on
+		a.EEA_GUAR_ACCT_BS_SGMT_ID=d.EEA_GUAR_ACCT_BS_SGMT_ID
+		left JOIN
+		E_GUAR_INSURANCE_INF b on
+		<!-- 李继坤 -->
+		a.EEA_GUAR_ACCT_BS_SGMT_ID=b.EEA_GUAR_ACCT_BS_SGMT_ID
+		where 1=1
+			and a.BUSINESS_STATES='90' 
+			and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				a.company=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				a.EEA_GUAR_ACCT_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="getGuarRltRepymtInfSgmtByFactor" parameterType="list" resultType="java.util.Map">
+			select 
+				c.NUM,
+				c.EEC_RLT_REPYMT_INF_SGMT_ID,
+				c.INFO_ID_TYPE,
+				c.ARLP_NAME,
+				c.ARLP_CERT_TYPE,
+				c.ARLP_CERT_NUM,
+				c.ARLP_TYPE,
+				c.ARLP_AMT,
+				c.WARTY_SIGN,
+				c.MAX_GUAR_MCC,
+				c.EEA_GUAR_ACCT_BS_SGMT_ID,
+				c.RPT_DATE,
+				c.COMPANY,
+				rank() over(partition by c.EEA_GUAR_ACCT_BS_SGMT_ID order by c.RPT_DATE desc) as RANKNUM
+			from(
+				select
+					b.NUM,
+					a.EEC_RLT_REPYMT_INF_SGMT_ID,
+					a.INFO_ID_TYPE,
+					a.ARLP_NAME,
+					a.ARLP_CERT_TYPE,
+					a.ARLP_CERT_NUM,
+					a.ARLP_TYPE,
+					a.ARLP_AMT,
+					a.WARTY_SIGN,
+					a.MAX_GUAR_MCC,
+					b.EEA_GUAR_ACCT_BS_SGMT_ID,
+					a.RPT_DATE,
+					a.COMPANY
+					from E_SEC_RLT_REPYMT_INF a,
+					(
+						
+								SELECT
+									count(1) NUM,
+									EEA_GUAR_ACCT_BS_SGMT_ID
+								FROM
+									E_SEC_RLT_REPYMT_INF
+								WHERE 1=1
+								<if test=' list !=null and list.size >0 '>
+									AND (
+									<foreach collection="list" item="item" separator="or">
+										EEA_GUAR_ACCT_BS_SGMT_ID = #{item}
+								    </foreach>
+								    )
+								</if>
+								GROUP BY
+									EEA_GUAR_ACCT_BS_SGMT_ID
+					)b
+				WHERE a.EEA_GUAR_ACCT_BS_SGMT_ID = b.EEA_GUAR_ACCT_BS_SGMT_ID
+			)c
+	</select>
+	<select id="getGuarMotgaCltalCtrctInfSgmtByFactor" parameterType="list" resultType="java.util.Map">
+			select 
+				c.NUM,
+				c.EED_GUAR_MOTGA_CLTAL_INF_ID,
+				c.CCC,
+				c.EEA_GUAR_ACCT_BS_SGMT_ID,
+				c.RPT_DATE,
+				c.COMPANY,
+				rank() over(partition by c.EEA_GUAR_ACCT_BS_SGMT_ID order by c.RPT_DATE desc) as RANKNUM
+			from(
+				select
+					b.NUM,
+					a.EED_GUAR_MOTGA_CLTAL_INF_ID,
+					a.CCC,
+					a.EEA_GUAR_ACCT_BS_SGMT_ID,
+					a.RPT_DATE,
+					a.COMPANY
+					from E_GUAR_MOTGA_CLTAL_INF a,
+					(
+								SELECT
+									count(1) NUM,
+									EEA_GUAR_ACCT_BS_SGMT_ID
+								FROM
+									E_GUAR_MOTGA_CLTAL_INF
+								WHERE 1=1
+								<if test=' list !=null and list.size >0 '>
+									AND(
+									<foreach collection="list" item="item" separator="or">
+										EEA_GUAR_ACCT_BS_SGMT_ID = #{item}
+									</foreach>
+									)
+								</if>
+								GROUP BY
+									EEA_GUAR_ACCT_BS_SGMT_ID
+					)b
+				WHERE a.EEA_GUAR_ACCT_BS_SGMT_ID = b.EEA_GUAR_ACCT_BS_SGMT_ID
+			)c
+	</select>
+	<update id="updateGuarAcctBsSgmtDataStatus" parameterType="map">
+		update
+		E_GUAR_ACCT_BS
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1=1
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+			and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EEA_GUAR_ACCT_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test='rownum != null and rownum != ""'>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+	<!-- 企业授信信息 -->
+	<select id="queryEnCtrctInfRpData" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		A.EGA_CTRCT_BS_SGMT_ID,
+		A.INF_REC_TYPE,
+		A.CONTRACT_CODE,
+		A.RPT_DATE,
+		A.RPT_DATE_CODE,
+		A.NAME,
+		A.ID_TYPE,
+		A.ID_NUM,
+		A.MNGMT_ORG_CODE,
+		A.ORG_NAME,
+		A.ORG_CODE,
+		MDFC_SGMT_CODE,
+		C.EGC_CREDIT_LIM_SGMT_ID,
+		C.CREDIT_LIM_TYPE,
+		C.LIM_LOOP_FLG,
+		C.CREDIT_LIM,
+		C.CY,
+		C.CON_EFF_DATE,
+		C.CON_EXP_DATE,
+		C.CON_STATUS,
+		C.CREDIT_REST,
+		C.CREDIT_REST_CODE
+		from
+		E_CTRCT_BS a
+		left JOIN
+		E_CREDIT_LIM c on
+		a.EGA_CTRCT_BS_SGMT_ID=c.EGA_CTRCT_BS_SGMT_ID
+		where
+			a.BUSINESS_STATES='90' 
+			and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				a.company=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EGA_CTRCT_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="queryEntBsIDSgmtRpData" parameterType="list" resultType="java.util.Map">
+		select 
+				c.NUM,
+				c.EGB_CTRCT_CERT_REL_SGMT_ID,
+				c.BRER_TYPE,
+				c.CERT_REL_NAME,
+				c.CERT_REL_IDTYPE,
+				c.CERT_REL_ID_NUM,
+				c.EGA_CTRCT_BS_SGMT_ID,
+				c.RPT_DATE,
+				c.COMPANY,
+				rank() over(partition by C.EGA_CTRCT_BS_SGMT_ID order by C.RPT_DATE desc) as RANKNUM
+			from(
+				select
+					b.NUM,
+					a.EGB_CTRCT_CERT_REL_SGMT_ID,
+					a.BRER_TYPE,
+					a.CERT_REL_NAME,
+					a.CERT_REL_IDTYPE,
+					a.CERT_REL_ID_NUM,
+					b.EGA_CTRCT_BS_SGMT_ID,
+					a.RPT_DATE,
+					a.COMPANY
+					from E_CTRCT_CERT_REL a,
+						(SELECT
+								count(1) NUM,
+								EGA_CTRCT_BS_SGMT_ID
+							FROM
+								E_CTRCT_CERT_REL
+							WHERE 1=1
+							 <if test=' list !=null and list.size >0 '>
+								AND (
+								 <foreach collection="list" item="item" separator="or">
+									 EGA_CTRCT_BS_SGMT_ID = #{item}
+								 </foreach>
+							 )
+					   </if>
+						GROUP BY EGA_CTRCT_BS_SGMT_ID)b
+				WHERE a.EGA_CTRCT_BS_SGMT_ID = b.EGA_CTRCT_BS_SGMT_ID
+			)c
+	</select>
+	<!-- 企业授信报文 -->
+	<update id="updateEnCtrctInfRpDataStatus" parameterType="map">
+		update E_CTRCT_BS
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1=1
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+			and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EGA_CTRCT_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+		 	and rownum &lt; #{rownum}
+		</if>
+		
+	</update>
+
+	<!-- 企业资产负债 -->
+	<select id="queryEntBalanceSheetRpData" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		A.EHA_BALANCE_SHEET_BS_SGMT_ID,
+		A.INF_REC_TYPE,
+		A.ENT_NAME,
+		A.ENT_CERT_TYPE,
+		A.ENT_CERT_NUM,
+		A.RPT_DATE,
+		A.SHEET_YEAR,
+		A.SHEET_TYPE,
+		A.SHEET_TYPE_DIVIDE,
+		A.AUDIT_FIRM_NAME,
+		A.AUDITOR_NAME,
+		A.AUDIT_TIME,
+		A.CIMOC,
+		A.RPT_DATE_CODE,
+		B.CURRENCY_FUNDS as CURRENCY_FUNDS_02 ,
+		B.SHORT_TERM_INVESTMENTS,
+		B.NOTES_RECEIVABLE as NOTES_RECEIVABLE_02,
+		B.DIVIDENDS_RECEIVABLE as DIVIDENDS_RECEIVABLE_02,
+		B.INTEREST_RECEIVABLE as INTEREST_RECEIVABLE_02,
+		B.ACCOUNTS_RECEIVABLE as ACCOUNTS_RECEIVABLE_02,
+		B.OTHER_RECEIVABLES as OTHER_RECEIVABLES_02,
+		B.PREPAYMENTS as PREPAYMENTS_02,
+		B.FUTURE_GUARANTEE,
+		B.ALLOWANCE_RECEIVABLE,
+		B.EXPORT_DRAWBACK_RECEIVABLE,
+		B.INVENTORIES as INVENTORIES_02,
+		B.RAW_MATERIALS,
+		B.FINISHED_PRODUCTS,
+		B.DEFERRED_EXPENSES,
+		B.UNSETTLED_GLON_CURRENT_ASSETS,
+		B.LONG_TERM_DEBENTURE_INVESTMENT,
+		B.OTHER_CURRENT_ASSETS as OTHER_CURRENT_ASSETS_02,
+		B.TOTAL_CURRENT_ASSETS as TOTAL_CURRENT_ASSETS_02,
+		B.LONG_TERM_INVESTMENT,
+		B.LONG_TERM_EQUITY_INVESTMENT as LONG_TERM_EQUITY_INVESTMENT_02,
+		B.LONG_TERM_SECURITIES_INVESTMEN,
+		B.INCORPORATING_PRICE_DIFFERENCE,
+		B.TOTAL_LONG_TERM_INVESTMENT,
+		B.ORIGINAL_COST_OF_FIXED_ASSET,
+		B.FIXED_ASSET_ACCUMULATED_DEPREC,
+		B.FIXED_ASSETS_NET_VALUE,
+		B.PROVISION_FORIMPAIRMENT_OF_FIX,
+		B.NET_VALUE_OF_FIXED_ASSETS,
+		B.FIXED_ASSETS_PENDING_FOR_DISPO as FIXED_ASSETS_PENDING_02,
+		B.CONSTRUCTION_MATERIALS as CONSTRUCTION_MATERIALS_02,
+		B.CONSTRUCTIONIN_PROGRESS,
+		B.UNSETTLED_GL_ON_FIXED_ASSETS,
+		B.TOTAL_FIXED_ASSETS,
+		B.INTANGIBLE_ASSETS as INTANGIBLE_ASSETS_02,
+		B.LAND_USE_RIGHTS,
+		B.DEFERRED_ASSETS,
+		B.INCLUDING_FIXED_ASSETS_REPAIR,
+		B.IMPROVEMENT_EXPENDITURE_OF_FIX,
+		B.OTHER_LONG_TERM_ASSETS,
+		B.AMONG_IT_SPECIALLY_APPROVED_RE,
+		B.TOTALINTANGIBLE_ASSETS_AND_OTH,
+		B.DEFERRED_ASSETS_DEBITS,
+		B.TOTAL_ASSETS as TOTAL_ASSETS_02,
+		B.SHORT_TERM_BORROWINGS as SHORT_TERM_BORROWINGS_02,
+		B.NOTES_PAYABLE as NOTES_PAYABLE_02,
+		B.ACCOUNTS_PAYABLE as ACCOUNTS_PAYABLE_02,
+		B.RECEIPTSIN_ADVANCE as RECEIPTSIN_ADVANCE_02,
+		B.WAGES_OR_SALARIES_PAYABLES,
+		B.EMPLOYEE_BENEFITS,
+		B.INCOME_PAYABLE,
+		B.TAXES_PAYABLE,
+		B.OTHER_PAYABLE_TO_GOVERNMENT,
+		B.OTHER_PAYABLE,
+		B.PROVISION_FOR_EXPENSES,
+		B.PROVISIONS as PROVISIONS_02,
+		B.LONG_TERM_LIABILITIES_DUE_WITH,
+		B.OTHER_CURRENT_LIABILITIES as OTHER_CURRENT_LIABILITIES_02,
+		B.TOTAL_CURRENT_LIABILITIES as TOTAL_CURRENT_LIABILITIES_02,
+		B.LONG_TERM_BORROWINGS as LONG_TERM_BORROWINGS_02,
+		B.BONDS_PAYABLE,
+		B.LONG_TERM_PAYABLES as LONG_TERM_PAYABLES_02,
+		B.GRANTS_PAYABLE as GRANTS_PAYABLE_02,
+		B.OTHER_LONG_TERM_LIABILITIES,
+		B.SPECIAL_RESERVE_FUND,
+		B.TOTAL_LONG_TERM_LIABILITIES,
+		B.DEFERRED_TAXATION_CREDIT,
+		B.TOTALLIABILITIES,
+		B.MINORITY_INTEREST,
+		B.PAIDIN_CAPITAL,
+		B.NATIONAL_CAPITAL,
+		B.COLLECTIVE_CAPITAL,
+		B.LEGAL_PERSONS_CAPITAL,
+		B.STATE_OWNED_LEGAL_PERSONS_CAPI,
+		B.COLLECTIVE_LEGAL_PERSONS_CAPIT,
+		B.PERSONAL_CAPITAL,
+		B.FOREIGN_BUSINESSMENS_CAPITAL,
+		B.CAPITALR_RSERVE as CAPITALR_RSERVE_02,
+		B.SURPLUS_RESERVE as SURPLUS_RESERVE_02,
+		B.STATUTORY_SURPLUS_RESERVE,
+		B.PUBLIC_WELFARE_FUND,
+		B.SUPPLERMENTARY_CURRENT_CAPITAL,
+		B.UNAFFIRMEDINVESTMENT_LOSS,
+		B.UNAPPROPRIATED_PROFIT as UNAPPROPRIATED_PROFIT_02,
+		B.DIFFERENCE_ON_TRANSLATION_OF_F,
+		B.TOTAL_EQUITY as TOTAL_EQUITY_02,
+		B.TOTAL_EQUITY_AND_LIABILITIES as TOTAL_EQUITY_AND_LIABILITIE_02,
+		B.EHB_BALANCE_SHEET2002_SGMT_ID,
+		C.EHC_BALANCE_SHEET2007_SGMT_ID, 
+		C.CURRENCY_FUNDS as CURRENCY_FUNDS_07,
+		C.FINANCIAL_ASSETS_HELD_FOR_TRAD,
+		C.NOTES_RECEIVABLE as NOTES_RECEIVABLE_07,
+		C.ACCOUNTS_RECEIVABLE as ACCOUNTS_RECEIVABLE_07,
+		C.PREPAYMENTS as PREPAYMENTS_07,
+		C.INTEREST_RECEIVABLE as INTEREST_RECEIVABLE_07,
+		C.DIVIDENDS_RECEIVABLE as DIVIDENDS_RECEIVABLE_07,
+		C.OTHER_RECEIVABLES as OTHER_RECEIVABLES_07,
+		C.INVENTORIES as INVENTORIES_07,
+		C.CURRENT_PORTION_OF_NON_CURRENT,
+		C.OTHER_CURRENT_ASSETS as OTHER_CURRENT_ASSETS_07,
+		C.TOTAL_CURRENT_ASSETS as TOTAL_CURRENT_ASSETS_07,
+		C.FINANCIAL_ASSETS_AVAILABLE_FOR,
+		C.HELD_TO_MATURITY_INVESTMENTS,
+		C.LONG_TERM_EQUITY_INVESTMENT as LONG_TERM_EQUITY_INVESTMENT_07,
+		C.LONG_TERM_RECEIVABLES,
+		C.INVESTMENT_PROPERTIES,
+		C.FIXED_ASSETS,
+		C.CONSTRUCTION_IN_PROGRESS,
+		C.CONSTRUCTION_MATERIALS as CONSTRUCTION_MATERIALS_07,
+		C.FIXED_ASSETS_PENDING_FOR_DISPO as FIXED_ASSETS_PENDING_07,
+		C.NON_CURRENT_BIOLOGICAL_ASSETS,
+		C.OIL_AND_GAS_ASSETS,
+		C.INTANGIBLE_ASSETS as INTANGIBLE_ASSETS_07,
+		C.DEVELOPMENT_DISBURSEMENTS,
+		C.GOOD_WILL,
+		C.LONG_TERM_DEFERRED_EXPENSES,
+		C.DEFERRED_TAX_ASSETS,
+		C.OTHER_NON_CURRENT_ASSETS,
+		C.TOTAL_NON_CURRENT_ASSETS,
+		C.TOTAL_ASSETS as TOTAL_ASSETS_07,
+		C.SHORT_TERM_BORROWINGS as SHORT_TERM_BORROWINGS_07,
+		C.FINANCIAL_LIABILITIES_HELD_FOR,
+		C.NOTES_PAYABLE as NOTES_PAYABLE_07,
+		C.ACCOUNTS_PAYABLE as ACCOUNTS_PAYABLE_07,
+		C.RECEIPTSIN_ADVANCE as RECEIPTSIN_ADVANCE_07,
+		C.INTEREST_PAYABLE,
+		C.EMPLOYEE_BENEFITS_PAYABLE,
+		C.TAXS_PAYABLE,
+		C.DIVIDENDS_PAYABLE,
+		C.OTHER_PAYABLES,
+		C.CURRENT_PORTION_OF_LONG_TERM_L,
+		C.OTHER_CURRENT_LIABILITIES as OTHER_CURRENT_LIABILITIES_07,
+		C.TOTAL_CURRENT_LIABILITIES as TOTAL_CURRENT_LIABILITIES_07,
+		C.LONG_TERM_BORROWINGS as LONG_TERM_BORROWINGS_07,
+		C.BONDS_PAYABLES,
+		C.LONG_TERM_PAYABLES as LONG_TERM_PAYABLES_07,
+		C.GRANTS_PAYABLE as GRANTS_PAYABLE_07,
+		C.PROVISIONS as PROVISIONS_07,
+		C.DEFERRED_TAX_LIABILITIES,
+		C.OTHER_NON_CURRENT_LIABILITIES,
+		C.TOTAL_NON_CURRENT_LIABILITIES,
+		C.TOTAL_LIABILITIES,
+		C.PAIDIN_CAPITAL_OR_SHARE_CAPITA,
+		C.CAPITALR_RSERVE as CAPITALR_RSERVE_07,
+		C.LESS_TREASURY_STOCKS,
+		C.SURPLUS_RESERVE as SURPLUS_RESERVE_07,
+		C.UNAPPROPRIATED_PROFIT as UNAPPROPRIATED_PROFIT_07,
+		C.TOTAL_EQUITY as TOTAL_EQUITY_07,
+		C.TOTAL_EQUITY_AND_LIABILITIES as TOTAL_EQUITY_AND_LIABILITIE_07
+		from
+		E_BALANCE_SHEET_BS a
+		left JOIN
+		E_BALANCE_SHEET02 b on
+		a.EHA_BALANCE_SHEET_BS_SGMT_ID=b.EHA_BALANCE_SHEET_BS_SGMT_ID
+		left JOIN
+		E_BALANCE_SHEET07 c on
+		a.EHA_BALANCE_SHEET_BS_SGMT_ID=c.EHA_BALANCE_SHEET_BS_SGMT_ID
+		where
+		a.BUSINESS_STATES='90' 
+			and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				a.company=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EHA_BALANCE_SHEET_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	
+	<update id="updateEntBalanceSheetRpDataStatus" parameterType="map">
+		update E_BALANCE_SHEET_BS
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1=1
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+			and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EHA_BALANCE_SHEET_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+	<!-- 企业现金流量 -->
+	<select id="queryEntCashFlowsRpData" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		A.EJA_CASH_FLOWS_BS_SGMT_ID,
+		A.INF_REC_TYPE,
+		A.ENT_NAME,
+		A.ENT_CERT_TYPE,
+		A.ENT_CERT_NUM,
+		A.RPT_DATE,
+		A.SHEET_YEAR,
+		A.SHEET_TYPE,
+		A.SHEET_TYPE_DIVIDE,
+		A.AUDIT_FIRM_NAME,
+		A.AUDITOR_NAME,
+		A.AUDIT_TIME,
+		A.CIMOC,
+		A.RPT_DATE_CODE,
+		B.EJB_CASH_FLOWS2002_SGMT_ID,
+		B.CASH_RECEIVED_FROM_SALES_OF_GO,
+		B.TAX_REFUNDS,
+		B.OTHER_CASH_RECEIVED_RELATING_T,
+		B.TOTAL_CASH_INFLOWS_FROM_OPERAT,
+		B.CASH_PAID_FOR_GOODS_AND_SERVIC,
+		B.CASH_PAID_TO_AND_ON_BEHALF_OF_,
+		B.PAYMENTS_OF_ALL_TYPES_OF_TAXES,
+		B.OTHER_CASH_PAYMENTS_FROM_OPERA,
+		B.TOTAL_CASH_OUTFLOWS_FROM_OPERA,
+		B.NET_CASH_FLOWS_FROM_OPERATING ,
+		B.CASH_RECEIVED_FROM_RETURN_OF_I,
+		B.CASH_RECEIVED_FROM_ONVESTMENTS,
+		B.NET_CASH_RECEIVED_FROM_DISPOSA,
+		B.CASH_RECEIVED_RELATING_TO_OTHE,
+		B.TOTAL_CASH_INFLOWS_FROM_INVEST,
+		B.CASH_PAID_TO_ACQUIRE_FIXED_ASS,
+		B.CASH_PAYMENTS_FOR_INVESTMENTS ,
+		B.CASH_PAYMENTS_RELATED_TO_OTH_T,
+		B.TOTAL_CASH_OUTFLOWS_FROM_INVES,
+		B.NET_CASH_FLOWS_FROM_INVESTING_,
+		B.CASH_RECEIVED_FROM_INVESTORS  ,
+		B.CASH_FROM_BORROWINGS,
+		B.OTHER_CASH_RECEIVED_RELATING_C,
+		B.TOTAL_CASH_INFLOWS_FROM_FINANC,
+		B.CASH_REPAYMENTS_FOR_DEBTS ,
+		B.CASH_PAYMENTS_FOR_DISTRIBUTION,
+		B.CASH_PAYMENTS_RELATED_TO_OTH_C,
+		B.TOTAL_CASH_OUTFLOWS_FROM_FINAN,
+		B.NET_CASH_FLOWS_FROM_FINANCING_,
+		B.EFFECT_OF_EXCHANG_RATE_CHANGES,
+		B.NET_INCREASEIN_CASH_AND_CASH_E,
+		B.NET_PROFIT,
+		B.PROVISION_FOR_ASSETS,
+		B.DEPRECIATION_OF_FIXED_ASSETS,
+		B.AMORTISATION_OF_INTANGIBLE_ASS,
+		B.LONG_TERM_DEFERRED_EXPENSES_AM,
+		B.DECREASE_OF_DEFFERED_EXPENSES ,
+		B.ADDITION_OF_ACCUED_EXPENSE,
+		B.LOSSES_ON_DISPOSAL_OF_FIXED_AS,
+		B.LOSSES_ON_SCRAPPING_OF_FIXED_A,
+		B.FINANCE_EXPENSE,
+		B.LOSSES_ARSING_FROM_INVESTMENT ,
+		B.DEFERRED_TAX_CREDIT,
+		B.DECREASE_IN_INVENTORIES,
+		B.DECREASEIN_OPERATING_RECEIVABL,
+		B.INCREASEIN_OPERATING_RECEIVABL,
+		B.OTHERS,
+		B.NET_CASH_FLOWS_FROM_OPERATING2,
+		B.DEBTS_TRANSFER_TO_CAPITAL ,
+		B.ONE_YEAR_DUE_CONVERTIBLE_BONDS,
+		B.FINANCING_RENT_TO_THE_FIXED_AS,
+		B.NON_CASH_OTHERS,
+		B.CASH_AT_THE_END_OF_PERIOD ,
+		B.CASH_AT_THE_BEGINNING_OF_THE_P,
+		B.CASH_EQUIVALENTS_AT_THE_END_OF,
+		B.CASH_RQUIVALENTS_AT_THE_BEGINN,
+		B.NET_INCREASE_IN_CASH_AND_CASH_,
+		C.EJC_CASH_FLOWS2007_SGMT_ID,
+		C.CASH_RECEIVED_FROM_SALES_OF_GO as CASH_RECEIVED_FROM_SALES_OF_07,
+		C.TAX_REFUNDS as TAX_REFUNDS_07,
+		C.OTHER_CASH_RECEIVED_RELATING_J,
+		C.TOTAL_CASH_INFLOWS_FROM_OPERAT as TOTAL_CASH_INFLOWS_FROM_OPE_07,
+		C.CASH_PAID_FOR_GOODS_AND_SERVIC as CASH_PAID_FOR_GOODS_AND_SER_07,
+		C.CASH_PAID_TO_AND_ON_BEHA_LF_OF,
+		C.PAYMENTS_OF_ALL_TYPES_OF_TAXES as PAYMENTS_OF_ALL_TYPES_OF_TA_07,
+		C.OTHER_CASH_PAYMENTS_FROM_OPERA as OTHER_CASH_PAYMENTS_FROM_OP_07,
+		C.TOTAL_CASH_OUTFLOWS_FROM_OPERA as TOTAL_CASH_OUTFLOWS_FROM_OP_07,
+		C.NET_CASH_FLOWS_FROM_OPERATING as NET_CASH_FLOWS_FROM_OPERAT_07,
+		C.CASH_RECEIVED_FROM_RETURN_OF_I as CASH_RECEIVED_FROM_RETURN_O_07,
+		C.CASH_RECEIVED_FROM_ONVESTMENTS as CASH_RECEIVED_FROM_ONVESTME_07,
+		C.NET_CASH_RECEIVED_FROM_DISPOSA as NET_CASH_RECEIVED_FROM_DISP_07,
+		C.NET_CASH_INFLOWS_OF_DISPOSAL_O,
+		C.CASH_RECEIVED_RELATING_TO_OTHE as CASH_RECEIVED_RELATING_TO_O_07,
+		C.TOTAL_CASH_INFLOWS_FROM_INVEST as TOTAL_CASH_INFLOWS_FROM_INV_07,
+		C.CASH_PAID_TO_ACQUIRE_FIXED_ASS as CASH_PAID_TO_ACQUIRE_FIXED_07,
+		C.CASH_PAYMENTS_FOR_INVESTMENTS as CASH_PAYMENTS_FOR_INVESTME_07,
+		C.NET_CASH_OUTFLOWS_OF_PROCUREME,
+		C.CASH_PAYMENTS_RELATED_TO_OTH_T as CASH_PAYMENTS_RELATED_TO_OT_07,
+		C.SUB_TOTAL_OF_CASH_OUTFLOWS,
+		C.NET_CASH_FLOWS_FROM_INVESTING_ as NET_CASH_FLOWS_FROM_INVESTI_07,
+		C.CASH_RECEIVED_FROM_INVESTORS as CASH_RECEIVED_FROM_INVEST_07,
+		C.CASH_FROM_BORROWINGS as CASH_FROM_BORROWINGS_07,
+		C.OTHER_CASH_RECEIVED_RELATING_C as OTHER_CASH_RECEIVED_RELATIN_07,
+		C.TOTAL_CASH_INFLOWS_FROM_FINANC as TOTAL_CASH_INFLOWS_FROM_FIN_07,
+		C.CASH_REPAYMENTS_FOR_DEBTS as CASH_REPAYMENTS_FOR_DEBTS_07 ,
+		C.CASH_PAYMENTS_FOR_DISTRIBUTION as CASH_PAYMENTS_FOR_DISTRIBUT_07,
+		C.CASH_PAYMENTS_RELATED_TO_OTH_C as CASH_PAYMENTS_RELATED_TO_OT_07,
+		C.TOTAL_CASH_OUTFLOWS_FROM_FINAN as TOTAL_CASH_OUTFLOWS_FROM_FI_07,
+		C.NET_CASH_FLOWS_FROM_FINANCING_ as NET_CASH_FLOWS_FROM_FINANCI_07,
+		C.EFFECT_OF_EXCHANG_RATE_CHANGES as EFFECT_OF_EXCHANG_RATE_CHAN_07,
+		C.NETINCREASEIN_CASH_AND_CASH_EQ,
+		C.INITIAL_CASH_AND_CASH_EQUIVALE,
+		C.THE_FINAL_CASH_AND_CASH_EQUIVA,
+		C.NET_PROFIT as NET_PROFIT_07,
+		C.PROVISION_FOR_ASSET_IMPAIRMENT,
+		C.DEPRECIATION_OF_FIXED_ASSETS as DEPRECIATION_OF_FIXED_ASS_07,
+		C.AMORTISATION_OF_INTANGIBLE_ASS as AMORTISATION_OF_INTANGIBLE_07,
+		C.AMORTISATION_OF_LONG_TERM_DEFF,
+		C.DECREASE_OF_DEFFERED_EXPENSES as DECREASE_OF_DEFFERED_EXPEN_07,
+		C.ADDITION_OF_ACCUED_EXPENSE as ADDITION_OF_ACCUED_EXPE_07,
+		C.LOSSES_ON_DISPOSAL_OF_FIXED_AS as LOSSES_ON_DISPOSAL_OF_FIXED_07,
+		C.LOSSES_ON_SCRAPPING_OF_FIXED_A as LOSSES_ON_SCRAPPING_OF_FIXE_07,
+		C.PROFIT_OR_LOSS_FROM_CHANGES_IN,
+		C.FINANCE_EXPENSE as FINANCE_EXPENSE_07,
+		C.LOSSES_ARSING_FROM_INVESTMENT as LOSSES_ARSING_FROM_INVESTM_07,
+		C.DEFERRED_INCOME_TAX_ASSETS,
+		C.DEFERRED_INCOME_TAX_LIABILITIE,
+		C.DECREASEIN_INVENTORIES,
+		C.DECREASEIN_OPERATING_RECEIVABL as DECREASEIN_OPERATING_RECEIV_07,
+		C.INCREASE_IN_OPERATING_RECEIVAB,
+		C.OTHERS as OTHERS_07,
+		C.NET_CASH_FLOWS_FROM_OPERATING2 as NET_CASH_FLOWS_FROM_OPERATI_07,
+		C.DEBTS_TRANSFER_TO_CAPITAL as DEBTS_TRANSFER_TO_CAPITAL_07,
+		C.ONE_YEAR_DUE_CONVERTIBLE_BONDS as ONE_YEAR_DUE_CONVERTIBLE_BO_07,
+		C.FINANCING_RENT_TO_THE_FIXED_AS as FINANCING_RENT_TO_THE_FIXED_07,
+		C.NON_CASH_OTHERS as NON_CASH_OTHERS_07,
+		C.CASH_AT_THE_END_OF_PERIOD as CASH_AT_THE_END_OF_PERIOD_07,
+		C.CASH_AT_THE_BEGINNING_OF_THE_P as CASH_AT_THE_BEGINNING_OF_TH_07,
+		C.CASH_EQUIVALENTS_AT_THE_END_OF as CASH_EQUIVALENTS_AT_THE_END_07,
+		C.CASH_EQUIVALENTS_AT_THE_BEGINN,
+		C.NETINCREASEIN_CASH_AND_CASH_E2
+		from
+		E_CASH_FLOWS_BS a
+		left JOIN 
+		E_CASH_FLOWS2002 b on
+		a.EJA_CASH_FLOWS_BS_SGMT_ID=b.EJA_CASH_FLOWS_BS_SGMT_ID
+		left JOIN
+		E_CASH_FLOWS2007 c on
+		a.EJA_CASH_FLOWS_BS_SGMT_ID=c.EJA_CASH_FLOWS_BS_SGMT_ID
+		where
+		a.BUSINESS_STATES='90' 
+			and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				a.company=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EJA_CASH_FLOWS_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<update id="updateEntCashFlowsRpDataStatus" parameterType="map">
+		update E_CASH_FLOWS_BS
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1=1
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+			and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EJA_CASH_FLOWS_BS_SGMT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+
+	<!-- 企业利润及利润分配表 -->
+	<select id="queryEntIncomeSPARpData" parameterType="map"
+		resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		A.EIA_INCOME_STATEMENT_PROFIT_ID,
+		EIB_INCOME_STATEMENT_PROFIT_ID,
+		EIC_INCOME_STATEMENT_PROFIT_ID,
+		A.INF_REC_TYPE,
+		A.ENT_NAME,
+		A.ENT_CERT_TYPE,
+		A.ENT_CERT_NUM,
+		A.RPT_DATE,
+		A.SHEET_YEAR,
+		A.SHEET_TYPE,
+		A.SHEET_TYPE_DIVIDE,
+		A.AUDIT_FIRM_NAME,
+		A.AUDITOR_NAME,
+		A.AUDIT_TIME,
+		A.CIMOC,
+		A.RPT_DATE_CODE,
+		b.MAIN_REVENUEF_REVENUE,
+		b.SALES_INCOME_OF_EXPORT_GOODS_P,
+		b.SALES_INCOME_OF_IMPORT_GOODS_P,
+		b.DISCOUNT_AND_ALLOWANCE,
+		b.NET_AMOUNT_OF_INCOME_FROM_MAIN,
+		b.MAIN_OPERATING_COST,
+		b.SALES_INCOME_OF_EXPORT_PRODUCT,
+		b.PRINCIPLE_BUSINESS_TAX_AND_EXT,
+		b.OPERATION_EXPENSE,
+		b.OTHERS_OPERATING_COST,
+		b.DEFERRED_INCOME,
+		b.INCOME_FROM_SALES_AGENCY,
+		b.OTHER_OPERATING_INCOME,
+		b.PRINCIPLE_BUSINESS_PROFIT,
+		b.OTHER_BUSINESS_PROFIT,
+		b.SELLING_EXPENSES,
+		b.GENERAL_AND_ADMINISTRATIVE_EXP,
+		b.FINANCIAL_EXPENSES,
+		b.OTHERS_EXPENSES,
+		b.OPERATING_PROFITS,
+		b.INVESTMENT_INCOME,
+		b.FUTURES_INCOME,
+		b.ALLOWANCE_INCOME,
+		b.ALLOWANCE_INCOME_BEFORE_ALLOWA,
+		b.NON_OPERATING_INCOME,
+		b.NET_GAIN_ON_DISPOSAL_OF_FIXED,
+		b.INCOME_FROM_NON_CURRENCY_TRADE,
+		b.INCOME_FROM_SALES_OF_INTANGIBL,
+		b.INCOME_FROM_PENALTY,
+		b.OTHERS_INCOME,
+		b.CALCULATING_FROM_THE_CONTENT_S,
+		b.NON_OPERATING_EXPENSES,
+		b.LOSS_FROM_DISPOSAL_OF_FIXED_AS,
+		b.EXCHANGE_OF_NON_MONETARY_ASSET,
+		b.LOSS_OF_LAWSUITS,
+		b.PAYMENT_FOR_DONATION,
+		b.OTHER_PAYMENTS,
+		b.BALANCE_OF_CONTENT_SALARY,
+		b.TOTAL_PROFIT,
+		b.INCOMETAX,
+		b.IMPARIMENT_LOSS,
+		b.UNREALIZEDINVESTMENT_LOSSES,
+		b.NET_PROFIT,
+		b.PROFIT_DISTRIBUTION_AT_BEGINNI,
+		b.COMPENSATION_OF_SURPLUS_RESERV,
+		b.OTHER_ADJUSTMENT_FACTORS,
+		b.PROFIT_AVAILABLE_FOR_DISTRIBUT,
+		b.PROFIT_RESERVED_FOR_A_SINGLEIT,
+		b.SUPPLEMENTARY_CURRENT_CAPITAL,
+		b.APPROPRIATION_OF_STATUTORY_SUR,
+		b.APPROPRIATION_OF_STATUTORY_WEL,
+		b.APPROPRIATION_OF_STAFFINCENTIV,
+		b.APPROPRIATION_OF_RESERVE_FUND,
+		b.APPROPRIATION_OF_ENTERPRISE_EX,
+		b.PROFITS_CAPITALIZAD_ON_RETURN,
+		b.OTHERS,
+		b.PROFIT_AVAILABLE_FOR_OWNERS_DI,
+		b.PREFERRED_STOCK_DIVIDENDS_PAYA,
+		b.WITHDRAWAL_OTHER_COMMON_ACCUMU,
+		b.PAYABLE_DIVIDENDS_OF_COMMON_ST,
+		b.TRANSFER_FROM_ORDINARY_SHARES,
+		b.OTHERS_FOR_OWNERS,
+		b.UNAPPROPRIATED_PROFIT,
+		b.LOSS_COMPENSATED_BEFORE_THE_TA,
+		c.REVENUE_OF_SALES,
+		c.COST_OF_SALES,
+		c.BUSINESS_AND_OTHER_TAXES,
+		c.SELLING_EXPENSES SELLING_EXPENSES_2007,
+		c.GENERAL_AND_ADMINISTRATIVE_EXP GENERAL_AND_ADMINISTRATIVE_E7,
+		c.FINANCIAL_EXPENSE,
+		c.IMPAIRMENT_LOSS_OF_ASSETS,
+		c.PROFIT_OR_LOSS_ARISING_FROM_CH,
+		c.INVESTMENT_INCOME
+		INVESTMENT_INCOME_2007,
+		c.INVESTMENT_INCOME_FROM_AFFILIA,
+		c.OPERATING_PROFITS OPERATING_PROFITS_2007,
+		c.NON_OPERATING_INCOME
+		NON_OPERATING_INCOME_2007,
+		c.NON_OPERATING_EXPENSES
+		NON_OPERATING_EXPENSES_2007,
+		c.NON_CURRENTASSETS,
+		c.PROFIT_BEFORE_TAX,
+		c.INCOME_TAX_EXPENSE,
+		c.NET_PROFIT NET_PROFIT_2007,
+		c.BASICEARNINGS_PER_SHARE,
+		c.DILUTED_EARNINGS_PER_SHARE
+		from
+		E_INCOME_STATEMENT a
+		left JOIN
+		E_INCOME_STATEMENT_02 b on
+		a.EIA_INCOME_STATEMENT_PROFIT_ID=b.EIA_INCOME_STATEMENT_PROFIT_ID
+		left
+		JOIN E_INCOME_STATEMENT_07 c on
+		a.EIA_INCOME_STATEMENT_PROFIT_ID=c.EIA_INCOME_STATEMENT_PROFIT_ID
+		where a.BUSINESS_STATES='90' 
+			and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				a.company=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EIA_INCOME_STATEMENT_PROFIT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<update id="updateEntIncomeSPARpDataStatus" parameterType="map">
+		update E_INCOME_STATEMENT
+		set BUSINESS_STATES=
+		#{BUSINESS_STATES}
+		where 1=1 
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+			and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EIA_INCOME_STATEMENT_PROFIT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+
+	<!-- 事业单位资产负债表 -->
+	<select id="queryEntInstBalanceSheetRpData" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		A.EKA_INSTITUTION_BALANCE_SHT_ID,
+		A.INF_REC_TYPE,
+		A.ENT_NAME,
+		A.ENT_CERT_TYPE,
+		A.ENT_CERT_NUM,
+		A.RPT_DATE,
+		A.SHEET_YEAR,
+		A.SHEET_TYPE,
+		A.SHEET_TYPE_DIVIDE,
+		A.AUDIT_FIRM_NAME,
+		A.AUDITOR_NAME,
+		A.AUDIT_TIME,
+		A.CIMOC,
+		A.RPT_DATE_CODE,
+		B.CURRENCY_FUNDS,
+		B.SHORT_TERM_INVESTMENTS,
+		B.AMOUNT_OF_FINANCIAL_RETURN,
+		B.NOTES_RECEIVABLE,
+		B.ACCOUNTS_RECEIVABLE,
+		B.PREPAYMENTS,
+		B.OTHER_RECEIVABLES,
+		B.INVENTORIES,
+		B.OTHER_CURRENT_ASSETS,
+		B.TOTAL_CURRENT_ASSETS,
+		B.LONG_TERM_INVESTMENT,
+		B.FIXED_ASSETS,
+		B.ORIGINAL_COST_OF_FIXED_ASSET,
+		B.FIXED_ASSET_ACCUMULATED_DEPREC,
+		B.CONSTRUCTION_IN_PROCESS,
+		B.INTANGIBLE_ASSETS,
+		B.ORIGINAL_PRICE_OF_INTANGIBLE_A,
+		B.ACCUMULATED_AMORTIZATION,
+		B.ASSETS_TO_BE_PROCESSED_PENDING,
+		B.TOTAL_NON_CURRENT_ASSETS,
+		B.TOTAL_ASSETS,
+		B.SHORT_TERM_BORROWINGS,
+		B.TAX_PAYABLE,
+		B.TREASURY_PAYABLE,
+		B.PAYABLE_FINANCIAL_SPECIAL_ACCO,
+		B.EMPLOYEE_BENEFITS_PAYABLE,
+		B.NOTES_PAYABLE,
+		B.ACCOUNTS_PAYABLE,
+		B.RECEIPTS_IN_ADVANCE,
+		B.OTHER_PAYABLES,
+		B.OTHER_CURRENT_LIABILITIES,
+		B.TOTAL_CURRENT_LIABILITIES,
+		B.LONG_TERM_BORROWINGS,
+		B.LONG_TERM_PAYABLES,
+		B.TOTAL_NON_CURRENT_LIABILITIES,
+		B.TOTAL_LIABILITIES,
+		B.ENTERPRISE_FUND,
+		B.NON_CURRENT_ASSETS_FUND,
+		B.SPECIAL_PURPOSE_FUNDS,
+		B.FINANCIAL_AID_CARRIED_OVER,
+		B.FINANCIAL_AID_BALANCE,
+		B.NON_FINANCIAL_AID_CARRIED_OVER,
+		B.NON_FINANCIAL_AID_BALANCE,
+		B.UNDERTAKINGS_BALANCE,
+		B.OPERATING_BALANCE,
+		B.TOTAL_NET_ASSETS,
+		B.TOTAL_LIABILITIES_AND_NET_ASSE
+		from
+		E_INSTITU_BALANCE_BS a
+		left JOIN
+		E_INSTITU_BALANCE b on
+		a.EKA_INSTITUTION_BALANCE_SHT_ID=b.EKA_INSTITUTION_BALANCE_SHT_ID
+		where a.BUSINESS_STATES='90'
+			and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				a.company=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EKA_INSTITUTION_BALANCE_SHT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<update id="updateEntInstBalanceSheetRpDataStatus" parameterType="map">
+		update E_INSTITU_BALANCE_BS
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1=1
+			and INF_REC_TYPE = #{INF_REC_TYPE} 
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>	
+		<if test=' OLD_BUSINESS_STATES == "" '>
+			and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EKA_INSTITUTION_BALANCE_SHT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+
+	<select id="queryInEntDltRpData1" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		INF_REC_TYPE,
+		NAME,
+		ID_TYPE,
+		ID_NUM,
+		INF_SURC_CODE,
+		PAY_IN_BS_INF_DLT_ID
+		FROM
+		I_IN_BS_INF_DLT
+		WHERE BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				PAY_IN_BS_INF_DLT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    order by RPT_DATE
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryInEntDltRpData2" parameterType="map"
+		resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		INF_REC_TYPE,
+		NAME,
+		ID_TYPE,
+		ID_NUM,
+		INF_SURC_CODE,
+		PAZ_IN_ID_EFCT_INF_DLT_ID
+		FROM
+		I_IN_ID_EFCT_INF_DLT
+		WHERE BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				PAZ_IN_ID_EFCT_INF_DLT_ID=#{item}
+			</foreach>
+			)
+		</if>
+		and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    order by RPT_DATE
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryInEntDltRpData3" parameterType="map"
+		resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		INF_REC_TYPE,
+		DEL_REC_CODE,
+		PBZ_IN_ACCT_ENT_DEL_ID
+		FROM I_IN_ACCT_ENT_DEL
+		WHERE
+		BUSINESS_STATES='90'
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				PBZ_IN_ACCT_ENT_DEL_ID=#{item}
+			</foreach>
+			)
+		</if>
+		and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    order by RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryInEntDltRpData4" parameterType="map"
+		resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		INF_REC_TYPE,
+		DEL_REC_CODE,
+		PCZ_IN_CTRCT_ENT_DEL_ID
+		FROM I_IN_CTRCT_ENT_DEL
+		WHERE
+		BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				PCZ_IN_CTRCT_ENT_DEL_ID=#{item}
+			</foreach>
+			)
+		</if>
+		and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    order by RPT_DATE
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryInEntDltRpData5" parameterType="map"
+		resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		INF_REC_TYPE,
+		DEL_REC_CODE,
+		PDZ_IN_SEC_ACCT_ENT_DEL_ID
+		FROM I_IN_SEC_ACCT_ENT_DEL
+		WHERE BUSINESS_STATES='90'
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				PDZ_IN_SEC_ACCT_ENT_DEL_ID=#{item}
+			</foreach>
+			)
+		</if>
+		and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    order by RPT_DATE
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryMoCEntDltInfRpData" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+			INF_REC_TYPE,
+			DEL_REC_CODE,
+			EFZ_MOC_ENT_DEL_ID
+		FROM 
+			MOC_ENT_DEL
+		WHERE BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				EFZ_MOC_ENT_DEL_ID=#{item}
+			</foreach>
+			)
+		</if>
+		 and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryInDltRpData1" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		INF_REC_TYPE,
+		DEL_REC_CODE,
+		DEL_SGMT_CODE,
+		DEL_START_DATE,
+		DEL_END_DATE,
+		PBY_IN_ACCT_DEL_ID
+		FROM I_IN_ACCT_DEL
+		WHERE BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				PBY_IN_ACCT_DEL_ID=#{item}
+			</foreach>
+			)
+		</if>
+		and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryInDltRpData2" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		INF_REC_TYPE,
+		DEL_REC_CODE,
+		DEL_SGMT_CODE,
+		DEL_START_DATE,
+		DEL_END_DATE,
+		PCY_IN_CTRCT_DEL_ID
+		FROM I_IN_CTRCT_DEL
+		WHERE BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				PCY_IN_CTRCT_DEL_ID=#{item}
+			</foreach>
+			)
+		</if>
+		and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryInDltRpData3" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		INF_REC_TYPE,
+		DEL_REC_CODE,
+		DEL_SGMT_CODE,
+		DEL_START_DATE,
+		PDY_IN_SEC_ACCT_DEL_ID,
+		DEL_END_DATE
+		FROM I_IN_SEC_ACCT_DEL
+		WHERE BUSINESS_STATES='90'
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				PDY_IN_SEC_ACCT_DEL_ID=#{item}
+			</foreach>
+			)
+		</if>
+		and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryInIDCagsInfRpData1" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		INF_REC_TYPE,
+		OD_BNES_CODE,
+		NW_BNES_CODE,
+		PBW_IN_ACCT_ID_CAGS_INF_ID
+		FROM
+		I_IN_ACCT_ID_CAGS_INF
+		WHERE BUSINESS_STATES='90'
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				PBW_IN_ACCT_ID_CAGS_INF_ID=#{item}
+			</foreach>
+			)
+		</if>
+		and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryInIDCagsInfRpData2" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		INF_REC_TYPE,
+		OD_BNES_CODE,
+		NW_BNES_CODE,
+		PCW_IN_CTRCTID_CAGS_INF_ID
+		FROM
+		I_IN_CTRCTID_CAGS_INF
+		WHERE BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				PCW_IN_CTRCTID_CAGS_INF_ID=#{item}
+			</foreach>
+			)
+		</if>
+		and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryInIDCagsInfRpData3" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+		    (SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
+		INF_REC_TYPE,
+		OD_BNES_CODE,
+		NW_BNES_CODE,
+		PDW_INSECACCTID_CAGSINF_ID
+		FROM
+		I_INSECACCTID_CAGSINF
+		WHERE BUSINESS_STATES='90'
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				PDW_INSECACCTID_CAGSINF_ID=#{item}
+			</foreach>
+			)
+		</if>
+		and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryMoCIDCagsInfRpData" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+	 		INF_REC_TYPE,
+			OD_BNES_CODE,
+			NW_BNES_CODE,
+			EFW_MOC_ID_CAGS_INF_ID
+		FROM
+				MOC_ID_CAGS_INF
+		WHERE BUSINESS_STATES='90'
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				EFW_MOC_ID_CAGS_INF_ID=#{item}
+			</foreach>
+			)
+		</if>
+		and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        company = #{item}
+	      </foreach>
+	      )
+	    </if>
+		) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryEnIDCagsInfRpData1" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			OD_BNES_CODE,
+			NW_BNES_CODE,
+			EDW_EN_ACCT_INF_ID_CAGS_INF_ID
+		FROM
+			E_ACCT_INF_ID_CAGS_INF
+		WHERE BUSINESS_STATES='90'
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				EDW_EN_ACCT_INF_ID_CAGS_INF_ID=#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryEnIDCagsInfRpData2" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			OD_BNES_CODE,
+			NW_BNES_CODE,
+			EGW_EN_ACCT_INF_ID_CAGS_INF_ID
+		FROM
+			E_CR_ACCT_ID_CAGS_INF
+		WHERE BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				EGW_EN_ACCT_INF_ID_CAGS_INF_ID=#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<select id="queryEnIDCagsInfRpData3" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			OD_BNES_CODE,
+			NW_BNES_CODE,
+			EEW_EN_SEC_ACCT_ID_CAGS_INF_ID
+		FROM
+			E_SEC_ACCT_ID_CAGS_INF
+		WHERE BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				EEW_EN_SEC_ACCT_ID_CAGS_INF_ID=#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+
+	<!-- 特殊报文更新模块 -->
+	<update id="updateDltInfRpDataStatus" parameterType="map">
+		update
+		${table_name}
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1 = 1
+		and	INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+		    and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0  and PACKET_KEY != null and PACKET_KEY !=""'>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				${PACKET_KEY}=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+	<update id="updatenEntDltInfRpDataStatus" parameterType="map">
+		update
+		${table_name}
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1 = 1
+		and	INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+		    and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0  and PACKET_KEY != null and PACKET_KEY !=""'>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				${PACKET_KEY}=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+	<update id="updatenIDCagsInfRpDataStatus" parameterType="map">
+		update
+		${table_name}
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1 = 1
+		and	INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+		    and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0  and PACKET_KEY != null and PACKET_KEY !=""'>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				${PACKET_KEY}=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+
+	<select id="queryEnDltRpData1" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			DEL_REC_CODE,
+			DEL_SGMT_CODE,
+			DEL_START_DATE,
+			DEL_END_DATE,
+			EDY_EN_ACCT_INF_DEL_ID
+		FROM E_ACCT_INF_DEL
+		WHERE BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND EDY_EN_ACCT_INF_DEL_ID in (
+			<foreach collection="pk" item="item" index="index" separator=",">
+				#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="queryEnDltRpData2" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			DEL_REC_CODE,
+			DEL_SGMT_CODE,
+			DEL_START_DATE,
+			DEL_END_DATE,
+			EGY_EN_CTRCT_INF_DEL_ID
+		FROM E_CTRCT_INF_DEL
+		WHERE BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND EGY_EN_CTRCT_INF_DEL_ID in (
+			<foreach collection="pk" item="item" index="index" separator=",">
+				#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="queryEnDltRpData3" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			DEL_REC_CODE,
+			DEL_SGMT_CODE,
+			DEL_START_DATE,
+			EEY_EN_SEC_ACCT_DEL_ID,
+			DEL_END_DATE
+		FROM E_SEC_ACCT_DEL
+		WHERE BUSINESS_STATES='90'
+		<if test=' pk !=null and pk.size >0 '>
+			AND EEY_EN_SEC_ACCT_DEL_ID in (
+			<foreach collection="pk" item="item" index="index" separator=",">
+				#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="queryEnEntDltRpData1" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			INF_SURC_CODE,
+			NAME AS ENT_NAME,
+			ID_TYPE AS ENT_CERT_TYPE,
+			ID_NUM AS ENT_CERT_NUM,
+			EAZ_EN_BS_INF_DLT_ID
+		FROM E_BS_INF_DLT
+		WHERE BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				EAZ_EN_BS_INF_DLT_ID=#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="queryEnEntDltRpData2" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			DEL_REC_CODE,
+			EDZ_EN_ACCT_INF_ENT_DEL_ID
+		FROM E_ACCT_INF_ENT_DEL
+		WHERE BUSINESS_STATES='90'
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				EDZ_EN_ACCT_INF_ENT_DEL_ID=#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="queryEnEntDltRpData3" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			DEL_REC_CODE,
+			EEZ_EN_SEC_ACCT_ENT_DEL_SG_ID
+		FROM E_SEC_ACCT_ENT_DEL
+		WHERE BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				EEZ_EN_SEC_ACCT_ENT_DEL_SG_ID=#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="queryEnEntDltRpData4" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			NAME AS ENT_NAME,
+			ID_TYPE AS ENT_CERT_TYPE,
+			ID_NUM AS ENT_CERT_NUM,
+			SHEET_YEAR,
+			SHEET_TYPE,
+			E_IN_OUT_ENT_DEL_ID,
+			SHEET_TYPE_DIVIDE
+		FROM E_IN_OUT_ENT_DEL
+		WHERE
+		BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				E_IN_OUT_ENT_DEL_ID=#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="queryEnEntDltRpData5" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			NAME AS ENT_NAME,
+			ID_TYPE AS ENT_CERT_TYPE,
+			ID_NUM AS ENT_CERT_NUM,
+			SHEET_YEAR,
+			SHEET_TYPE,
+			E_ASSETS_DEBT_ENT_DEL_ID,
+			SHEET_TYPE_DIVIDE
+		FROM E_ASSETS_DEBT_ENT_DEL
+		WHERE
+		BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				E_ASSETS_DEBT_ENT_DEL_ID=#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	    
+	</select>
+	<select id="queryEnEntDltRpData7" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			NAME AS ENT_NAME,
+			ID_TYPE AS ENT_CERT_TYPE,
+			ID_NUM AS ENT_CERT_NUM,
+			SHEET_YEAR,
+			SHEET_TYPE,
+			SHEET_TYPE_DIVIDE,
+			E_CASH_FLOW_ENT_DEL_ID
+		FROM  E_CASH_FLOW_ENT_DEL
+		WHERE
+		BUSINESS_STATES='90'
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				E_CASH_FLOW_ENT_DEL_ID=#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="queryEnEntDltRpData8" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			NAME AS ENT_NAME,
+			ID_TYPE AS ENT_CERT_TYPE,
+			ID_NUM AS ENT_CERT_NUM,
+			SHEET_YEAR,
+			SHEET_TYPE,
+			SHEET_TYPE_DIVIDE,
+			E_IN_COME_ENT_DEL_ID
+		FROM E_IN_COME_ENT_DEL
+		WHERE
+		BUSINESS_STATES='90'
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				E_IN_COME_ENT_DEL_ID=#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	    
+	</select>
+	<select id="queryEnEntDltRpData9" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if> 
+			INF_REC_TYPE,
+		  NAME AS ENT_NAME,
+	      ID_TYPE AS ENT_CERT_TYPE,
+	      ID_NUM AS ENT_CERT_NUM,
+	      SHEET_YEAR,
+	      SHEET_TYPE,
+	      SHEET_TYPE_DIVIDE,
+	      EMZ_BALANCE_SHEET_DLT_ID
+	    FROM E_BALANCE_SHEET_DLT
+		WHERE
+		BUSINESS_STATES='90'
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				EMZ_BALANCE_SHEET_DLT_ID=#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	</select>
+	<select id="queryEnEntDltRpData10" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+			INF_REC_TYPE,
+			DEL_REC_CODE,
+			EGZ_EN_CTRCT_INF_ENT_DEL_ID
+		FROM E_CTRCT_INF_ENT_DEL
+		WHERE BUSINESS_STATES='90' 
+		<if test=' pk !=null and pk.size >0 '>
+			AND (
+			<foreach collection="pk" item="item" index="index" separator="or">
+				EGZ_EN_CTRCT_INF_ENT_DEL_ID=#{item}
+			</foreach>
+			)
+		</if>
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+	      and (
+	      <foreach collection="company" item="item" separator="or">
+	        	company = #{item}
+	      </foreach>
+	      )
+	    </if>
+	    ) t where  t.rownum &lt; #{pageSize}
+	    
+	</select>
+	<!-- 生成报文后向数据中插入报文名 -->
+	<update id="insertReportNameForData" parameterType="map">
+		update
+			${table_name}
+		<trim prefix="set" suffixOverrides=",">
+			REPORT_MESSAGE_ID= #{report_name},
+			BUSINESS_STATES='50',
+			<if test=' data != null and data.size > 0 '>
+				<trim prefix="REPORT_FILE_COLNUM=case" suffix="end,">
+					<foreach collection="data" item="item">
+						when ${pk}= '${item.pk}' then  '${item.colnum}'
+					</foreach>
+				</trim>
+			</if>
+		</trim>
+		where
+			BUSINESS_STATES='90'
+			<if test=' data != null and data.size > 0 '>
+				and (
+				<foreach collection="data" item="item" separator="or">
+					${pk}='${item.pk}'
+				</foreach>
+				)
+			</if>
+	</update>
+
+		<!-- 李继坤 -->
+	<!-- 生成报文后向数据中插入报文名 -->
+	<!-- <update id="insertReportMessage" parameterType="java.util.List" >
+		<if test=' list != null and list.size >0 '>
+			<foreach collection="list" item="item" index="index"
+				separator=" ;">
+				insert into report_message(
+				REPORT_MESSAGE_ID, 
+				REPORT_MESSAGE_FILE_NAME, 
+				REPORT_MESSAGE_TYPE, 
+				REPORT_MESSAGE_STATUS, 
+				TXT_REPORT_MESSAGE_FILE_PATH, 
+				ZIP_REPORT_MESSAGE_FILE_PATH, 
+				ENC_REPORT_MESSAGE_FILE_PATH, 
+				ABNORM_REPORTMESSAGE_FILEPATH, 
+				RECORD_NUM, 
+				CREATE_TIME, 
+				CREATE_SUCCESS_TIME, 
+				REPORT_TIME, 
+				OPERATOR_USER, 
+				ORG_CODE
+				) values(
+				SYS_GUID(), 
+				#{item.report_message_file_name}, 
+				#{item.report_message_type}, 
+				#{item.report_message_status}, 
+				#{item.txt_report_message_file_path}, 
+				#{item.zip_report_message_file_path}, 
+				#{item.enc_report_message_file_path}, 
+				#{item.abnorm_reportmessage_filepath}, 
+				#{item.record_num}, 
+				#{item.create_time}, 
+				#{item.create_success_time}, 
+				#{item.report_time}, 
+				#{item.operator_user}, 
+				#{item.org_code}
+				)
+			</foreach>
+		</if>
+	</update> -->
+	
+	<insert id="insertReportMessage" parameterType="Map">
+				insert into report_message(
+				REPORT_MESSAGE_ID, 
+				REPORT_MESSAGE_FILE_NAME, 
+				REPORT_MESSAGE_TYPE, 
+				REPORT_MESSAGE_STATUS, 
+				TXT_REPORT_MESSAGE_FILE_PATH, 
+				ZIP_REPORT_MESSAGE_FILE_PATH, 
+				ENC_REPORT_MESSAGE_FILE_PATH, 
+				ABNORM_REPORTMESSAGE_FILEPATH, 
+				RECORD_NUM, 
+				CREATE_TIME, 
+				CREATE_SUCCESS_TIME, 
+				REPORT_TIME, 
+				OPERATOR_USER, 
+				ORG_CODE, 
+				DESCRIPTION,
+				COMPANY
+				) values(
+				#{report_message_id}, 
+				#{report_message_file_name}, 
+				#{report_message_type}, 
+				#{report_message_status}, 
+				#{txt_report_message_file_path}, 
+				#{zip_report_message_file_path}, 
+				#{enc_report_message_file_path}, 
+				#{abnorm_reportmessage_filepath}, 
+				#{record_num}, 
+				SUBSTR(#{create_time},1,10), 
+				#{create_success_time}, 
+				#{report_time}, 
+				#{operator_user}, 
+				#{org_code}, 
+				#{description},
+				#{company}
+				)
+	</insert>
+
+	<select id="queryMotgaCltalCtrctInfRpData" parameterType="map" resultType="java.util.Map">
+		SELECT t.* FROM (
+		SELECT 
+		<if test="_databaseId == 'oracle' ">
+			rownum,
+		</if>
+		<if test="_databaseId == 'db2'">
+			ROW_NUMBER() over() as rownum,
+		</if>
+		a.EFA_MOTGA_CLTAL_CTRCT_BS_ID,
+		INF_REC_TYPE,
+		CC_CODE,
+		a.RPT_DATE,
+		RPT_DATE_CODE,
+		INFO_ID_TYPE,
+		NAME,
+		CERT_TYPE,
+		CERT_NUM,
+		MNGMT_ORG_CODE,
+		EFB_MOTGA_CLTAL_BS_INF_SGMT_ID,
+		GUAR_TYPE,
+		CC_AMT,
+		CY,
+		CC_VAL_DATE,
+		CC_EXP_DATE,
+		MAX_GUAR,
+		CC_STATUS
+		FROM
+		MOTGA_CLTAL_CTRCT_BS a
+		left JOIN MOTGA_CLTAL_BS_INF b on
+		a.EFA_MOTGA_CLTAL_CTRCT_BS_ID = b.EFA_MOTGA_CLTAL_CTRCT_BS_ID
+		where
+		a.BUSINESS_STATES='90' 
+		and a.INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' company !=null and company.size >0 '>
+		      and (
+		      <foreach collection="company" item="item" separator="or">
+		        a.company = #{item}
+		      </foreach>
+		      )
+	    </if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				a.RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EFA_MOTGA_CLTAL_CTRCT_BS_ID = #{item}
+			</foreach>
+			)
+		</if>
+		order by a.RPT_DATE
+		) t where  t.rownum &lt; #{pageSize}
+		
+	</select>
+
+	<select id="queryComRecInfSgmtRpMsgByFactor" parameterType="list" resultType="java.util.Map">
+		select b.num ,a.* from MOTGA_COM_REC_INF a ,
+			(select count(*) as num ,EFA_MOTGA_CLTAL_CTRCT_BS_ID from
+				MOTGA_COM_REC_INF
+				<if test=' list !=null and list.size >0 '>
+					where
+					<foreach collection="list" item="item" index="index" separator="or">
+						EFA_MOTGA_CLTAL_CTRCT_BS_ID = #{item}
+					</foreach>
+				</if>
+			GROUP BY EFA_MOTGA_CLTAL_CTRCT_BS_ID ) b
+		where a.EFA_MOTGA_CLTAL_CTRCT_BS_ID =
+		b.EFA_MOTGA_CLTAL_CTRCT_BS_ID
+		order by a.EFA_MOTGA_CLTAL_CTRCT_BS_ID
+	</select>
+
+	<select id="queryMotgaProptInfSgmtRpMsgByFactor" parameterType="list" resultType="java.util.Map">
+		select b.num ,a.* from MOTGA_PROPT_INF a ,
+			(select
+			count(*) as num ,EFA_MOTGA_CLTAL_CTRCT_BS_ID from
+			MOTGA_PROPT_INF
+			<if test=' list !=null and list.size >0 '>
+				where
+				<foreach collection="list" item="item" index="index" separator="or">
+					EFA_MOTGA_CLTAL_CTRCT_BS_ID = #{item}
+				</foreach>
+			</if>
+			GROUP BY EFA_MOTGA_CLTAL_CTRCT_BS_ID)b
+		where a.EFA_MOTGA_CLTAL_CTRCT_BS_ID =
+		b.EFA_MOTGA_CLTAL_CTRCT_BS_ID
+		order by a.EFA_MOTGA_CLTAL_CTRCT_BS_ID
+	</select>
+
+	<select id="queryCltalInfSgmtRpMsgByFactor" parameterType="list" resultType="java.util.Map">
+		select b.num ,a.* from MOTGA_CLTAL_INF a ,
+			(select count(*) as num ,EFA_MOTGA_CLTAL_CTRCT_BS_ID from
+			MOTGA_CLTAL_INF
+			<if test=' list !=null and list.size >0 '>
+				where
+				<foreach collection="list" item="item" index="index" separator="or">
+					EFA_MOTGA_CLTAL_CTRCT_BS_ID = #{item}
+				</foreach>
+			</if>
+			GROUP BY EFA_MOTGA_CLTAL_CTRCT_BS_ID)b
+		where a.EFA_MOTGA_CLTAL_CTRCT_BS_ID =
+		b.EFA_MOTGA_CLTAL_CTRCT_BS_ID
+		order by a.EFA_MOTGA_CLTAL_CTRCT_BS_ID
+	</select>
+<!-- 抵质押 -->
+	<update id="updateMotgaCltalCtrctInfRpDataStatus" parameterType="map">
+		update
+		MOTGA_CLTAL_CTRCT_BS
+		set BUSINESS_STATES= #{BUSINESS_STATES}
+		where 1 = 1
+		and	INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES != "" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' OLD_BUSINESS_STATES == "" '>
+		    and BUSINESS_STATES in ('90','50','85')
+		</if>
+		<if test=' RptDate !=null and RptDate.size >0 '>
+			and (
+			<foreach collection="RptDate" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+		<if test=' pk !=null and pk.size >0 '>
+			and (
+			<foreach collection="pk" item="item" separator="or">
+				EFA_MOTGA_CLTAL_CTRCT_BS_ID=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' rownum !=null and rownum != "" '>
+			and rownum &lt; #{rownum}
+		</if>
+	</update>
+	
+	<update id="updateReportDataStatus" parameterType="map">
+		update
+			  ${table_name}
+		  set BUSINESS_STATES= '85'
+		where BUSINESS_STATES = '30'
+			and INF_REC_TYPE = #{INF_REC_TYPE}
+		<if test=' rpt_date !=null and rpt_date.size >0 '>
+			and (
+			<foreach collection="rpt_date" item="item" separator="or">
+				RPT_DATE=#{item}
+			</foreach>
+			)
+		</if>
+		<if test=' company !=null and company.size >0 '>
+			and (
+			<foreach collection="company" item="item" separator="or">
+				company = #{item}
+			</foreach>
+			)
+		</if>
+	</update>
+
+</mapper>

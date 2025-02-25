@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IndvBasicsInfoSeoMapper">
+	<sql id="pecrIndvBsSgmtTableName">
+			I_BS_HIST
+	</sql>
+	<sql id="pecrIndvIdSgmtTableName">
+			I_ID_HIST
+	</sql>
+	<sql id="pecrIndvFcsInfSgmtTableName">
+			I_FCS_INF_HIST
+	</sql>
+	<sql id="pecrIndvEduInfSgmtTableName">
+			I_EDU_INF_HIST
+	</sql>
+	<sql id="pecrIndvOctpnInfSgmtTableName">
+			I_OCTPN_INF_HIST
+	</sql>
+	<sql id="pecrIndvRedncInfSgmtTableName">
+			i_rednc_inf_HIST
+	</sql>
+	<sql id="pecrIndvMlgInfSgmtTableName">
+			I_MLG_INF_HIST
+	</sql>
+	<sql id="pecrIndvSpsInfSgmtTableName">
+			I_SPS_INF_HIST
+	</sql>
+	<sql id="pecrIndvIncInfSgmtTableName">
+			I_INC_INF_HIST
+	</sql>
+	<sql id="pecrIndvBsSgmtFields">
+		PAA_BS_SGMT_ID   ,
+		INF_REC_TYPE     ,
+		NAME             ,
+		ID_TYPE          ,
+		ID_NUM           ,
+		INF_SURC_CODE    ,
+		RPT_DATE         ,
+		RPT_DATE_CODE    ,
+		CIMOC            ,
+		CUSTOMER_TYPE    ,
+		LAST_UPDATE_TIME ,
+		OPERATOR_USER    ,
+		ORG_NAME         ,
+		ORG_CODE         ,
+		BUSINESS_STATES  ,
+		REJECT_REASON    ,
+		IS_FILTER        ,
+		REPORT_MESSAGE_ID
+	</sql>
+	<sql id="pecrIndvIdSgmtFields">
+		PAB_ID_SGMT_ID    ,
+		ALIAS             ,
+		OTH_ID_TYPE       ,
+		OTH_ID_NUM        ,
+		ID_INFO_UP_DATE   ,
+		PAA_BS_SGMT_ID    ,
+		RPT_DATE
+	</sql>
+	<sql id="pecrIndvFcsInfSgmtFields">
+		PAC_FCS_INF_SGMT_ID,
+		SEX                ,
+		D_O_B              ,
+		NATION             ,
+		HOUSE_ADD          ,
+		HH_DIST            ,
+		CELL_PHONE         ,
+		EMAIL              ,
+		FCS_INFO_UP_DATE   ,
+		PAA_BS_SGMT_ID     ,
+		RPT_DATE
+	</sql>
+	<sql id="pecrIndvEduInfSgmtFields">
+		PAD_EDU_INF_SGMT_ID,
+		EDU_LEVEL          ,
+		ACA_DEGREE         ,
+		EDU_INFO_UP_DATE   ,
+		PAA_BS_SGMT_ID     ,
+		RPT_DATE
+	</sql>
+	<sql id="pecrIndvOctpnInfSgmtFields">
+		PAE_OCTPN_INF_SGMT_ID,
+		EMP_STATUS           ,
+		CPN_NAME             ,
+		CPN_TYPE             ,
+		INDUSTRY             ,
+		CPN_ADDR             ,
+		CPN_PC               ,
+		CPN_DIST             ,
+		CPN_T_E_L            ,
+		OCCUPATION           ,
+		TITLE                ,
+		TECH_TITLE           ,
+		WORK_START_DATE      ,
+		OCTPN_INFO_UP_DATE   ,
+		PAA_BS_SGMT_ID       ,
+		RPT_DATE
+	</sql>
+	<sql id="pecrIndvRedncInfSgmtFields">
+		PAF_REDNC_INF_SGMT_ID,
+		RESI_STATUS          ,
+		RESI_ADDR            ,
+		RESI_PC              ,
+		RESI_DIST            ,
+		HOME_TEL             ,
+		RESI_INFO_UP_DATE    ,
+		PAA_BS_SGMT_ID       ,
+		RPT_DATE
+	</sql>
+	<sql id="pecrIndvMlgInfSgmtFields">
+		PAG_MLG_INF_SGMT_ID,
+		MAIL_ADDR          ,
+		MAIL_PC            ,
+		MAIL_DIST          ,
+		MLG_INFO_UP_DATE   ,
+		PAA_BS_SGMT_ID     ,
+		RPT_DATE 
+	</sql>
+	<sql id="pecrIndvSpsInfSgmtFields">
+		PAH_SPS_INF_SGMT_ID,
+		MARI_STATUS        ,
+		SPO_NAME           ,
+		SPO_ID_TYPE        ,
+		SPO_ID_NUM         ,
+		SPO_TEL            ,
+		SPS_CMPY_NM        ,
+		SPS_INFO_UP_DATE     ,
+		PAA_BS_SGMT_ID       ,
+		RPT_DATE    
+	</sql>
+	<sql id="pecrIndvIncInfSgmtFields">
+		PAI_INC_INF_SGMT_ID,
+		ANNL_INC           ,
+		TAX_INCOME         ,
+		INC_INFO_UP_DATE   ,
+		PAA_BS_SGMT_ID     ,
+		RPT_DATE  
+	</sql>
+	
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvBsSgmt" id="bsSgmtlistResultMap">
+		<result column="PAA_BS_SGMT_ID" property="paaBsSmgtId"/> 
+		<result column="INF_REC_TYPE" property="infRecType"/> 
+		<result column="NAME" property="name"/> 
+		<result column="ID_TYPE" property="idType"/> 
+		<result column="ID_NUM" property="idNum"/> 
+		<result column="INF_SURC_CODE" property="infSurcCode"/> 
+		<result column="RPT_DATE" property="rptDate"/> 
+		<result column="RPT_DATE_CODE" property="rptDateCode"/> 
+		<result column="CIMOC" property="cimoc"/> 
+		<result column="CUSTOMER_TYPE" property="customerType"/> 
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/> 
+		<result column="OPERATOR_USER" property="operatorUser"/> 
+		<result column="ORG_NAME" property="orgName"/> 
+		<result column="ORG_CODE" property="orgCode"/> 
+		<result column="BUSINESS_STATES" property="businessStates"/> 
+		<result column="REJECT_REASON" property="rejectReason"/> 
+		<result column="IS_FILTER" property="isFilter"/> 
+		<result column="REPORT_MESSAGE_ID" property="reportMessageId"/> 
+		<result column="FLAG" property="flag"/> 
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvIdSgmt" id="idSgmtlistResultMap">
+	<result column="PAB_ID_SGMT_ID" property="pabIdSgmtId"/>  
+	<result column="ALIAS" property="alias"/>        
+	<result column="OTH_ID_TYPE" property="othIdType"/>    
+	<result column="OTH_ID_NUM" property="othIdNum"/>     
+	<result column="ID_INFO_UP_DATE" property="idInfoUpDate"/> 
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>  
+	<result column="RPT_DATE" property="rptDate"/>      
+</resultMap>	
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvFcsInfSgmt" id="fcsInfSgmtlistResultMap">
+	<result column="PAC_FCS_INF_SGMT_ID" property="pacFcsInfSgmtId"/>       
+	<result column="SEX" property="sex"/>                   
+	<result column="D_O_B" property="dOB"/>                   
+	<result column="NATION" property="nation"/>                
+	<result column="HOUSE_ADD" property="houseAdd"/>              
+	<result column="HH_DIST" property="hhDist"/>                
+	<result column="CELL_PHONE" property="cellPhone"/>             
+	<result column="EMAIL" property="email"/>                 
+	<result column="FCS_INFO_UP_DATE" property="fcsInfoUpDate"/>         
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>           
+	<result column="RPT_DATE" property="rptDate"/>               
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvEduInfSgmt" id="eduInfSgmtlistResultMap">
+	<result column="PAD_EDU_INF_SGMT_ID" property="padEduInfSgmtId"/>
+	<result column="EDU_LEVEL" property="eduLevel"/>       
+	<result column="ACA_DEGREE" property="acaDegree"/>      
+	<result column="EDU_INFO_UP_DATE" property="eduInfoUpDate"/>  
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>    
+	<result column="RPT_DATE" property="rptDate"/>        
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvOctpnInfSgmt" id="octpnInfSgmtlistResultMap">
+	<result column="PAE_OCTPN_INF_SGMT_ID" property="paeOctpnInfSgmtId"/>
+	<result column="EMP_STATUS" property="empStatus"/>        
+	<result column="CPN_NAME" property="cpnName"/>          
+	<result column="CPN_TYPE" property="cpnType"/>          
+	<result column="INDUSTRY" property="industry"/>         
+	<result column="CPN_ADDR" property="cpnAddr"/>          
+	<result column="CPN_PC" property="cpnPc"/>            
+	<result column="CPN_DIST" property="cpnDist"/>          
+	<result column="CPN_T_E_L" property="cpnTEL"/>           
+	<result column="OCCUPATION" property="occupation"/>       
+	<result column="TITLE" property="title"/>            
+	<result column="TECH_TITLE" property="techTitle"/>        
+	<result column="WORK_START_DATE" property="workStartDate"/>    
+	<result column="OCTPN_INFO_UP_DATE" property="octpnInfoUpDa"/>    
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>      
+	<result column="RPT_DATE" property="rptDate"/>          
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvRedncInfSgmt" id="redncInfSgmtlistResultMap">
+	<result column="PAF_REDNC_INF_SGMT_ID" property="pafRedncInfSgmtId"/>        
+	<result column="RESI_STATUS" property="resiStatus"/>      
+	<result column="RESI_ADDR" property="resiAddr"/> 	
+	<result column="RESI_PC" property="resiPc"/>        
+	<result column="RESI_DIST" property="resiDist"/>      
+	<result column="HOME_TEL" property="homeTel"/>       
+	<result column="RESI_INFO_UP_DATE" property="resiInfoUpDate"/>
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>   
+	<result column="RPT_DATE" property="rptDate"/>       
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvMlgInfSgmt" id="mlgInfSgmtlistResultMap">
+	<result column="PAG_MLG_INF_SGMT_ID" property="pagMlgInfSgmtId"/>
+	<result column="MAIL_ADDR" property="mailAddr"/>       
+	<result column="MAIL_PC" property="mailPc"/>         
+	<result column="MAIL_DIST" property="mailDist"/>       
+	<result column="MLG_INFO_UP_DATE" property="mlgInfoUpDate"/>  
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>    
+	<result column="RPT_DATE" property="rptDate"/>        
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvSpsInfSgmt" id="spsInfSgmtlistResultMap">
+	<result column="PAH_SPS_INF_SGMT_ID" property="pahSpsInfSgmtId"/>    
+	<result column="MARI_STATUS" property="mariStatus"/>     
+	<result column="SPO_NAME" property="spoName"/>           
+	<result column="SPO_ID_TYPE" property="spoIdType"/>         
+	<result column="SPO_ID_NUM" property="spoIdNum"/>          
+	<result column="SPO_TEL" property="spoTel"/>    
+	<result column="SPS_CMPY_NM" property="spsCmpyNm"/>        
+	<result column="SPS_INFO_UP_DATE" property="spsInfoUpDate"/>    
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>          
+	<result column="RPT_DATE" property="rptDate"/>  
+</resultMap>
+<resultMap type="com.dcits.supervise.pecr.indv.entity.PecrIndvIncInfSgmt" id="incInfSgmtlistResultMap">
+	<result column="PAI_INC_INF_SGMT_ID" property="paiIncInfSgmtId"/>
+	<result column="ANNL_INC" property="annlInc"/>        
+	<result column="TAX_INCOME" property="taxIncome"/>      
+	<result column="INC_INFO_UP_DATE" property="incInfoUpDate"/>  
+	<result column="PAA_BS_SGMT_ID" property="paaBsSgmtId"/>    
+	<result column="RPT_DATE" property="rptDate"/>        
+</resultMap>
+<select id="dataBsSgmtlistPage" parameterType="page" resultType="pd">
+		select 
+			 ID_TYPE,ID_NUM,COMPANY,EXTEND1 AS NAME,EXTEND3 AS CUSTOMERID
+		  from I_BS_MIDDLE
+		  <if test="pd.managerId != null and pd.managerId != ''">
+				LEFT JOIN PECR.sys_l_c_a_m_m M
+		        ON ID_TYPE = M.CUST_ID_TYPE
+		        AND ID_NUM = M.CUST_ID_NUM
+		  </if>
+		  where 1=1		
+		   	  <if test='pd.ID_TYPE != null and pd.ID_TYPE != ""'>
+		   	  	and ID_TYPE = #{pd.ID_TYPE}
+		   	  </if>
+		   	  <if test='pd.ID_NUM != null and pd.ID_NUM != ""'>
+		   	  	and ID_NUM like '%${pd.ID_NUM}%'
+		   	  </if> 
+		   	  <if test='pd.CUSTOMERID != null and pd.CUSTOMERID != ""'>
+		   	  	and EXTEND3 like '%${pd.CUSTOMERID}%'
+		   	  </if> 
+		   	  <if test="pd.managerId != null and pd.managerId != ''">
+					and M.MANAGER_ID = #{pd.managerId}
+					AND M.DATA_TYPE = '1'
+					AND M.DATA_LEVEL = '1'
+					AND M.END_DATE = '2099-12-31'
+			  </if>
+		   	    and COMPANY = #{pd.COMPANY}
+</select>
+<select id="dataBsSgmtHistlistPage" parameterType="page" resultMap="bsSgmtlistResultMap">
+select * from (
+		select 
+			    PAA_BS_SGMT_ID   ,
+				INF_REC_TYPE     ,
+				NAME             ,
+				ID_TYPE          ,
+				ID_NUM           ,
+				INF_SURC_CODE    ,
+				RPT_DATE         ,
+				RPT_DATE_CODE    ,
+				CIMOC            ,
+				CUSTOMER_TYPE    ,
+				LAST_UPDATE_TIME ,
+				OPERATOR_USER    ,
+				ORG_NAME         ,
+				ORG_CODE         ,
+				BUSINESS_STATES  ,
+				REJECT_REASON    ,
+				IS_FILTER        ,
+				REPORT_MESSAGE_ID,
+				'new' FLAG,
+				COMPANY
+		  from I_BS
+		  where ID_TYPE = #{pd.ID_TYPE} and ID_NUM = #{pd.ID_NUM}
+union all
+		select 
+			    PAA_BS_SGMT_ID   ,
+				INF_REC_TYPE     ,
+				NAME             ,
+				ID_TYPE          ,
+				ID_NUM           ,
+				INF_SURC_CODE    ,
+				RPT_DATE         ,
+				RPT_DATE_CODE    ,
+				CIMOC            ,
+				CUSTOMER_TYPE    ,
+				LAST_UPDATE_TIME ,
+				OPERATOR_USER    ,
+				ORG_NAME         ,
+				ORG_CODE         ,
+				BUSINESS_STATES  ,
+				REJECT_REASON    ,
+				IS_FILTER        ,
+				REPORT_MESSAGE_ID,
+				'old' FLAG,
+				COMPANY
+		  from I_BS_hist
+		  where ID_TYPE = #{pd.ID_TYPE} and ID_NUM = #{pd.ID_NUM}) a
+		  where 1=1
+		 	 <if test='pd.RPT_DATE != null and pd.RPT_DATE != ""'>
+				and a.RPT_DATE = #{pd.RPT_DATE}
+			</if>
+			    and a.COMPANY = #{pd.COMPANY}
+</select>
+<select id="getPcBasBsSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvBsSgmtFields"></include>
+		  from <include refid="pecrIndvBsSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+		   and COMPANY = #{COMPANY}
+</select>
+<select id="getPecrIndvIdSgmtByIdlistPage" parameterType="page" resultMap="idSgmtlistResultMap">
+		select <include refid="pecrIndvIdSgmtFields"></include>
+		  from <include refid="pecrIndvIdSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{pd.paaBsSmgtId}
+</select>
+<select id="getPcBasFcsInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvFcsInfSgmtFields"></include>
+		  from <include refid="pecrIndvFcsInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+</select>
+<select id="getPcBasEduInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvEduInfSgmtFields"></include>
+		  from <include refid="pecrIndvEduInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+</select>
+<select id="getPcBasOctpnInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvOctpnInfSgmtFields"></include>
+		  from <include refid="pecrIndvOctpnInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+</select>
+<select id="getPcBasRedncInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvRedncInfSgmtFields"></include>
+		  from <include refid="pecrIndvRedncInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+</select>
+<select id="getPcBasMlgInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvMlgInfSgmtFields"></include>
+		  from <include refid="pecrIndvMlgInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+</select>
+<select id="getPcBasSpsInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvSpsInfSgmtFields"></include>
+		  from <include refid="pecrIndvSpsInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+</select>
+<select id="getPcBasIncInfSgmtById" parameterType="pd" resultType="pd">
+		select <include refid="pecrIndvIncInfSgmtFields"></include>
+		  from <include refid="pecrIndvIncInfSgmtTableName"></include>
+		 where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+</select>
+<update id="updateStatus" parameterType="map">
+		update I_BS
+		   <set>
+		   	  	BUSINESS_STATES = '11'
+		   </set>
+		   where PAA_BS_SGMT_ID = #{paaBsSmgtId}
+		     and COMPANY = #{COMPANY}
+</update>
+<update id="backdate" parameterType="map">
+		update I_BS
+		   <set>
+		   	  	BUSINESS_STATES = '30'
+		   </set>
+		   where REPORT_MESSAGE_ID = #{reportMessageId}
+		     and COMPANY = #{COMPANY}
+</update>
+<delete id="deletedate" parameterType="map" >
+		delete from report_message
+		 where REPORT_MESSAGE_FILE_NAME = #{reportMessageId}
+		   and COMPANY = #{COMPANY}
+</delete>
+</mapper>

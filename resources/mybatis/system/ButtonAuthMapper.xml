@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ButtonAuthMapper">
+
+	<!--表名 -->
+	<sql id="tableName">
+		FIN_SYS_BUTTON_AUTH
+	</sql>
+
+	<!-- 字段 -->
+	<sql id="Field">
+		BUTTONAUTH_CODE,
+		COMPANY,
+		RESO_ID,
+		RESO_NAME,
+		FUN_CODE,
+		FUN_NAME,
+		TYPE_CODE,
+		TYPE_VALUE,
+		STATUS,
+		CREATE_USER,
+		CREATE_DATE,
+		UPDATE_USER,
+		UPDATE_DATE,
+		DELETE_USER,
+		DELETE_DATE,
+		RESERVED,
+		REMARK
+	</sql>
+
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{BUTTONAUTH_CODE},
+		#{COMPANY},
+		#{RESO_ID},
+		#{RESO_NAME},
+		#{FUN_CODE},
+		#{FUN_NAME},
+		#{TYPE_CODE},
+		#{TYPE_VALUE},
+		#{STATUS},
+		#{CREATE_USER},
+		#{CREATE_DATE},
+		#{UPDATE_USER},
+		#{UPDATE_DATE},
+		#{DELETE_USER},
+		#{DELETE_DATE},
+		#{RESERVED},
+		#{REMARK}
+	</sql>
+
+	<select id="buttonAuthlistPage" parameterType="page" resultType="pd" >
+		select 
+			<include refid="Field"></include>
+		from 
+			<include refid="tableName"></include>
+		where 1=1
+			<if test="pd.keywords!= null and pd.keywords != ''">
+			AND
+				(
+					 COMPANY LIKE '%${pd.keywords}%'
+					 or
+					 RESO_NAME LIKE '%${pd.keywords}%'
+					 or
+					 FUN_NAME LIKE '%${pd.keywords}%'
+					 or
+					 TYPE_VALUE LIKE '%${pd.keywords}%'
+					 or
+					 REMARK LIKE '%${pd.keywords}%'
+					 or
+					 TYPE_CODE LIKE '%${pd.keywords}%'
+				)
+			</if>
+			<if test="pd.STATUS!= null and pd.STATUS != ''">
+			AND
+				(
+					STATUS = #{pd.STATUS}
+				)
+			</if>
+	</select>
+
+	<select id="getCompanyName" parameterType="pd" resultType="pd">
+		select COMP_CODE,COMP_NAME from SYS_COMPANY where COMP_CODE=#{COMPANY}
+	</select>
+
+
+	<select id="findAllMenu" parameterType="pd" resultType="pd">
+		select MENU_ID,MENU_NAME,MENU_GROUP_ID
+		from SYS_MENU
+		where MENU_STATE='1' and COMPANY=#{COMPANY} and MENU_URL LIKE '%menuId%'
+		order by MENU_ID
+	</select>
+	
+	<select id="findFunIdByGroupId" parameterType="pd" resultType="pd">
+		select FUN_ID,FUN_NAME
+		from SYS_MENU_FUN
+		where FUN_GROUP_ID = #{FUN_GROUP_ID}
+		order by FUN_ID
+	</select>
+	
+	<insert id="save" parameterType="pd">
+		insert into <include refid="tableName"></include>
+		(<include refid="Field"></include>) values (<include refid="FieldValue"></include>)
+	</insert>
+	
+	<select id="findFunName" parameterType="pd" resultType="pd">
+		select FUN_NAME from SYS_MENU_FUN where FUN_GROUP_ID = #{FUN_GROUP_ID} and FUN_ID = #{FUN_ID}
+	</select>
+	
+	<select id="findButtonAuthByID" parameterType="pd" resultType="pd">
+		select * from FIN_SYS_BUTTON_AUTH where BUTTONAUTH_CODE = #{BUTTONAUTH_CODE}
+	</select>
+	
+	<update id="updateButtonAuth" parameterType="pd">
+		update <include refid="tableName"></include> 
+		set
+			RESO_ID = #{RESO_ID},
+			RESO_NAME = #{RESO_NAME},
+			FUN_CODE = #{FUN_CODE},
+			FUN_NAME = #{FUN_NAME},
+			TYPE_CODE = #{TYPE_CODE},
+			TYPE_VALUE = #{TYPE_VALUE},
+			UPDATE_USER = #{UPDATE_USER},
+			UPDATE_DATE = #{UPDATE_DATE},
+			STATUS = #{STATUS},
+			REMARK = #{REMARK}
+		where
+			BUTTONAUTH_CODE = #{BUTTONAUTH_CODE}
+	</update>
+	
+	<select id="getFunNameByMenuId" parameterType="pd" resultType="pd">
+		select FUN_ID,FUN_NAME from SYS_MENU_FUN
+		where FUN_GROUP_ID = (select MENU_GROUP_ID from SYS_MENU where MENU_ID = #{RESO_ID})
+	</select>
+	
+	<update id="updateStatus" parameterType="pd">
+		update <include refid="tableName"></include> 
+		set
+			STATUS = #{STATUS},
+			DELETE_USER = #{DELETE_USER},
+			DELETE_DATE = #{DELETE_DATE}
+		where
+			BUTTONAUTH_CODE = #{BUTTONAUTH_CODE}
+	</update>
+	
+	<select id="getBuAuByComMenuId" parameterType="pd" resultType="pd">
+		select 	
+				FUN_CODE,
+				FUN_NAME,
+				TYPE_CODE,
+				TYPE_VALUE
+		from FIN_SYS_BUTTON_AUTH 
+		where COMPANY = #{COMPANY} and RESO_ID = #{RESO_ID} and STATUS = 'Y'
+		group by FUN_CODE,FUN_NAME,TYPE_CODE,TYPE_VALUE
+	</select>
+	
+</mapper>

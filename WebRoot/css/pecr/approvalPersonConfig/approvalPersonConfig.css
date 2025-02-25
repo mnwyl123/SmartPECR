@@ -1,0 +1,46 @@
+/**
+ * 公共样式表
+ * 网页布局
+ */
+.menu-bar{
+	width: 580px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 40px;
+}
+.search-btn{
+	display: block;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	cursor: pointer;
+}
+.menu-box{
+	width: 578px;
+	position: absolute;
+	left: 0;
+	top: 45px;
+	bottom: 0;
+	border: 1px solid #e6e6e6;
+	overflow: auto;
+}
+.footer-btn{
+	width: 580px;
+	text-align: right;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+}
+.ztree-control{
+	padding: 10px 10px 5px;
+}
+.ztree-control span{
+	color: #588fd0;
+	font-size: 14px;
+	vertical-align: middle;
+}

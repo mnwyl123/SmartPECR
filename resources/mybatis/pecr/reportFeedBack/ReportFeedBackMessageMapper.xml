@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReportFeedBackMessageMapper">
+
+	 <resultMap type="com.dcits.supervise.pecr.generateReport.entity.ReportAndBackMessageEnt" id="ReportMessageMap">
+		<result property="report_message_id" column="REPORT_MESSAGE_ID" />
+		<result property="report_message_file_name" column="REPORT_MESSAGE_FILE_NAME" />
+		<result property="report_message_type" column="REPORT_MESSAGE_TYPE" />
+		<result property="report_message_status" column="REPORT_MESSAGE_STATUS" />
+		<result property="txt_report_message_file_path" column="TXT_REPORT_MESSAGE_FILE_PATH" />
+		<result property="zip_report_message_file_path" column="ZIP_REPORT_MESSAGE_FILE_PATH" />
+		<result property="enc_report_message_file_path" column="ENC_REPORT_MESSAGE_FILE_PATH" />
+		<result property="abnorm_reportmessage_filepath" column="ABNORM_REPORTMESSAGE_FILEPATH" />
+		<result property="record_num" column="RECORD_NUM" />
+		<result property="create_time" column="CREATE_TIME" />
+		<result property="create_success_time" column="CREATE_SUCCESS_TIME" />
+		<result property="report_time" column="REPORT_TIME" />
+		<result property="operator_user" column="OPERATOR_USER" />
+		<result property="org_code" column="ORG_CODE" />
+		<result property="description" column="DESCRIPTION" />
+		<result property="feedback_message_file_name" column="FEEDBACK_MESSAGE_FILE_NAME"   />
+		<result property="feedback_message_create_time" column="FEEDBACK_MESSAGE_CREATE_TIME" />
+		<result property="feedback_message_rec_time" column="FEEDBACK_MESSAGE_REC_TIME"    />
+		<result property="feedback_message_identify" column="FEEDBACK_MESSAGE_IDENTIFY"    />
+		<result property="feedback_message_file_path" column="FEEDBACK_MESSAGE_FILE_PATH"   />
+		<result property="fk_success_number" column="FK_SUCCESS_NUMBER" />
+		<result property="fk_fail_number" column="FK_FAIL_NUMBER" /> 
+		<result property="company" column="COMPANY" /> 
+	</resultMap> 
+	
+	<resultMap type="com.dcits.supervise.pecr.feedbackreport.entity.FeedBackReportErrorMessage" id="feedBackErrorMessageMap">
+		<result property="feedBackReportErrorMessId" column="FEED_BACK_REPORT_ERROR_MESS_ID" />
+		<result property="feedBackReportCodeId" column="FEED_BACK_REPORT_CODE_ID" />
+		<result property="errorMessage" column="ERROR_MESSAGE" />
+		<result property="recordId" column="RECORD_ID" />
+		<result property="reportMessageId" column="REPORT_MESSAGE_ID" />
+		<result property="reportMessageType" column="REPORT_MESSAGE_TYPE" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="reportMessageName" column="REPORT_MESSAGE_NAME" />
+		<result property="feedBackReportName" column="FEED_BACK_REPORT_NAME" />
+		<result property="fbCode" column="FB_CODE" />
+		<result property="fbTag" column="FB_TAG" />
+		<result property="recordBsId" column="RECORDBSID" />
+		<result property="isCheck" column="IS_CHECK" />
+	</resultMap> 
+	
+	<resultMap type="com.dcits.supervise.pecr.feedbackreport.entity.FeedBackReportCode" id="reportFeedCode">
+		<result property="feedBackReportCodeId"              	column="FEED_BACK_REPORT_CODE_ID"               />
+		<result property="fbCode"              	column="FB_CODE"               />
+		<result property="fbTag"              	column="FB_TAG"               />
+		<result property="message"              	column="MESSAGE"               />
+	</resultMap>
+
+	<update id="UpdateBusinessStateByCondition" parameterType="map">
+		update 
+		<if test=' table_name !=null and table_name !="" '>
+			${table_name}
+		</if>
+		set BUSINESS_STATES = #{BUSINESS_STATES}
+		where REPORT_MESSAGE_ID=#{reportName}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES !="" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+		<if test=' primaryKeyName != null and primaryKeyName !="" '>
+			<if test=' pk !=null and pk.size >0 '>
+				and(
+				<foreach collection="pk" item="item" separator="or">
+				${primaryKeyName} = #{item}
+				</foreach>
+				)
+			</if>
+		</if>
+	</update>
+	
+	
+	<!-- 历史表 功能舍弃   李继坤   -->
+	<update id="UpdateBusinessStateHistByCondition" parameterType="map">
+		update
+		<if test=' hist_table_name !=null and hist_table_name !="" '>
+			${hist_table_name}
+		</if>
+		set BUSINESS_STATES = #{BUSINESS_STATES}
+		where REPORT_MESSAGE_ID=#{reportName}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES !="" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+	</update>
+	
+	
+	
+	<update id="UpdateBusinessStateCheckByCondition" parameterType="map">
+		update
+		<if test=' table_name !=null and table_name !="" '>
+			${table_name}
+		</if>
+		set BUSINESS_STATES = #{BUSINESS_STATES}
+		where REPORT_MESSAGE_ID=#{reportName}
+		<if test=' OLD_BUSINESS_STATES !=null and OLD_BUSINESS_STATES !="" '>
+			and BUSINESS_STATES=#{OLD_BUSINESS_STATES}
+		</if>
+	</update>
+	
+	<insert id="moveData" parameterType="map" useGeneratedKeys="false">
+		insert into 
+		<if test=' hist_table_name !=null and  hist_table_name !="" '>
+			${hist_table_name}
+		</if>
+		select * from 
+		<if test=' table_name !=null and table_name !="" '>
+			${table_name}
+		</if>   a
+		 where a.BUSINESS_STATES = #{BUSINESS_STATES}
+		 and a.REPORT_MESSAGE_ID=#{reportName}
+	</insert>
+	
+	<select id="selectOneReportMessageByName" parameterType="String" resultMap="ReportMessageMap">
+		select 
+		REPORT_MESSAGE_ID,		
+		REPORT_MESSAGE_FILE_NAME,	
+		REPORT_MESSAGE_TYPE,		
+		REPORT_MESSAGE_STATUS,		
+		TXT_REPORT_MESSAGE_FILE_PATH,	
+		ZIP_REPORT_MESSAGE_FILE_PATH,	
+		ENC_REPORT_MESSAGE_FILE_PATH,	
+		ABNORM_REPORTMESSAGE_FILEPATH,	
+		RECORD_NUM,			
+		CREATE_TIME,			
+		CREATE_SUCCESS_TIME,		
+		REPORT_TIME,			
+		OPERATOR_USER,			
+		ORG_CODE,			
+		DESCRIPTION,			
+		FEEDBACK_MESSAGE_FILE_NAME, 	
+		FEEDBACK_MESSAGE_CREATE_TIME,	
+		FEEDBACK_MESSAGE_REC_TIME, 	
+		FEEDBACK_MESSAGE_IDENTIFY ,	
+		FEEDBACK_MESSAGE_FILE_PATH, 	
+		FK_SUCCESS_NUMBER, 		
+		FK_FAIL_NUMBER,
+		COMPANY		
+		 from report_message
+		where REPORT_MESSAGE_FILE_NAME=#{reportFileName}
+	</select>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="Object">
+		update report_message
+		set
+			REPORT_MESSAGE_FILE_NAME	=  #{report_message_file_name},
+			REPORT_MESSAGE_TYPE		=  #{report_message_type},
+			REPORT_MESSAGE_STATUS		=  #{report_message_status},
+			TXT_REPORT_MESSAGE_FILE_PATH	=  #{txt_report_message_file_path},
+			ZIP_REPORT_MESSAGE_FILE_PATH	=  #{zip_report_message_file_path},
+			ENC_REPORT_MESSAGE_FILE_PATH	=  #{enc_report_message_file_path},
+			ABNORM_REPORTMESSAGE_FILEPATH	=  #{abnorm_reportmessage_filepath},
+			RECORD_NUM			=  #{record_num},
+			CREATE_TIME			=  #{create_time},
+			CREATE_SUCCESS_TIME		=  #{create_success_time},
+			REPORT_TIME			=  #{report_time},
+			OPERATOR_USER			=  #{operator_user},
+			DESCRIPTION			=  #{description},
+			<if test=' feedback_message_file_name !=null and feedback_message_file_name !="" '>
+			FEEDBACK_MESSAGE_FILE_NAME 	=  #{feedback_message_file_name},
+			</if>
+			<if test=' feedback_message_create_time !=null and feedback_message_create_time !="" '>
+			FEEDBACK_MESSAGE_CREATE_TIME	=  #{feedback_message_create_time},
+			</if>
+			<if test=' feedback_message_rec_time !=null and feedback_message_rec_time !="" '>
+			FEEDBACK_MESSAGE_REC_TIME 	=  #{feedback_message_rec_time},
+			</if>
+			<if test=' feedback_message_identify !=null and feedback_message_identify !="" '>
+			FEEDBACK_MESSAGE_IDENTIFY 	=  #{feedback_message_identify},
+			</if>
+			<if test=' feedback_message_file_path !=null and feedback_message_file_path !="" '>
+			FEEDBACK_MESSAGE_FILE_PATH 	=  #{feedback_message_file_path},
+			</if>
+			<if test=' fk_success_number !=null and fk_success_number !="" '>
+			FK_SUCCESS_NUMBER 		=  #{fk_success_number},
+			</if>
+			<if test=' fk_fail_number !=null and fk_fail_number !="" '>
+			FK_FAIL_NUMBER		=  #{fk_fail_number},
+			</if>
+			ORG_CODE			=  #{org_code}
+		 where REPORT_MESSAGE_FILE_NAME	=  #{report_message_file_name}
+	</update>
+	
+	<insert id="saveFeedBackErrorList" parameterType="list" useGeneratedKeys="false">
+		insert into feed_back_report_err_message  
+			(
+			FEED_BACK_REPORT_ERROR_MESS_ID,
+			FEED_BACK_REPORT_CODE_ID,
+			ERROR_MESSAGE,
+			RECORD_ID,
+			REPORT_MESSAGE_ID,
+			REPORT_MESSAGE_TYPE,
+			CREATE_TIME,
+			REPORT_MESSAGE_NAME,
+			FEED_BACK_REPORT_NAME,
+			FB_CODE,
+			FB_TAG,
+			RECORDBSID,
+			IS_CHECK,
+			COMPANY,
+			IS_EDIT
+			)values
+			<foreach collection="list" item="item" index="index" separator="," >
+				(
+					'${item.feedBackReportErrorMessId}',
+					'${item.feedBackReportCodeId}',     
+					'${item.errorMessage}',             
+					'${item.recordId}',                 
+					'${item.reportMessageId}',          
+					'${item.reportMessageType}',    
+					'${item.createTime}',               
+					'${item.reportMessageName}',        
+					'${item.feedBackReportName}',       
+					'${item.fbCode}',     
+					'${item.fbTag}',
+					'${item.recordBsId}',
+					'${item.isCheck}',
+					'${item.company}',
+					'${item.isEdit}'
+				)          
+			</foreach>
+	</insert>
+	
+	
+	<select id="selectByCodeAndTag" parameterType="map" resultMap="reportFeedCode">
+		SELECT A.FEED_BACK_REPORT_CODE_ID, A.FB_CODE, A.FB_TAG, 
+		       <if test="_databaseId == 'mysql'">
+		           CASE WHEN IFNULL(A.MESSAGE,'999') != '999' THEN A.MESSAGE ELSE B.NAME END MESSAGE
+		       </if>
+		       <if test="_databaseId != 'mysql'">
+		           CASE WHEN NVL(A.MESSAGE,'999') != '999' THEN TO_CHAR(A.MESSAGE) ELSE B.NAME END MESSAGE
+		       </if>
+		  FROM FEED_BACK_REPORT_CODE A
+		  LEFT JOIN LABLE_TABLE B
+		    ON A.MAP_RULE_CODE = B.LABLE 
+			where 1 = 1
+			<if test=' FB_TAG != null and FB_TAG !="" '>
+				and A.FB_TAG=#{FB_TAG}
+			</if>
+			<if test=' FB_CODE != null  and FB_CODE !="" '>
+				and A.FB_CODE=#{FB_CODE}
+			</if>
+	</select>
+	
+	
+	<select id="findRecordIdByConditionMap" parameterType="map" resultType="String">
+		select ${pk} as recordId
+		from
+		${table_name}
+		where 1=1 
+		<foreach collection="list" item="item" index="index" separator="and">
+			${item.colum}=#{item.value}
+		</foreach>
+	</select>
+	
+	<select id="getFeedBackErrorMessageByPk" parameterType="map" resultMap="feedBackErrorMessageMap">
+		select * from feed_back_report_err_message 
+		where RECORD_ID = #{pk}
+	</select>
+	
+
+	<select id="getFeedBackErrorMessageByFilename" parameterType="map" resultType="pd">
+		SELECT A.FB_CODE, A.FB_TAG, B.${pkName} AS MASTER_PK_VAL,'${pkName}'  AS MASTER_PK, '${tableName}' AS MASTER_TABLE
+				,A.REPORT_MESSAGE_ID ,
+				<if test="_databaseId == 'oracle' or _databaseId == 'db2' ">
+				nvl(F.TABLE_NAME_CN,'') || '(' || nvl(E.TABLE_NAME,'') || ')：'||nvl(E.TABLE_COL,'') || ' ' || TO_CHAR(nvl(A.ERROR_MESSAGE,'') ) AS ERROR_MSG
+				,nvl(E.TABLE_COL,'') AS TABLE_COL,nvl(F.TABLE_NAME_CN,'') AS TABLE_NAME_CN,
+				</if>
+				<if test="_databaseId != 'db2' and _databaseId != 'oracle'">
+				CONCAT(IFNULL(F.TABLE_NAME_CN,'') , '(' , IFNULL(E.TABLE_NAME,'') , ')：' ,IFNULL(E.TABLE_COL,''),' ', IFNULL(A.ERROR_MESSAGE,'') ) AS ERROR_MSG
+				,IFNULL(E.TABLE_COL,'') AS TABLE_COL,IFNULL(F.TABLE_NAME_CN,'') AS TABLE_NAME_CN,
+				</if>
+				E.IS_MASTER,E.TABLE_NAME,E.TABLE_PK,B.COMPANY,F.TABLE_NAME_CN
+				,B.RPT_DATE
+		  FROM feed_back_report_err_message A
+		 INNER JOIN ${tableName} B
+		    ON A.RECORDBSID = B.REPORT_FILE_COLNUM
+		   AND A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID
+		   AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE
+		 LEFT JOIN feed_back_report_code C
+		 	ON A.FB_CODE = C.FB_CODE
+		   AND A.FB_TAG = C.FB_TAG
+		 LEFT JOIN lable_table D
+		    ON C.MAP_RULE_CODE = D.LABLE
+		 LEFT JOIN XMLTAGS_COLS_MAPPING E
+		   	ON A.FB_TAG = E.XML_TAG
+		   AND E.INF_REC_TYPE = #{reportMessageType}
+		 LEFT JOIN VALIDATE_TABLE F
+            ON E.TABLE_NAME = F.TABLE_NAME_EN
+		 WHERE A.REPORT_MESSAGE_NAME = #{reportFileName}
+		   AND A.REPORT_MESSAGE_TYPE = #{reportMessageType}
+		   <!-- AND A.FB_CODE NOT IN ('ABD000','ABD001','ABE000','CMR003','ABE008','ABE001','ABE004','CLD000','BLD000') -->
+	</select>
+	
+	<select id="getFeedBackErrorMessageByFilenameSP" parameterType="map" resultType="pd">
+		SELECT A.FB_CODE, A.FB_TAG, B.${pkName} AS MASTER_PK_VAL, '${pkName}'  AS MASTER_PK, '${tableName}' AS MASTER_TABLE
+				,A.REPORT_MESSAGE_ID ,
+				<if test="_databaseId == 'oracle' or _databaseId == 'db2' ">
+				nvl(F.TABLE_NAME_CN,'') || '(' || nvl(E.TABLE_NAME,'') || ')：' ||nvl(E.TABLE_COL,'')||' ' || TO_CHAR(nvl(A.ERROR_MESSAGE,'') ) AS ERROR_MSG
+				,nvl(E.TABLE_COL,'') AS TABLE_COL,nvl(F.TABLE_NAME_CN,'') AS TABLE_NAME_CN,
+				</if>
+				<if test="_databaseId != 'db2' and _databaseId != 'oracle'">
+				CONCAT(IFNULL(F.TABLE_NAME_CN,'') , '(' , IFNULL(E.TABLE_NAME,'') , ')：' ,IFNULL(E.TABLE_COL,''),' ', IFNULL(A.ERROR_MESSAGE,'') ) AS ERROR_MSG
+				,IFNULL(E.TABLE_COL,'') AS TABLE_COL,IFNULL(F.TABLE_NAME_CN,'') AS TABLE_NAME_CN,
+				</if>
+				E.IS_MASTER,E.TABLE_NAME,E.TABLE_PK,B.COMPANY
+				,B.RPT_DATE
+		  FROM feed_back_report_err_message A
+		 INNER JOIN ${tableName} B
+		    ON A.RECORDBSID = B.REPORT_FILE_COLNUM
+		   AND A.REPORT_MESSAGE_NAME = B.REPORT_MESSAGE_ID
+		   AND A.REPORT_MESSAGE_TYPE = B.INF_REC_TYPE
+		 LEFT JOIN feed_back_report_code C
+		 	ON A.FB_CODE = C.FB_CODE
+		 LEFT JOIN lable_table D
+		    ON C.MAP_RULE_CODE = D.LABLE
+		 LEFT JOIN XMLTAGS_COLS_MAPPING E
+		   	ON A.FB_TAG = E.XML_TAG
+		   AND E.INF_REC_TYPE = #{reportMessageType}
+		 LEFT JOIN VALIDATE_TABLE F
+            ON E.TABLE_NAME = F.TABLE_NAME_EN
+		 WHERE A.REPORT_MESSAGE_NAME = #{reportFileName}
+		   AND A.REPORT_MESSAGE_TYPE = #{reportMessageType}
+		   <!-- AND A.FB_CODE IN ('ABD000','ABD001','ABE000','CMR003','ABE008','ABE001','ABE004','CLD000','BLD000') -->
+	</select>
+	
+	<select id="findPKByMasterPK" parameterType="map" resultType="pd">
+		SELECT ${TABLE_PK} AS TABLE_PK_VAL FROM ${TABLE_NAME} WHERE ${MASTER_PK} = #{MASTER_PK_VAL}
+	</select>
+	
+	
+	<insert id="insertValidateErrorMessage" parameterType="list" useGeneratedKeys="false">
+		INSERT INTO VALIDATE_ERROR_MESSAGE (
+			ID,
+			TABLE_PK,
+			TABLE_NAME,
+			TABLE_FIELD,
+			ERROR_MSG,
+			CUR_DATE,
+			BUSINESS_PK,
+			TABLE_NAME_CN,
+			IS_MULTI_TABLE,
+			MASTER_TABLE_ID,
+			COMPANY
+		)values
+		<foreach collection="list" item="item" index="index" separator="," >
+				(
+					#{item.UUID},
+					#{item.TABLE_PK_VAL}, 
+					<if test=' item.TABLE_NAME !=null '>
+					#{item.TABLE_NAME}, 
+					</if>   
+					 <if test=' item.TABLE_NAME ==null '>
+					'', 
+					</if>
+					<if test=' item.TABLE_COL !=null '>
+					#{item.TABLE_COL},    
+					</if>   
+					 <if test=' item.TABLE_COL ==null '>
+					'', 
+					</if>
+					#{item.ERROR_MSG},          
+					#{item.RPT_DATE},        
+					#{item.MASTER_PK}, 
+					<if test=' item.TABLE_NAME_CN !=null '>
+					#{item.TABLE_NAME_CN}, 
+					</if>   
+					 <if test=' item.TABLE_NAME_CN ==null '>
+					'', 
+					</if>     
+					'N',
+					#{item.MASTER_PK_VAL},       
+					#{item.COMPANY}
+				)          
+			</foreach>
+	</insert>
+	
+	<insert id="moveRealTableData" parameterType="map" useGeneratedKeys="false">
+		insert into 
+			${realTableHist}
+			select * from 
+				${realTable}
+			where ${tablePK} in 
+				(select ${tablePK} from ${table_name} where BUSINESS_STATES = #{BUSINESS_STATES}  and REPORT_MESSAGE_ID=#{reportName})
+	</insert>
+	
+	<delete id="deleteRealTableData" parameterType="map">
+		delete from ${realTable} where ${tablePK} in 
+				(select ${tablePK} from  ${realTableHist} where ${tablePK} in 
+					(select ${tablePK} from  ${table_name} 
+					where BUSINESS_STATES = #{BUSINESS_STATES} and REPORT_MESSAGE_ID=#{reportName})
+				 )
+	
+	</delete>
+	
+	<delete id="deleteTableData" parameterType="map">
+		delete from ${table_name} where BUSINESS_STATES = #{BUSINESS_STATES}  and REPORT_MESSAGE_ID=#{reportName} 
+			and ${tablePK} in (select ${tablePK} from ${hist_table_name} where BUSINESS_STATES = #{BUSINESS_STATES}  and REPORT_MESSAGE_ID=#{reportName})
+	</delete>
+	
+</mapper>

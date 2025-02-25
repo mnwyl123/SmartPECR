@@ -1,0 +1,1 @@
+reportViewer.crossDomain.jsp: just html go through the security proxy. Resources such as css, js, jar is directly from bicenter web server 

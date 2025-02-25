@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EntIncomeAndExpenseStatemeBsMapper">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EntIncomeAndExpenseStatemeBs" id="guarAcctInfoResultMap">
+		<result column="ELA_INCOME_AND_EXPENSE_STAT_ID" property="elaIncomeAndExpenseStatId" />
+		<result column="INF_REC_TYPE" property="infRecType" />
+		<result column="ENT_NAME" property="entName" />
+		<result column="ENT_CERT_TYPE" property="entCertType" />
+		<result column="ENT_CERT_NUM" property="entCertNum" />
+		<result column="RPT_DATE" property="rptDate" />
+		<result column="SHEET_YEAR" property="sheetYear" />
+		<result column="SHEET_TYPE" property="sheetType" />
+		<result column="SHEET_TYPE_DIVIDE" property="sheetTypeDivide" />
+		<result column="AUDIT_FIRM_NAME" property="auditFirmName" />
+		<result column="AUDITOR_NAME" property="auditorName" />
+		<result column="AUDIT_TIME" property="auditTime" />
+		<result column="CIMOC" property="cimoc" />
+		<result column="RPT_DATE_CODE" property="rptDateCode" />
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" />
+		<result column="OPERATOR_USER" property="operatorUser" />
+		<result column="ORG_NAME" property="orgName" />
+		<result column="ORG_CODE" property="orgCode" />
+		<result column="BUSINESS_STATES" property="businessStates" />
+		<result column="REJECT_REASON" property="rejectReason" />
+		<result column="IS_FILTER" property="isFilter" />
+		<result column="REPORT_MESSAGE_ID" property="reportMessageId" />
+	</resultMap>
+
+	<!--基础段 -->
+	<select id="getlistPage" parameterType="page" resultMap="guarAcctInfoResultMap">
+		select
+			 ELA_INCOME_AND_EXPENSE_STAT_ID 
+			  ,INF_REC_TYPE 
+			  ,ENT_NAME 
+			  ,ENT_CERT_TYPE 
+			  ,ENT_CERT_NUM 
+			  ,RPT_DATE 
+			  ,SHEET_YEAR 
+			  ,SHEET_TYPE 
+			  ,SHEET_TYPE_DIVIDE 
+			  ,AUDIT_FIRM_NAME 
+			  ,AUDITOR_NAME 
+			  ,AUDIT_TIME 
+			  ,CIMOC 
+			  ,RPT_DATE_CODE 
+			  ,LAST_UPDATE_TIME 
+			  ,OPERATOR_USER 
+			  ,ORG_NAME 
+			  ,ORG_CODE 
+			  ,BUSINESS_STATES 
+			  ,REJECT_REASON 
+			  ,IS_FILTER 
+			  ,REPORT_MESSAGE_ID
+			  ,COMPANY
+		from E_INCOME_EXPENSE_bs
+		<if test="pd.managerId != null and pd.managerId != ''">
+			LEFT JOIN PECR.sys_l_c_a_m_m M
+			ON E_INCOME_EXPENSE_bs.ENT_NAME = M.CUST_NAME
+			AND E_INCOME_EXPENSE_bs.ENT_CERT_TYPE = M.CUST_ID_TYPE
+			AND E_INCOME_EXPENSE_bs.ENT_CERT_NUM = M.CUST_ID_NUM
+		</if>
+		<where>
+			<if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+			<if test="pd.rptDate != null and pd.rptDate != ''">
+		         and rpt_date = #{pd.rptDate}
+		    </if>
+		    <if test="pd.entName != null and pd.entName != ''">
+		   	  	and ent_name like '%${pd.entName}%'
+		   	</if>
+		   	<if test="pd.entCertType != null and pd.entCertType != ''">
+		   	  	and ent_cert_type = #{pd.entCertType}
+		   	</if>
+		   	<if test="pd.entCertNum != null and pd.entCertNum != ''">
+		   	  	and ent_cert_num like '%${pd.entCertNum}%'
+		   	</if>
+		   	<if test="pd.businessStates != null and pd.businessStates != ''">
+		   	  	and business_states = #{pd.businessStates}
+		   	</if>
+		   	<if test="pd.managerId != null and pd.managerId != ''">
+		   	  	and M.MANAGER_ID = #{pd.managerId}
+		   		AND M.DATA_TYPE = '2'
+		   		AND M.DATA_LEVEL = '6'
+		   		AND M.END_DATE = '2099-12-31'
+		   	</if>
+		   	  	and COMPANY = #{pd.COMPANY}
+		</where>
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 基本信息段 -->
+	<select id="getAcctInfSgmtById" parameterType="pd" resultType="pd">
+	select
+		 ELA_INCOME_AND_EXPENSE_STAT_ID 
+			  ,INF_REC_TYPE 
+			  ,ENT_NAME 
+			  ,ENT_CERT_TYPE 
+			  ,ENT_CERT_NUM 
+			  ,RPT_DATE 
+			  ,SHEET_YEAR 
+			  ,SHEET_TYPE 
+			  ,SHEET_TYPE_DIVIDE 
+			  ,AUDIT_FIRM_NAME 
+			  ,AUDITOR_NAME 
+			  ,AUDIT_TIME 
+			  ,CIMOC 
+			  ,RPT_DATE_CODE 
+			  ,LAST_UPDATE_TIME 
+			  ,OPERATOR_USER 
+			  ,ORG_NAME 
+			  ,ORG_CODE 
+			  ,BUSINESS_STATES 
+			  ,REJECT_REASON 
+			  ,IS_FILTER 
+			  ,REPORT_MESSAGE_ID
+			  ,COMPANY
+		from E_INCOME_EXPENSE_bs
+		  where ELA_INCOME_AND_EXPENSE_STAT_ID = #{elaIncomeAndExpenseStatId}
+		  	and COMPANY = #{COMPANY}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录 相关还款责任人段 -->
+	<select id="getRepymtInfSgmtById" parameterType="pd" resultType="pd">
+		 select ELB_INCOME_AND_EXPENSE_STAT_ID
+				,CURRENT_FINANCIAL_SUBSIDY_CARR
+				,FINANCIAL_SUBSIDY_REVENUE
+				,UNDERTAKINGS_EXPENDITURE_FINAN
+				,CURRENT_UNDERTAKINGS_CARRIED_O
+				,UNDERTAKINGS_CLASS_REVENUE
+				,UNDERTAKINGS_REVENUE
+				,SUPERIOR_SUBSIDY_REVENUE
+				,REVENUE_TURNED_OVER_BY_SUBSIDI
+				,OTHER_REVENUE
+				,DONATION_INCOME
+				,UNDERTAKINGS_CLASS_EXPENDITURE
+				,UNDERTAKINGS_EXPENDITURE_NON_F
+				,PAYMENT_TO_THE_HIGHER_AUTHORIT
+				,GRANT_TO_THE_AUXILIARY_ORGANIZ
+				,OTHER_EXPENDITURE
+				,CURRENT_OPERATING_BALANCE
+				,OPERATING_REVENUE
+				,OPERATING_EXPENDITURE
+				,OPERATING_BALANCE_MADE_UP_FOR_
+				,NON_FINANCIAL_SUBSIDY_CARRIED_
+				,NON_FINANCIAL_AID_CARRIED_OVER
+				,NON_FINANCIAL_AID_BALANCE_THIS
+				,ENTERPRISEINCOME_TAX_PAYABLE
+				,SPECIAL_FUNDS_TO_EXTRACT
+				,PUBLIC_FUND_TURNED_INTO
+				,ELA_INCOME_AND_EXPENSE_STAT_ID
+				,COMPANY
+		   from E_INCOME_EXPENSE
+		  where ELA_INCOME_AND_EXPENSE_STAT_ID = #{elaIncomeAndExpenseStatId}
+	</select>
+
+	<!-- 查询 基础段 主键是否存在 -->
+	<select id="getAcctBsSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_INCOME_EXPENSE_bs
+	     where ELA_INCOME_AND_EXPENSE_STAT_ID = #{elaIncomeAndExpenseStatId}
+	</select>
+	
+	<!-- 新增    基础段 -->
+	<insert id="insertAcctBsSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_INCOME_EXPENSE_bs(
+					ELA_INCOME_AND_EXPENSE_STAT_ID 
+				  ,inf_rec_type 
+				  ,ent_name 
+				  ,ent_cert_type 
+				  ,ent_cert_num 
+				  ,sheet_year 
+				  ,sheet_type 
+				  ,sheet_type_divide 
+				  ,audit_firm_name 
+				  ,auditor_name 
+				  ,audit_time 
+				  ,org_code
+				  ,cimoc 
+				  ,rpt_date_code 
+				  ,rpt_date 
+				  ,is_filter 
+				  ,business_states
+				  ,COMPANY
+				  )
+		    values (#{elaIncomeAndExpenseStatId},
+					#{infRecType},
+					#{entName},
+					#{entCertType},
+					#{entCertNum},
+					#{sheetYear},
+					#{sheetType},
+					#{sheetTypeDivide},
+					#{auditFirmName},
+					#{auditorName},
+					#{auditTime},
+					#{orgCode},
+					#{cimoc},
+					#{rptDateCode},
+					#{rptDate},
+					#{isFilter},
+					'11',
+					#{COMPANY})
+		]]>
+	</insert>
+
+	<!-- 更新    基础段 -->
+	<update id="updateAcctBsSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_INCOME_EXPENSE_bs
+			set 
+				ent_name = #{entName, jdbcType=VARCHAR},
+				ent_cert_type = #{entCertType, jdbcType=VARCHAR},
+				ent_cert_num = #{entCertNum, jdbcType=CHAR},
+				sheet_year = #{sheetYear, jdbcType=VARCHAR},
+				sheet_type = #{sheetType, jdbcType=VARCHAR},
+				sheet_type_divide = #{sheetTypeDivide, jdbcType=VARCHAR},
+				audit_firm_name = #{auditFirmName, jdbcType=VARCHAR},
+				auditor_name = #{auditorName, jdbcType=VARCHAR},
+				audit_time =#{auditTime, jdbcType=VARCHAR},
+				org_code = #{orgCode, jdbcType=VARCHAR},
+				cimoc = #{cimoc, jdbcType=VARCHAR},
+				rpt_date_code = #{rptDateCode, jdbcType=VARCHAR},
+				is_filter = #{isFilter, jdbcType=VARCHAR},
+				rpt_date = #{rptDate, jdbcType=VARCHAR},
+				business_states='11'
+		  WHERE ELA_INCOME_AND_EXPENSE_STAT_ID = #{elaIncomeAndExpenseStatId}
+		  	and COMPANY = #{COMPANY}
+		  ]]>
+	</update>
+
+	<!-- 删除基础段 -->
+	<delete id="delAcctBsSgmtById" parameterType="map">
+		delete from E_INCOME_EXPENSE_bs
+		 where ELA_INCOME_AND_EXPENSE_STAT_ID = #{elaIncomeAndExpenseStatId}
+		   and COMPANY = #{COMPANY} 
+	</delete>
+
+	
+	<!-- 查询 基本信息段 主键是否存在 -->
+	<select id="getAcctInfoSgmtKey" parameterType="map" resultType="int">
+		select count(1) 
+		  from E_INCOME_EXPENSE
+	     where ELB_INCOME_AND_EXPENSE_STAT_ID = #{elbIncomeAndExpenseStatId} 
+	       and ELA_INCOME_AND_EXPENSE_STAT_ID = #{elaIncomeAndExpenseStatId}
+	</select>
+	
+	<!-- 新增  基本信息段 -->
+	<insert id="insertAcctInfoSgmt" parameterType="map">
+		<![CDATA[
+		insert into E_INCOME_EXPENSE(
+					ELB_INCOME_AND_EXPENSE_STAT_ID
+					,CURRENT_FINANCIAL_SUBSIDY_CARR
+					,CURRENT_UNDERTAKINGS_CARRIED_O
+					,CURRENT_OPERATING_BALANCE
+					,OPERATING_BALANCE_MADE_UP_FOR_
+					,NON_FINANCIAL_SUBSIDY_CARRIED_
+					,NON_FINANCIAL_AID_BALANCE_THIS
+					,PUBLIC_FUND_TURNED_INTO
+					,FINANCIAL_SUBSIDY_REVENUE
+					,UNDERTAKINGS_EXPENDITURE_FINAN
+					,UNDERTAKINGS_CLASS_REVENUE
+					,UNDERTAKINGS_REVENUE
+					,SUPERIOR_SUBSIDY_REVENUE
+					,REVENUE_TURNED_OVER_BY_SUBSIDI
+					,OTHER_REVENUE
+					,DONATION_INCOME
+					,UNDERTAKINGS_CLASS_EXPENDITURE
+					,UNDERTAKINGS_EXPENDITURE_NON_F
+					,PAYMENT_TO_THE_HIGHER_AUTHORIT
+					,GRANT_TO_THE_AUXILIARY_ORGANIZ
+					,OTHER_EXPENDITURE
+					,OPERATING_REVENUE
+					,OPERATING_EXPENDITURE
+					,NON_FINANCIAL_AID_CARRIED_OVER
+					,ENTERPRISEINCOME_TAX_PAYABLE
+					,SPECIAL_FUNDS_TO_EXTRACT
+					,ELA_INCOME_AND_EXPENSE_STAT_ID
+					,COMPANY)
+		    values (#{elbIncomeAndExpenseStatId},
+					#{currentFinancialSubsidyCarr},
+					#{currentUndertakingsCarriedO},
+					#{currentOperatingBalance},
+					#{operatingBalanceMadeUpFor},
+					#{nonFinancialSubsidyCarried},
+					#{nonFinancialAidBalanceThis},
+					#{publicFundTurnedInto},
+					#{financialSubsidyRevenue},
+					#{undertakingsExpenditureFinan},
+					#{undertakingsClassRevenue},
+					#{undertakingsRevenue},
+					#{superiorSubsidyRevenue},
+					#{revenueTurnedOverBySubsidi},
+					#{otherRevenue},
+					#{donationIncome},
+					#{undertakingsClassExpenditure},
+					#{undertakingsExpenditureNonF},
+					#{paymentToTheHigherAuthorit},
+					#{grantToTheAuxiliaryOrganiz},
+					#{otherExpenditure},
+					#{operatingRevenue},
+					#{operatingExpenditure},
+					#{nonFinancialAidCarriedOver},
+					#{enterpriseincomeTaxPayable},
+					#{specialFundsToExtract},
+					#{elaIncomeAndExpenseStatId},
+					#{COMPANY}
+				)
+		]]>
+	</insert>
+	
+	<!-- 更新   基本信息段 -->
+	<update id="updateAcctInfoSgmt" parameterType="map">
+		 <![CDATA[ 
+		 update E_INCOME_EXPENSE
+			set 
+			CURRENT_FINANCIAL_SUBSIDY_CARR	=	#{currentFinancialSubsidyCarr},
+			CURRENT_UNDERTAKINGS_CARRIED_O	=	#{currentUndertakingsCarriedO},
+			CURRENT_OPERATING_BALANCE	=	#{currentOperatingBalance},
+			OPERATING_BALANCE_MADE_UP_FOR_	=	#{operatingBalanceMadeUpFor},
+			NON_FINANCIAL_SUBSIDY_CARRIED_	=	#{nonFinancialSubsidyCarried},
+			NON_FINANCIAL_AID_BALANCE_THIS	=	#{nonFinancialAidBalanceThis},
+			PUBLIC_FUND_TURNED_INTO	=	#{publicFundTurnedInto},
+			FINANCIAL_SUBSIDY_REVENUE	=	#{financialSubsidyRevenue},
+			UNDERTAKINGS_EXPENDITURE_FINAN	=	#{undertakingsExpenditureFinan},
+			UNDERTAKINGS_CLASS_REVENUE	=	#{undertakingsClassRevenue},
+			UNDERTAKINGS_REVENUE	=	#{undertakingsRevenue},
+			SUPERIOR_SUBSIDY_REVENUE	=	#{superiorSubsidyRevenue},
+			REVENUE_TURNED_OVER_BY_SUBSIDI	=	#{revenueTurnedOverBySubsidi},
+			OTHER_REVENUE	=	#{otherRevenue},
+			DONATION_INCOME	=	#{donationIncome},
+			UNDERTAKINGS_CLASS_EXPENDITURE	=	#{undertakingsClassExpenditure},
+			UNDERTAKINGS_EXPENDITURE_NON_F	=	#{undertakingsExpenditureNonF},
+			PAYMENT_TO_THE_HIGHER_AUTHORIT	=	#{paymentToTheHigherAuthorit},
+			GRANT_TO_THE_AUXILIARY_ORGANIZ	=	#{grantToTheAuxiliaryOrganiz},
+			OTHER_EXPENDITURE	=	#{otherExpenditure},
+			OPERATING_REVENUE	=	#{operatingRevenue},
+			OPERATING_EXPENDITURE	=	#{operatingExpenditure},
+			NON_FINANCIAL_AID_CARRIED_OVER	=	#{nonFinancialAidCarriedOver},
+			ENTERPRISEINCOME_TAX_PAYABLE	=	#{enterpriseincomeTaxPayable},
+			SPECIAL_FUNDS_TO_EXTRACT	=	#{specialFundsToExtract}
+		  where ELB_INCOME_AND_EXPENSE_STAT_ID = #{elbIncomeAndExpenseStatId} 
+	       and ELA_INCOME_AND_EXPENSE_STAT_ID = #{elaIncomeAndExpenseStatId}
+		  ]]>
+	</update>
+	
+	<!-- 删除  基本信息段 -->
+	<delete id="delAcctInfSgmtById" parameterType="map">
+		delete from E_INCOME_EXPENSE
+		 where ELA_INCOME_AND_EXPENSE_STAT_ID = #{elaIncomeAndExpenseStatId}
+	</delete>
+	<!--删除 基本信息段  -->
+	<delete id="delAcctInfoSgmt" parameterType="map">
+		delete from E_INCOME_EXPENSE
+		 where ELB_INCOME_AND_EXPENSE_STAT_ID = #{elbIncomeAndExpenseStatId} 
+	</delete>
+</mapper>

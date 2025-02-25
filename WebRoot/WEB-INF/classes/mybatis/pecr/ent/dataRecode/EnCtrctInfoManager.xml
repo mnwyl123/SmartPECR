@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EnCtrctInfoManager">
+    <resultMap type="map" id="ctrctBsSgmtMap">
+        <result column="EGA_CTRCT_BS_SGMT_ID" property="egaCtrctBsSgmtId" />
+        <result column="INF_REC_TYPE" property="infRecType" />
+        <result column="CONTRACT_CODE" property="contractCode" />
+        <result column="RPT_DATE" property="rptDate" />
+        <result column="RPT_DATE_CODE" property="rptDateCode" />
+        <result column="NAME" property="name" />
+        <result column="ID_TYPE" property="idType" />
+        <result column="ID_NUM" property="idNum" />
+        <result column="MNGMT_ORG_CODE" property="mngmtOrgCode" />
+        <result column="LAST_UPDATE_TIME" property="lastUpdateTime" />
+        <result column="OPERATOR_USER" property="operatorUser" />
+        <result column="ORG_NAME" property="orgName" />
+        <result column="ORG_CODE" property="orgCode" />
+        <result column="BUSINESS_STATES" property="businessStates" />
+        <result column="REJECT_REASON" property="rejectReason" />
+        <result column="IS_FILTER" property="isFilter" />
+        <result column="MDFC_SGMT_CODE" property="mdfcSgmtCode" />
+        <result column="REPORT_MESSAGE_ID" property="reportMessageId" />
+        <result column="EXTEND1" property="extend1" />
+        <result column="EXTEND2" property="extend2" />
+        <result column="EXTEND3" property="extend3" />
+    </resultMap>
+    <!-- 借贷信息 基础段 -->
+    <select id="ctrctBsSgmtlistPage" parameterType="page" resultMap="ctrctBsSgmtMap">
+        select  EGA_CTRCT_BS_SGMT_ID,
+                INF_REC_TYPE,
+                CONTRACT_CODE,
+                RPT_DATE,
+                RPT_DATE_CODE,
+                NAME,
+                ID_TYPE,
+                ID_NUM,
+                MNGMT_ORG_CODE,
+                LAST_UPDATE_TIME,
+                OPERATOR_USER,
+                ORG_NAME,
+                ORG_CODE,
+                BUSINESS_STATES,
+                REJECT_REASON,
+                IS_FILTER,
+                MDFC_SGMT_CODE,
+                REPORT_MESSAGE_ID,
+                EXTEND1,
+                EXTEND2,
+                EXTEND3,
+                COMPANY
+        from E_CTRCT_BS
+        <if test="pd.managerId != null and pd.managerId != ''">
+		        LEFT JOIN PECR.sys_l_c_a_m_m M
+				ON E_CTRCT_BS.CONTRACT_CODE = M.ACCT_NUM
+		</if>
+        <where>
+            <if test='pd.queryType == "APPLY"'>
+				and business_states in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and business_states in ('20')
+			</if>
+			<if test="pd.name != null and pd.name != ''">
+		         and name like '%${pd.name}%'
+		    </if>
+		    <if test="pd.idNum != null and pd.idNum!= ''">
+		         and id_num like '%${pd.idNum}%'
+		    </if>
+			<if test="pd.rptDate != null and pd.rptDate != ''">
+		         and rpt_date = #{pd.rptDate}
+		    </if>
+		    <if test="pd.contractCode != null and pd.contractCode != ''">
+		   	  	and CONTRACT_CODE like '%${pd.contractCode}%'
+		   	</if>
+		   	<if test="pd.businessStates != null and pd.businessStates != ''">
+		   	  	and business_states = #{pd.businessStates}
+		   	</if>
+		   	<if test="pd.managerId != null and pd.managerId != ''">
+		   	  	and M.MANAGER_ID = #{pd.managerId}
+		   		AND M.DATA_TYPE = '2'
+		   		AND M.DATA_LEVEL = '4'
+		   		AND M.END_DATE = '2099-12-31'
+		   	</if>
+		   		and COMPANY = #{pd.COMPANY}
+		   		and INF_REC_TYPE = '420'
+        </where>
+    </select>
+     <!-- 企业授信协议按段更正 基础段 -->
+    <select id="getCtrctBsSgmtByIdType" parameterType="pd" resultType="map">
+        SELECT  EGA_CTRCT_BS_SGMT_ID,
+                INF_REC_TYPE,
+                CONTRACT_CODE,
+                RPT_DATE,
+                RPT_DATE_CODE,
+                NAME,
+                ID_TYPE,
+                ID_NUM,
+                MNGMT_ORG_CODE,
+                LAST_UPDATE_TIME,
+                OPERATOR_USER,
+                ORG_NAME,
+                ORG_CODE,
+                BUSINESS_STATES,
+                REJECT_REASON,
+                IS_FILTER,
+                MDFC_SGMT_CODE,
+                REPORT_MESSAGE_ID,
+                EXTEND1,
+                EXTEND2,
+                EXTEND3,
+                COMPANY
+          from E_CTRCT_BS
+          where name = #{name}
+            and id_Type = #{idType}
+            and id_num = #{idNum}
+            and company =#{COMPANY}
+            and INF_REC_TYPE = '422'
+            and MDFC_SGMT_CODE = #{mdfcSgmtCode}
+    </select>
+     <!-- 企业授信协议按段更正 获取基础段历史表主键 -->
+    <select id="getEgaCtrctBsSgmtId" parameterType="page" resultType="String">
+        SELECT  EGA_CTRCT_BS_SGMT_ID
+          from  E_CTRCT_BS
+          where name = #{pd.name}
+            and id_type = #{pd.idType}
+            and id_num = #{pd.idNum}
+            and company = #{pd.COMPANY}
+            <!-- and BUSINESS_STATES = #{pd.businessStates} --><!-- 上线之后放开，并把表改成对应的历史表 -->
+    </select>
+
+    <!-- 详情或者修改 查询指定记录 基础段 -->
+    <select id="getCtrctBsSgmtById" parameterType="pd" resultType="map">
+        SELECT  EGA_CTRCT_BS_SGMT_ID,
+                INF_REC_TYPE,
+                CONTRACT_CODE,
+                RPT_DATE,
+                RPT_DATE_CODE,
+                NAME,
+                ID_TYPE,
+                ID_NUM,
+                MNGMT_ORG_CODE,
+                LAST_UPDATE_TIME,
+                OPERATOR_USER,
+                ORG_NAME,
+                ORG_CODE,
+                BUSINESS_STATES,
+                REJECT_REASON,
+                IS_FILTER,
+                MDFC_SGMT_CODE,
+                REPORT_MESSAGE_ID,
+                EXTEND1,
+                EXTEND2,
+                EXTEND3,
+                COMPANY
+           from E_CTRCT_BS
+          where EGA_CTRCT_BS_SGMT_ID = #{egaCtrctBsSgmtId}
+            and COMPANY = #{COMPANY}
+    </select>
+
+    <!-- 查询 基础段 主键是否存在 -->
+    <select id="getCtrctBsSgmtKey" parameterType="map" resultType="int">
+        select count(1)
+        from E_CTRCT_BS
+        where EGA_CTRCT_BS_SGMT_ID = #{egaCtrctBsSgmtId}
+    </select>
+    
+    <!-- 新增    企业授信协议按段更正基础段 -->
+    <insert id="saveCtrctBsSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into E_CTRCT_BS(
+					EGA_CTRCT_BS_SGMT_ID,
+					inf_rec_type,
+					contract_code,
+					rpt_date,
+					RPT_DATE_CODE,
+					name,
+					id_type,
+					id_num,
+					mngmt_org_code,
+					operator_user,
+					org_code,
+					business_states,
+					is_filter,
+					MDFC_SGMT_CODE,
+					COMPANY)
+		    select  #{egaCtrctBsSgmtId},
+					'422',
+					contract_code,
+					rpt_date,
+					RPT_DATE_CODE,
+					name,
+					id_type,
+					id_num,
+					mngmt_org_code,
+					#{operator_user},
+					org_code,
+					'11',
+					is_filter,
+					#{mdfcSgmtCode},
+					company
+			from E_CTRCT_BS_HIST
+			where EGA_CTRCT_BS_SGMT_ID = #{oldEgaCtrctBsSgmtId}
+			and company= #{COMPANY}
+    </insert>
+
+    <!-- 新增    基础段 -->
+    <insert id="insertCtrctBsSgmt" parameterType="map">
+        <![CDATA[
+		insert into E_CTRCT_BS(
+					EGA_CTRCT_BS_SGMT_ID,
+					inf_rec_type,
+					contract_code,
+					rpt_date,
+					rpt_date_code,
+					name,
+					id_type,
+					id_num,
+					mngmt_org_code,
+					operator_user,
+					org_code,
+					business_states,
+					is_filter,
+					MDFC_SGMT_CODE,
+					COMPANY)
+		    values (#{egaCtrctBsSgmtId, jdbcType=VARCHAR},
+					#{infRecType, jdbcType=VARCHAR},
+					#{contractCode, jdbcType=VARCHAR},
+					#{rptDate, jdbcType=VARCHAR},
+					#{rptDateCode, jdbcType=CHAR},
+					#{name, jdbcType=VARCHAR},
+					#{idType, jdbcType=VARCHAR},
+					#{idNum, jdbcType=VARCHAR},
+					#{mngmtOrgCode, jdbcType=VARCHAR},
+					#{operationUser},
+					#{orgCode},
+					'11',
+					#{isFilter},
+					#{mdfcSgmtCode},
+					#{COMPANY}
+				)
+		]]>
+    </insert>
+
+    <!-- 更新    基础段 -->
+    <update id="updateCtrctBsSgmt" parameterType="map">
+        <![CDATA[
+		 update E_CTRCT_BS
+			set inf_rec_type = #{infRecType, jdbcType=VARCHAR},
+				contract_code = #{contractCode, jdbcType=VARCHAR},
+				rpt_date = #{rptDate, jdbcType=CHAR},
+				rpt_date_code = #{rptDateCode, jdbcType=VARCHAR},
+				name = #{name, jdbcType=VARCHAR},
+				id_type = #{idType, jdbcType=VARCHAR},
+				id_num = #{idNum, jdbcType=VARCHAR},
+				mngmt_org_code = #{mngmtOrgCode, jdbcType=VARCHAR},
+				operator_user = #{operationUser, jdbcType=VARCHAR},
+				org_code = #{orgCode, jdbcType=VARCHAR},
+				business_states = '11',
+				mdfc_sgmt_code = #{mdfcSgmtCode, jdbcType=VARCHAR},
+				is_filter = #{isFilter, jdbcType=VARCHAR}
+		  WHERE EGA_CTRCT_BS_SGMT_ID = #{egaCtrctBsSgmtId}
+		  	and COMPANY = #{COMPANY}
+			
+		  ]]>
+    </update>
+
+    <!-- 删除基础段 -->
+    <delete id="delCtrctBsSgmtById" parameterType="map">
+        delete from E_CTRCT_BS
+        where EGA_CTRCT_BS_SGMT_ID = #{egaCtrctBsSgmtId}
+          and COMPANY = #{COMPANY}
+    </delete>
+    <!-- 删除共同受信人信息段 -->
+    <delete id="delCtrctCertRelSgmtById" parameterType="map">
+        delete from E_CTRCT_CERT_REL
+        where EGA_CTRCT_BS_SGMT_ID = #{egaCtrctBsSgmtId}
+    </delete>
+    <!-- 删除额度信息段 -->
+    <delete id="delCreditLimSgmtById" parameterType="map">
+        delete from E_CREDIT_LIM
+        where EGA_CTRCT_BS_SGMT_ID = #{egaCtrctBsSgmtId}
+    </delete>
+
+    <!-- 详情或者修改 查询指定记录 授信人段信息 -->
+    <select id="getCreditLimSgmtById" parameterType="pd" resultType="pd">
+        SELECT  EGC_CREDIT_LIM_SGMT_ID,
+                CREDIT_LIM_TYPE,
+                LIM_LOOP_FLG,
+                CREDIT_LIM,
+                CY,
+                CON_EFF_DATE,
+                CON_EXP_DATE,
+                CON_STATUS,
+                CREDIT_REST,
+                CREDIT_REST_CODE,
+                EGA_CTRCT_BS_SGMT_ID,
+                RPT_DATE,
+                EXTEND1,
+                EXTEND2,
+                EXTEND3,
+                COMPANY
+           from E_CREDIT_LIM
+          where EGA_CTRCT_BS_SGMT_ID = #{egaCtrctBsSgmtId}
+    </select>
+    <!-- 详情或者修改 查询指定记录 共同授信人段 -->
+    <select id="getRltInfList" parameterType="page" resultType="pd">
+        SELECT  EGB_CTRCT_CERT_REL_SGMT_ID,
+                BRER_TYPE,
+                CERT_REL_NAME,
+                CERT_REL_IDTYPE,
+                CERT_REL_ID_NUM,
+                EGA_CTRCT_BS_SGMT_ID,
+                RPT_DATE,
+                EXTEND1,
+                EXTEND2,
+                EXTEND3,
+                COMPANY
+           from E_CTRCT_CERT_REL
+          where EGA_CTRCT_BS_SGMT_ID = #{pd.egaCtrctBsSgmtId}
+    </select>
+    
+    <!-- 查询 共同授信人信息段 主键是否存在 -->
+    <select id="getCertRelSgmtKey" parameterType="map" resultType="int">
+        select count(1)
+        from E_CTRCT_CERT_REL
+        where EGA_CTRCT_BS_SGMT_ID = #{egaCtrctBsSgmtId}
+        and EGB_CTRCT_CERT_REL_SGMT_ID = #{egbCtrctCertRelSgmtId}
+    </select>
+    
+    <!-- 新增  企业授信协议按段跟正共同授信人信息段 -->
+    <insert id="saveCertRelSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into E_CTRCT_CERT_REL(
+					EGB_CTRCT_CERT_REL_SGMT_ID,
+					BRER_TYPE,
+					CERT_REL_NAME,
+					CERT_REL_IDTYPE,
+					CERT_REL_ID_NUM,
+					EGA_CTRCT_BS_SGMT_ID,
+					COMPANY)
+		    select	<if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+					BRER_TYPE,
+					CERT_REL_NAME,
+					CERT_REL_IDTYPE,
+					CERT_REL_ID_NUM,
+					#{egaCtrctBsSgmtId},
+					company
+			from E_CTRCT_CERT_REL_HIST
+			where EGB_CTRCT_CERT_REL_SGMT_ID = #{oldEgaCtrctBsSgmtId}
+    </insert>
+    
+    <!-- 新增  共同授信人信息段 -->
+    <insert id="insertCertRelSgmt" parameterType="map">
+        <![CDATA[
+		insert into E_CTRCT_CERT_REL(
+					EGB_CTRCT_CERT_REL_SGMT_ID,
+					BRER_TYPE,
+					CERT_REL_NAME,
+					CERT_REL_IDTYPE,
+					CERT_REL_ID_NUM,
+					EGA_CTRCT_BS_SGMT_ID,
+					COMPANY)
+		    values (	#{egbCtrctCertRelSgmtId},
+					#{brerType},
+					#{certRelName},
+					#{certRelIdType},
+					#{certRelIdNum},
+					#{egaCtrctBsSgmtId},
+					#{COMPANY}
+				)
+		]]>
+    </insert>
+
+<select id="getCtrctChangeBsSgmtlistPage" parameterType="page" resultMap="ctrctBsSgmtMap">
+        select  EGA_CTRCT_BS_SGMT_ID,
+                INF_REC_TYPE,
+                CONTRACT_CODE,
+                RPT_DATE,
+                RPT_DATE_CODE,
+                NAME,
+                ID_TYPE,
+                ID_NUM,
+                MNGMT_ORG_CODE,
+                LAST_UPDATE_TIME,
+                OPERATOR_USER,
+                ORG_NAME,
+                ORG_CODE,
+                BUSINESS_STATES,
+                REJECT_REASON,
+                IS_FILTER,
+                MDFC_SGMT_CODE,
+                REPORT_MESSAGE_ID,
+                EXTEND1,
+                EXTEND2,
+                EXTEND3,
+                COMPANY
+        from E_CTRCT_BS
+        where 1=1
+            <if test="pd.contractCode != null and pd.contractCode != ''">
+                and CONTRACT_CODE like '%${pd.contractCode}%'
+            </if>
+            <if test='pd.name != null and pd.name != ""'>
+                and NAME like '%${pd.name}%'
+            </if>
+            <if test='pd.businessStates != null and pd.businessStates != ""'>
+                and BUSINESS_STATES = #{pd.businessStates}
+            </if>
+            <if test="pd.rptDate != null and pd.rptDate != ''">
+		         and rpt_date = #{pd.rptDate}
+		    </if>
+		    <if test="pd.idNum != null and pd.idNum != ''">
+		         and ID_NUM = #{pd.idNum}
+		    </if>
+            <if test='pd.queryType == "APPLY"'>
+				and BUSINESS_STATES in ('10','11','40','80','110','20')
+			</if>
+			<if test='pd.queryType == "CHECK"'>
+				and BUSINESS_STATES in ('20')
+			</if>
+            	and COMPANY = #{pd.COMPANY}
+      
+    </select>
+    <!-- 更新 共同授信人信息段 -->
+    <update id="updateCertRelSgmt" parameterType="map">
+        update E_CTRCT_CERT_REL
+        <set>
+            <if test='brerType != null and brerType != ""'>
+                brer_type = #{brerType},
+            </if>
+            <if test='certRelName != null and certRelName != ""'>
+                cert_rel_name = #{certRelName},
+            </if>
+            <if test='certRelIdType != null and certRelIdType != ""'>
+                CERT_REL_IDTYPE = #{certRelIdType},
+            </if>
+            <if test='certRelIdNum != null and certRelIdNum != ""'>
+                cert_rel_id_num = #{certRelIdNum}
+            </if>
+        </set>
+        where EGA_CTRCT_BS_SGMT_ID = #{egaCtrctBsSgmtId}
+        and EGB_CTRCT_CERT_REL_SGMT_ID = #{egbCtrctCertRelSgmtId}
+    </update>
+
+    <!-- 删除 共同授信人信息段 -->
+    <delete id="deleteCertRelSgmt" parameterType="map">
+        delete from E_CTRCT_CERT_REL
+        where EGA_CTRCT_BS_SGMT_ID = #{egaCtrctBsSgmtId}
+        and EGB_CTRCT_CERT_REL_SGMT_ID = #{egbCtrctCertRelSgmtId}
+    </delete>
+
+    <!-- 查询 额度信息段  主键是否存在 -->
+    <select id="getCreditLimSgmtKey" parameterType="map" resultType="int">
+        select count(1)
+        from E_CREDIT_LIM
+        where EGC_CREDIT_LIM_SGMT_ID = #{egcCreditLimBsSgmtId}
+        and EGA_CTRCT_BS_SGMT_ID = #{egaCtrctBsSgmtId}
+    </select>
+    <!-- 新增 企业授信协议按段更正额度信息段 -->
+    <insert id="saveCreditLimSgmt" parameterType="map" useGeneratedKeys="false">
+		insert into E_CREDIT_LIM(
+					EGC_CREDIT_LIM_SGMT_ID,
+					credit_lim_type,
+					lim_loop_flg,
+					credit_lim,
+					cy,
+					con_eff_date,
+					con_exp_date,
+					con_status,
+					credit_rest,
+					credit_rest_code,
+					EGA_CTRCT_BS_SGMT_ID,
+					rpt_date,
+					COMPANY)
+		    select  <if test="_databaseId == 'oracle' ">
+					  sys_guid(),
+					</if>
+					<if test="_databaseId == 'db2'">
+					concat (hex (RAND ()), hex (RAND ())),
+					</if>
+		    		credit_lim_type,
+					lim_loop_flg,
+					credit_lim,
+					cy,
+					con_eff_date,
+					con_exp_date,
+					con_status,
+					credit_rest,
+					credit_rest_code,
+					#{egaCtrctBsSgmtId},
+					rpt_date,
+					COMPANY
+		      from E_CREDIT_LIM_HIST
+		      where EGA_CTRCT_BS_SGMT_ID = #{oldEgaCtrctBsSgmtId}
+    </insert>
+
+
+
+    <!-- 新增  额度信息段 -->
+    <insert id="insertCreditLimSgmt" parameterType="map">
+        <![CDATA[
+		insert into E_CREDIT_LIM(
+					EGC_CREDIT_LIM_SGMT_ID,
+					credit_lim_type,
+					lim_loop_flg,
+					credit_lim,
+					cy,
+					con_eff_date,
+					con_exp_date,
+					con_status,
+					credit_rest,
+					credit_rest_code,
+					EGA_CTRCT_BS_SGMT_ID,
+					rpt_date,
+					COMPANY)
+		    values (#{egcCreditLimSgmtId, jdbcType=CHAR},
+		    		#{creditLimType, jdbcType=VARCHAR},
+		    		#{limLoopFlg, jdbcType=VARCHAR},
+		    		#{creditLim},
+			 		#{cy, jdbcType=VARCHAR},
+					#{conEffDate},
+					#{conExpDate},
+					#{conStatus, jdbcType=VARCHAR},
+					#{creditRest},
+					#{creditRestCode, jdbcType=VARCHAR},
+					#{egaCtrctBsSgmtId, jdbcType=CHAR},
+					#{rptDate},
+					#{COMPANY}
+				   )
+		]]>
+    </insert>
+
+    <!-- 更新   额度信息段-->
+    <update id="updateCreditLimSgmt" parameterType="map">
+        update E_CREDIT_LIM
+        <set>
+            <if test='creditLimType != null'>
+                credit_lim_type = #{creditLimType},
+            </if>
+            <if test='limLoopFlg != null'>
+                lim_loop_flg = #{limLoopFlg},
+            </if>
+            <if test='creditLim != null'>
+                credit_lim = #{creditLim}, 
+            </if>
+            <if test='cy != null'>
+                cy = #{cy},
+            </if>
+            <if test='conEffDate != null'>
+                con_eff_date = #{conEffDate},
+            </if>
+            <if test='conExpDate != null'>
+                con_exp_date = #{conExpDate},
+            </if>
+            <if test='conStatus != null'>
+                con_status = #{conStatus},
+            </if>
+            <if test='creditRest != null'>
+                credit_rest =#{creditRest},
+            </if>
+            <if test='creditRestCode != null'>
+                credit_rest_code =  #{creditRestCode}
+            </if>
+        </set>
+        where EGA_CTRCT_BS_SGMT_ID = #{egaCtrctBsSgmtId}
+        and EGC_CREDIT_LIM_SGMT_ID = #{egcCreditLimSgmtId}
+    </update>
+
+    <!-- 删除  额度信息段 -->
+    <delete id="delCreditLimSgmt" parameterType="map">
+        delete from E_CREDIT_LIM
+        where EGA_CTRCT_BS_SGMT_ID = #{egaCtrctBsSgmtId}
+        and EGC_CREDIT_LIM_SGMT_ID = #{egcCreditLimSgmtId}
+    </delete>
+    
+    <!-- B-基础段
+		C-共同受信人信息段
+		D-额度信息段 -->
+	<select id="findHistEntProtocollistPage" parameterType="page" resultType="pd">
+		SELECT DISTINCT A.EGA_CTRCT_BS_SGMT_ID,
+		       A.INF_REC_TYPE,
+		       A.CONTRACT_CODE,
+		       A.RPT_DATE,
+		       A.RPT_DATE_CODE,
+		       A.NAME,
+		       A.ID_TYPE,
+		       A.ID_NUM,
+		       A.BUSINESS_STATES,
+		       A.LAST_UPDATE_TIME
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode != "" '>
+				,'${pd.mdfcSgmtCode}' AS MDFC_SGMT_CODE 
+			</if>
+		FROM E_CTRCT_BS_HIST A
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "C" '>
+				INNER JOIN E_CTRCT_CERT_REL_HIST B ON A.EGA_CTRCT_BS_SGMT_ID = B.EGA_CTRCT_BS_SGMT_ID
+			</if>
+			<if test='pd.mdfcSgmtCode != null and pd.mdfcSgmtCode == "D" '>
+				INNER JOIN E_CREDIT_LIM_HIST B ON A.EGA_CTRCT_BS_SGMT_ID = B.EGA_CTRCT_BS_SGMT_ID
+			</if>
+		WHERE A.COMPANY = #{pd.COMPANY}
+		<if test='pd.mdfcSgmtCode == "" '>
+		  AND 1 = 2
+		</if>
+		<if test='pd.contractCode != null and pd.contractCode != "" '>
+	      AND A.CONTRACT_CODE like '${pd.contractCode}%'
+	    </if>
+	    ORDER BY A.RPT_DATE DESC
+	</select>
+</mapper>

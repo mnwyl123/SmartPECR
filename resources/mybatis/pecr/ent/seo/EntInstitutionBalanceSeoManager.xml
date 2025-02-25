@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EntInstitutionBalanceSeoManager">
+	<resultMap type="com.dcits.supervise.pecr.ent.entity.EntInstitutionBalance" id="insBalanceResultMap">
+		<result column="EKA_INSTITUTION_BALANCE_SHT_ID" property="ekaInstitutionBalanceShtId" />
+		<result column="INF_REC_TYPE" property="infRecType" />
+		<result column="ENT_NAME" property="entName" />
+		<result column="ENT_CERT_TYPE" property="entCertType" />
+		<result column="ENT_CERT_NUM" property="entCertNum" />
+		<result column="RPT_DATE" property="rptDate" />
+		<result column="SHEET_YEAR" property="sheetYear" />
+		<result column="SHEET_TYPE" property="sheetType" />
+		<result column="SHEET_TYPE_DIVIDE" property="sheetTypeDivide" />
+		<result column="AUDIT_FIRM_NAME" property="auditFirmName" />
+		<result column="AUDITOR_NAME" property="auditorName" />
+		<result column="AUDIT_TIME" property="auditTime" />
+		<result column="CIMOC" property="cimoc" />
+		<result column="RPT_DATE_CODE" property="rptDateCode" />
+		<result column="ORG_NAME" property="orgName" />
+		<result column="ORG_CODE" property="orgCode" />
+		<result column="REPORT_MESSAGE_ID" property="reportMessageId" />
+		<result column="BUSINESS_STATES" property="businessStates" />
+		<result column="REJECT_REASON" property="rejectReason" />
+		<result column="IS_FILTER" property="isFilter" />
+		<result column="FLAG" property="flag" />
+	</resultMap>
+<select id="datalistPage" parameterType="page" resultType="pd">
+		  select 
+			 ENT_CERT_TYPE,ENT_CERT_NUM,COMPANY
+		  from E_INSTITU_BALANCE_BS_MIDDLE
+		  <if test="pd.managerId != null and pd.managerId != ''">
+				LEFT JOIN PECR.sys_l_c_a_m_m M
+				ON ENT_CERT_TYPE = M.CUST_ID_TYPE
+				AND ENT_CERT_NUM = M.CUST_ID_NUM
+		  </if>
+		  where 1=1		
+		   	  <if test='pd.ENT_CERT_TYPE != null and pd.ENT_CERT_TYPE != ""'>
+		   	  	and ENT_CERT_TYPE = #{pd.ENT_CERT_TYPE}
+		   	  </if>
+		   	  <if test='pd.ENT_CERT_NUM != null and pd.ENT_CERT_NUM != ""'>
+		   	  	and ENT_CERT_NUM like '%${pd.ENT_CERT_NUM}%'
+		   	  </if>
+		   	  <if test="pd.managerId != null and pd.managerId != ''">
+					and M.MANAGER_ID = #{pd.managerId}
+					AND M.DATA_TYPE = '2'
+					AND M.DATA_LEVEL = '6'
+		   			AND M.END_DATE = '2099-12-31'
+			  </if>
+		   	    and COMPANY = #{pd.COMPANY}
+	</select>
+	<!-- 授信协议信息  数据列表 -->
+	<select id="dataHistlistPage" parameterType="page" resultMap="insBalanceResultMap">
+	select * from (
+		 select eka_institution_balance_sht_id,
+				inf_rec_type,
+				ent_name,
+				ent_cert_type,
+				ent_cert_num,
+				rpt_date,
+				sheet_year,
+				sheet_type,
+				sheet_type_divide,
+				audit_firm_name,
+				auditor_name,
+				audit_time,
+				cimoc,
+				rpt_date_code,
+				org_name,
+				org_code,
+				business_states,
+				reject_reason,
+				report_message_id,
+				is_filter,
+				'new' FLAG,
+				COMPANY
+		   from E_INSTITU_BALANCE_BS
+		where ent_cert_type = #{pd.ENT_CERT_TYPE}  and     ent_cert_num = #{pd.ENT_CERT_NUM}
+		union all
+		select eka_institution_balance_sht_id,
+				inf_rec_type,
+				ent_name,
+				ent_cert_type,
+				ent_cert_num,
+				rpt_date,
+				sheet_year,
+				sheet_type,
+				sheet_type_divide,
+				audit_firm_name,
+				auditor_name,
+				audit_time,
+				cimoc,
+				rpt_date_code,
+				org_name,
+				org_code,
+				business_states,
+				reject_reason,
+				report_message_id,
+				is_filter,
+				'old' FLAG,
+				COMPANY
+		   from E_INSTITU_BALANCE_BS_HIST
+		where ent_cert_type = #{pd.ENT_CERT_TYPE}  and     ent_cert_num = #{pd.ENT_CERT_NUM}) a
+		where 1=1
+       		  <if test='pd.RPT_DATE != null and pd.RPT_DATE != ""'>
+		   	  	and a.RPT_DATE = #{pd.RPT_DATE}
+		   	  </if>
+		   	    and a.COMPANY = #{pd.COMPANY}
+	</select>
+	
+	<update id="updateStatus" parameterType="map">
+		update E_INSTITU_BALANCE_BS
+		   <set>
+		   	  	BUSINESS_STATES = '11'
+		   </set>
+		   where eka_institution_balance_sht_id = #{baseId}
+		     and COMPANY = #{COMPANY}
+</update>
+<update id="backdate" parameterType="map">
+		update E_INSTITU_BALANCE_BS
+		   <set>
+		   	  	BUSINESS_STATES = '30'
+		   </set>
+		   where REPORT_MESSAGE_ID = #{reportMessageId}
+		     and COMPANY = #{COMPANY}
+</update>
+<delete id="deletedate" parameterType="map" >
+		delete from report_message
+		 where REPORT_MESSAGE_FILE_NAME = #{reportMessageId}
+		   and COMPANY = #{COMPANY}
+</delete>
+	
+	<!-- 详情或者修改 查询指定记录 基础段 -->
+	<select id="getInstitutionInfoById" parameterType="pd" resultType="map">
+		 select eka_institution_balance_sht_id,
+				inf_rec_type,
+				ent_name,
+				ent_cert_type,
+				ent_cert_num,
+				rpt_date,
+				sheet_year,
+				sheet_type,
+				sheet_type_divide,
+				audit_firm_name,
+				auditor_name,
+				audit_time,
+				cimoc,
+				rpt_date_code,
+				org_name,
+				org_code,
+				business_states,
+				reject_reason,
+				is_filter,
+				COMPANY
+		   from E_INSTITU_BALANCE_BS_HIST
+		  where eka_institution_balance_sht_id = #{ekaInstitutionBalanceShtId}
+		    and COMPANY = #{COMPANY}
+	</select>
+
+	<!-- 详情或者修改 查询指定记录   事业单位资产负债表段-->
+	<select id="getInstitutionSheetById" parameterType="pd" resultType="pd">
+		 select ekb_institution_balance_sht_id,
+				currency_funds,
+				short_term_investments,
+				amount_of_financial_return,
+				notes_receivable,
+				accounts_receivable,
+				prepayments,
+				other_receivables,
+				inventories,
+				other_current_assets,
+				total_current_assets,
+				long_term_investment,
+				fixed_assets,
+				original_cost_of_fixed_asset,
+				fixed_asset_accumulated_deprec,
+				construction_in_process,
+				intangible_assets,
+				original_price_of_intangible_a,
+				accumulated_amortization,
+				assets_to_be_processed_pending,
+				total_non_current_assets,
+				total_assets,
+				short_term_borrowings,
+				tax_payable,
+				treasury_payable,
+				payable_financial_special_acco,
+				employee_benefits_payable,
+				notes_payable,
+				accounts_payable,
+				receipts_in_advance,
+				other_payables,
+				other_current_liabilities,
+				total_current_liabilities,
+				long_term_borrowings,
+				long_term_payables,
+				total_non_current_liabilities,
+				total_liabilities,
+				enterprise_fund,
+				non_current_assets_fund,
+				special_purpose_funds,
+				financial_aid_carried_over,
+				financial_aid_balance,
+				non_financial_aid_carried_over,
+				non_financial_aid_balance,
+				undertakings_balance,
+				operating_balance,
+				total_net_assets,
+				total_liabilities_and_net_asse,
+				COMPANY
+		   from E_INSTITU_BALANCE_HIST
+		  where eka_institution_balance_sht_id = #{ekaInstitutionBalanceShtId}
+	</select>
+
+	
+</mapper>
