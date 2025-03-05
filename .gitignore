@@ -3,4 +3,6 @@
 
 # 忽略特定文件夹
 WebRoot/WEB-INF/classes/
+classes/
 build/
+.idea/
