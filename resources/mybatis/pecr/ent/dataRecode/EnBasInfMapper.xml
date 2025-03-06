@@ -163,26 +163,26 @@
 	</select>
 	<!-- 详情或者修改  查询指定记录  基础段-->
 	<select id="getentBsSgmt" parameterType="pd" resultType="map">
-		 select   eaa_bs_sgmt_id 
-				  ,inf_rec_type 
-				  ,ent_name 
-				  ,ent_cert_type 
-				  ,ent_cert_num 
-				  ,rpt_date 
-				  ,rpt_date_code 
-				  ,inf_surc_code 
-				  ,cimoc 
-				  ,customer_type 
-				  ,etp_sts 
-				  ,org_type 
-				  ,last_update_time 
-				  ,operator_user 
-				  ,org_name 
-				  ,org_code 
-				  ,business_states 
-				  ,reject_reason 
-				  ,is_filter 
-				  ,report_message_id
+		 select   EAA_BS_SGMT_ID
+				  ,INF_REC_TYPE
+				  ,ENT_NAME
+				  ,ENT_CERT_TYPE
+				  ,ENT_CERT_NUM
+				  ,RPT_DATE
+				  ,RPT_DATE_CODE
+				  ,INF_SURC_CODE
+				  ,CIMOC
+				  ,CUSTOMER_TYPE
+				  ,ETP_STS
+				  ,ORG_TYPE
+				  ,LAST_UPDATE_TIME
+				  ,OPERATOR_USER
+				  ,ORG_NAME
+				  ,ORG_CODE
+				  ,BUSINESS_STATES
+				  ,REJECT_REASON
+				  ,IS_FILTER
+				  ,REPORT_MESSAGE_ID
 				  ,COMPANY 
 		   from E_BS
 		   where eaa_bs_sgmt_id = #{eaaBsSgmtId}
@@ -208,19 +208,19 @@
 	</select>
 	<!-- 详情或者修改  查询指定记录  基本概况信息段-->
 	<select id="getentFcsInfSgmtById" parameterType="pd" resultType="pd">
-		 select   eac_fcs_inf_sgmt_id 
-				  ,nationality 
-				  ,reg_add 
-				  ,adm_div_of_reg 
-				  ,establish_date
-				  ,biz_end_date
-				  ,biz_range 
-				  ,eco_indus_cate 
-				  ,eco_type 
-				  ,ent_scale 
-				  ,fcs_info_up_date 
-				  ,eaa_bs_sgmt_id 
-				  ,rpt_date
+		 select   EAC_FCS_INF_SGMT_ID
+				  ,NATIONALITY
+				  ,REG_ADD
+				  ,ADM_DIV_OF_REG
+				  ,ESTABLISH_DATE
+				  ,BIZ_END_DATE
+				  ,BIZ_RANGE
+				  ,ECO_INDUS_CATE
+				  ,ECO_TYPE
+				  ,ENT_SCALE
+				  ,FCS_INFO_UP_DATE
+				  ,EAA_BS_SGMT_ID
+				  ,RPT_DATE
 				  ,COMPANY 
 		   from E_FCS_INF
 		  where eaa_bs_sgmt_id = #{eaaBsSgmtId}
@@ -273,28 +273,28 @@
 	</select>
 	<!-- 详情或者修改  查询指定记录  上级机构段-->
 	<select id="getentSpvsgAthrtyInfSgmtById" parameterType="pd" resultType="pd">
-		 select   eag_spvsg_athrty_inf_sgmt_id 
-				  ,sup_org_type 
-				  ,sup_org_name 
-				  ,sup_org_cert_type 
-				  ,sup_org_cert_num 
-				  ,sup_org_info_up_date 
-				  ,eaa_bs_sgmt_id 
-				  ,rpt_date 
+		 select   EAG_SPVSG_ATHRTY_INF_SGMT_ID
+				  ,SUP_ORG_TYPE
+				  ,SUP_ORG_NAME
+				  ,SUP_ORG_CERT_TYPE
+				  ,SUP_ORG_CERT_NUM
+				  ,SUP_ORG_INFO_UP_DATE
+				  ,EAA_BS_SGMT_ID
+				  ,RPT_DATE
 				  ,COMPANY
 		   from E_SPVSG_ATHRTY_INF
 		  where eaa_bs_sgmt_id = #{eaaBsSgmtId}
 	</select>
 	<!-- 详情或者修改  查询指定记录  联系方式段-->
 	<select id="getentCotaInfSgmtById" parameterType="pd" resultType="pd">
-		 select   eah_cota_inf_sgmt_id 
-				  ,con_add_district_code 
-				  ,con_add 
-				  ,con_phone 
-				  ,fin_con_phone 
-				  ,cota_info_up_date 
-				  ,eaa_bs_sgmt_id 
-				  ,rpt_date
+		 select   EAH_COTA_INF_SGMT_ID
+				  ,CON_ADD_DISTRICT_CODE
+				  ,CON_ADD
+				  ,CON_PHONE
+				  ,FIN_CON_PHONE
+				  ,COTA_INFO_UP_DATE
+				  ,EAA_BS_SGMT_ID
+				  ,RPT_DATE
 				  ,COMPANY
 		   from E_COTA_INF
 		  where eaa_bs_sgmt_id = #{eaaBsSgmtId}

@@ -32,7 +32,7 @@ public class ValidateController extends BaseController {
 	/**
 	 * 全表校验接口
 	 * 
-	 * @param validateDataVoList
+	 * @param page
 	 * @return
 	 * @throws Exception
 	 */
@@ -62,7 +62,7 @@ public class ValidateController extends BaseController {
 	/**
 	 * 单条数据校验接口
 	 * 
-	 * @param validateDataVoList
+	 * @param page
 	 * @return
 	 * @throws Exception
 	 */
@@ -89,7 +89,7 @@ public class ValidateController extends BaseController {
 	/**
 	 * 获取校验错误信息接口
 	 * 
-	 * @param validateDataVoList
+	 * @param page
 	 * @return
 	 * @throws Exception
 	 */

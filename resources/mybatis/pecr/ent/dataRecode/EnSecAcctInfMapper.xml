@@ -188,26 +188,26 @@
 	<!-- 详情或者修改 查询指定记录 基础段 -->
 	<select id="getenSecAcctInfById" parameterType="pd" resultType="map">
 		 select
-			 eea_guar_acct_bs_sgmt_id 
-			  ,inf_rec_type 
-			  ,acct_type 
-			  ,acct_code 
-			  ,rpt_date 
-			  ,rpt_date_code 
-			  ,name 
-			  ,id_type 
-			  ,id_num 
-			  ,mngmt_org_code 
-			  ,last_update_time 
-			  ,operator_user 
-			  ,org_name 
-			  ,org_code 
-			  ,business_states 
-			  ,reject_reason 
-			  ,is_filter 
-			  ,report_message_id 
-			  ,mdfc_sgmt_code
-			  ,COMPANY 
+			 EEA_GUAR_ACCT_BS_SGMT_ID
+			  ,INF_REC_TYPE
+			  ,ACCT_TYPE
+			  ,ACCT_CODE
+			  ,RPT_DATE
+			  ,RPT_DATE_CODE
+			  ,NAME
+			  ,ID_TYPE
+			  ,ID_NUM
+			  ,MNGMT_ORG_CODE
+			  ,LAST_UPDATE_TIME
+			  ,OPERATOR_USER
+			  ,ORG_NAME
+			  ,ORG_CODE
+			  ,BUSINESS_STATES
+			  ,REJECT_REASON
+			  ,IS_FILTER
+			  ,REPORT_MESSAGE_ID
+			  ,MDFC_SGMT_CODE
+			  ,COMPANY
 		from E_GUAR_ACCT_BS
 		  where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
 		  	and COMPANY = #{COMPANY}
@@ -215,19 +215,19 @@
 
 	<!-- 详情或者修改 查询指定记录 基本信息段 -->
 	<select id="getGuarAcctBsInfSgmtById" parameterType="pd" resultType="pd">
-		 select   eeb_guar_acct_bs_inf_sgmt_id 
-				  ,busi_lines 
-				  ,busi_dtil_lines 
-				  ,open_date 
-				  ,guar_amt 
-				  ,cy 
-				  ,due_date 
-				  ,guar_mode 
-				  ,oth_repy_guarway 
-				  ,sec_dep 
-				  ,ctrct_txt_code 
-				  ,eea_guar_acct_bs_sgmt_id 
-				  ,rpt_date 
+		 select   EEB_GUAR_ACCT_BS_INF_SGMT_ID
+				  ,BUSI_LINES
+				  ,BUSI_DTIL_LINES
+				  ,OPEN_DATE
+				  ,GUAR_AMT
+				  ,CY
+				  ,DUE_DATE
+				  ,GUAR_MODE
+				  ,OTH_REPY_GUARWAY
+				  ,SEC_DEP
+				  ,CTRCT_TXT_CODE
+				  ,EEA_GUAR_ACCT_BS_SGMT_ID
+				  ,RPT_DATE
 				  ,COMPANY
 		   from E_GUAR_ACCT_BS_INF
 		  where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
@@ -262,10 +262,10 @@
 
 	<!-- 详情或者修改 查询指定记录 账户信息授信额度信息段 -->
 	<select id="getacctCredSgmtById" parameterType="pd" resultType="pd">
-		 select   eee_guar_acct_cred_sgmt_id 
-				  ,mcc 
-				  ,eea_guar_acct_bs_sgmt_id 
-				  ,rpt_date
+		 select   EEE_GUAR_ACCT_CRED_SGMT_ID
+				  ,MCC
+				  ,EEA_GUAR_ACCT_BS_SGMT_ID
+				  ,RPT_DATE
 				  ,COMPANY
 		   from E_GUAR_ACCT_CRED
 		  where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}
@@ -273,17 +273,17 @@
 	
 	<!-- 详情或者修改 查询指定记录 在保责任信息段 -->
 	<select id="getRepymtInfSgmtById" parameterType="pd" resultType="pd">
-		 select   eef_guar_rlt_repymt_inf_sg_id 
-				  ,acct_status 
-				  ,loan_amt 
-				  ,repay_prd 
-				  ,five_cate 
-				  ,five_cate_adj_date 
-				  ,ri_ex 
-				  ,comp_adv_flag 
-				  ,close_date 
-				  ,eea_guar_acct_bs_sgmt_id 
-				  ,rpt_date
+		 select   EEF_GUAR_RLT_REPYMT_INF_SG_ID
+				  ,ACCT_STATUS
+				  ,LOAN_AMT
+				  ,REPAY_PRD
+				  ,FIVE_CATE
+				  ,FIVE_CATE_ADJ_DATE
+				  ,RI_EX
+				  ,COMP_ADV_FLAG
+				  ,CLOSE_DATE
+				  ,EEA_GUAR_ACCT_BS_SGMT_ID
+				  ,RPT_DATE
 				  ,COMPANY
 		   from E_GUAR_INSURANCE_INF
 		  where eea_guar_acct_bs_sgmt_id = #{eeaGuarAcctBsSgmtId}

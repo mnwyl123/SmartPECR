@@ -117,9 +117,9 @@
 	            ${key}
 	        </foreach>
 	        values
-	        <foreach collection="paramMap.entrySet()" item="val" separator="," open="(" close=")">
-	            ${val}
-	        </foreach>
+             <foreach collection="paramMap.keys" item="key" open="(" separator="," close=")">
+                 #{paramMap[${key}]}  <!-- 值通过 #{ } 参数化处理 -->
+             </foreach>
          </if>
           <if test="_databaseId == 'oracle' or _databaseId == 'db2' ">
                insert into ${tName}
@@ -149,7 +149,7 @@
     <update id="updateBarRecord" parameterType="map">
         update ${tName} set
         <foreach collection="paramMap.entrySet()" index="key" item="val" separator=",">
-            ${key}=${val}
+            ${key}=#{val}
         </foreach>
         where 
             <if test="_databaseId == 'mysql'">

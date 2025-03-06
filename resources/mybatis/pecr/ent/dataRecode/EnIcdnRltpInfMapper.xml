@@ -85,25 +85,25 @@
 	</select>
 	<!-- 详情或者修改 查询指定记录 -->
 	<select id="EnIcdnRltpInfbyId" parameterType="pd" resultType="pd">
-		 select   eca_en_icdn_rltp_inf_id 
-				  ,inf_rec_type 
-				  ,ent_name 
-				  ,ent_cert_type 
-				  ,ent_cert_num 
-				  ,asso_ent_name 
-				  ,asso_ent_cert_type 
-				  ,asso_ent_cert_num 
-				  ,asso_type
-				  ,asso_sign 
-				  ,last_update_time 
-				  ,operator_user 
-				  ,org_name 
-				  ,org_code 
-				  ,business_states 
-				  ,reject_reason 
-				  ,is_filter 
-				  ,report_message_id 
-				  ,rpt_date
+		 select   ECA_EN_ICDN_RLTP_INF_ID
+				  ,INF_REC_TYPE
+				  ,ENT_NAME
+				  ,ENT_CERT_TYPE
+				  ,ENT_CERT_NUM
+				  ,ASSO_ENT_NAME
+				  ,ASSO_ENT_CERT_TYPE
+				  ,ASSO_ENT_CERT_NUM
+				  ,ASSO_TYPE
+				  ,ASSO_SIGN
+				  ,LAST_UPDATE_TIME
+				  ,OPERATOR_USER
+				  ,ORG_NAME
+				  ,ORG_CODE
+				  ,BUSINESS_STATES
+				  ,REJECT_REASON
+				  ,IS_FILTER
+				  ,REPORT_MESSAGE_ID
+				  ,RPT_DATE
 				  ,COMPANY
 		   from E_ICDN_RLTP_INF
 		  where eca_en_icdn_rltp_inf_id = #{ecaEnIcdnRltpInfId}

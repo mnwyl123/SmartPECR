@@ -2,6 +2,7 @@ package com.dcits.supervise.pecr.common.controller;
 
 import com.dcits.platform.controller.base.BaseController;
 import com.dcits.platform.entity.Page;
+import com.dcits.platform.util.DateUtil;
 import com.dcits.platform.util.PageData;
 import com.dcits.supervise.pecr.common.service.PersonalPanelDataService;
 import com.dcits.supervise.pecr.util.PecrConstantUtil;
@@ -141,7 +142,7 @@ public class PersonalPanelDataController extends BaseController {
             StatisticsMap.put("FEEDBACK_ERROE_PENDING", countList.get(5));
             StatisticsMap.put("REPORTED", countList.get(6));
             StatisticsMap.put("REPORTED_SUCCESS", countList.get(7));
-            StatisticsMap.put("EXTRACTION_DATE", getStringDateShort());
+            StatisticsMap.put("EXTRACTION_DATE", DateUtil.getDay());
             paramMap.put("paramMap", StatisticsMap);
             paramMap.put("tName", "I_PANEL_DATA");
             int recordCount = personalPanelDataService.hasRecord("I_PANEL_DATA");
@@ -202,7 +203,7 @@ public class PersonalPanelDataController extends BaseController {
             int I_GUAR_ACCT_TOTAL = personalPanelDataService.findTotalData(tName);
             //插入数据到记录表
             //先获取表中当天对应记录数：有记录则更新 无记录则插入
-            Map<String, Integer> barMap = new HashMap<>();
+            Map<String, Object> barMap = new HashMap<>();
             Map<String, Object> paramMap = new HashMap<>();
             barMap.put("I_BS_TOTAL", I_BS_TOTAL);
             barMap.put("I_BS_REPORTED", I_BS_REPORTED);
@@ -216,6 +217,7 @@ public class PersonalPanelDataController extends BaseController {
             barMap.put("I_GUAR_ACCT_REPORTED", I_GUAR_ACCT_REPORTED);
             barMap.put("I_JDACCT_TOTAL", I_JDACCT_TOTAL);
             barMap.put("I_JDACCT_REPORTED", I_JDACCT_REPORTED);
+            barMap.put("EXTRACTION_DATE", DateUtil.getDay());
             paramMap.put("paramMap", barMap);
             paramMap.put("tName", "I_PANEL_BAR_DATA");
             int recordCount = personalPanelDataService.hasRecord("I_PANEL_BAR_DATA");
@@ -320,9 +322,4 @@ public class PersonalPanelDataController extends BaseController {
         return map;
     }
 
-    public static int getStringDateShort() {
-	   Date currentTime = new Date();
-	   SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-	   return Integer.parseInt(formatter.format(currentTime));
-	}
 }

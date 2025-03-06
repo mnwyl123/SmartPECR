@@ -175,14 +175,14 @@ public class Page implements Cloneable{
 			sb.append("}\n");
 			
 			//校验跳转页数字 
-			sb.append("function checkPageNumber(totlePage){");
-			sb.append("var toGoPage = document.getElementById(\"toGoPage\").value;");
-			sb.append("if(isNaN(toGoPage)){$(\"#toGoPage\").tips({side:2,msg:\"只能输入<=\"+totlePage+\"的数字\",bg:\"#AE81FF\",time:0.5});document.getElementById(\"toGoPage\").value=\"\"; $(\"#toGoPage\").focus();return;}");
-			sb.append("if(toGoPage>totlePage){");
-			sb.append("$(\"#toGoPage\").tips({side:2,msg:\"只能输入<=\"+totlePage+\"的数字\",bg:\"#AE81FF\",time:0.5});");
-			sb.append("document.getElementById(\"toGoPage\").value=\"\";return;}");
-			sb.append("if(toGoPage<1){$(\"#toGoPage\").tips({side:2,msg:\"只能输入<=\"+totlePage+\"的数字\",bg:\"#AE81FF\",time:0.5});document.getElementById(\"toGoPage\").value=\"\";return;}");
-			sb.append("}\n");
+//			sb.append("function checkPageNumber(totlePage){");
+//			sb.append("var toGoPage = document.getElementById(\"toGoPage\").value;");
+//			sb.append("if(isNaN(toGoPage)){$(\"#toGoPage\").tips({side:2,msg:\"只能输入<=\"+totlePage+\"的数字\",bg:\"#AE81FF\",time:0.5});document.getElementById(\"toGoPage\").value=\"\"; $(\"#toGoPage\").focus();return;}");
+//			sb.append("if(toGoPage>totlePage){");
+//			sb.append("$(\"#toGoPage\").tips({side:2,msg:\"只能输入<=\"+totlePage+\"的数字\",bg:\"#AE81FF\",time:0.5});");
+//			sb.append("document.getElementById(\"toGoPage\").value=\"\";return;}");
+//			sb.append("if(toGoPage<1){$(\"#toGoPage\").tips({side:2,msg:\"只能输入<=\"+totlePage+\"的数字\",bg:\"#AE81FF\",time:0.5});document.getElementById(\"toGoPage\").value=\"\";return;}");
+//			sb.append("}\n");
 			
 			sb.append("</script>\n");
 

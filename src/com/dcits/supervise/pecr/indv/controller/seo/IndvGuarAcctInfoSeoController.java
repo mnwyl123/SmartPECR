@@ -308,7 +308,7 @@ public class IndvGuarAcctInfoSeoController extends BaseController{
 	}
 	/**
 	 * 获取相关还款责任人段
-	 * @param pd
+	 * @param page
 	 * @return
 	 */
 	@ResponseBody
@@ -343,7 +343,7 @@ public class IndvGuarAcctInfoSeoController extends BaseController{
 	
 	/**
 	 * 获取  抵质押物信息段
-	 * @param pd
+	 * @param page
 	 * @return
 	 */
 	@ResponseBody
