@@ -95,7 +95,7 @@ layui.use(['form', 'laydate', 'element', 'table'], function()
       {type:'numbers'}	//列每行序号
       ,{type:'checkbox'} //列复选框
 		,{field: 'entName', align:'center', title: '企业名称'}
-        ,{field: 'entCertType', align:'center', title: '企业身份标识类型', templet:function(d){return renderColumnDict(d,'entCertType',enterDict.entCertMainType)}}
+        ,{field: 'entCertType', align:'center', title: '企业身份标识类型', templet:function(d){return renderColumnDict(d,'entCertType',enterDict.arlpCertType)}}
 		,{field: 'entCertNum', align:'center', title: '企业身份标识号码'}
 	  ,{align : "center",fixed: 'right', title:'操作', toolbar: '#opraBarRow', width:200} //行上的工具栏
     ]]

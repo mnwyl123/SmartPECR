@@ -204,7 +204,7 @@ var date;
   });
   //生成报文按钮点击事件
    table.on('toolbar(tableDemo)', function(obj){
-     	//下载报文按钮点击事件  李继坤
+     	//下载报文按钮点击事件  穆楠
 		if(obj.event === 'messageBtn') {
 			 //获取选中的行信息
 			 var checkStatus = table.checkStatus('tableDemo');

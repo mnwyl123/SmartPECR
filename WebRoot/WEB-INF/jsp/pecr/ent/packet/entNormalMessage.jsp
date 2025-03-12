@@ -146,11 +146,11 @@ table.render({
   ,cols: [[
     {type:'numbers', fixed: 'left', width:50}	//列每行序号
     ,{type:'checkbox', width:50} //列复选框
-    ,{field: 'RPTDATE', align:'center', title: '报送日期'}
-    ,{field: 'INFRECTYPE', align:'center' , title: '信息记录类型',templet: function(d){return renderColumnDict(d, 'INFRECTYPE', enterDict.infRecType)}}
-    ,{field: 'RECODENUM', align:'center', title: '记录数'}
-    ,{field: 'RIGHTRECODENUM', align:'center', title: '审核通过记录数'}
-    ,{field: 'WRONGRECODENUM', align:'center', title: '审核驳回记录数'}
+    ,{field: 'rptDate', align:'center', title: '报送日期'}
+    ,{field: 'infRecType', align:'center' , title: '信息记录类型',templet: function(d){return renderColumnDict(d, 'infRecType', enterDict.infRecType)}}
+    ,{field: 'recodeNum', align:'center', title: '记录数'}
+    ,{field: 'rightRecodeNum', align:'center', title: '审核通过记录数'}
+    ,{field: 'wrongRecodeNum', align:'center', title: '审核驳回记录数'}
     ,{field: 'COMPANY', align:'center', title: '法人',hide:true}
   ]]
   ,even: true  //行斑马线
@@ -200,7 +200,7 @@ table.on('toolbar(tableDemo)', function(obj){
 			}
 		 	var str = "";
 			for(var i = 0; i < data.length; i++){
-				str+=checkStatus.data[i].INFRECTYPE+","+checkStatus.data[i].RPTDATE+","+checkStatus.data[i].COMPANY+";"
+				str+=checkStatus.data[i].infRecType+","+checkStatus.data[i].rptDate+","+checkStatus.data[i].COMPANY+";"
 				
 			}
 			str = str.substr(0, str.length - 1);
