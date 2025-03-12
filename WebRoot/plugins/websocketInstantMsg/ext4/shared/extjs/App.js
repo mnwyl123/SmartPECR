@@ -15,7 +15,7 @@ If you are unsure which license is appropriate for your use, please contact the 
 /**
  * Ext.App
  * @extends Ext.util.Observable
- * @author pengyj Chris Scott
+ * @author 穆楠 Chris Scott
  */
 Ext.define('Ext.App', {
     extend: 'Ext.util.Observable',

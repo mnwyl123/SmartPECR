@@ -1,5 +1,5 @@
 /**
- * @author pengyj Nicolas Ferrero
+ * @author 穆楠 Nicolas Ferrero
  * @class Ext.ux.GroupTabPanel
  * @extends Ext.Container
  * A TabPanel with grouping support.

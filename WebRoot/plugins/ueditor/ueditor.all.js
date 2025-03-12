@@ -11769,7 +11769,7 @@ UE.plugins['undo'] = function () {
 ///commandsTitle  纯文本粘贴模式
 /*
  ** @description 粘贴
- * @author pengyj zhanyi
+ * @author 穆楠 zhanyi
  */
 UE.plugins['paste'] = function () {
     function getClipboardData(callback) {
@@ -12052,7 +12052,7 @@ UE.plugins['paste'] = function () {
 ///commandsTitle  设置回车标签p或br
 /*
  * @description 处理回车
- * @author pengyj zhanyi
+ * @author 穆楠 zhanyi
  */
 UE.plugins['enterkey'] = function() {
     var hTag,
@@ -12743,7 +12743,7 @@ UE.plugins['fiximgclick'] = (function () {
 ///commandsTitle  自动增高
 /*
  * @description 自动伸展
- * @author pengyj zhanyi
+ * @author 穆楠 zhanyi
  */
 UE.plugins['autoheight'] = function () {
     var me = this;
@@ -17329,7 +17329,7 @@ UE.plugins['tablesort'] = function () {
  * 右键菜单
  * @function
  * @name baidu.editor.plugins.contextmenu
- * @author pengyj zhanyi
+ * @author 穆楠 zhanyi
  */
 
 UE.plugins['contextmenu'] = function () {
@@ -17969,7 +17969,7 @@ UE.plugins['basestyle'] = function(){
  * @description
  * 1.拖放文件到编辑区域，自动上传并插入到选区
  * 2.插入粘贴板的图片，自动上传并插入到选区
- * @author pengyj Jinqn
+ * @author 穆楠 Jinqn
  * @date 2013-10-14
  */
 UE.plugin.register('autoupload', function (){

@@ -1,7 +1,7 @@
 /**
  * @class Ext.ux.DataView.DragSelector
  * @extends Object
- * @author pengyj Ed Spencer
+ * @author 穆楠 Ed Spencer
  * 
  */
 Ext.define('Ext.ux.DataView.DragSelector', {

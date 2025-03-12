@@ -1,7 +1,7 @@
 /**
  * @class Ext.ux.DataView.Draggable
  * @extends Object
- * @author pengyj Ed Spencer
+ * @author 穆楠 Ed Spencer
  *
 <pre><code>
 Ext.create('Ext.view.View', {

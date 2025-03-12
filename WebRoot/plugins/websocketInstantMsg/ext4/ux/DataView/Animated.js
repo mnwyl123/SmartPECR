@@ -1,7 +1,7 @@
 /**
  * @class Ext.ux.DataViewTransition
  * @extends Object
- * @author pengyj Ed Spencer (http://sencha.com)
+ * @author 穆楠 Ed Spencer (http://sencha.com)
  * Transition plugin for DataViews
  */
 Ext.define('Ext.ux.DataView.Animated', {

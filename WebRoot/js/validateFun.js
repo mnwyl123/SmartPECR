@@ -161,7 +161,6 @@ function allBlankChar(name,id,value){
 
 /**前后空格校验**/
 function blankChar(name,id,value){
-	/*******************FIX BUG BY zhaoheng,email zhaohengb@dcits.com*************************/
 	//前后空格检验,应该为以一个或者多个空格开头|以一个或者多个空格结尾
     if(/^[\s]+|[\s]+$/gm.test(value)){
 		$("#"+id).tips({

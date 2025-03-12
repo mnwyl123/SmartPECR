@@ -1,7 +1,7 @@
 /**
  * @class Ext.ux.GMapPanel
  * @extends Ext.Panel
- * @author pengyj Shea Frederick
+ * @author 穆楠 Shea Frederick
  */
 Ext.define('Ext.ux.GMapPanel', {
     extend: 'Ext.Panel',
