@@ -3043,7 +3043,6 @@ CREATE TABLE E_INSTITU_BALANCE_BS_HIST
   IS_FILTER                       NCHAR(1) COMMENT '是否过滤标识(默认为N-不过滤)',
   REPORT_MESSAGE_ID               NVARCHAR(60) COMMENT '报文文件ID',
   COMPANY varchar(20) CHARACTER SET utf8mb4 DEFAULT NULL,
-  REPORT_FILE_COLNUM varchar(7) DEFAULT NULL COMMENT '在报文文件中的行数',
   EXTEND1                         NVARCHAR(100) COMMENT '预留字段1',
   EXTEND2                         NVARCHAR(100) COMMENT '预留字段2',
   EXTEND3                         NVARCHAR(100) COMMENT '预留字段3'
