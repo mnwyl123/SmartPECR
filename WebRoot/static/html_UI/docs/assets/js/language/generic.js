@@ -1,7 +1,7 @@
 /**
  * Generic language patterns
  *
- * @author pengyj Craig Campbell
+ * @author 穆楠 Craig Campbell
  * @version 1.0.11
  */
 Rainbow.extend([

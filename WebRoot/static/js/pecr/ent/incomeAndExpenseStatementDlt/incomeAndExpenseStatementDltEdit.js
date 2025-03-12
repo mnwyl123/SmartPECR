@@ -15,7 +15,7 @@ layui.use(['element', 'form','layer','laydate','table','laytpl'], function(){
      * 模块化加载
      * 自定义模块
      */
-    require(['static/js/pecr/module/base','static/js/pecr/module/verify'],function(base,verify){
+    require(['static/js/pecr/module/base','static/js/pecr/module/verify','static/js/pecr/module/config'],function(base,verify,config){
         /**
          * element组件渲染
          * form组件渲染

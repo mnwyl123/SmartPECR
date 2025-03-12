@@ -1,4 +1,4 @@
-//创建人：FH fh313596790qq(pengyj)
+
 jQuery(function()
 {
     $ = jQuery ;

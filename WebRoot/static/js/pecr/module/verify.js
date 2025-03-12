@@ -168,7 +168,8 @@ define(['./base','./config'],function (base,config) {
          */
         assetsValue : function (value,item) {
             if (value){
-                var re = /^(((\d|[1-9]\d{1,16})(\.\d{1,2})?))$/ ;
+                // var re = /^(((\d|[1-9]\d{1,16})(\.\d{1,2})?))$/ ;
+                const re = /^-?(0|([1-9]\d{0,16}))(\.\d{1,2})?$/;
                 if (!(re.test(value))){
                     return "请输入17位以内的最多2位小数的数字";
                 }

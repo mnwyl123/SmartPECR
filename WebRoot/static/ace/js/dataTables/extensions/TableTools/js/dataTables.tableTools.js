@@ -10,7 +10,7 @@
  * @description Tools and buttons for DataTables
  * @version     2.2.3
  * @file        dataTables.tableTools.js
- * @author pengyj      SpryMedia Ltd (www.sprymedia.co.uk)
+ * @author 穆楠      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
  * @copyright   Copyright 2009-2014 SpryMedia Ltd.
  *

@@ -24,7 +24,7 @@ layui.use(['form', 'laydate', 'element', 'layer', 'table', 'laypage','laytpl'], 
 	     * 初始化常量枚举值
 	     */
 	    var initEnumerationValue = function () {
-			var array = ['ENT_CERT_MAIN_TYPE','DATA_STATUS_BLXS'];
+			var array = ['ENT_CERT_TYPE','DATA_STATUS_BLXS'];
 			var selectData = [];
 			for(var i=0; i<array.length; i++ ){
 				var node = {};
@@ -39,10 +39,10 @@ layui.use(['form', 'laydate', 'element', 'layer', 'table', 'laypage','laytpl'], 
 				dataType:'json',  
 				success:function(data){
 					for(var i=0;i<data.result.length;i++){
-						if (data.result[i].ENT_CERT_MAIN_TYPE){
+						if (data.result[i].ENT_CERT_TYPE){
 							base.renderTpl({
 								tplId : "enumerationValueTpl",
-								arr : {"list" : data.result[i].ENT_CERT_MAIN_TYPE},
+								arr : {"list" : data.result[i].ENT_CERT_TYPE},
 								containerId : "entCertType"
 							});
 							continue;
@@ -77,7 +77,7 @@ layui.use(['form', 'laydate', 'element', 'layer', 'table', 'laypage','laytpl'], 
 			{field: 'ekaInstitutionBalanceShtId', title: '主键', hide: true},
 			{field: 'orgCode', align:'center', title: '所属机构'},
 			{field: 'entName', align:'center', title: '企业名称'},
-            {field: 'entCertType', align:'center', title: '企业身份标识类型',templet: function(d){return renderColumnDict(d, 'entCertType', enterDict.entCertMainType)}},
+            {field: 'entCertType', align:'center', title: '企业身份标识类型',templet: function(d){return renderColumnDict(d, 'entCertType', enterDict.arlpCertType)}},
 			{field: 'entCertNum', align:'center', title: '企业身份标识号码'},
 			{field: 'businessStates', align:'center', title: '数据状态',templet: function(d){return renderColumnDict(d, 'businessStates', enterDict.dataStatusBlxs)}},
 			{field: 'rptDate', align:'center', title: '信息报告日期'},

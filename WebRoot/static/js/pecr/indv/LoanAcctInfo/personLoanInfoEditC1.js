@@ -12,7 +12,7 @@ layui.use(['element', 'form','layer','laydate','table','laypage','laytpl'], func
 		laypage = layui.laypage, //获取laypage模块
 		laytpl = layui.laytpl;  //获取laytpl模块  模板引擎
 
-	require(['static/js/pecr/module/base','static/js/pecr/module/verify'],function(base,verify){
+	require(['static/js/pecr/module/base','static/js/pecr/module/verify','static/js/pecr/module/config'],function(base,verify,config){
 		/**
 		 * element组件渲染
 		 * form组件渲染

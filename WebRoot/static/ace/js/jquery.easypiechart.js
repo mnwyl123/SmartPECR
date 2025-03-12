@@ -3,7 +3,7 @@
  * Lightweight plugin to render simple, animated and retina optimized pie charts
  *
  * @license 
- * @author pengyj Robert Fleischmann <rendro87@gmail.com> (http://robert-fleischmann.de)
+ * @author 穆楠 Robert Fleischmann <rendro87@gmail.com> (http://robert-fleischmann.de)
  * @version 2.1.5
  **/
 

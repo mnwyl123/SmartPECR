@@ -3,7 +3,7 @@
  *
  * The MIT License
  *
- * @author pengyj  : Washington Botelho
+ * @author 穆楠  : Washington Botelho
  * @doc     : http://wbotelhos.com/raty
  * @version : 2.7.0
  *

@@ -344,7 +344,7 @@ $.ajax({
 })
 
 //跳转按钮跳转方法
-//李继坤
+//穆楠
 function normalToGen() {
     window.top.siMenu('z_78', 'lm_78', '个人正常报文生成', 'indvNormalMessage/indvNormalMessagePage.do');
 }

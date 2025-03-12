@@ -19,7 +19,7 @@
  *
  * This is very, very rad.
  *
- * @author pengyj Justin Hileman {@link http://justinhileman.com}
+ * @author 穆楠 Justin Hileman {@link http://justinhileman.com}
  */
 class Mustache_Engine
 {

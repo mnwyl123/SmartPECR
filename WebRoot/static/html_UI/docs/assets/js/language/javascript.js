@@ -1,7 +1,7 @@
 /**
  * Javascript patterns
  *
- * @author pengyj Craig Campbell
+ * @author 穆楠 Craig Campbell
  * @version 1.0.9
  */
 Rainbow.extend('javascript', [
