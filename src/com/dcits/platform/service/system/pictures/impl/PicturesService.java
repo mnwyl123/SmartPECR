@@ -13,7 +13,7 @@ import com.dcits.platform.util.PageData;
 
 
 /** 图片管理
- * @author pengyj fhpengyj (pengyj)
+ * @author 穆楠  穆楠 (穆楠)
  * 修改时间：2015.11.2
  */
 @Service("picturesService")

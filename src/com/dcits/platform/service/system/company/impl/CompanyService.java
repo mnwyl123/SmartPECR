@@ -16,7 +16,7 @@ import com.dcits.platform.util.PageData;
 
 
 /** 系统用户
- * @author pengyj fhpengyj (pengyj)
+ * @author 穆楠  穆楠 (穆楠)
  * 修改时间：2015.11.2
  */
 @Service("companyService")

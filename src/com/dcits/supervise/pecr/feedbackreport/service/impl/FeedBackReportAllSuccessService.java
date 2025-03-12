@@ -85,7 +85,7 @@ public class FeedBackReportAllSuccessService {
 		conditionMap.put("reportName", reportMessage.getReport_message_file_name());
 		conditionMap.put("BUSINESS_STATES", PecrConstantUtil.BUSINESS_STATUS_120);
 		conditionMap.put("OLD_BUSINESS_STATES", PecrConstantUtil.BUSINESS_STATUS_50);
-		//操作数据的流程必须为先更新当前表数据状态，再迁移数据到历史表，最后修改历史表数据状态  舍弃   李继坤
+		//操作数据的流程必须为先更新当前表数据状态，再迁移数据到历史表，最后修改历史表数据状态  舍弃   穆楠
 //		logger.info("开始迁移数据完成AllSuccess返回报文的数据");
 //		reportMessageMapper.moveData(conditionMap);
 //		logger.info("完成迁移数据完成AllSuccess返回报文的数据");

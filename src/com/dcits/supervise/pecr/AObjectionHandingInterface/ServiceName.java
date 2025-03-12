@@ -8,7 +8,7 @@ import javax.jws.WebService;
  * 发文中的地址：http://servername /creditreference/v2/trial/Appname/ServiceAccept
  * 其中，servername 是机构接入征信系统服务器 IP 地址，如 9.0.81.30，Appname 为应用名称，如 channel-query。
  *
- * @author liuyno
+ * @author 穆楠
  * @date 2020/10/19 - 14:57
  */
 @WebService(targetNamespace = "http://servername/creditreference/v2/trial/Appname/ServiceAccept", name = "ServiceName")

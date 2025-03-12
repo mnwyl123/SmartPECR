@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * 删除企业标注报文-Delete enterprise labeling request message
  *
- * @author wzy
+ * @author 
  * @date 2020/10/20 - 17:11
  */
 public class DelrmObjectionMessage extends AbstractGenerateObjectionMessage {

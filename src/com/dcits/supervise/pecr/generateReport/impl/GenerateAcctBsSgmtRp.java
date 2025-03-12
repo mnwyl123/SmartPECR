@@ -313,7 +313,7 @@ public class GenerateAcctBsSgmtRp extends AbstractGenerateReport {
 				// C1账户才报送
 				if (indvEntity.get("ACCT_TYPE").toString().equals(PecrConstantUtil.ACCT_BS_SGMT_C1)) {
 					/*** 个人借贷基本信息 --- -初始债权信息段-- ****/
-					// 李继坤
+					// 穆楠
 					if ((indvEntity.get("RPT_DATE_CODE").toString().equals("10"))) {
 						Element OrigCreditorInfSgmt = InAcctInf.addElement("OrigCreditorInfSgmt");
 						writeOrigCreditorInfSgmt(OrigCreditorInfSgmt, indvEntity);

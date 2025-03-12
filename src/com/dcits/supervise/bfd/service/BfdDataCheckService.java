@@ -10,7 +10,7 @@ import java.util.Map;
 /***
  * bfd校验业务接口层
  *
- * @author liuyno
+ * @author 穆楠
  *
  */
 public interface BfdDataCheckService {

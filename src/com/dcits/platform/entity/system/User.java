@@ -6,7 +6,7 @@ import com.dcits.platform.entity.Page;
  * 
 * 类名称：用户
 * 类描述： 
-* @author pengyj pengyj
+* @author 穆楠 穆楠
 * 作者单位： 
 * 联系方式：
 * 创建时间：2014年6月28日

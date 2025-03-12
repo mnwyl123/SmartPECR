@@ -19,7 +19,7 @@ import com.dcits.platform.util.Tools;
 /**
 * 导入到EXCEL
 * 类名称：ObjectExcelView.java
-* @author pengyj   
+* @author 穆楠   
 * @version 1.0
  */
 public class ObjectExcelView extends AbstractExcelView{

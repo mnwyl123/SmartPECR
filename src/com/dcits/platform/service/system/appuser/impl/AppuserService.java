@@ -13,7 +13,7 @@ import com.dcits.platform.util.PageData;
 
 
 /**类名称：AppuserService
- * @author pengyj   
+ * @author 穆楠   
  * 修改时间：2015年11月6日
  */
 @Service("appuserService")

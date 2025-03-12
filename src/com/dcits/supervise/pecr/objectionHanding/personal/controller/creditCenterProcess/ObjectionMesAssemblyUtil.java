@@ -17,7 +17,7 @@ import java.util.Set;
  * 该类暂时无用
  * 异议处理报文组装工具类
  *
- * @author liuyno
+ * @author 穆楠
  * @date 2020/9/15 - 17:19
  */
 public class ObjectionMesAssemblyUtil {
@@ -32,7 +32,7 @@ public class ObjectionMesAssemblyUtil {
      * @param xmlMessage 待解析为JavaBean的XML
      * @param object     与XML对应的JavaBean对象
      * @return void
-     * @Author liuyno
+     * @Author 穆楠
      * @Description
      * @Date 2020/9/17 19:25
      */

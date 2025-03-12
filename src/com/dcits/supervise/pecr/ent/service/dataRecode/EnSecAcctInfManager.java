@@ -36,7 +36,7 @@ public interface EnSecAcctInfManager {
 	/**
 	 * 企业担保账户按段更正信息 获取基础段历史表中的主键
 	 * 
-	 * @param pd
+	 * @param page
 	 * @return
 	 * @throws Exception
 	 */
@@ -81,7 +81,7 @@ public interface EnSecAcctInfManager {
 	/**
 	 * 企业担保账户信息 相关还款责任人段
 	 * 
-	 * @param pd
+	 * @param page
 	 * @return
 	 * @throws Exception
 	 */
@@ -90,7 +90,7 @@ public interface EnSecAcctInfManager {
 	/**
 	 * 企业担保账户信息 抵质押物信息段
 	 * 
-	 * @param pd
+	 * @param page
 	 * @return
 	 * @throws Exception
 	 */
@@ -106,14 +106,14 @@ public interface EnSecAcctInfManager {
 	
 	/**
 	 * 新增   企业担保账户按段更正基础段
-	 * @param pd
+	 * @param map
 	 * @throws Exception
 	 */
 	public void saveEnSecAcctInf(Map<String, Object> map) throws Exception;
 
 	/**
 	 * 新增   基础段
-	 * @param pd
+	 * @param map
 	 * @throws Exception
 	 */
 	public void insertEnSecAcctInf(Map<String, Object> map) throws Exception;

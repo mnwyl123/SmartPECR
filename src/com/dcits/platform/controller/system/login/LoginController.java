@@ -54,7 +54,7 @@ import com.dcits.platform.util.Tools;
 import com.dcits.platform.util.tree.TreeEntity;
 /**
  * 总入口
- * @author pengyj 
+ * @author 穆楠 
  * 修改日期：2015/11/2
  */
 @Controller
@@ -299,7 +299,7 @@ public class LoginController extends BaseController {
 											    	operResult.append(",身份验证失败！");
 											    	errInfo = "身份验证失败！";
 												 }
-											    *//**pengyj 多法人支持
+											    *//**穆楠 多法人支持
 												 * 根据用户所属法人机构设置动态数据源 20180817 
 												 *//*
 												DbContextHolder.setDbType(user.getCOMPANY() == null?"":user.getCOMPANY());
@@ -346,7 +346,7 @@ public class LoginController extends BaseController {
 												    	operResult.append(",身份验证失败！");
 												    	errInfo = "身份验证失败！";
 													 }
-												    /**pengyj 多法人支持
+												    /**穆楠 多法人支持
 													 * 根据用户所属法人机构设置动态数据源 20180817 
 													 */
 													DbContextHolder.setDbType(user.getCOMPANY() == null?"":user.getCOMPANY());
@@ -381,7 +381,7 @@ public class LoginController extends BaseController {
 											    	operResult.append(",身份验证失败！");
 											    	errInfo = "身份验证失败！";
 												 }
-											    /**pengyj 多法人支持
+											    /**穆楠 多法人支持
 												 * 根据用户所属法人机构设置动态数据源 20180817 
 												 */
 												DbContextHolder.setDbType(user.getCOMPANY() == null?"":user.getCOMPANY());

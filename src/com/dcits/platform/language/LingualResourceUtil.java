@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 
  * 获取国际化标准
- * @author chenliangu
+ * @author 
  *
  */
 public class LingualResourceUtil {

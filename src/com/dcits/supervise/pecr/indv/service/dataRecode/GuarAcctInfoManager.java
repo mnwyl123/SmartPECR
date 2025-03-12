@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 /**
  * 个人担保账户信息
- * @author leizx
+ * @author 穆楠
  *
  */
 public interface GuarAcctInfoManager {

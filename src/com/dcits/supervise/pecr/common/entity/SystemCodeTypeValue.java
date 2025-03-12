@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 系统上报码值    数据字典
- * @author leizx
+ * @author 穆楠
  *
  */
 public class SystemCodeTypeValue implements Serializable {

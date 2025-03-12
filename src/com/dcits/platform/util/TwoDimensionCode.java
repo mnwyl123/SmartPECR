@@ -18,7 +18,7 @@ import com.swetake.util.Qrcode;
 
 /**
  * 二维码
- * 创建人：FH  pengyj 
+ * 创建人：FH  穆楠
  * 创建时间：2015年4月10日
  * @version
  */

@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * 企业借贷账户  持久层
- * @author leizx
+ * @author 穆楠
  *
  */
 public interface EntLoanAcctInfoManager {

@@ -13,7 +13,7 @@ import com.dcits.supervise.pecr.common.service.DataCheckResultMapper;
 
 /**
  * 校验结果查看
- * @author leizx
+ * @author 穆楠
  *
  */
 @Service("dataCheckResultService")

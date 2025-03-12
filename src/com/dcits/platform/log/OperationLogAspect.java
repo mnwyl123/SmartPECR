@@ -17,7 +17,7 @@ import com.dcits.platform.service.system.operation.impl.OperationService;
 
 /**
  * 处理用户操作日志切面类
- * @author liuylt
+ * @author
  *
  */
 @Aspect  

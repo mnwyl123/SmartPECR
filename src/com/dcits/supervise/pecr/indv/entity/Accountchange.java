@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 标识变更实体类
  *
- * @author wangyanaaa
+ * @author 穆楠
  */
 public class Accountchange implements Serializable {
     private static final long serialVersionUID = 1L;

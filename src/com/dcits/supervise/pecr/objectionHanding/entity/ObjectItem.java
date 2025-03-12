@@ -2,7 +2,7 @@ package com.dcits.supervise.pecr.objectionHanding.entity;
 
 /**
  * 异议事项实体类
- * @author wangyan
+ * @author 穆楠  
  *
  */
 public class ObjectItem {

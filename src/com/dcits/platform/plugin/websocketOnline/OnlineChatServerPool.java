@@ -11,8 +11,8 @@ import org.java_websocket.WebSocket;
 
 /**
  * 在线管理
- * @author pengyj FH
- *   pengyj
+ * @author 穆楠  
+ *   穆楠
  * 2015-5-25
  */
 public class OnlineChatServerPool {

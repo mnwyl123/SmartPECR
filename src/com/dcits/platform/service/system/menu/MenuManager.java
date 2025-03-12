@@ -10,7 +10,7 @@ import com.dcits.platform.util.tree.TreeEntity;
 
 
 /**说明：MenuService 菜单处理接口
- * @author pengyj fh pengyj
+ * @author 穆楠   穆楠
  */
 public interface MenuManager {
 

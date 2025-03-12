@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 抵（质）押合同信息   基础段
- * @author leizx
+ * @author 穆楠
  *
  */
 public class MotgaCltalCtrctBsSgmt implements Serializable {

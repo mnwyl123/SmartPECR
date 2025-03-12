@@ -122,7 +122,7 @@ public class GenerateMessageController extends BaseController{
 			List<String> ctrct_bs_sgmt = new ArrayList<String>();
 			List<String> guar_acct_bs_sgmt = new ArrayList<String>();
 			List<String> in_spc_evt_dsc_inf = new ArrayList<String>();
-		//	李继坤
+		//	穆楠
 			List<String> companyLists = new ArrayList<String>();
 			for (String str : strs) {
 				String[] temp = str.split(",");

@@ -11,7 +11,7 @@ import com.dcits.platform.entity.system.User;
 
 /**
  * 权限处理
- * @author pengyj:pengyj
+ * @author 穆楠:穆楠
  * 修改日期：2015/11/19
 */
 public class Jurisdiction {

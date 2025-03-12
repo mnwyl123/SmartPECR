@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * 删除个人标注报文-Delete personal labeling request message
  *
- * @author liuyno
+ * @author 穆楠
  * @date 2020/10/20 - 17:11
  */
 public class DplrmObjectionMessage extends AbstractGenerateObjectionMessage {

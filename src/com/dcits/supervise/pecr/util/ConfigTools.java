@@ -25,7 +25,7 @@ import javax.crypto.Cipher;
 
 /**
  * 数据库密码加密解密方法
- * @author HP
+ * @author
  *
  */
 public class ConfigTools

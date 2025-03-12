@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * 企业财务报表   企业资产负债表  持久层
- * @author leizx
+ * @author 穆楠
  *
  */
 public interface EntBalanceSheetInfoManager {

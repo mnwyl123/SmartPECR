@@ -35,7 +35,7 @@ import com.dcits.supervise.pecr.validateData.service.ValidateErrorMessageService
 /**
  * 抵（质）押合同信息
  * 企业、个人抵质押合同信息 上报信息段一致   共用
- * @author leizx
+ * @author 穆楠
  *
  */
 @Controller

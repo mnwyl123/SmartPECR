@@ -29,7 +29,7 @@ import com.dcits.platform.util.tree.TreeEntityFactory;
 
 /** 
  * 类名称：MenuService 菜单处理
- * 创建人：FH    3  1 3 5 9 6 7 9 0pengyj
+ * 创建人：FH    3  1 3 5 9 6 7 9 0穆楠
  * 修改时间：2015年10月27日
  * @version v2
  */

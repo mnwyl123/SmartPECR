@@ -114,7 +114,7 @@ public abstract  class FeedBackReportPartFailService {
 		reportMessageMapper.UpdateBusinessStateByCondition(conditionMap);
 		logger.info("完成更新部分反馈错误返回报文数据的数据状态");
 		
-		//李继坤
+		//穆楠
 		//操作数据的流程必须为先更新当前表数据状态，再迁移数据到历史表，最后修改历史表数据状态
 		/*//将历史表中数据状态修改为70
 		 * reportMessageMapper.moveData(conditionMap);
@@ -210,7 +210,7 @@ public abstract  class FeedBackReportPartFailService {
 		conditionMap.put("OLD_BUSINESS_STATES", PecrConstantUtil.BUSINESS_STATUS_50);
 		
 		reportMessageMapper.UpdateBusinessStateByCondition(conditionMap);
-		//将历史表中数据状态修改为20      李继坤注释
+		//将历史表中数据状态修改为20      穆楠注释
 		//操作数据的流程必须为先更新当前表数据状态，再迁移数据到历史表，最后修改历史表数据状态
 		/*conditionMap.put("BUSINESS_STATES", PecrConstantUtil.BUSINESS_STATUS_20);
 		reportMessageMapper.UpdateBusinessStateCheckByCondition(conditionMap);*/

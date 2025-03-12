@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.dcits.platform.util.PageData;
 /**
- * @author pengyj   
+ * @author 穆楠   
  * 修改时间：2015、12、11
  */
 @Repository("daoSupport")

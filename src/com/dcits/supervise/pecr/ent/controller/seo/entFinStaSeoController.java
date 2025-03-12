@@ -23,7 +23,7 @@ import com.dcits.supervise.pecr.ent.service.seo.entFinStaSeoManager;
 
 /**
  * 企业财报整笔删除
- * @author wangyan
+ * @author 穆楠  
  *
  */
 @Controller

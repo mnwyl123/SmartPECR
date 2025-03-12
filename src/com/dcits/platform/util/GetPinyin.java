@@ -8,7 +8,7 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 
 /**
  * 汉字解析拼音处理
- * @author pengyj: FHQpengyj
+ * @author 穆楠:
  * 修改时间：2015年11月24日
  */
 public class GetPinyin {

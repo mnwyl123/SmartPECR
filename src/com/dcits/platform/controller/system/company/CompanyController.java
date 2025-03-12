@@ -52,7 +52,7 @@ import com.dcits.supervise.pecr.log.Operate;
 
 /** 
  * 类名称：UserController
- * 创建人：FH fhpengyj (pengyj)
+ * 创建人：FH fh穆楠 (穆楠)
  * 更新时间：2015年11月3日
  * @version
  */

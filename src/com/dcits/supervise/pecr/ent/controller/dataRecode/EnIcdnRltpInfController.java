@@ -32,7 +32,7 @@ import com.dcits.supervise.pecr.validateData.model.ValidateErrorMessage;
 import com.dcits.supervise.pecr.validateData.service.ValidateErrorMessageService;
 /**
  * 企业间关联关系信息记录
- * @author leizx
+ * @author 穆楠
  *
  */
 @Controller

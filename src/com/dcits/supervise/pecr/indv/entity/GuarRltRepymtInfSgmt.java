@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 个人担保账户信息记录   相关还款责任人段
- * @author leizx
+ * @author 穆楠
  *
  */
 public class GuarRltRepymtInfSgmt implements Serializable {

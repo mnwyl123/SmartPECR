@@ -78,7 +78,7 @@ public class FeedBackReportAllFailService {
 		conditionMap.put("primaryKeyName", null);
 		conditionMap.put("reportName", reportMessage.getReport_message_file_name());
 		//对于整体报文出错的情况下，将报文中所有数据的数据状态修改为校验成功，可利于下次直接生成报文。
-		//预处理失败  改状态为110  李继坤
+		//预处理失败  改状态为110  穆楠
 		conditionMap.put("BUSINESS_STATES", PecrConstantUtil.BUSINESS_STATUS_110);
 		conditionMap.put("OLD_BUSINESS_STATES", PecrConstantUtil.BUSINESS_STATUS_50);
 		logger.info("开始更新AllFail返回报文数据的数据状态");

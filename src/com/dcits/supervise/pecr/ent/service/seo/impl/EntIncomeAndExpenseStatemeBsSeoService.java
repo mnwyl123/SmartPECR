@@ -16,7 +16,7 @@ import com.dcits.supervise.pecr.ent.service.seo.EntIncomeAndExpenseStatemeBsSeoM
 
 /**
  * 事业单位资产负债
- * @author wangyan
+ * @author 穆楠  
  *
  */
 @Service("entIncomeAndExpenseStatemeBsSeo")

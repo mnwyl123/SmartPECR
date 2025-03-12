@@ -22,7 +22,7 @@ import com.dcits.supervise.pecr.common.entity.SystemCodeTypeValue;
 import com.dcits.supervise.pecr.whiteList.service.WhiteMsgConfigManager;
 /**
  * 征信报送白名单配置
- * @author zhanggy
+ * @author
  *
  */
 @Controller

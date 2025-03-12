@@ -16,7 +16,7 @@ import com.dcits.supervise.pecr.objectionHanding.service.PersonObjectionManager;
 
 /**
  * 异议处理
- * @author wangyan
+ * @author 穆楠  
  *
  */
 @Controller

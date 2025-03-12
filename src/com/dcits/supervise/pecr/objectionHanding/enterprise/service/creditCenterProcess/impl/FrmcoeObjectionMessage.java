@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * 反馈企业异议事项更正结果报文-Feedback request message for correction of enterprise objections
  *
- * @author wzy
+ * @author 
  * @date 2020/10/20 - 16:58
  */
 public class FrmcoeObjectionMessage extends AbstractGenerateObjectionMessage {

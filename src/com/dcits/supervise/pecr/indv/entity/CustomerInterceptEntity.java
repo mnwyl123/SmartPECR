@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 客户拦截明细表实体类
  *
- * @author liuyno
+ * @author 穆楠
  * @date 2020/8/6 - 9:54
  */
 public class CustomerInterceptEntity implements Serializable {

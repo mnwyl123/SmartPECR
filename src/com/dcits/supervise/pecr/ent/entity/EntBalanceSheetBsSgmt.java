@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 企业财务报表   企业资产负债表   基础段
- * @author leizx
+ * @author 穆楠
  *
  */
 public class EntBalanceSheetBsSgmt implements Serializable {

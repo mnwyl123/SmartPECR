@@ -3,7 +3,7 @@ package com.dcits.common;
 /**
  * 线程设置使用哪个数据源
  * 
- * @author meng.chunxia
+ * @author 穆楠
  * 
  */
 public class DbContextHolder {

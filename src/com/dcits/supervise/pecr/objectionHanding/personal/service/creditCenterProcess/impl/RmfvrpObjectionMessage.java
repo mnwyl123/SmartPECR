@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * 反馈个人异议事项核查结果报文-Request message for feedback of verification results of personal objections
  *
- * @author liuyno
+ * @author 穆楠
  * @date 2020/10/20 - 16:49
  */
 public class RmfvrpObjectionMessage extends AbstractGenerateObjectionMessage {

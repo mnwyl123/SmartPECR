@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.dcits.platform.controller.base.BaseController;
 
 /**登录验证过滤器(废弃  com.dcits.interceptor替代)
- * @author pengyj pengyj
+ * @author 穆楠 穆楠
  *
  */
 public class LoginFilter extends BaseController implements Filter {

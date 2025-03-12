@@ -9,7 +9,7 @@ import com.dcits.platform.util.tree.TreeEntity;
  * 
 * 类名称：组织机构
 * 类描述： 
-* @author pengyj
+* @author 穆楠
 * 作者单位： 
 * 联系方式：
 * 修改时间：2015年12月16日

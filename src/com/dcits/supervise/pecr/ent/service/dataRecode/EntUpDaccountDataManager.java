@@ -7,7 +7,7 @@ import com.dcits.platform.entity.Page;
 import com.dcits.platform.util.PageData;
 /**
  * 特殊报文按段更正service层
- * @author wangyanaaa
+ * @author 穆楠
  *
  */
 public interface EntUpDaccountDataManager {

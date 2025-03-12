@@ -43,9 +43,9 @@ import com.dcits.platform.util.Tools;
  * 
 * 类名称：分页插件
 * 类描述： 
-* @author pengyj FH
+* @author 穆楠  
 * 作者单位： 
-* 联系方式： pengyj
+* 联系方式： 穆楠
 * 修改时间：2016年2月1日
 * @version 1.0
  */

@@ -30,7 +30,7 @@ import com.dcits.supervise.pecr.indv.service.dataRecode.DelaccountDataManager;
 
 /**
  * 读取excel中数据
- * @author HP
+ * @author 
  *
  */
 public class ImportExportDataPerDel {

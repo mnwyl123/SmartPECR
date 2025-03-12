@@ -1,7 +1,7 @@
 package com.dcits.platform.util.mail;
 /**
  * 发送邮件需要使用的基本信息 
-* @author pengyj pengyj
+* @author 穆楠 穆楠
 * 创建时间：2014年6月20日
 * @version 2.0
  */

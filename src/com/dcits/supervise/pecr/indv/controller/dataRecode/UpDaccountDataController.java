@@ -24,7 +24,7 @@ import com.dcits.platform.util.Jurisdiction;
 import com.dcits.platform.util.PageData;
 /**
  * 特殊报文按段更正控制器
- * @author wangyanaaa
+ * @author 穆楠
  *
  */
 @Controller

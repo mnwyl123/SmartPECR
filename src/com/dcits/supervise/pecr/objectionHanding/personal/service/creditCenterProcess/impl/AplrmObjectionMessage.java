@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * 添加个人标注报文-Add personal labeling request message
- * @author liuyno
+ * @author 穆楠
  * @date 2020/10/20 - 17:03
  */
 public class AplrmObjectionMessage extends AbstractGenerateObjectionMessage {

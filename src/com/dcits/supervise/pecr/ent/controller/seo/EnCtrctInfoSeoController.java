@@ -22,7 +22,7 @@ import com.dcits.supervise.pecr.ent.service.seo.EnCtrctInfoSeoManager;
 import com.dcits.supervise.pecr.indv.entity.PecrIndvBsSgmt;
 /**
  * 企业授信信息
- * @author leizx
+ * @author 穆楠
  *
  */
 @Controller

@@ -21,7 +21,7 @@ import com.dcits.supervise.pecr.indv.entity.PecrIndvBsSgmt;
 import com.dcits.supervise.pecr.indv.service.seo.InFalMmbsInfSeoManager;
 /**
  * 家族关系信息
- * @author leizx
+ * @author 穆楠
  *
  */
 @Controller

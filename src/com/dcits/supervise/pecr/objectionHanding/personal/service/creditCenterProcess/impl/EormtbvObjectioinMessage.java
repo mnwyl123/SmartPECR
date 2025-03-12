@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * 企业待核查异议报文-Personal objection message to be verified
  *
- * @author wzy
+ * @author 
  * @date 2020/10/20 - 15:39
  */
 public class EormtbvObjectioinMessage extends AbstractGenerateObjectionMessage {

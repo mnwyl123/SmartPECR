@@ -34,7 +34,7 @@ import com.dcits.platform.util.mail.SimpleMailSender;
 
 /** 
  * 类名称：HeadController
- * 创建人：FH pengyjQ
+ * 创建人：FH 穆楠Q
  * 修改时间：2015年11月23日
  * @version
  */

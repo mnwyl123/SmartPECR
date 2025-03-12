@@ -29,7 +29,7 @@ import com.dcits.supervise.pecr.ent.service.packet.InstitutionBalanceSheetDltMan
 
 /**
  * 事业单位资产负债表整笔删除请求记录
- * @author leizx
+ * @author 穆楠
  *
  */
 @Controller

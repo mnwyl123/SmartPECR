@@ -23,7 +23,7 @@ import com.dcits.supervise.pecr.ent.service.seo.EntIncomePabsInfoSeoManager;
 
 /**
  * 企业利润及利润分配表综合查询
- * @author hp
+ * @author 
  *
  */
 @Controller

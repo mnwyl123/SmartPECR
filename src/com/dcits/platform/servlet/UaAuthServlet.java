@@ -33,7 +33,7 @@ import com.dcits.platform.util.tree.TreeEntity;
 
 /**
  * 接入sso时，需要调用的入口
- * @author pengyj
+ * @author 穆楠
  *
  */
 @Controller

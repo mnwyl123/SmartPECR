@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * 反馈个人异议事项更正结果报文-Feedback request message for correction of personal objections
  *
- * @author liuyno
+ * @author 穆楠
  * @date 2020/10/20 - 16:58
  */
 public class FrmcopObjectionMessage extends AbstractGenerateObjectionMessage {

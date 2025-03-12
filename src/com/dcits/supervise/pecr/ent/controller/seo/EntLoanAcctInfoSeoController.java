@@ -23,7 +23,7 @@ import com.dcits.supervise.pecr.ent.service.seo.EntLoanAcctInfoSeoManager;
 import com.dcits.supervise.pecr.indv.entity.PecrIndvBsSgmt;
 /**
  * 企业借贷账户信息
- * @author leizx
+ * @author 穆楠
  *
  */
 @Controller

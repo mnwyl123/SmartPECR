@@ -7,7 +7,7 @@ import com.dcits.platform.util.PageData;
 
 
 /** 图片管理接口
- * @author pengyj fhpengyj (pengyj)
+ * @author 穆楠  穆楠 (穆楠)
  * 修改时间：2015.11.2
  */
 public interface PicturesManager {

@@ -16,7 +16,7 @@ import com.dcits.supervise.pecr.ent.service.dataRecode.EnSecAcctInfManager;
 
 /**
  * 担保账户信息
- * @author leizx
+ * @author 穆楠
  *
  */
 @Service("enSecAcctInfService")

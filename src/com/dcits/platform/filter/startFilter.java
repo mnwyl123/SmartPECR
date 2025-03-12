@@ -24,7 +24,7 @@ import com.dcits.platform.util.Tools;
 
 /**
  * 启动tomcat时运行此类
- * 创建人：FH pengyj
+ * 创建人：FH 穆楠
  * 创建时间：2014年2月17日
  * @version
  */

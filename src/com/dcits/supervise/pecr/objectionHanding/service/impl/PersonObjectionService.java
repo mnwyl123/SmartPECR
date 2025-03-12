@@ -17,7 +17,7 @@ import com.dcits.supervise.pecr.objectionHanding.service.PersonObjectionManager;
 
 /** 
  * 个人异议信息
- * 创建人：wangyan
+ * 创建人：穆楠  
  */
 @Service("PersonObjectionService")
 public class PersonObjectionService implements PersonObjectionManager{

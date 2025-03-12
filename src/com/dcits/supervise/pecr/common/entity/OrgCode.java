@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 机构
- * @author leizx
+ * @author 穆楠
  *
  */
 public class OrgCode implements Serializable {

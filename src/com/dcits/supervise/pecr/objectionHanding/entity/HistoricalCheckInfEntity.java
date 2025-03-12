@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * 历史核查信息-属于个人待核查异议应答报文业务体的部分信息
  *
- * @author liuyno
+ * @author 穆楠
  * @date 2020/9/15 - 10:45
  */
 public class HistoricalCheckInfEntity implements Serializable {

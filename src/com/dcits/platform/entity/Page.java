@@ -4,7 +4,7 @@ import com.dcits.platform.util.PageData;
 
 /**
  * 分页类
- * @author pengyj pengyj
+ * @author 穆楠 穆楠
  * 创建时间：2014年6月28日
  */
 public class Page implements Cloneable{

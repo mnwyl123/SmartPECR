@@ -9,7 +9,7 @@ import com.dcits.supervise.pecr.ent.entity.EntIncomeAndExpenseStatemeBs;
 
 /**
  * 事业单位资产负债
- * @author leizx
+ * @author 穆楠
  *
  */
 public interface EntIncomeAndExpenseStatemeBsManager {

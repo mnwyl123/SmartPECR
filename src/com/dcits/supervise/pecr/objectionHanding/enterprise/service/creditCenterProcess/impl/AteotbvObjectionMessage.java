@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * 企业待核查异议事项附件信息-Attachment to enterprise objections to be verified
- * @author wzy
+ * @author 
  * @date 2020/10/20 - 16:45
  */
 public class AteotbvObjectionMessage extends AbstractGenerateObjectionMessage {

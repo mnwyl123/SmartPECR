@@ -6,7 +6,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**java压缩成zip
- * @author pengyj   
+ * @author 穆楠   
  * 创建时间：2015年1月14日
  */
 public class FileZip {

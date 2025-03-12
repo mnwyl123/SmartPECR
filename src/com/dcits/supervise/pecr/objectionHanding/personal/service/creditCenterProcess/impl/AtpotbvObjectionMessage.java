@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * 个人待核查异议事项附件信息-Attachment to personal objections to be verified
- * @author liuyno
+ * @author 穆楠
  * @date 2020/10/20 - 16:45
  */
 public class AtpotbvObjectionMessage extends AbstractGenerateObjectionMessage {

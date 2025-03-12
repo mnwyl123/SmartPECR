@@ -256,7 +256,7 @@ public class GenerateBsSgmtRp extends AbstractGenerateReport {
 
 				/*** 个人基本信息 --- -收入信息段--- ****/
 				/*if (indvEntity.getAnnlInc()!= null && !indvEntity.getAnnlInc().toString().equals("")) {
-					// 李继坤 收入信息段作为预留信息段，暂不需要报送。
+					// 穆楠 收入信息段作为预留信息段，暂不需要报送。
 					Element IncInfSgmt = InBasInf.addElement("IncInfSgmt");
 					writeIncInfSgmt(IncInfSgmt, indvEntity);
 				}*/

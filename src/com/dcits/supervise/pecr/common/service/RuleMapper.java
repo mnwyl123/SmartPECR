@@ -8,7 +8,7 @@ import com.dcits.platform.util.PageData;
 
 /**
  * 回执规则配置管理
- * @author wangyan
+ * @author 穆楠  
  *
  */
 public interface RuleMapper {

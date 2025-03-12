@@ -10,7 +10,7 @@ import com.dcits.platform.util.PageData;
 
 /**
  * 检验规则配置管理
- * @author leizx
+ * @author 穆楠
  *
  */
 public interface CheckRuleMapper {

@@ -18,7 +18,7 @@ import com.dcits.platform.controller.base.BaseController;
 
 /**   
  * 邮件发送器   
- * @author pengyj pengyj
+ * @author 穆楠 穆楠
  */    
 public class SimpleMailSender extends BaseController {    
 /**   
@@ -169,7 +169,7 @@ public class SimpleMailSender extends BaseController {
 	     mailInfo.setUserName("itfather@1b23.com");    
 	     mailInfo.setPassword("tttt");//您的邮箱密码    
 	     mailInfo.setFromAddress("itfather@1b23.com");    
-	     mailInfo.setToAddress("pengyj@ .com");    
+	     mailInfo.setToAddress("穆楠@ .com");    
 	     mailInfo.setSubject("设置邮箱标题");    
 	     mailInfo.setContent("设置邮箱内容");    
 	     //这个类主要来发送邮件   

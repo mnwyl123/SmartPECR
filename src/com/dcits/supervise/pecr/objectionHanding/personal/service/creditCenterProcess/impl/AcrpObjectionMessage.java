@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * 查询个人异议事项更正结果接受情况-Acceptance of correction results of personal objections
- * @author liuyno
+ * @author 穆楠
  * @date 2020/10/20 - 16:45
  */
 public class AcrpObjectionMessage extends AbstractGenerateObjectionMessage {

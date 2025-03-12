@@ -25,7 +25,7 @@ import com.dcits.platform.util.Const;
 /** 
  * 类名称：登录验证码
  * 类描述： 
- * 作者单位： pengyj
+ * 作者单位： 穆楠
  * 联系方式：
  * @version
  */

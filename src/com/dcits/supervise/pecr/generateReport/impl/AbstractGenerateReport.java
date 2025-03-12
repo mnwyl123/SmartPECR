@@ -159,7 +159,7 @@ public abstract class AbstractGenerateReport implements IReport {
      */
     public String generateRpHead(String infType, String numb, String modoleType) {
         String recordNumb = String.format("%07d", numb);
-        /*李继坤*/
+        /*穆楠*/
         String modoleTypeTrue = modoleType.substring(0, 2);
         String CCRC_ORG_CODE = modoleType.substring(2);
         
@@ -179,7 +179,7 @@ public abstract class AbstractGenerateReport implements IReport {
     
     public String generateRpHead(String infType, int numb, String modoleType) {
         String recordNumb = String.format("%07d", numb);
-        /*李继坤*/
+        /*穆楠*/
         String modoleTypeTrue = modoleType.substring(0, 2);
         String CCRC_ORG_CODE = modoleType.substring(2);
         

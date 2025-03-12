@@ -88,7 +88,7 @@ public class GenerateInCtfItgInfRp extends AbstractGenerateReport {
 		Map<String, Object> reportCount = new HashMap<>();
 		table_name = "I_IN_CTF_ITG_INF";
 		PACKET_KEY = "PAL_IN_CTF_ITG_INF_ID";
-		// 李继坤 获得生成报文名所需的区构码
+		// 穆楠 获得生成报文名所需的区构码
 		Map<String, Object> ccrcOrgCode = new HashMap<>();
 		String CCRC_ORG_CODE = "";
 		ccrcOrgCode.put("company", needReportDetail.getCompany());

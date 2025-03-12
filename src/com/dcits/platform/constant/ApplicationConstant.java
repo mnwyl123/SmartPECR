@@ -2,7 +2,7 @@ package com.dcits.platform.constant;
 
 /**
  * 系统常量
- * @author chenliangu
+ * @author 
  *
  */
 public class ApplicationConstant {

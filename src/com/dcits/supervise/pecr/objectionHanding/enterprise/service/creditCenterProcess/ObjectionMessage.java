@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * 异议处理流程-报文处理
- * @author wzy
+ * @author 
  * @date 2020/10/20 - 15:09
  */
 public interface ObjectionMessage {

@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * 征信中心异议处理数据与数据库交互
  *
- * @author liuyno
+ * @author 穆楠
  * @date 2020/10/22 - 10:45
  */
 public interface IndvObjWebServiceService {

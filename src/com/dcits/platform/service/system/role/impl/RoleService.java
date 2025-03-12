@@ -26,7 +26,7 @@ import com.dcits.platform.util.tree.TreeEntity;
 import com.dcits.platform.util.tree.TreeEntityFactory;
 
 /**	角色
- * @author pengyj FHadmin 
+ * @author 穆楠  admin 
  * 修改日期：2015.11.6
  */
 @Service("roleService")

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 个人借贷账户信息记录基础段
- * @author leizx
+ * @author 穆楠
  *
  */
 public class LoanAcctBsSgmt implements Serializable {

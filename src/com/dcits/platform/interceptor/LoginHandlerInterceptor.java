@@ -20,7 +20,7 @@ import com.dcits.platform.util.dynsource.DbContextHolder;
  * 
 * 类名称：登录过滤，权限验证
 * 类描述： 
-* @author pengyj pengyj
+* @author 穆楠 穆楠
 * 作者单位： 
 * 联系方式：
 * 创建时间：2015年11月2日
@@ -45,7 +45,7 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter{
 		
 		if(null != user ){
 			
-			 /**pengyj 多法人支持
+			 /**穆楠 多法人支持
 			 * 根据用户所属法人机构设置动态数据源 20180817 
 			 */
 			DbContextHolder.setDbType(user.getCOMPANY() == null?"":user.getCOMPANY());

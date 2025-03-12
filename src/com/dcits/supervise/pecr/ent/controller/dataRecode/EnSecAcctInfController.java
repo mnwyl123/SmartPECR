@@ -33,7 +33,7 @@ import com.dcits.supervise.pecr.validateData.service.ValidateErrorMessageService
 
 /**
  * 企业担保账户信息
- * @author leizx
+ * @author 穆楠
  *
  */
 @Controller
@@ -161,7 +161,7 @@ public class EnSecAcctInfController extends BaseController{
 	
 	/**
 	 * 获取相关还款责任人段
-	 * @param pd
+	 * @param page
 	 * @return
 	 */
 	@ResponseBody

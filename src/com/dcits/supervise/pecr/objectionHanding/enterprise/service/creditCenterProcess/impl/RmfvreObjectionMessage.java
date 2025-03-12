@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * 反馈企业异议事项核查结果报文-Request message for feedback of verification results of enterprise objections
  *
- * @author wzy
+ * @author 
  * @date 2020/10/20 - 16:49
  */
 public class RmfvreObjectionMessage extends AbstractGenerateObjectionMessage {

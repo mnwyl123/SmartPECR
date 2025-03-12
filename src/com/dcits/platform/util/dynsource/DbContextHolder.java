@@ -3,7 +3,7 @@ package com.dcits.platform.util.dynsource;
 /**
  * 线程设置使用哪个数据源
  * 
- * @author pengyj
+ * @author 穆楠
  * 
  */
 public class DbContextHolder {

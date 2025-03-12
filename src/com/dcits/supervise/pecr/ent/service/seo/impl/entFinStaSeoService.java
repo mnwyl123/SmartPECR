@@ -15,7 +15,7 @@ import com.dcits.supervise.pecr.ent.service.seo.entFinStaSeoManager;
 
 /**
  * 企业财务报
- * @author wangyan
+ * @author 穆楠  
  * 
  *
  */

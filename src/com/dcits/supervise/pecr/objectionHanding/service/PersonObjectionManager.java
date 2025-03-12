@@ -9,7 +9,7 @@ import com.dcits.supervise.pecr.objectionHanding.entity.ObjectItem;
 
 /** 
  * 个人异议信息
- * 创建人：wangyan
+ * 创建人：穆楠  
  * 
  */
 public interface PersonObjectionManager{

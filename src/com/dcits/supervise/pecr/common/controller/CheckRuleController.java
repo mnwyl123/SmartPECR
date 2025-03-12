@@ -16,7 +16,7 @@ import com.dcits.supervise.pecr.common.service.CheckRuleMapper;
 
 /**
  * 检验规则配置管理
- * @author leizx
+ * @author 穆楠
  *
  */
 @Controller

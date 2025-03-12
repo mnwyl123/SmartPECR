@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 个人担保账户信息记录 基础段
  * 
- * @author leizx
+ * @author 穆楠
  *
  */
 public class GuarAcctBsSgmt implements Serializable {

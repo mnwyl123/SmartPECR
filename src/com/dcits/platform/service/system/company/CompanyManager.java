@@ -9,7 +9,7 @@ import com.dcits.platform.util.PageData;
 
 
 /** 用户接口类
- * @author pengyj fhpengyj (pengyj)
+ * @author 穆楠  穆楠 (穆楠)
  * 修改时间：2015.11.2
  */
 public interface CompanyManager {

@@ -7,7 +7,7 @@ import java.util.Map;
 import org.codehaus.jackson.map.util.JSONPObject;
 
 /** 接口参数校验
- * @author pengyj:	pengyj
+ * @author 穆楠:	穆楠
  * 修改日期：2015/11/2
  */
 public class AppUtil  {

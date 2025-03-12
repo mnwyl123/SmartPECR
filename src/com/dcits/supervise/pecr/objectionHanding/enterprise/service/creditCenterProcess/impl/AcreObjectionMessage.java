@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * 查询企业异议事项更正结果接受情况-Acceptance of correction results of enterprise objections
- * @author wzy
+ * @author 
  * @date 2020/10/20 - 16:45
  */
 public class AcreObjectionMessage extends AbstractGenerateObjectionMessage {

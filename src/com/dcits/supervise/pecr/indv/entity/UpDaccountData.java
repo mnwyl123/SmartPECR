@@ -3,7 +3,7 @@ package com.dcits.supervise.pecr.indv.entity;
 import java.io.Serializable;
 /**
    * 按段更正实体类
- * @author wangyanaaa
+ * @author 穆楠
  *
  */
 public class UpDaccountData implements Serializable{

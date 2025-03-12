@@ -12,7 +12,7 @@ import com.dcits.platform.entity.Page;
 import com.dcits.supervise.pecr.indv.service.packet.IndvNormalMessageManager;
 
 /**
- * @author liuyno
+ * @author 穆楠
  * @date 2020/7/8 - 14:34
  */
 
@@ -79,7 +79,7 @@ public class PersonalPanelDataServiceImpl implements PersonalPanelDataService {
     public int getTotalCount(String tName) throws Exception {
         return (int) dao.findForObject("PersonalPanelDataMapper.getTotalCount", tName);
     }
-//李继坤
+//穆楠
 //    @Override
 //    public Map<String,Integer> getNormalPacketToDoCount() throws Exception {
 //        return (Map<String,Integer>) dao.findForObject("PersonalPanelDataMapper.getNormalPacketToDoCount","");
@@ -90,7 +90,7 @@ public class PersonalPanelDataServiceImpl implements PersonalPanelDataService {
 //        return (Map<String,Integer>) dao.findForObject("PersonalPanelDataMapper.getAbnormalPacketToDoCount","");
 //    }
     
-    //李继坤
+    //穆楠
     @Override
     public Map<String,Integer> getNormalPacketToDoCount(Page page) throws Exception {
         return (Map<String,Integer>) dao.findForObject("PersonalPanelDataMapper.getNormalPacketToDoCount",page);

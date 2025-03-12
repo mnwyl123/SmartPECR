@@ -29,7 +29,7 @@ import com.dcits.supervise.pecr.ent.service.packet.IncomeAndExpenseStatementMana
 
 /**
  * 事业单位收入支出表整笔删除请求记录
- * @author leizx
+ * @author 穆楠
  *
  */
 @Controller

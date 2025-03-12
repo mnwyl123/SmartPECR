@@ -26,7 +26,7 @@ import org.apache.shiro.session.Session;
 /**
  * 获取个人征信面板展示数据
  *
- * @author liuyno
+ * @author 穆楠
  * @date 2020/7/8 - 10:07
  */
 

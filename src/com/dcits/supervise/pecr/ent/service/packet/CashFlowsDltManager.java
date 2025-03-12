@@ -9,7 +9,7 @@ import com.dcits.supervise.pecr.ent.entity.CashFlowsDlt;
 
 /**
  * 企业现金流量表整笔删除请求记录
- * @author leizx
+ * @author 穆楠
  *
  */
 public interface CashFlowsDltManager {

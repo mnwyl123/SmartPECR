@@ -3,7 +3,7 @@ package com.dcits.supervise.pecr.indv.entity;
 import java.io.Serializable;
 /**
     * 按段删除整笔删除实体类
- * @author wangyanaaa
+ * @author 穆楠
  *
  */
 public class inDel implements Serializable{

@@ -45,7 +45,7 @@ import com.dcits.supervise.pecr.util.StringDateUtil;
 
 /**
  * 回执规则配置管理
- * @author wangyan
+ * @author 穆楠  
  *
  */
 @Controller

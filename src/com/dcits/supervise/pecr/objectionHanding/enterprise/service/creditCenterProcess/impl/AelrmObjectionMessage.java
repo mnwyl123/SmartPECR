@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * 添加企业标注报文-Add enterprise labeling request message
- * @author wzy
+ * @author 
  * @date 2020/10/20 - 17:03
  */
 public class AelrmObjectionMessage extends AbstractGenerateObjectionMessage {

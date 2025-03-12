@@ -36,7 +36,7 @@ public class ReportMessageServiceImpl implements ReportMessageManager {
 		//
 		return (int) dao.findForObject("IndvInfoRpMapper.getReportCountSps", map);
 	}
-	//李继坤 
+	//穆楠 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> get14OrgCode(String company) throws Exception {
@@ -566,7 +566,7 @@ public class ReportMessageServiceImpl implements ReportMessageManager {
 	}
 
 	@Override
-	/*李继坤 报文企业授信*/
+	/*穆楠 报文企业授信*/
 	public void updateEnCtrctInfRpDataStatus(Map<String, Object> pd) throws Exception {
 		dao.update("IndvInfoRpMapper.updateEnCtrctInfRpDataStatus", pd);
 	}

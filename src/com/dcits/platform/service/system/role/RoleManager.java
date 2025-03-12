@@ -11,7 +11,7 @@ import com.dcits.platform.util.PageData;
 import com.dcits.platform.util.tree.TreeEntity;
 
 /**	角色接口类
- * @author pengyj FHadmin  pengyj
+ * @author 穆楠  admin  穆楠
  * 修改日期：2015.11.6
  */
 public interface RoleManager {

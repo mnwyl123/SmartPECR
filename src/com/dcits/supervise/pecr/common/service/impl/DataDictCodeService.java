@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * 码值结果查询
  * 
- * @author leizx
+ * @author 穆楠
  *
  */
 @Service("dataDictCodeService")
@@ -99,7 +99,7 @@ public class DataDictCodeService implements DataDictCodeMapper {
 	
 	/**
 	 * 根据uperId查询  表码值
-	 * 李继坤
+	 * 穆楠
 	 * @param uperId
 	 * @return
 	 * @throws Exception

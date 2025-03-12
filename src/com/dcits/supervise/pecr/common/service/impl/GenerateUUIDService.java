@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 
 /**
  * 生成UUID
- * @author leizx
+ * @author 穆楠
  *
  */
 @Service("generateUUIDService")

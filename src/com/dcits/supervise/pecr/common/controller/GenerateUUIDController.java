@@ -16,7 +16,7 @@ import java.util.Map;
  * 
  * 注意：mysql批量时会生成重复的uuid，直接调用uuid()函数会生成带有‘-’的字符串，且长度位36位
  *     可以使用MD5函数对其加密，直接返回32位的字符串
- * @author leizx
+ * @author 穆楠
  *
  */
 @Controller

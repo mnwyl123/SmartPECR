@@ -11,7 +11,7 @@ import java.util.Map;
 /***
  * bfd校验业务持久化接口层
  *
- * @author liuyno
+ * @author 穆楠
  *
  */
 public interface BfdDataCheckDao {

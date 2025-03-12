@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  * 企业资产负债表整笔删除请求记录
- * @author leizx
+ * @author 穆楠
  *
  */
 @Controller

@@ -9,7 +9,7 @@ import com.dcits.supervise.pecr.ent.entity.InstitutionBalanceSheetDlt;
 
 /**
  * 事业单位资产负债表整笔删除请求记录
- * @author leizx
+ * @author 穆楠
  *
  */
 public interface InstitutionBalanceSheetDltManager {

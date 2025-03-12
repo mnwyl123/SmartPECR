@@ -8,7 +8,7 @@ package com.dcits.platform.entity.system;
 
 * 类描述： 
 
-* @author sunqfb
+* @author
 
 * 作者单位： 
 

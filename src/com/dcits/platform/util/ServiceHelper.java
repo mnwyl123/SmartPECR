@@ -6,7 +6,7 @@ import com.dcits.platform.service.system.user.UserManager;
 
 
 /**
- * @author pengyj Administrator
+ * @author 穆楠 Administrator
  * 获取Spring容器中的service bean
  */
 public final class ServiceHelper {

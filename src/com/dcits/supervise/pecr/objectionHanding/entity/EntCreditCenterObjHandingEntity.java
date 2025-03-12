@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 征信中心异议处理综合实体类-企业
  *
- * @author wzy
+ * @author 
  * @date 2020/10/19 - 9:29
  */
 public class EntCreditCenterObjHandingEntity implements Serializable {

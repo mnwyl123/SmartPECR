@@ -17,7 +17,7 @@ import java.io.StringWriter;
 import java.util.*;
 
 /**
- * @author liuyno
+ * @author 穆楠
  * @date 2020/10/20 - 15:16
  */
 public abstract class AbstractGenerateObjectionMessage implements ObjectionMessage {

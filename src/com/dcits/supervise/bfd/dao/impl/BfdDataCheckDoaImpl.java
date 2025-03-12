@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 /***
  * bfd校验业务持久化接口层实现类
  *
- * @author liuyno
+ * @author 穆楠
  *
  */
 @Repository("bfdDataCheckDao")

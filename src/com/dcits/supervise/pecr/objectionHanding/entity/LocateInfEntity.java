@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 /**
  * 定位信息数据项集合元素
- * @author liuyno
+ * @author 穆楠
  * @date 2020/9/15 - 15:19
  */
 public class LocateInfEntity implements Serializable {

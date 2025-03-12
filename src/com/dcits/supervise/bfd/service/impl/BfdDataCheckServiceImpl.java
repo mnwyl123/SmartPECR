@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 /**
  * bfd校验业务层接口实现类
  *
- * @author liuyno
+ * @author 穆楠
  */
 @Service
 public class BfdDataCheckServiceImpl implements BfdDataCheckService {

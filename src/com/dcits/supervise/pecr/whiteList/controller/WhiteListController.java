@@ -15,7 +15,7 @@ import com.dcits.platform.util.PageData;
 import com.dcits.supervise.pecr.whiteList.service.WhiteListManager;
 /**
  * 征信报送白名单维护
- * @author zhanggy
+ * @author
  *
  */
 @Controller

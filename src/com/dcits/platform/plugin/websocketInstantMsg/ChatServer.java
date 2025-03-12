@@ -16,8 +16,8 @@ import java.util.Date;
 /**
  * 即时通讯
  *
- * @author pengyj FH
- * pengyj
+ * @author 穆楠  
+ * 穆楠
  * 2015-5-16
  */
 public class ChatServer extends WebSocketServer {

@@ -15,7 +15,7 @@ import com.dcits.supervise.pecr.ent.service.packet.CashFlowsDltManager;
 
 /**
  * 企业现金流量表整笔删除请求记录
- * @author leizx
+ * @author 穆楠
  *
  */
 @Service("cashFlowsDlt")

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 系统状态码值
- * @author leizx
+ * @author 穆楠
  *
  */
 public class SystemStateValue implements Serializable {

@@ -1,7 +1,7 @@
 package com.dcits.supervise.pecr.objectionHanding.entity;
 
 /**
- * @author liuyno
+ * @author 穆楠
  * @date 2020/10/20 - 15:51
  */
 public class ObjMsgFixedParam {

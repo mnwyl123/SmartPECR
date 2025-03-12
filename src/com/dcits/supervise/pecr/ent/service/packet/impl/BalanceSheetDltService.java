@@ -14,7 +14,7 @@ import com.dcits.supervise.pecr.ent.entity.BalanceSheetDlt;
 import com.dcits.supervise.pecr.ent.service.packet.BalanceSheetDltManager;
 /**
  * 企业资产负债表整笔删除请求记录
- * @author leizx
+ * @author 穆楠
  *
  */
 @Service("balanceSheetDlt")

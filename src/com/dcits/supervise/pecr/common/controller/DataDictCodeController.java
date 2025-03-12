@@ -28,7 +28,7 @@ import java.util.Map;
 
 /**
  * 数据字典  下拉框   码值获取
- * @author leizx
+ * @author 穆楠
  *
  */
 @Controller
@@ -122,7 +122,7 @@ public class DataDictCodeController  extends BaseController{
 	}
 	
 	/**
-	 * 根据上级码值  查询下级码值  联动  李继坤  校验结果
+	 * 根据上级码值  查询下级码值  联动  穆楠  校验结果
 	 * @param page
 	 * @return
 	 */

@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * 抵（质）押合同信息
- * @author leizx
+ * @author 穆楠
  *
  */
 public interface MotgaCltalBsInfoManager {

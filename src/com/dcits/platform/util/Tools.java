@@ -245,7 +245,7 @@ public class Tools {
 	 */
 	public static String readTxtFile(String fileP) {
 		try {
-			//pengyj 20180323  修改 linux weblogic  路径取得不对
+			//穆楠 20180323  修改 linux weblogic  路径取得不对
 //			String filePath = String.valueOf(Thread.currentThread().getContextClassLoader().getResource(""))+"../../";	//项目路径
 //			filePath = filePath.replaceAll("file:/", "");
 //			filePath = filePath.replaceAll("%20", " ");

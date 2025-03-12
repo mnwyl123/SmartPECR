@@ -20,7 +20,7 @@ import com.dcits.supervise.pecr.common.service.CheckRuleMapper;
 
 /**
  * 数据校验详情	
- * @author zhanggym
+ * @author 穆楠  
  *
  */
 @Controller

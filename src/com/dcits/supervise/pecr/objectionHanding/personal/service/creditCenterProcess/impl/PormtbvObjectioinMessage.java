@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * 个人待核查异议报文-Personal objection message to be verified
  *
- * @author liuyno
+ * @author 穆楠
  * @date 2020/10/20 - 15:39
  */
 public class PormtbvObjectioinMessage extends AbstractGenerateObjectionMessage {

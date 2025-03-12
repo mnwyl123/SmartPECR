@@ -3,7 +3,7 @@ package com.dcits.supervise.pecr.indv.entity;
 import java.io.Serializable;
 
 /**借据拦截明细月报表实体类
- * @author liuyno
+ * @author 穆楠
  * @date 2020/8/10 - 10:20
  */
 public class IOUInterceptEntity implements Serializable {

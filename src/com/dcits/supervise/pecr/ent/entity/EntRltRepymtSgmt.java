@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 企业借贷账户信息记录    相关还款责任人段
- * @author leizx
+ * @author 穆楠
  *
  */
 public class EntRltRepymtSgmt implements Serializable {

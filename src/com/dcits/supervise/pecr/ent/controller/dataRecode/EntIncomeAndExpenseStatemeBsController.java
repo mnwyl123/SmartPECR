@@ -33,7 +33,7 @@ import com.dcits.supervise.pecr.validateData.service.ValidateErrorMessageService
 
 /**
  * 事业单位收入支出
- * @author leizx
+ * @author 穆楠
  *
  */
 @Controller
@@ -181,7 +181,7 @@ public class EntIncomeAndExpenseStatemeBsController extends BaseController{
 	
 	/**
 	 * 删除基础段
-	 * @param page
+	 * @param
 	 * @return
 	 */
 	@Operate(modulName = "事业单位收入支出基础段--删除")

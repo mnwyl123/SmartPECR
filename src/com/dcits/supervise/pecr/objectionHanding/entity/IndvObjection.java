@@ -1,7 +1,7 @@
 package com.dcits.supervise.pecr.objectionHanding.entity;
 
 /**
- * @author liuyno
+ * @author 穆楠
  * @date 2020/8/24 - 10:13
  */
 public class IndvObjection {
