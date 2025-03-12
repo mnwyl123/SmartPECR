@@ -149,24 +149,24 @@
 	</select>
 	<!-- 查询企业按段更正所需要的信息 基础段 -->
 	<select id="getAcctBsSgmtByIdType" parameterType="pd" resultType="map">
-		 select eda_acct_bs_sgmt_id,
-				inf_rec_type,
-				acct_type,
-				acct_code,
-				rpt_date,
-				rpt_date_code,
-				name,
-				id_type,
-				id_num,
-				mngmt_org_code,
-				mdfc_sgmt_code,
-				last_update_time,
-				operator_user,
-				org_name,
-				org_code,
-				business_states,
-				is_filter,
-				reject_reason,
+		 select EDA_ACCT_BS_SGMT_ID,
+				INF_REC_TYPE,
+				ACCT_TYPE,
+				ACCT_CODE,
+				RPT_DATE,
+				RPT_DATE_CODE,
+				NAME,
+				ID_TYPE,
+				ID_NUM,
+				MNGMT_ORG_CODE,
+				MDFC_SGMT_CODE,
+				LAST_UPDATE_TIME,
+				OPERATOR_USER,
+				ORG_NAME,
+				ORG_CODE,
+				BUSINESS_STATES,
+				IS_FILTER,
+				REJECT_REASON,
 				COMPANY
 		   from E_ACCT_BS
 		   where acct_code = #{acctCode}
@@ -202,25 +202,25 @@
 
 	<!-- 详情或者修改 查询指定记录 基本信息段 -->
 	<select id="getAcctBsInfSgmtById" parameterType="pd" resultType="pd">
-		 select edb_acct_bs_inf_sgmt_id,
-				busi_lines,
-				busi_dtl_lines,
-				open_date,
-				cy,
-				acct_cred_line,
-				loan_amt,
-				flag,
-				due_date,
-				repay_mode,
-				repay_freqcy,
-				apply_busi_dist,
-				guar_mode,
-				oth_repy_guar_way,
-				loan_time_lim_cat,
-				loa_frm,
-				act_invest,
-				fund_sou,
-				asset_trand_flag,
+		 select EDB_ACCT_BS_INF_SGMT_ID,
+				BUSI_LINES,
+				BUSI_DTL_LINES,
+				OPEN_DATE,
+				CY,
+				ACCT_CRED_LINE,
+				LOAN_AMT,
+				FLAG,
+				DUE_DATE,
+				REPAY_MODE,
+				REPAY_FREQCY,
+				APPLY_BUSI_DIST,
+				GUAR_MODE,
+				OTH_REPY_GUAR_WAY,
+				LOAN_TIME_LIM_CAT,
+				LOA_FRM,
+				ACT_INVEST,
+				FUND_SOU,
+				ASSET_TRAND_FLAG,
 				COMPANY
 		   from E_ACCT_BS_INF
 		  where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
@@ -228,8 +228,8 @@
 	
 	<!-- 详情或者修改 查询指定记录 授信额度信息段 -->
 	<select id="getAcctCredSgmtById" parameterType="pd" resultType="pd">
-		select ede_acct_cred_sgmt_id,
-		       mcc,
+		select EDE_ACCT_CRED_SGMT_ID,
+		       MCC,
 		       COMPANY
 		  from E_ACCT_CRED
 		 where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
@@ -237,11 +237,11 @@
 	
 	<!-- 详情或者修改 查询指定记录 初始债权说明段 -->
 	<select id="getCreditorInfSgmtById" parameterType="pd" resultType="pd">
-		 select edf_orig_creditor_inf_sgmt_id,
-				init_cred_name,
-				init_ced_org_code,
-				orig_dbt_cate,
-				init_rpy_sts,
+		 select EDF_ORIG_CREDITOR_INF_SGMT_ID,
+				INIT_CRED_NAME,
+				INIT_CED_ORG_CODE,
+				ORIG_DBT_CATE,
+				INIT_RPY_STS,
 				COMPANY
 		   from E_ORIG_CREDITOR_INF
 		  where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}
@@ -249,24 +249,24 @@
 	
 	<!-- 详情或者修改 查询指定记录 还款表现信息段 -->
 	<select id="getLbltyInfSgmtById" parameterType="pd" resultType="pd">
-		 select edg_act_lblty_inf_sgmt_id,
-				acct_status,
-				acct_bal,
-				bal_chg_date,
-				five_cate,
-				five_cate_adj_date,
-				pymt_prd,
-				tot_overd,
-				overd_princ,
-				overd_dy,
-				lat_rpy_date,
-				lat_rpy_amt,
-				lat_rpy_princ_amt,
-				rpmt_type,
-				lat_agrr_rpy_date,
-				lat_agrr_rpy_amt,
-				nxt_agrr_rpy_date,
-				close_date,
+		 select EDG_ACT_LBLTY_INF_SGMT_ID,
+				ACCT_STATUS,
+				ACCT_BAL,
+				BAL_CHG_DATE,
+				FIVE_CATE,
+				FIVE_CATE_ADJ_DATE,
+				PYMT_PRD,
+				TOT_OVERD,
+				OVERD_PRINC,
+				OVERD_DY,
+				LAT_RPY_DATE,
+				LAT_RPY_AMT,
+				LAT_RPY_PRINC_AMT,
+				RPMT_TYPE,
+				LAT_AGRR_RPY_DATE,
+				LAT_AGRR_RPY_AMT,
+				NXT_AGRR_RPY_DATE,
+				CLOSE_DATE,
 				COMPANY
 		   from  E_ACT_LBLTY_INF
 		  where eda_acct_bs_sgmt_id = #{edaAcctBsSgmtId}

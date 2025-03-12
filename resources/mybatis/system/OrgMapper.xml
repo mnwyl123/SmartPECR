@@ -314,7 +314,7 @@
 		where 
 			PARENT_ID = #{parentId} and COMPANY = #{company} and STATUS = '0' order by ORG_ORDER 
 	</select>
-	<!-- fh313596790qq(pengyj) -->
+	<!-- (穆楠) -->
 	
 	<!-- 通过ID获取其子级列表 -->
 	<select id="listSonOrg" parameterType="pd" resultType="java.lang.String">

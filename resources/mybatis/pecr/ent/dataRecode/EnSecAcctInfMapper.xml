@@ -235,17 +235,17 @@
 
 	<!-- 详情或者修改 查询指定记录 相关还款责任人段 -->
 	<select id="getRltInflistPage" parameterType="page" resultType="pd">
-		 select   EEC_RLT_REPYMT_INF_SGMT_ID eecRltRepymtInfSgmtId,
-				  INFO_ID_TYPE infoIdType,
-				  arlp_name arlpName,
-				  arlp_cert_type arlpCertType,
-				  arlp_cert_num arlpCertNum,
-				  arlp_type arlpType,
-				  arlp_amt arlpAmt,
-				  warty_sign wartySign,
-				  max_guar_mcc maxGuarMcc,
-				  EEA_GUAR_ACCT_BS_SGMT_ID eeaGuarAcctBsSgmtId,
-				  rpt_date,
+		 select   EEC_RLT_REPYMT_INF_SGMT_ID EECRLTREPYMTINFSGMTID,
+				  INFO_ID_TYPE INFOIDTYPE,
+				  ARLP_NAME ARLPNAME,
+				  ARLP_CERT_TYPE ARLPCERTTYPE,
+				  ARLP_CERT_NUM ARLPCERTNUM,
+				  ARLP_TYPE ARLPTYPE,
+				  ARLP_AMT ARLPAMT,
+				  WARTY_SIGN WARTYSIGN,
+				  MAX_GUAR_MCC MAXGUARMCC,
+				  EEA_GUAR_ACCT_BS_SGMT_ID EEAGUARACCTBSSGMTID,
+				  RPT_DATE,
 				  COMPANY
 		   from E_SEC_RLT_REPYMT_INF
 		  where EEA_GUAR_ACCT_BS_SGMT_ID = #{pd.eeaGuarAcctBsSgmtId}

@@ -148,5 +148,5 @@
 				c.LOGO_PATH
 		from <include refid="companyTableName"></include>c
 	</select>
-	<!-- fh313596790qq(pengyj) -->
+	<!-- (穆楠) -->
 </mapper>

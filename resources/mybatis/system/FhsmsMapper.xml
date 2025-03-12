@@ -155,5 +155,5 @@
 		SELECT USERNAME,COMPANY FROM SYS_USER
 		WHERE USERNAME=#{USERNAME}
 	</select>
-	<!-- fh313596790qq(pengyj) -->
+	<!-- (穆楠) -->
 </mapper>

@@ -184,7 +184,7 @@
 	</select>
 	
 	
-	<!-- 获取报文名组成部分-区构号,生成报文通用      李继坤 -->
+	<!-- 获取报文名组成部分-区构号,生成报文通用      穆楠 -->
 	<select id="getCcrcOrgCode" parameterType="String" resultType="map">
 		select 
 			*
@@ -386,7 +386,7 @@
 			</foreach>
 			)
 		</if>
-		<!-- 李继坤 -->
+		<!-- 穆楠 -->
 		<if test=' company !=null and company.size >0 '>
 			and (
 			<foreach collection="company" item="item" separator="or">
@@ -615,6 +615,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 		<include refid="pecrIndvInCtfItgFields" />
 		from
 		<include refid="pecrIndvInCtfItgTableName" />
@@ -640,6 +643,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 		PBK_IN_SPC_EVT_DSC_INF_ID,
 		INF_REC_TYPE,
@@ -760,7 +766,7 @@
 		I_GUAR_ACCT_INF b on
 		a.PDA_GUAR_ACCT_BS_SGMT_ID=b.PDA_GUAR_ACCT_BS_SGMT_ID
 		where
-		<!-- 李继坤 -->
+		<!-- 穆楠 -->
 		a.BUSINESS_STATES='90' 
 		and a.INF_REC_TYPE = #{INF_REC_TYPE}
 		<if test=' rpt_date !=null and rpt_date.size >0 '>
@@ -1487,6 +1493,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 		a.EAA_BS_SGMT_ID ,
 		INF_REC_TYPE,
 		ENT_NAME,
@@ -1708,7 +1717,7 @@
 		                 GROUP BY EAA_BS_SGMT_ID) B
 		         WHERE A.EAA_BS_SGMT_ID = B.EAA_BS_SGMT_ID) C
 	</select>
-	<!-- 李继坤 企业 基本信息生成报文改变状态 -->
+	<!-- 穆楠 企业 基本信息生成报文改变状态 -->
 	<update id="updateGuarEntBsSgmtDataStatus" parameterType="map">
 		update
 		E_BS
@@ -1755,6 +1764,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 		a.ELA_INCOME_AND_EXPENSE_STAT_ID ,
 		INF_REC_TYPE,
@@ -1873,6 +1885,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 		a.ECA_EN_ICDN_RLTP_INF_ID ,
 		INF_REC_TYPE ,
 		ENT_NAME ,
@@ -1959,6 +1974,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 		a.EDA_ACCT_BS_SGMT_ID ,
 		INF_REC_TYPE ,
@@ -2142,6 +2160,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 		a.EEA_GUAR_ACCT_BS_SGMT_ID ,
 		INF_REC_TYPE,
 		ACCT_TYPE,
@@ -2182,7 +2203,7 @@
 		a.EEA_GUAR_ACCT_BS_SGMT_ID=d.EEA_GUAR_ACCT_BS_SGMT_ID
 		left JOIN
 		E_GUAR_INSURANCE_INF b on
-		<!-- 李继坤 -->
+		<!-- 穆楠 -->
 		a.EEA_GUAR_ACCT_BS_SGMT_ID=b.EEA_GUAR_ACCT_BS_SGMT_ID
 		where 1=1
 			and a.BUSINESS_STATES='90' 
@@ -2349,6 +2370,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 		A.EGA_CTRCT_BS_SGMT_ID,
 		A.INF_REC_TYPE,
 		A.CONTRACT_CODE,
@@ -2492,6 +2516,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 		A.EHA_BALANCE_SHEET_BS_SGMT_ID,
 		A.INF_REC_TYPE,
@@ -2738,6 +2765,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 		A.EJA_CASH_FLOWS_BS_SGMT_ID,
 		A.INF_REC_TYPE,
 		A.ENT_NAME,
@@ -2957,6 +2987,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 		A.EIA_INCOME_STATEMENT_PROFIT_ID,
 		EIB_INCOME_STATEMENT_PROFIT_ID,
 		EIC_INCOME_STATEMENT_PROFIT_ID,
@@ -3140,6 +3173,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 		A.EKA_INSTITUTION_BALANCE_SHT_ID,
 		A.INF_REC_TYPE,
@@ -3818,6 +3854,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 	 		INF_REC_TYPE,
 			OD_BNES_CODE,
 			NW_BNES_CODE,
@@ -3858,6 +3897,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 			INF_REC_TYPE,
 			OD_BNES_CODE,
@@ -3900,6 +3942,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 			INF_REC_TYPE,
 			OD_BNES_CODE,
 			NW_BNES_CODE,
@@ -3940,6 +3985,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 			INF_REC_TYPE,
 			OD_BNES_CODE,
@@ -4095,6 +4143,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 			INF_REC_TYPE,
 			DEL_REC_CODE,
 			DEL_SGMT_CODE,
@@ -4135,6 +4186,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 			INF_REC_TYPE,
 			DEL_REC_CODE,
@@ -4177,6 +4231,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 			INF_REC_TYPE,
 			DEL_REC_CODE,
 			DEL_SGMT_CODE,
@@ -4217,6 +4274,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 			INF_REC_TYPE,
 			INF_SURC_CODE,
@@ -4259,6 +4319,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 			INF_REC_TYPE,
 			DEL_REC_CODE,
 			EDZ_EN_ACCT_INF_ENT_DEL_ID
@@ -4297,6 +4360,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 			INF_REC_TYPE,
 			DEL_REC_CODE,
 			EEZ_EN_SEC_ACCT_ENT_DEL_SG_ID
@@ -4334,6 +4400,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 			INF_REC_TYPE,
 			NAME AS ENT_NAME,
@@ -4378,6 +4447,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 			INF_REC_TYPE,
 			NAME AS ENT_NAME,
@@ -4424,6 +4496,9 @@
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
 		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 			INF_REC_TYPE,
 			NAME AS ENT_NAME,
 			ID_TYPE AS ENT_CERT_TYPE,
@@ -4467,6 +4542,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 			INF_REC_TYPE,
 			NAME AS ENT_NAME,
@@ -4512,7 +4590,10 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
-		</if> 
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
+		</if>
 			INF_REC_TYPE,
 		  NAME AS ENT_NAME,
 	      ID_TYPE AS ENT_CERT_TYPE,
@@ -4556,6 +4637,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 			INF_REC_TYPE,
 			DEL_REC_CODE,
@@ -4613,7 +4697,7 @@
 			</if>
 	</update>
 
-		<!-- 李继坤 -->
+		<!-- 穆楠 -->
 	<!-- 生成报文后向数据中插入报文名 -->
 	<!-- <update id="insertReportMessage" parameterType="java.util.List" >
 		<if test=' list != null and list.size >0 '>
@@ -4700,6 +4784,9 @@
 		</if>
 		<if test="_databaseId == 'db2'">
 			ROW_NUMBER() over() as rownum,
+		</if>
+		<if test="_databaseId == 'mysql'">
+			(SELECT @ROWNUM:=@ROWNUM + 1 FROM (SELECT @ROWNUM:=0)T) as rownum,
 		</if>
 		a.EFA_MOTGA_CLTAL_CTRCT_BS_ID,
 		INF_REC_TYPE,

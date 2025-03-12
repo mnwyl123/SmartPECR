@@ -170,7 +170,7 @@
 			MENU_ID=#{MENU_ID}
 	</update>
 	
-	<!-- fh313596790qq(pengyj) -->
+	<!-- (穆楠) -->
 
 	<resultMap id="menuResultMap1" type="com.dcits.platform.entity.system.MenuInfo">  
 		<result column="MENU_ID"  		property="menuId"/>

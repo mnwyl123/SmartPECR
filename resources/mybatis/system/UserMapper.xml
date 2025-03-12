@@ -551,7 +551,7 @@
                   #{item}
              </foreach>
 	</delete>
-	<!-- fh313596790qq(pengyj) -->
+	<!-- (穆楠) -->
 	<!-- maff 实现通过用户名查询密码，法人（适应SSO） -->
 	<select id="selectPwd" parameterType="String" resultType="map">
 		select USERNAME,PASSWORD,COMPANY

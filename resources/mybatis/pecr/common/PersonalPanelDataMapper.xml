@@ -277,7 +277,7 @@
 				      )as tmp_count
     </select>
 
-  	<!-- 李继坤	直接使用原本特殊代码   修改成企业用  -->
+  	<!-- 穆楠	直接使用原本特殊代码   修改成企业用  -->
   	<select id="getAbnormalPacketToDoCount" parameterType="page" resultType="java.util.HashMap">
         SELECT SUM (normalToGen)      ABNORMALTOGEN,
                SUM (normalToRep)      ABNORMALTOREP,

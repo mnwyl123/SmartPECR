@@ -73,7 +73,7 @@
 	</update>
 	
 	
-	<!-- 历史表 功能舍弃   李继坤   -->
+	<!-- 历史表 功能舍弃   穆楠   -->
 	<update id="UpdateBusinessStateHistByCondition" parameterType="map">
 		update
 		<if test=' hist_table_name !=null and hist_table_name !="" '>
